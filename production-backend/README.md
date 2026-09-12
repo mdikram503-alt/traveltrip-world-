@@ -5,7 +5,7 @@ This Next.js service creates PayPal orders from supplier prices on the server, v
 ## Deploy
 
 1. Create a managed PostgreSQL database and run `db/schema.sql` once.
-2. Add every value from `.env.example` in Vercel's Production environment. Do not commit `.env.local` or secrets.
+2. Connect Neon with prefix `NEON` so Vercel creates `NEON_URL`, then add the remaining values from `.env.example` in Vercel's Production environment. Do not commit `.env.local` or secrets.
 3. Deploy this directory as the Vercel project root.
 4. In the PayPal live app, register `https://traveltrip.world/api/paypal/webhook` and select `PAYMENT.CAPTURE.COMPLETED`. Copy its webhook ID into `PAYPAL_WEBHOOK_ID`.
 5. Use the returned PayPal order ID with the PayPal JavaScript SDK's capture flow.
