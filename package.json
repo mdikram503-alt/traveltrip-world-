@@ -3,7 +3,7 @@
   "private": true,
   "version": "1.0.0",
   "scripts": {
-    "build": "rm -rf dist && cp -R web dist"
+    "build": "vite build"
   },
   "devDependencies": {
     "vite": "^5.4.0"
