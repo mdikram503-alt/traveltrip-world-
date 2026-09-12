@@ -1,0 +1,8 @@
+name: android
+on: [push]
+jobs:
+  stub:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: echo "CI placeholder — add Gradle when wrapper jar is present"

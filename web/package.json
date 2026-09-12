@@ -1,0 +1,9 @@
+{
+  "name": "traveler-esim-web",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Traveler eSIM static web (also mobile / WAP)",
+  "scripts": {
+    "start": "python3 -m http.server 8080"
+  }
+}

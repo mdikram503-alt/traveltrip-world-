@@ -1,0 +1,8 @@
+name: web
+on: [push]
+jobs:
+  stub:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: test -f web/index.html

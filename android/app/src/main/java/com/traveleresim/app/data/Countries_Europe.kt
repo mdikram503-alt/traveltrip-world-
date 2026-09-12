@@ -1,0 +1,43 @@
+package com.traveleresim.app.data
+
+object CountriesEurope {
+    val all: List<Country> = listOf(
+        Country("GB","United Kingdom","Europe","🇬🇧",4.49,true),
+        Country("FR","France","Europe","🇫🇷",4.49,true),
+        Country("DE","Germany","Europe","🇩🇪",4.49,true),
+        Country("IT","Italy","Europe","🇮🇹",4.49,true),
+        Country("ES","Spain","Europe","🇪🇸",4.49,true),
+        Country("PT","Portugal","Europe","🇵🇹",4.49,true),
+        Country("NL","Netherlands","Europe","🇳🇱",4.49,true),
+        Country("BE","Belgium","Europe","🇧🇪",4.99,true),
+        Country("CH","Switzerland","Europe","🇨🇭",6.99,true),
+        Country("AT","Austria","Europe","🇦🇹",4.99,true),
+        Country("GR","Greece","Europe","🇬🇷",4.99,true),
+        Country("IE","Ireland","Europe","🇮🇪",4.99,true),
+        Country("SE","Sweden","Europe","🇸🇪",4.99,true),
+        Country("NO","Norway","Europe","🇳🇴",5.99,true),
+        Country("DK","Denmark","Europe","🇩🇰",4.99,true),
+        Country("FI","Finland","Europe","🇫🇮",4.99,true),
+        Country("PL","Poland","Europe","🇵🇱",3.99,true),
+        Country("CZ","Czechia","Europe","🇨🇿",3.99,true),
+        Country("HU","Hungary","Europe","🇭🇺",3.99,true),
+        Country("RO","Romania","Europe","🇷🇴",3.99,true),
+        Country("BG","Bulgaria","Europe","🇧🇬",3.99,true),
+        Country("HR","Croatia","Europe","🇭🇷",4.49,true),
+        Country("RS","Serbia","Europe","🇷🇸",4.49,true),
+        Country("BA","Bosnia","Europe","🇧🇦",4.99,true),
+        Country("AL","Albania","Europe","🇦🇱",4.99,true),
+        Country("MK","North Macedonia","Europe","🇲🇰",4.99,true),
+        Country("SI","Slovenia","Europe","🇸🇮",4.99,true),
+        Country("SK","Slovakia","Europe","🇸🇰",4.49,true),
+        Country("LT","Lithuania","Europe","🇱🇹",4.49,true),
+        Country("LV","Latvia","Europe","🇱🇻",4.49,true),
+        Country("EE","Estonia","Europe","🇪🇪",4.49,true),
+        Country("IS","Iceland","Europe","🇮🇸",7.99,true),
+        Country("UA","Ukraine","Europe","🇺🇦",4.99,true),
+        Country("MD","Moldova","Europe","🇲🇩",4.99,true),
+        Country("CY","Cyprus","Europe","🇨🇾",5.49,true),
+        Country("MT","Malta","Europe","🇲🇹",5.49,true),
+        Country("LU","Luxembourg","Europe","🇱🇺",5.49,true)
+    )
+}

@@ -1,0 +1,22 @@
+:root {
+  --bg: #0b1220;
+  --bg-2: #121a2b;
+  --card: #172033;
+  --line: #2a3754;
+  --text: #e8eefc;
+  --muted: #93a0bd;
+  --accent: #3ee0c5;
+  --accent-2: #7aa2ff;
+  --warn: #ffb020;
+  --danger: #ff5d6c;
+  --ok: #3ee0c5;
+  --radius: 18px;
+  --shadow: 0 10px 40px rgba(0,0,0,.35);
+  --font: "Sora", "Noto Sans Bengali", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg: #f4f7fb; --bg-2: #fff; --card: #fff; --line: #d9e1f2;
+    --text: #10203a; --muted: #5b6b88; --shadow: 0 8px 30px rgba(16,32,58,.08);
+  }
+}

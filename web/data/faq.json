@@ -1,0 +1,28 @@
+{
+  "faq": [
+    {
+      "q": "Does my phone support eSIM?",
+      "a": "iPhone XR and later, Pixel 3+, Galaxy S20+, and most flagships from 2020. Settings \u2192 Mobile network should show Add eSIM."
+    },
+    {
+      "q": "Will my WhatsApp number change?",
+      "a": "No. Traveler eSIM is data-only. Keep your physical SIM for calls and WhatsApp."
+    },
+    {
+      "q": "When does the validity start?",
+      "a": "On first successful attach to a partner network, not on purchase."
+    },
+    {
+      "q": "Can I hotspot?",
+      "a": "Yes on almost every plan. Tethering uses the same data bucket."
+    },
+    {
+      "q": "What if I land with no Wi-Fi?",
+      "a": "Install the eSIM over Wi-Fi before you fly. Then enable the line on arrival."
+    },
+    {
+      "q": "Refunds?",
+      "a": "Unused QR codes can be refunded within 30 days. Installed profiles are final."
+    }
+  ]
+}

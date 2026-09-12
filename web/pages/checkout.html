@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <meta name="theme-color" content="#0b1220"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <title>Checkout · Traveler eSIM</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Noto+Sans+Bengali:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/base.css"/>
+</head>
+<body>
+
+<header class="appbar"><div class="wrap inner">
+  <a class="brand" href="../index.html"><span class="logo">T</span> Traveler eSIM</a>
+  <nav class="links">
+    <a href="../index.html">Destinations</a>
+    <a href="./coverage.html">Coverage</a>
+    <a href="./help.html">Help</a>
+    <a href="./account.html">My eSIM</a>
+  </nav>
+  <a class="btn btn-primary" href="./account.html">Open app</a>
+</div></header>
+
+<main class="wrap">
+<section class="hero"><h1>Checkout</h1><p class="muted">Demo payment — no live Stripe key in this package.</p></section>
+<div class="card stack" style="max-width:480px;margin-bottom:48px">
+  <div id="summary" class="notice">Loading plan…</div>
+  <label>Email</label><input id="email" type="email" placeholder="you@email.com"/>
+  <label>Name on card</label><input placeholder="Traveler"/>
+  <label>Test card</label><input value="4242 4242 4242 4242" readonly/>
+  <button class="btn btn-primary" id="pay">Pay (mock)</button>
+  <div id="out" class="muted"></div>
+</div>
+<script type="module">
+  import { payMock } from "../js/stripe-mock.js";
+  const id = new URLSearchParams(location.search).get("plan");
+  const plans = (await (await fetch("../data/plans.json")).json()).plans;
+  const plan = plans.find(p => p.id === id) || plans[0];
+  document.getElementById("summary").textContent = `${plan.title} — $${plan.usd.toFixed(2)}`;
+  document.getElementById("pay").onclick = async () => {
+    const email = document.getElementById("email").value;
+    try {
+      const o = await payMock({ amount: plan.usd, email, planId: plan.id });
+      document.getElementById("out").innerHTML = `Paid. Order <code>${o.id}</code><br>QR / activation: <code>${o.qr}</code><br><a href="./account.html">Open My eSIM</a>`;
+    } catch (e) { document.getElementById("out").textContent = e.message; }
+  };
+</script>
+</main>
+
+<footer><div class="wrap">
+  <div class="row" style="justify-content:space-between">
+    <div>© 2026 Traveler eSIM · Demo source, not a live store.</div>
+    <div class="row">
+      <a href="./legal.html">Legal</a>
+      <a href="./help.html">Support</a>
+    </div>
+  </div>
+</div></footer>
+
+</body></html>

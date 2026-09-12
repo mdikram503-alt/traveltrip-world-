@@ -1,0 +1,40 @@
+package com.traveleresim.app.data
+
+object CountriesAsia {
+    val all: List<Country> = listOf(
+        Country("AE","United Arab Emirates","Asia","🇦🇪",4.99,true),
+        Country("SA","Saudi Arabia","Asia","🇸🇦",5.49,true),
+        Country("QA","Qatar","Asia","🇶🇦",6.99,true),
+        Country("KW","Kuwait","Asia","🇰🇼",6.49,true),
+        Country("BH","Bahrain","Asia","🇧🇭",5.99,true),
+        Country("OM","Oman","Asia","🇴🇲",6.49,true),
+        Country("TR","Turkey","Asia","🇹🇷",3.99,true),
+        Country("JP","Japan","Asia","🇯🇵",5.99,true),
+        Country("KR","South Korea","Asia","🇰🇷",5.49,true),
+        Country("TH","Thailand","Asia","🇹🇭",3.49,true),
+        Country("SG","Singapore","Asia","🇸🇬",4.49,true),
+        Country("MY","Malaysia","Asia","🇲🇾",3.99,true),
+        Country("ID","Indonesia","Asia","🇮🇩",3.99,true),
+        Country("IN","India","Asia","🇮🇳",2.99,true),
+        Country("PK","Pakistan","Asia","🇵🇰",3.49,true),
+        Country("BD","Bangladesh","Asia","🇧🇩",2.99,true),
+        Country("CN","China","Asia","🇨🇳",6.99,true),
+        Country("HK","Hong Kong","Asia","🇭🇰",4.99,true),
+        Country("TW","Taiwan","Asia","🇹🇼",4.99,true),
+        Country("VN","Vietnam","Asia","🇻🇳",3.49,true),
+        Country("PH","Philippines","Asia","🇵🇭",3.99,true),
+        Country("KH","Cambodia","Asia","🇰🇭",3.99,true),
+        Country("LA","Laos","Asia","🇱🇦",4.49,true),
+        Country("MM","Myanmar","Asia","🇲🇲",4.99,false),
+        Country("NP","Nepal","Asia","🇳🇵",4.49,true),
+        Country("LK","Sri Lanka","Asia","🇱🇰",3.99,true),
+        Country("UZ","Uzbekistan","Asia","🇺🇿",5.49,true),
+        Country("KZ","Kazakhstan","Asia","🇰🇿",5.99,true),
+        Country("GE","Georgia","Asia","🇬🇪",4.49,true),
+        Country("AM","Armenia","Asia","🇦🇲",4.99,true),
+        Country("AZ","Azerbaijan","Asia","🇦🇿",4.99,true),
+        Country("IL","Israel","Asia","🇮🇱",6.99,true),
+        Country("JO","Jordan","Asia","🇯🇴",5.49,true),
+        Country("LB","Lebanon","Asia","🇱🇧",6.49,false)
+    )
+}

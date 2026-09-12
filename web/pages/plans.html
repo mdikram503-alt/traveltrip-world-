@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <meta name="theme-color" content="#0b1220"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <title>Plans · Traveler eSIM</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Noto+Sans+Bengali:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/base.css"/>
+</head>
+<body>
+
+<header class="appbar"><div class="wrap inner">
+  <a class="brand" href="../index.html"><span class="logo">T</span> Traveler eSIM</a>
+  <nav class="links">
+    <a href="../index.html">Destinations</a>
+    <a href="./coverage.html">Coverage</a>
+    <a href="./help.html">Help</a>
+    <a href="./account.html">My eSIM</a>
+  </nav>
+  <a class="btn btn-primary" href="./account.html">Open app</a>
+</div></header>
+
+<main class="wrap">
+<section class="hero"><h1 id="title">Plans</h1><p class="muted" id="sub">Choose data and validity.</p></section>
+<div id="list" class="stack" style="padding-bottom:48px"></div>
+<script type="module">
+  const cc = new URLSearchParams(location.search).get("cc") || "AE";
+  const [cj, pj] = await Promise.all([fetch("../data/countries.json"), fetch("../data/plans.json")]);
+  const countries = (await cj.json()).countries;
+  const plans = (await pj.json()).plans;
+  const c = countries.find(x => x.code === cc);
+  document.getElementById("title").textContent = c ? `${c.flag} ${c.name}` : cc;
+  const mine = plans.filter(p => p.country === cc || (p.covers||[]).includes(cc));
+  document.getElementById("list").innerHTML = mine.map(p => `
+    <div class="card plan">
+      <div>
+        <strong>${p.title}</strong>
+        <div class="muted">${p.gb} GB · ${p.days} days · ${p.type}${p.hotspot?" · hotspot":""}</div>
+      </div>
+      <div>
+        <div class="price">$${p.usd.toFixed(2)}</div>
+        <a class="btn btn-primary" href="./checkout.html?plan=${p.id}">Buy</a>
+      </div>
+    </div>`).join("") || "<p class='muted'>No plans in this demo catalog.</p>";
+</script>
+</main>
+
+<footer><div class="wrap">
+  <div class="row" style="justify-content:space-between">
+    <div>© 2026 Traveler eSIM · Demo source, not a live store.</div>
+    <div class="row">
+      <a href="./legal.html">Legal</a>
+      <a href="./help.html">Support</a>
+    </div>
+  </div>
+</div></footer>
+
+</body></html>

@@ -1,0 +1,3 @@
+sdk.dir=/Users/YOU/Library/Android/sdk
+STRIPE_PK=pk_test_REPLACE_ME
+API_BASE=https://api.traveleresim.example

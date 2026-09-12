@@ -1,0 +1,35 @@
+[
+  {
+    "code": "AU",
+    "name": "Australia",
+    "region": "Oceania",
+    "flag": "\ud83c\udde6\ud83c\uddfa",
+    "fromUsd": 6.49,
+    "fiveG": true,
+    "networks": [
+      "Local partner 4G/5G"
+    ]
+  },
+  {
+    "code": "NZ",
+    "name": "New Zealand",
+    "region": "Oceania",
+    "flag": "\ud83c\uddf3\ud83c\uddff",
+    "fromUsd": 6.99,
+    "fiveG": true,
+    "networks": [
+      "Local partner 4G/5G"
+    ]
+  },
+  {
+    "code": "FJ",
+    "name": "Fiji",
+    "region": "Oceania",
+    "flag": "\ud83c\uddeb\ud83c\uddef",
+    "fromUsd": 9.99,
+    "fiveG": true,
+    "networks": [
+      "Local partner 4G/5G"
+    ]
+  }
+]

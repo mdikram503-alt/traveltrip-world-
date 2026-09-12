@@ -1,0 +1,156 @@
+[
+  {
+    "code": "US",
+    "name": "United States",
+    "region": "Americas",
+    "flag": "\ud83c\uddfa\ud83c\uddf8",
+    "fromUsd": 5.99,
+    "fiveG": true,
+    "networks": [
+      "Local partner 4G/5G"
+    ]
+  },
+  {
+    "code": "CA",
+    "name": "Canada",
+    "region": "Americas",
+    "flag": "\ud83c\udde8\ud83c\udde6",
+    "fromUsd": 5.99,
+    "fiveG": true,
+    "networks": [
+      "Local partner 4G/5G"
+    ]
+  },
+  {
+    "code": "MX",
+    "name": "Mexico",
+    "region": "Americas",
+    "flag": "\ud83c\uddf2\ud83c\uddfd",
+    "fromUsd": 4.99,
+    "fiveG": true,
+    "networks": [
+      "Local partner 4G/5G"
+    ]
+  },
+  {
+    "code": "BR",
+    "name": "Brazil",
+    "region": "Americas",
+    "flag": "\ud83c\udde7\ud83c\uddf7",
+    "fromUsd": 5.49,
+    "fiveG": true,
+    "networks": [
+      "Local partner 4G/5G"
+    ]
+  },
+  {
+    "code": "AR",
+    "name": "Argentina",
+    "region": "Americas",
+    "flag": "\ud83c\udde6\ud83c\uddf7",
+    "fromUsd": 5.99,
+    "fiveG": true,
+    "networks": [
+      "Local partner 4G/5G"
+    ]
+  },
+  {
+    "code": "CL",
+    "name": "Chile",
+    "region": "Americas",
+    "flag": "\ud83c\udde8\ud83c\uddf1",
+    "fromUsd": 5.99,
+    "fiveG": true,
+    "networks": [
+      "Local partner 4G/5G"
+    ]
+  },
+  {
+    "code": "CO",
+    "name": "Colombia",
+    "region": "Americas",
+    "flag": "\ud83c\udde8\ud83c\uddf4",
+    "fromUsd": 4.99,
+    "fiveG": true,
+    "networks": [
+      "Local partner 4G/5G"
+    ]
+  },
+  {
+    "code": "PE",
+    "name": "Peru",
+    "region": "Americas",
+    "flag": "\ud83c\uddf5\ud83c\uddea",
+    "fromUsd": 5.49,
+    "fiveG": true,
+    "networks": [
+      "Local partner 4G/5G"
+    ]
+  },
+  {
+    "code": "EC",
+    "name": "Ecuador",
+    "region": "Americas",
+    "flag": "\ud83c\uddea\ud83c\udde8",
+    "fromUsd": 5.99,
+    "fiveG": true,
+    "networks": [
+      "Local partner 4G/5G"
+    ]
+  },
+  {
+    "code": "UY",
+    "name": "Uruguay",
+    "region": "Americas",
+    "flag": "\ud83c\uddfa\ud83c\uddfe",
+    "fromUsd": 6.49,
+    "fiveG": true,
+    "networks": [
+      "Local partner 4G/5G"
+    ]
+  },
+  {
+    "code": "CR",
+    "name": "Costa Rica",
+    "region": "Americas",
+    "flag": "\ud83c\udde8\ud83c\uddf7",
+    "fromUsd": 5.99,
+    "fiveG": true,
+    "networks": [
+      "Local partner 4G/5G"
+    ]
+  },
+  {
+    "code": "PA",
+    "name": "Panama",
+    "region": "Americas",
+    "flag": "\ud83c\uddf5\ud83c\udde6",
+    "fromUsd": 5.99,
+    "fiveG": true,
+    "networks": [
+      "Local partner 4G/5G"
+    ]
+  },
+  {
+    "code": "DO",
+    "name": "Dominican Republic",
+    "region": "Americas",
+    "flag": "\ud83c\udde9\ud83c\uddf4",
+    "fromUsd": 5.99,
+    "fiveG": true,
+    "networks": [
+      "Local partner 4G/5G"
+    ]
+  },
+  {
+    "code": "JM",
+    "name": "Jamaica",
+    "region": "Americas",
+    "flag": "\ud83c\uddef\ud83c\uddf2",
+    "fromUsd": 6.49,
+    "fiveG": true,
+    "networks": [
+      "Local partner 4G/5G"
+    ]
+  }
+]

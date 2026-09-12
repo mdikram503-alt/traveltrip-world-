@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <meta name="theme-color" content="#0b1220"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <title>My eSIM · Traveler eSIM</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Noto+Sans+Bengali:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/base.css"/>
+</head>
+<body>
+
+<header class="appbar"><div class="wrap inner">
+  <a class="brand" href="../index.html"><span class="logo">T</span> Traveler eSIM</a>
+  <nav class="links">
+    <a href="../index.html">Destinations</a>
+    <a href="./coverage.html">Coverage</a>
+    <a href="./help.html">Help</a>
+    <a href="./account.html">My eSIM</a>
+  </nav>
+  <a class="btn btn-primary" href="./account.html">Open app</a>
+</div></header>
+
+<main class="wrap">
+<section class="hero"><h1>My eSIM</h1><p class="muted">Last demo order is stored in this browser only.</p></section>
+<div id="box" class="card" style="margin-bottom:48px"></div>
+<script>
+  const raw = localStorage.getItem("traveler.lastOrder");
+  const box = document.getElementById("box");
+  if (!raw) box.innerHTML = "<p class='muted'>No order yet. Buy a plan first.</p>";
+  else {
+    const o = JSON.parse(raw);
+    box.innerHTML = `<h3>${o.id}</h3><p>Status: <strong>${o.status}</strong></p>
+      <p class="muted">Install over Wi-Fi before you fly.</p>
+      <div class="notice">${o.qr}</div>
+      <p class="muted">On Android: Settings → Network → SIMs → Add eSIM → scan / enter code.</p>`;
+  }
+</script>
+</main>
+
+<footer><div class="wrap">
+  <div class="row" style="justify-content:space-between">
+    <div>© 2026 Traveler eSIM · Demo source, not a live store.</div>
+    <div class="row">
+      <a href="./legal.html">Legal</a>
+      <a href="./help.html">Support</a>
+    </div>
+  </div>
+</div></footer>
+
+</body></html>

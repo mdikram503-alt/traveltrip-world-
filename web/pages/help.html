@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <meta name="theme-color" content="#0b1220"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <title>Help · Traveler eSIM</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Noto+Sans+Bengali:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/base.css"/>
+</head>
+<body>
+
+<header class="appbar"><div class="wrap inner">
+  <a class="brand" href="../index.html"><span class="logo">T</span> Traveler eSIM</a>
+  <nav class="links">
+    <a href="../index.html">Destinations</a>
+    <a href="./coverage.html">Coverage</a>
+    <a href="./help.html">Help</a>
+    <a href="./account.html">My eSIM</a>
+  </nav>
+  <a class="btn btn-primary" href="./account.html">Open app</a>
+</div></header>
+
+<main class="wrap">
+<section class="hero"><h1>Help</h1><p>Install once, stay online.</p></section>
+<div id="faq" class="stack" style="padding-bottom:48px"></div>
+<script>
+  fetch("../data/faq.json").then(r=>r.json()).then(({faq}) => {
+    document.getElementById("faq").innerHTML = faq.map(x => `<div class="card"><h3>${x.q}</h3><p class="muted">${x.a}</p></div>`).join("");
+  });
+</script>
+</main>
+
+<footer><div class="wrap">
+  <div class="row" style="justify-content:space-between">
+    <div>© 2026 Traveler eSIM · Demo source, not a live store.</div>
+    <div class="row">
+      <a href="./legal.html">Legal</a>
+      <a href="./help.html">Support</a>
+    </div>
+  </div>
+</div></footer>
+
+</body></html>
