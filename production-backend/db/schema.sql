@@ -1,0 +1,3 @@
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+CREATE TABLE orders (id uuid PRIMARY KEY DEFAULT gen_random_uuid(), paypal_order_id text UNIQUE NOT NULL, package_code text NOT NULL, package_name text NOT NULL, amount_cents integer NOT NULL CHECK (amount_cents > 0), buyer_email text NOT NULL, buyer_name text NOT NULL, status text NOT NULL DEFAULT 'PENDING_PAYMENT' CHECK (status IN ('PENDING_PAYMENT','PAYMENT_CAPTURED','FULFILLING','FULFILLED','FULFILLED_EMAIL_PENDING','PAYMENT_FAILED','FULFILLMENT_FAILED')), supplier_response jsonb, created_at timestamptz NOT NULL DEFAULT now(), paid_at timestamptz, fulfilled_at timestamptz);
+CREATE TABLE webhook_events (event_id text PRIMARY KEY, event_type text NOT NULL, received_at timestamptz NOT NULL DEFAULT now());
