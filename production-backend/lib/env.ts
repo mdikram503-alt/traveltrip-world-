@@ -1,6 +1,13 @@
 const required = (name: string) => { const value = process.env[name]; if (!value) throw new Error(`Missing required environment variable: ${name}`); return value; };
+const requiredOneOf = (...names: string[]) => {
+  for (const name of names) {
+    const value = process.env[name];
+    if (value) return value;
+  }
+  throw new Error(`Missing required environment variable: ${names.join(" or ")}`);
+};
 export const env = {
-  databaseUrl: () => required("NEON_DATABASE_URL"),
+  databaseUrl: () => requiredOneOf("NEON_DATABASE_URL", "DATABASE_URL"),
   resellKey: () => required("RESELLPORTAL_API_KEY"),
   resellSecret: () => required("RESELLPORTAL_API_SECRET"),
   paypalClientId: () => required("PAYPAL_CLIENT_ID"),
