@@ -1,0 +1,5 @@
+{
+  "rewrites": [
+    { "source": "/api/auth/:path*", "destination": "https://traveltrip-api.vercel.app/api/auth/:path*" }
+  ]
+}
