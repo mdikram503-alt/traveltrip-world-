@@ -1,61 +1,35 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <meta name="theme-color" content="#0b1220"/>
-  <meta name="apple-mobile-web-app-capable" content="yes"/>
-  <title>Plans · Traveler eSIM</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Noto+Sans+Bengali:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../css/base.css"/>
-</head>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Live plans · Traveler eSIM</title><link rel="stylesheet" href="../css/site.css"><link rel="stylesheet" href="../css/live.css"></head>
 <body>
-
-<header class="appbar"><div class="wrap inner">
-  <a class="brand" href="../index.html"><span class="logo">T</span> Traveler eSIM</a>
-  <nav class="links">
-    <a href="../index.html">Destinations</a>
-    <a href="./coverage.html">Coverage</a>
-    <a href="./help.html">Help</a>
-    <a href="./account.html">My eSIM</a>
-  </nav>
-  <a class="btn btn-primary" href="./account.html">Open app</a>
-</div></header>
-
-<main class="wrap">
-<section class="hero"><h1 id="title">Plans</h1><p class="muted" id="sub">Choose data and validity.</p></section>
-<div id="list" class="stack" style="padding-bottom:48px"></div>
-<script type="module">
-  const cc = new URLSearchParams(location.search).get("cc") || "AE";
-  const [cj, pj] = await Promise.all([fetch("../data/countries.json"), fetch("../data/plans.json")]);
-  const countries = (await cj.json()).countries;
-  const plans = (await pj.json()).plans;
-  const c = countries.find(x => x.code === cc);
-  document.getElementById("title").textContent = c ? `${c.flag} ${c.name}` : cc;
-  const mine = plans.filter(p => p.country === cc || (p.covers||[]).includes(cc));
-  document.getElementById("list").innerHTML = mine.map(p => `
-    <div class="card plan">
-      <div>
-        <strong>${p.title}</strong>
-        <div class="muted">${p.gb} GB · ${p.days} days · ${p.type}${p.hotspot?" · hotspot":""}</div>
-      </div>
-      <div>
-        <div class="price">$${p.usd.toFixed(2)}</div>
-        <a class="btn btn-primary" href="./checkout.html?plan=${p.id}">Buy</a>
-      </div>
-    </div>`).join("") || "<p class='muted'>No plans in this demo catalog.</p>";
-</script>
+<header class="top"><div class="shell top"><a class="brand" href="/"><span class="mark">▣</span>Traveler <small>ESIM</small></a><nav class="nav"><a href="/">Home</a><a class="active" href="/pages/coverage.html">Search</a><a href="/pages/account.html">My eSIMs</a><a href="/pages/account.html">Orders</a></nav><div class="right"><a class="button" href="/pages/login.html">Sign In</a></div></div></header>
+<main class="shell">
+  <a class="back-link" href="/">← Back to destinations</a>
+  <section class="page-head"><h1 id="title">Live eSIM plans</h1><p class="muted">Current availability and secure Traveler pricing.</p></section>
+  <div id="status" class="status">Loading live plans…</div>
+  <section id="list" class="plan-list" aria-live="polite"></section>
 </main>
-
-<footer><div class="wrap">
-  <div class="row" style="justify-content:space-between">
-    <div>© 2026 Traveler eSIM · Demo source, not a live store.</div>
-    <div class="row">
-      <a href="./legal.html">Legal</a>
-      <a href="./help.html">Support</a>
-    </div>
-  </div>
-</div></footer>
-
+<footer><div class="shell foot"><div><b>Traveler</b><p>Secure travel data, delivered digitally.</p></div><div class="foot-links"><span>Company</span><span>Contact</span><span>Legal</span></div></div></footer>
+<script type="module">
+  const locationCode = (new URLSearchParams(location.search).get("cc") || "AE").toUpperCase();
+  const status = document.getElementById("status");
+  const list = document.getElementById("list");
+  document.getElementById("title").textContent = `${locationCode} eSIM plans`;
+  const esc = (value) => String(value ?? "").replace(/[&<>"']/g, char => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char]));
+  try {
+    const response = await fetch(`/api/esim/packages?location=${encodeURIComponent(locationCode)}`, {headers:{Accept:"application/json"}});
+    const body = await response.json();
+    if (!response.ok) throw new Error(body.error || "Live plans are temporarily unavailable");
+    const plans = Array.isArray(body) ? body : body.packages || [];
+    if (!plans.length) throw new Error("No live plans are available for this destination right now.");
+    list.innerHTML = plans.map(plan => {
+      const params = new URLSearchParams({code:plan.packageCode,name:plan.name,price:plan.priceUsd,data:plan.data,validity:plan.validity,location:plan.location,cc:locationCode});
+      return `<article class="card plan-card"><div><h3>${esc(plan.name)}</h3><div class="plan-meta">${esc(plan.data)} · ${esc(plan.validity)} · ${esc(plan.network)}</div></div><div class="plan-buy"><div class="plan-price">$${esc(plan.priceUsd)}</div><a class="button" href="/pages/checkout.html?${params}">Buy securely</a></div></article>`;
+    }).join("");
+    status.hidden = true;
+  } catch (error) {
+    status.className = "status error";
+    status.textContent = error instanceof Error ? error.message : "Live plans are temporarily unavailable.";
+  }
+</script>
 </body></html>

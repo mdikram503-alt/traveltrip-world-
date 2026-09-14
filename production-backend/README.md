@@ -1,6 +1,6 @@
 # Traveltrip production backend
 
-This Next.js service creates PayPal orders from supplier prices on the server, verifies signed PayPal capture webhooks, and then provisions eSIMs through ResellPortal. It never accepts an amount from the browser.
+This Next.js service creates PayPal orders from supplier prices on the server, verifies signed PayPal capture webhooks, and then provisions eSIMs through ResellPortal. It never accepts an amount from the browser. ResellPortal sends the branded QR delivery email after fulfillment.
 
 ## Deploy
 

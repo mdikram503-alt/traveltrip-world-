@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import { db, query } from "@/lib/db";
-import { sendEsimEmail } from "@/lib/email";
 import { verifyWebhook } from "@/lib/paypal";
 import { createEsimOrder } from "@/lib/resellportal";
 
@@ -38,8 +37,7 @@ export async function POST(request:Request) {
     if (!order) throw new Error("Order missing");
     try {
       const supplierOrder=await createEsimOrder({email:order.buyer_email,name:order.buyer_name,packageCode:order.package_code});
-      await query("UPDATE orders SET status='FULFILLED_EMAIL_PENDING', supplier_response=$2, fulfilled_at=now() WHERE paypal_order_id=$1",[paypalOrderId,supplierOrder]);
-      try { await sendEsimEmail({to:order.buyer_email,customerName:order.buyer_name,packageName:order.package_name,supplierOrder}); await query("UPDATE orders SET status='FULFILLED' WHERE paypal_order_id=$1",[paypalOrderId]); } catch(emailError) { console.error("eSIM supplied but email failed",emailError); }
+      await query("UPDATE orders SET status='FULFILLED', supplier_response=$2, fulfilled_at=now() WHERE paypal_order_id=$1",[paypalOrderId,supplierOrder]);
     } catch(supplierError) { await query("UPDATE orders SET status='FULFILLMENT_FAILED' WHERE paypal_order_id=$1",[paypalOrderId]); throw supplierError; }
     return NextResponse.json({ok:true});
   } catch(error) { console.error("PayPal webhook processing failed",error); return NextResponse.json({error:"Webhook processing failed"},{status:500}); }
