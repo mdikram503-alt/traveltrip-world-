@@ -17,7 +17,7 @@
   document.getElementById("title").textContent = `${locationCode} eSIM plans`;
   const esc = (value) => String(value ?? "").replace(/[&<>"']/g, char => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char]));
   try {
-    const response = await fetch(`/api/esim/packages?location=${encodeURIComponent(locationCode)}`, {headers:{Accept:"application/json"}});
+    const response = await fetch(`/catalog/esim/packages?location=${encodeURIComponent(locationCode)}`, {headers:{Accept:"application/json"}});
     const body = await response.json();
     if (!response.ok) throw new Error(body.error || "Live plans are temporarily unavailable");
     const plans = Array.isArray(body) ? body : body.packages || [];

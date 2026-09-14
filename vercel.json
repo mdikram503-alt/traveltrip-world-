@@ -1,5 +1,7 @@
 {
   "rewrites": [
+    { "source": "/catalog/:path*", "destination": "https://traveltrip-api.vercel.app/api/:path*" },
+    { "source": "/checkout/:path*", "destination": "https://traveltrip-api.vercel.app/api/:path*" },
     { "source": "/api/:path*", "destination": "https://traveltrip-api.vercel.app/api/:path*" }
   ]
 }

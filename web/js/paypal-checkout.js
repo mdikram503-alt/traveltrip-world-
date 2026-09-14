@@ -30,7 +30,7 @@ async function json(url, options) {
 }
 
 try {
-  const config = await json("/api/checkout/paypal/config");
+  const config = await json("/checkout/checkout/paypal/config");
   const script = document.createElement("script");
   script.src = `https://www.paypal.com/sdk/js?client-id=${encodeURIComponent(config.clientId)}&currency=${encodeURIComponent(config.currency)}&intent=capture`;
   script.onload = () => {
@@ -40,7 +40,7 @@ try {
         try {
           const {buyerName, buyerEmail} = customer();
           message("Opening secure payment…");
-          const order = await json("/api/checkout/paypal/create-order", {method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({packageCode,buyerName,buyerEmail})});
+          const order = await json("/checkout/checkout/paypal/create-order", {method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({packageCode,buyerName,buyerEmail})});
           return order.id;
         } catch (error) {
           message(error.message, "error");
@@ -50,7 +50,7 @@ try {
       onApprove: async data => {
         try {
           message("Confirming payment and preparing your eSIM…");
-          await json("/api/checkout/paypal/capture-order", {method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({orderId:data.orderID})});
+          await json("/checkout/checkout/paypal/capture-order", {method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({orderId:data.orderID})});
           message("Payment completed. Your eSIM QR will arrive by email shortly.", "success");
         } catch (error) { message(error.message, "error"); }
       },
