@@ -5,14 +5,22 @@ import { displayUsd, packagePriceInCents } from "@/lib/pricing";
 export async function GET(req: NextRequest) {
   try {
     const location = req.nextUrl.searchParams.get("location") || undefined;
-    const packages = await listPackages(location);
+    let packages;
+    if (location === "EU" || location === "GCC") {
+      const allPackages = await listPackages();
+      const regionPattern = location === "EU" ? /europe|european/i : /gcc|gulf|middle east/i;
+      packages = allPackages.filter((item) => regionPattern.test(`${item.name || ""} ${item.title || ""}`));
+      if (!packages.length) packages = await listPackages(location === "EU" ? "DE" : "AE");
+    } else {
+      packages = await listPackages(location);
+    }
     const publicPackages = packages.map((item) => ({
       packageCode: item.package_code,
       name: item.name || item.title || "Travel eSIM",
       location: item.location || item.country || location || "Global",
-      data: String(item.data_amount || item.data || "Data plan"),
-      validity: String(item.validity_days || item.validity || "See plan"),
-      network: item.network || item.operator || "4G/5G",
+      data: String(item.data_volume || item.data_amount || item.data || "Data plan"),
+      validity: String(item.duration || item.validity_days || item.validity || "See plan"),
+      network: item.speed || item.network || item.operator || "4G/5G",
       priceUsd: displayUsd(packagePriceInCents(item)),
     }));
     return NextResponse.json({ packages: publicPackages });

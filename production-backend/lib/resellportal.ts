@@ -10,10 +10,13 @@ export type EsimPackage = {
   country?:string;
   data?:string|number;
   data_amount?:string|number;
+  data_volume?:string|number;
   validity?:string|number;
   validity_days?:string|number;
+  duration?:string|number;
   network?:string;
   operator?:string;
+  speed?:string;
 };
 export type PublicEsimPackage = {
   packageCode:string;
