@@ -7,10 +7,7 @@ export async function GET(req: NextRequest) {
     const location = req.nextUrl.searchParams.get("location") || undefined;
     let packages;
     if (location === "EU" || location === "GCC") {
-      const allPackages = await listPackages();
-      const regionPattern = location === "EU" ? /europe|european/i : /gcc|gulf|middle east/i;
-      packages = allPackages.filter((item) => regionPattern.test(`${item.name || ""} ${item.title || ""}`));
-      if (!packages.length) packages = await listPackages(location === "EU" ? "DE" : "AE");
+      packages = await listPackages(location === "EU" ? "DE" : "AE");
     } else {
       packages = await listPackages(location);
     }
