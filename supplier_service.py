@@ -9,12 +9,16 @@ import time
 import secrets
 import urllib.parse
 import urllib.request
+import urllib.error
 import json
 import logging
+import uuid
+import ssl
 
-logger = logging.getLogger("SupplierService")
+logger = logging.getLogger(__name__)
 
-SUPPLIER_URL = os.environ.get("SUPPLIER_URL", "https://esimtraveler.appserviceportal.com")
+# ResellPortal Wholesale API
+SUPPLIER_URL = os.environ.get("SUPPLIER_URL", "https://panel.resellportal.com")
 SUPPLIER_API_KEY = os.environ.get("SUPPLIER_API_KEY", "")
 SUPPLIER_API_SECRET = os.environ.get("SUPPLIER_API_SECRET", "")
 SMDP_DEFAULT = os.environ.get("DEFAULT_SMDP", "rsp.esimaccess.com")

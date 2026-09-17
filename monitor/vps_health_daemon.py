@@ -43,7 +43,7 @@ TARGETS = [
     },
     {
         "name": "Wholesale Reseller Portal",
-        "url": os.environ.get("SUPPLIER_URL", "https://esimtraveler.appserviceportal.com/"),
+        "url": os.environ.get("SUPPLIER_URL", "https://panel.resellportal.com/"),
         "timeout": 12
     }
 ]
