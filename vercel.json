@@ -1,16 +1,10 @@
 {
-  "builds": [
-    {
-      "src": "server.py",
-      "use": "@vercel/python"
-    }
-  ],
-  "functions": {
-    "server.py": {
-      "includeFiles": "public/**"
-    }
-  },
-  "routes": [
-    { "src": "/(.*)", "dest": "server.py" }
+  "rewrites": [
+    { "source": "/", "destination": "/public/index.html" },
+    { "source": "/css/(.*)", "destination": "/public/css/$1" },
+    { "source": "/js/(.*)", "destination": "/public/js/$1" },
+    { "source": "/pages/(.*)", "destination": "/public/pages/$1" },
+    { "source": "/downloads/(.*)", "destination": "/public/downloads/$1" },
+    { "source": "/(.*)", "destination": "/api/index" }
   ]
 }
