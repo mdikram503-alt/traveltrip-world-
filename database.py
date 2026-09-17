@@ -20,8 +20,12 @@ def get_db():
     if not db_url:
         print("[WARNING] DATABASE_URL is not set. Using local sqlite for testing if needed.")
         import sqlite3
-        os.makedirs(DB_DIR, exist_ok=True)
-        conn = sqlite3.connect(DB_PATH)
+        try:
+            os.makedirs(DB_DIR, exist_ok=True)
+            conn = sqlite3.connect(DB_PATH)
+        except OSError:
+            print("[WARNING] Read-only file system detected. Using in-memory sqlite.")
+            conn = sqlite3.connect(":memory:")
         conn.row_factory = sqlite3.Row
         return conn
     
@@ -42,8 +46,13 @@ def verify_password(password: str, stored_hash: str) -> bool:
     return secrets.compare_digest(hashed, test_hash)
 
 def init_db():
-    os.makedirs(DB_DIR, exist_ok=True)
-    with get_db() as conn:
+    try:
+        os.makedirs(DB_DIR, exist_ok=True)
+    except OSError:
+        pass
+        
+    try:
+        with get_db() as conn:
         if hasattr(conn, 'row_factory'): # sqlite fallback
             cursor = conn.cursor()
         else:
@@ -109,8 +118,10 @@ def init_db():
         
         conn.commit()
 
-    # Seed initial default admin
-    seed_default_users()
+        # Seed initial default admin
+        seed_default_users()
+    except Exception as e:
+        print(f"[ERROR] Failed to initialize database: {e}")
 
 def seed_default_users():
     with get_db() as conn:
