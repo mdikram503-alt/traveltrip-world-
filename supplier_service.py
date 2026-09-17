@@ -16,6 +16,7 @@ logger = logging.getLogger("SupplierService")
 
 SUPPLIER_URL = os.environ.get("SUPPLIER_URL", "https://esimtraveler.appserviceportal.com")
 SUPPLIER_API_KEY = os.environ.get("SUPPLIER_API_KEY", "")
+SUPPLIER_API_SECRET = os.environ.get("SUPPLIER_API_SECRET", "")
 SMDP_DEFAULT = os.environ.get("DEFAULT_SMDP", "rsp.esimaccess.com")
 
 class SupplierService:
@@ -48,14 +49,22 @@ class SupplierService:
             "merchant_reference": order_id
         }).encode("utf-8")
         
+        # Prepare headers for ResellPortal API (Key + Secret)
+        headers = {
+            "Content-Type": "application/json",
+            "User-Agent": "TravelTripServer/2.0",
+            "Authorization": f"Bearer {SUPPLIER_API_KEY}"
+        }
+        
+        # Add API Secret if provided
+        if SUPPLIER_API_SECRET:
+            headers["X-API-Secret"] = SUPPLIER_API_SECRET
+            headers["Api-Secret"] = SUPPLIER_API_SECRET
+
         req = urllib.request.Request(
             endpoint,
             data=payload,
-            headers={
-                "Content-Type": "application/json",
-                "Authorization": f"Bearer {SUPPLIER_API_KEY}",
-                "User-Agent": "TravelTripServer/2.0"
-            }
+            headers=headers
         )
         
         with urllib.request.urlopen(req, timeout=12) as res:
