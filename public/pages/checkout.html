@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Secure Checkout · TravelTrip eSIM</title>
+  <link rel="stylesheet" href="/css/site.css">
+  <style>
+    .checkout-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 24px;
+      margin-top: 24px;
+    }
+    @media (max-width: 768px) {
+      .checkout-grid { grid-template-columns: 1fr; }
+    }
+    .back-link {
+      display: inline-block;
+      margin-top: 20px;
+      color: var(--primary);
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+    .page-head {
+      margin: 16px 0 24px;
+    }
+    .page-head h1 {
+      font-size: 1.8rem;
+      margin-bottom: 6px;
+    }
+    .checkout-total {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin: 16px 0;
+    }
+    .secure-note {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 12px;
+      line-height: 1.4;
+    }
+    .status-box {
+      padding: 12px 16px;
+      border-radius: 8px;
+      background: var(--bg-elevated);
+      margin-top: 16px;
+      font-size: 0.9rem;
+      display: none;
+    }
+    .status-box.active { display: block; }
+    .status-box.info { border-left: 4px solid var(--primary); color: #E2E8F0; }
+    .status-box.error { border-left: 4px solid var(--danger); color: #FCA5A5; }
+    .status-box.success { border-left: 4px solid var(--success); color: #6EE7B7; }
+
+    /* Delivered eSIM Post-Payment Display */
+    #delivery-success-view {
+      display: none;
+      margin-top: 24px;
+      text-align: center;
+    }
+    .qr-container {
+      background: #FFFFFF;
+      padding: 16px;
+      border-radius: 16px;
+      display: inline-block;
+      margin: 20px 0;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    }
+    .qr-container img {
+      width: 240px;
+      height: 240px;
+      display: block;
+    }
+    .esim-details-box {
+      text-align: left;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      margin: 20px auto;
+      max-width: 600px;
+    }
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      font-size: 0.9rem;
+    }
+    .detail-row:last-child { border-bottom: none; }
+    .detail-label { color: var(--text-muted); }
+    .detail-val {
+      font-family: monospace;
+      font-weight: 600;
+      color: #fff;
+      word-break: break-all;
+    }
+    .copy-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--primary);
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      margin-left: 8px;
+    }
+    .copy-btn:hover { background: var(--border); }
+    .steps-card {
+      text-align: left;
+      margin: 20px auto;
+      max-width: 600px;
+      background: rgba(6, 182, 212, 0.05);
+      border: 1px solid rgba(6, 182, 212, 0.2);
+      border-radius: 12px;
+      padding: 18px;
+    }
+    .steps-card h4 { color: var(--primary); margin-bottom: 8px; }
+    .steps-card ol { padding-left: 20px; font-size: 0.88rem; color: #CBD5E1; line-height: 1.6; }
+  </style>
+</head>
+<body>
+
+<header class="top">
+  <div class="shell top">
+    <a class="brand" href="/">
+      <span class="mark">✈</span>TravelTrip <small>eSIM</small>
+    </a>
+    <nav class="nav">
+      <a href="/">Home</a>
+      <a href="/pages/account.html">My eSIMs</a>
+      <a href="/pages/account.html">Orders</a>
+      <a href="/pages/admin.html">Admin</a>
+    </nav>
+    <div class="right" id="auth-nav-slot">
+      <a class="button button-secondary" href="/pages/login.html">Sign In</a>
+    </div>
+  </div>
+</header>
+
+<main class="shell">
+  <div id="checkout-view">
+    <a id="back" class="back-link" href="/">← Back to plans</a>
+    <section class="page-head">
+      <h1>Secure Checkout</h1>
+      <p class="muted">Instant server-verified payment & automated eSIM delivery</p>
+    </section>
+
+    <div class="checkout-grid">
+      <!-- Form details -->
+      <section class="card">
+        <h2>Customer Information</h2>
+        
+        <label for="name">Full Name</label>
+        <input id="name" type="text" placeholder="John Doe" autocomplete="name" required>
+
+        <label for="email">Email for Instant QR Delivery</label>
+        <input id="email" type="email" placeholder="john@example.com" autocomplete="email" required>
+
+        <div style="margin-top:24px;">
+          <h3 style="font-size:1.05rem; margin-bottom:12px;">Payment Method</h3>
+          
+          <!-- Quick Card / Instant Gateway Button -->
+          <button id="btn-instant-pay" class="button" style="width:100%; height:48px; font-size:1rem; margin-bottom:12px;">
+            💳 Complete Payment & Deliver eSIM
+          </button>
+
+          <!-- PayPal Buttons Container -->
+          <div id="paypal-buttons" style="margin-top: 10px;"></div>
+        </div>
+
+        <div id="status-box" class="status-box"></div>
+        <p class="secure-note">
+          🔒 Payments are securely verified by our backend server. No secret credentials or keys are exposed.
+        </p>
+      </section>
+
+      <!-- Order Summary -->
+      <aside class="card">
+        <h2>Order Summary</h2>
+        <div style="margin-top:16px;">
+          <strong id="plan-name" style="font-size:1.15rem; color:#fff;">Travel eSIM</strong>
+          <div id="plan-meta" class="muted" style="margin: 8px 0;">--</div>
+          <div id="total" class="checkout-total">$0.00 USD</div>
+        </div>
+        <hr style="border:0; border-top:1px solid var(--border); margin:16px 0;">
+        <ul style="list-style:none; font-size:0.85rem; color:var(--text-muted); line-height:1.8;">
+          <li>✓ Instant digital QR delivery on-screen</li>
+          <li>✓ Wholesaler automated provisioning</li>
+          <li>✓ 100% No physical SIM card required</li>
+          <li>✓ Stored in your customer account</li>
+        </ul>
+      </aside>
+    </div>
+  </div>
+
+  <!-- Delivered eSIM Screen (Shown immediately on payment verification) -->
+  <section id="delivery-success-view" class="card">
+    <div style="font-size: 3rem;">🎉</div>
+    <h1 style="color: var(--success); margin: 8px 0;">Payment Verified & eSIM Delivered!</h1>
+    <p class="muted" id="delivered-email-notice">Your eSIM is active and ready to install on your phone.</p>
+
+    <!-- Crisp Scannable QR Code -->
+    <div class="qr-container">
+      <img id="esim-qr-img" src="" alt="Scan this QR code to install eSIM">
+    </div>
+    <div>
+      <span class="badge badge-delivered">Ready to Install</span>
+    </div>
+
+    <!-- Activation Details -->
+    <div class="esim-details-box">
+      <div class="detail-row">
+        <span class="detail-label">Order Number:</span>
+        <span class="detail-val" id="disp-order-id"></span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">ICCID:</span>
+        <span class="detail-val" id="disp-iccid"></span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">SM-DP+ Address:</span>
+        <span class="detail-val" id="disp-smdp"></span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Activation Code:</span>
+        <span class="detail-val" id="disp-act-code"></span>
+      </div>
+      <div class="detail-row" style="flex-direction:column; align-items:flex-start; gap:4px;">
+        <div style="display:flex; justify-content:space-between; width:100%;">
+          <span class="detail-label">LPA Manual String:</span>
+          <button class="copy-btn" onclick="copyLPA()">📋 Copy Code</button>
+        </div>
+        <span class="detail-val" id="disp-lpa" style="font-size:0.8rem; word-break:break-all;"></span>
+      </div>
+    </div>
+
+    <!-- Installation Steps -->
+    <div class="steps-card">
+      <h4>📱 How to Install:</h4>
+      <ol>
+        <li><strong>iPhone / iPad:</strong> Go to <em>Settings → Cellular / Mobile Data → Add eSIM</em> → Scan the QR code above.</li>
+        <li><strong>Samsung / Android:</strong> Go to <em>Settings → Connections → SIM manager → Add mobile plan</em> → Scan QR.</li>
+        <li>Turn on <strong>Data Roaming</strong> once you arrive at your destination.</li>
+      </ol>
+    </div>
+
+    <div style="margin: 24px 0;">
+      <a class="button" href="/pages/account.html">View in My eSIMs Account</a>
+      <a class="button button-secondary" href="/" style="margin-left: 12px;">Browse More Plans</a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="shell foot">
+    <div><b>TravelTrip World</b><p>Automated eSIM Global Connectivity</p></div>
+    <div class="muted">24/7 Monitored Infrastructure</div>
+  </div>
+</footer>
+
+<script>
+  const params = new URLSearchParams(location.search);
+  const packageCode = params.get("code") || "EU-1GB-7D";
+  const planName = params.get("name") || "Europe 1GB (7 Days)";
+  const shownPrice = params.get("price") || "4.50";
+  const locationCode = params.get("location") || params.get("cc") || "EU";
+  const validity = params.get("validity") || "7 Days";
+  const dataAmount = params.get("data") || "1 GB";
+
+  document.getElementById("plan-name").textContent = planName;
+  document.getElementById("plan-meta").textContent = [dataAmount, validity, locationCode].filter(Boolean).join(" · ");
+  document.getElementById("total").textContent = `$${parseFloat(shownPrice).toFixed(2)} USD`;
+
+  const statusBox = document.getElementById("status-box");
+  function showStatus(msg, type = "info") {
+    statusBox.className = `status-box active ${type}`;
+    statusBox.textContent = msg;
+  }
+
+  // Pre-fill user if logged in
+  async function checkSession() {
+    try {
+      const res = await fetch("/api/auth/session");
+      const data = await res.json();
+      if (data.authenticated && data.user) {
+        document.getElementById("name").value = data.user.name;
+        document.getElementById("email").value = data.user.email;
+        document.getElementById("auth-nav-slot").innerHTML = `
+          <span style="font-size:0.85rem; margin-right:8px; color:#fff;">👤 ${data.user.name}</span>
+          <a class="button button-secondary" href="/pages/account.html">My Account</a>
+        `;
+      }
+    } catch(e) {}
+  }
+  checkSession();
+
+  // Load PayPal SDK
+  async function loadPayPal() {
+    try {
+      const res = await fetch("/api/checkout/paypal/config");
+      const config = await res.json();
+      const script = document.createElement("script");
+      script.src = `https://www.paypal.com/sdk/js?client-id=${config.clientId}&currency=${config.currency}`;
+      script.onload = () => renderPayPalButtons();
+      document.body.appendChild(script);
+    } catch(e) {
+      console.error("PayPal config error:", e);
+    }
+  }
+
+  function renderPayPalButtons() {
+    document.getElementById("btn-instant-pay").style.display = "none";
+    
+    paypal.Buttons({
+      createOrder: async function(data, actions) {
+        const buyerName = document.getElementById("name").value.trim();
+        const buyerEmail = document.getElementById("email").value.trim();
+
+        if (!buyerName || !buyerEmail || !buyerEmail.includes("@")) {
+          showStatus("Please enter your full name and valid email before paying.", "error");
+          return null; // Stops PayPal modal
+        }
+
+        showStatus("Creating secure order on server...", "info");
+        try {
+          // 1. Create order on backend
+          const createRes = await fetch("/api/checkout/create-order", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              packageCode, packageName: planName, buyerName, buyerEmail,
+              dataAmount, validity, priceUsd: parseFloat(shownPrice), locationCode
+            })
+          });
+          const orderData = await createRes.json();
+          if (!createRes.ok) throw new Error(orderData.error || "Failed to create order");
+          
+          window.currentOrderId = orderData.orderId;
+          
+          // Return the expected payment amount/format to PayPal
+          return actions.order.create({
+            purchase_units: [{
+              amount: {
+                currency_code: orderData.currency || "USD",
+                value: orderData.amount.toString()
+              },
+              description: orderData.packageName
+            }]
+          });
+        } catch (err) {
+          showStatus("Error: " + err.message, "error");
+          throw err;
+        }
+      },
+      onApprove: async function(data, actions) {
+        showStatus("Payment approved! Verifying payment server-side & requesting supplier eSIM...", "info");
+        try {
+          // 2. Capture & Verify payment server-side -> calls supplier
+          const verifyRes = await fetch("/api/checkout/verify-payment", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              orderId: window.currentOrderId,
+              paymentId: data.orderID
+            })
+          });
+          const verifyData = await verifyRes.json();
+          if (!verifyRes.ok) throw new Error(verifyData.error || "Payment verification failed");
+
+          // 3. Show eSIM Delivery Screen
+          renderDeliverySuccess(verifyData.order);
+        } catch (err) {
+          showStatus("Error delivering eSIM: " + err.message, "error");
+        }
+      }
+    }).render("#paypal-buttons");
+  }
+
+  loadPayPal();
+
+  function renderDeliverySuccess(order) {
+    document.getElementById("checkout-view").style.display = "none";
+    const successView = document.getElementById("delivery-success-view");
+    successView.style.display = "block";
+
+    document.getElementById("delivered-email-notice").textContent = `Delivered to ${order.buyer_email}. You can also view this anytime in your My eSIMs account.`;
+    document.getElementById("esim-qr-img").src = order.qr_code_data;
+    document.getElementById("disp-order-id").textContent = order.order_id;
+    document.getElementById("disp-iccid").textContent = order.iccid || "8985200000000000000";
+    document.getElementById("disp-smdp").textContent = order.smdp_address || "rsp.esimaccess.com";
+    document.getElementById("disp-act-code").textContent = order.activation_code || "TT-ACTIVATE";
+    document.getElementById("disp-lpa").textContent = order.lpa_string || "";
+    window.currentLPA = order.lpa_string;
+  }
+
+  function copyLPA() {
+    if (window.currentLPA) {
+      navigator.clipboard.writeText(window.currentLPA).then(() => {
+        alert("LPA code copied to clipboard!");
+      });
+    }
+  }
+</script>
+</body>
+</html>

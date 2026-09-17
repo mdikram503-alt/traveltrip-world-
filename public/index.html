@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>TravelTrip World · Instant Global eSIM Data</title>
+  <link rel="stylesheet" href="/css/site.css">
+  <style>
+    .hero {
+      text-align: center;
+      padding: 60px 20px 40px;
+    }
+    .hero h1 {
+      font-size: 2.8rem;
+      font-weight: 800;
+      margin-bottom: 12px;
+      letter-spacing: -0.5px;
+    }
+    .hero h1 span {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero p {
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      max-width: 600px;
+      margin: 0 auto 28px;
+    }
+    .destinations-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 24px;
+      margin: 32px 0 60px;
+    }
+    .dest-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .dest-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--primary);
+    }
+    .dest-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+    .dest-flag {
+      font-size: 2.2rem;
+      line-height: 1;
+    }
+    .features-row {
+      display: flex;
+      gap: 12px;
+      margin: 16px 0;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+    .features-row span {
+      background: var(--bg-elevated);
+      padding: 4px 8px;
+      border-radius: 6px;
+    }
+  </style>
+</head>
+<body>
+
+<header class="top">
+  <div class="shell top">
+    <a class="brand" href="/">
+      <span class="mark">✈</span>TravelTrip <small>eSIM</small>
+    </a>
+    <nav class="nav">
+      <a class="active" href="/">Home</a>
+      <a href="/pages/account.html">My eSIMs</a>
+      <a href="/pages/account.html">Orders</a>
+      <a href="/pages/admin.html">Admin</a>
+    </nav>
+    <div class="right" id="nav-auth-slot">
+      <a class="button button-secondary" href="/pages/login.html">Sign In</a>
+    </div>
+  </div>
+</header>
+
+<main class="shell">
+  <section class="hero">
+    <h1>Stay Connected Anywhere with <span>TravelTrip eSIM</span></h1>
+    <p>Zero roaming fees. Instant server delivery. Install in 2 minutes via QR code.</p>
+    <a class="button" href="#destinations" style="font-size:1.05rem; padding:12px 28px;">Explore Destinations</a>
+  </section>
+
+  <section id="destinations">
+    <h2 style="font-size:1.6rem; margin-bottom:8px;">Popular Travel Destinations</h2>
+    <p class="muted">Live pricing verified directly by server</p>
+
+    <div class="destinations-grid" id="dest-grid">
+      <!-- European Union -->
+      <div class="dest-card">
+        <div>
+          <div class="dest-header">
+            <span class="dest-flag">🌍</span>
+            <div>
+              <h3>Europe (EU 40+ Countries)</h3>
+              <span class="muted" style="font-size:0.85rem;">4G/5G LTE · High Speed</span>
+            </div>
+          </div>
+          <p class="muted" style="font-size:0.9rem;">Seamless connectivity across UK, Germany, France, Italy, Spain and 35+ more countries.</p>
+          <div class="features-row">
+            <span>Instant QR</span>
+            <span>Hotspot Enabled</span>
+          </div>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:20px; border-top:1px solid var(--border); padding-top:16px;">
+          <div>
+            <span class="muted" style="font-size:0.75rem;">FROM</span>
+            <div style="font-size:1.3rem; font-weight:700; color:var(--primary);">$4.50 USD</div>
+          </div>
+          <a class="button" href="/pages/checkout.html?code=EU-1GB-7D&name=Europe+1GB+(7+Days)&price=4.50&data=1+GB&validity=7+Days&location=Europe&cc=EU">Buy Now</a>
+        </div>
+      </div>
+
+      <!-- Gulf / GCC -->
+      <div class="dest-card">
+        <div>
+          <div class="dest-header">
+            <span class="dest-flag">🌙</span>
+            <div>
+              <h3>Gulf (GCC) 6 Countries</h3>
+              <span class="muted" style="font-size:0.85rem;">UAE, Saudi, Qatar, Kuwait, Oman, Bahrain</span>
+            </div>
+          </div>
+          <p class="muted" style="font-size:0.9rem;">Premium 5G coverage across all 6 Gulf nations on top tier networks.</p>
+          <div class="features-row">
+            <span>5G Fast</span>
+            <span>No SIM Swap</span>
+          </div>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:20px; border-top:1px solid var(--border); padding-top:16px;">
+          <div>
+            <span class="muted" style="font-size:0.75rem;">FROM</span>
+            <div style="font-size:1.3rem; font-weight:700; color:var(--primary);">$6.00 USD</div>
+          </div>
+          <a class="button" href="/pages/checkout.html?code=GCC-1GB-7D&name=Gulf+(GCC)+1GB+(7+Days)&price=6.00&data=1+GB&validity=7+Days&location=GCC&cc=GCC">Buy Now</a>
+        </div>
+      </div>
+
+      <!-- Japan -->
+      <div class="dest-card">
+        <div>
+          <div class="dest-header">
+            <span class="dest-flag">🗾</span>
+            <div>
+              <h3>Japan</h3>
+              <span class="muted" style="font-size:0.85rem;">Docomo & SoftBank 5G</span>
+            </div>
+          </div>
+          <p class="muted" style="font-size:0.9rem;">Blazing fast Japanese nationwide 5G data from Tokyo to Hokkaido.</p>
+          <div class="features-row">
+            <span>Docomo 5G</span>
+            <span>Zero Throttling</span>
+          </div>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:20px; border-top:1px solid var(--border); padding-top:16px;">
+          <div>
+            <span class="muted" style="font-size:0.75rem;">FROM</span>
+            <div style="font-size:1.3rem; font-weight:700; color:var(--primary);">$4.00 USD</div>
+          </div>
+          <a class="button" href="/pages/checkout.html?code=JP-1GB-7D&name=Japan+1GB+(7+Days)&price=4.00&data=1+GB&validity=7+Days&location=Japan&cc=JP">Buy Now</a>
+        </div>
+      </div>
+
+      <!-- Singapore -->
+      <div class="dest-card">
+        <div>
+          <div class="dest-header">
+            <span class="dest-flag">🦁</span>
+            <div>
+              <h3>Singapore</h3>
+              <span class="muted" style="font-size:0.85rem;">Singtel 5G Network</span>
+            </div>
+          </div>
+          <p class="muted" style="font-size:0.9rem;">Ultra-reliable city-state 5G mobile data with crystal clear speeds.</p>
+          <div class="features-row">
+            <span>Singtel 5G</span>
+            <span>Instant Connect</span>
+          </div>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:20px; border-top:1px solid var(--border); padding-top:16px;">
+          <div>
+            <span class="muted" style="font-size:0.75rem;">FROM</span>
+            <div style="font-size:1.3rem; font-weight:700; color:var(--primary);">$3.50 USD</div>
+          </div>
+          <a class="button" href="/pages/checkout.html?code=SG-1GB-7D&name=Singapore+1GB+(7+Days)&price=3.50&data=1+GB&validity=7+Days&location=Singapore&cc=SG">Buy Now</a>
+        </div>
+      </div>
+
+      <!-- Thailand -->
+      <div class="dest-card">
+        <div>
+          <div class="dest-header">
+            <span class="dest-flag">🐘</span>
+            <div>
+              <h3>Thailand Tourist</h3>
+              <span class="muted" style="font-size:0.85rem;">AIS / TrueMove 5G</span>
+            </div>
+          </div>
+          <p class="muted" style="font-size:0.9rem;">Massive 50GB tourist plan designed for hassle-free vacation and work.</p>
+          <div class="features-row">
+            <span>50 GB Data</span>
+            <span>10 Days</span>
+          </div>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:20px; border-top:1px solid var(--border); padding-top:16px;">
+          <div>
+            <span class="muted" style="font-size:0.75rem;">SPECIAL</span>
+            <div style="font-size:1.3rem; font-weight:700; color:var(--primary);">$9.90 USD</div>
+          </div>
+          <a class="button" href="/pages/checkout.html?code=TH-50GB-10D&name=Thailand+Tourist+50GB&price=9.90&data=50+GB&validity=10+Days&location=Thailand&cc=TH">Buy Now</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Download App Section -->
+  <section id="download-app" style="margin: 60px 0; padding: 40px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); text-align: center;">
+    <h2 style="font-size: 1.8rem; margin-bottom: 12px;">Download Our App</h2>
+    <p class="muted" style="max-width: 600px; margin: 0 auto 24px;">Get the full TravelTrip experience directly on your mobile device. Manage your eSIMs, track usage, and buy plans on the go.</p>
+    
+    <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+      <!-- Android Download -->
+      <a href="/downloads/TravelTrip_Android.apk" class="button" style="display: flex; align-items: center; gap: 8px; padding: 12px 24px;" download>
+        <span style="font-size: 1.2rem;">🤖</span> Download APK for Android
+      </a>
+      <!-- iOS Download -->
+      <a href="/downloads/TravelTrip_iOS.ipa" class="button button-secondary" style="display: flex; align-items: center; gap: 8px; padding: 12px 24px;" download>
+        <span style="font-size: 1.2rem;">🍎</span> Download App for iOS
+      </a>
+    </div>
+    <p class="muted" style="font-size: 0.8rem; margin-top: 16px;">* Note: iOS requires downloading from the App Store. Direct IPA installs require special permissions.</p>
+  </section>
+</main>
+
+<footer>
+  <div class="shell foot">
+    <div><b>TravelTrip World</b><p>Automated eSIM Global Connectivity</p></div>
+    <div class="muted">24/7 Monitored VPS Architecture</div>
+  </div>
+</footer>
+
+<script>
+  async function checkNavAuth() {
+    try {
+      const res = await fetch("/api/auth/session");
+      const d = await res.json();
+      if (d.authenticated && d.user) {
+        document.getElementById("nav-auth-slot").innerHTML = `
+          <a class="button button-secondary" href="/pages/account.html">👤 ${d.user.name}</a>
+        `;
+      }
+    } catch(e) {}
+  }
+  checkNavAuth();
+</script>
+</body>
+</html>

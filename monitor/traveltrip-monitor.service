@@ -1,0 +1,16 @@
+[Unit]
+Description=TravelTrip 24/7 VPS Health Monitoring Daemon
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/var/www/traveltrip/monitor
+ExecStart=/usr/bin/python3 /var/www/traveltrip/monitor/vps_health_daemon.py
+Restart=always
+RestartSec=10
+Environment=PYTHONUNBUFFERED=1
+Environment=MONITOR_INTERVAL=60
+
+[Install]
+WantedBy=multi-user.target

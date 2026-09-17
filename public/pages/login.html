@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Sign In / Register · TravelTrip World</title>
+  <link rel="stylesheet" href="/css/site.css">
+  <style>
+    .auth-container {
+      max-width: 440px;
+      margin: 60px auto;
+    }
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 24px;
+    }
+    .tab-btn {
+      flex: 1;
+      padding: 12px;
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+      border-bottom: 2px solid transparent;
+    }
+    .tab-btn.active {
+      color: #fff;
+      border-bottom-color: var(--primary);
+    }
+    .auth-error {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid var(--danger);
+      color: #FCA5A5;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      margin-bottom: 16px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+<header class="top">
+  <div class="shell top">
+    <a class="brand" href="/">
+      <span class="mark">✈</span>TravelTrip <small>eSIM</small>
+    </a>
+    <nav class="nav">
+      <a href="/">Home</a>
+      <a href="/pages/account.html">My eSIMs</a>
+      <a href="/pages/admin.html">Admin</a>
+    </nav>
+  </div>
+</header>
+
+<main class="shell">
+  <div class="auth-container">
+    <div class="card">
+      <div class="tabs">
+        <button id="tab-login" class="tab-btn active" onclick="switchTab('login')">Sign In</button>
+        <button id="tab-register" class="tab-btn" onclick="switchTab('register')">Create Account</button>
+      </div>
+
+      <div id="auth-error" class="auth-error"></div>
+
+      <!-- Login Form -->
+      <form id="form-login" onsubmit="handleLogin(event)">
+        <label for="login-email">Email Address</label>
+        <input id="login-email" type="email" placeholder="name@example.com" required>
+
+        <label for="login-password">Password</label>
+        <input id="login-password" type="password" placeholder="••••••••" required>
+
+        <button type="submit" class="button" style="width:100%; margin-top:24px; height:44px;">
+          Sign In
+        </button>
+
+        <div style="margin-top:16px; text-align:center;">
+          <p class="muted" style="font-size:0.8rem;">
+            Default Admin Login: <strong>admin@traveltrip.world</strong> / <strong>AdminSecure2026!</strong>
+          </p>
+        </div>
+      </form>
+
+      <!-- Register Form -->
+      <form id="form-register" style="display:none;" onsubmit="handleRegister(event)">
+        <label for="reg-name">Full Name</label>
+        <input id="reg-name" type="text" placeholder="John Doe" required>
+
+        <label for="reg-email">Email Address</label>
+        <input id="reg-email" type="email" placeholder="name@example.com" required>
+
+        <label for="reg-password">Password (minimum 6 characters)</label>
+        <input id="reg-password" type="password" placeholder="••••••••" minlength="6" required>
+
+        <button type="submit" class="button" style="width:100%; margin-top:24px; height:44px;">
+          Create Customer Account
+        </button>
+      </form>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="shell foot">
+    <div><b>TravelTrip World</b><p>Automated eSIM Global Connectivity</p></div>
+    <div class="muted">24/7 Monitored Infrastructure</div>
+  </div>
+</footer>
+
+<script>
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get("tab") === "register") {
+    switchTab("register");
+  }
+
+  function switchTab(tab) {
+    const errorBox = document.getElementById("auth-error");
+    errorBox.style.display = "none";
+
+    if (tab === "login") {
+      document.getElementById("tab-login").classList.add("active");
+      document.getElementById("tab-register").classList.remove("active");
+      document.getElementById("form-login").style.display = "block";
+      document.getElementById("form-register").style.display = "none";
+    } else {
+      document.getElementById("tab-login").classList.remove("active");
+      document.getElementById("tab-register").classList.add("active");
+      document.getElementById("form-login").style.display = "none";
+      document.getElementById("form-register").style.display = "block";
+    }
+  }
+
+  function showError(msg) {
+    const box = document.getElementById("auth-error");
+    box.textContent = msg;
+    box.style.display = "block";
+  }
+
+  async function handleLogin(e) {
+    e.preventDefault();
+    const email = document.getElementById("login-email").value.trim();
+    const password = document.getElementById("login-password").value;
+
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Login failed");
+
+      if (data.user && data.user.role === "admin") {
+        window.location.href = "/pages/admin.html";
+      } else {
+        window.location.href = "/pages/account.html";
+      }
+    } catch(err) {
+      showError(err.message);
+    }
+  }
+
+  async function handleRegister(e) {
+    e.preventDefault();
+    const name = document.getElementById("reg-name").value.trim();
+    const email = document.getElementById("reg-email").value.trim();
+    const password = document.getElementById("reg-password").value;
+
+    try {
+      const res = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, password })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Registration failed");
+
+      window.location.href = "/pages/account.html";
+    } catch(err) {
+      showError(err.message);
+    }
+  }
+</script>
+</body>
+</html>
