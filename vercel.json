@@ -1,0 +1,9 @@
+{
+  "rewrites": [
+    { "source": "/", "destination": "/public/index.html" },
+    { "source": "/css/(.*)", "destination": "/public/css/$1" },
+    { "source": "/pages/(.*)", "destination": "/public/pages/$1" },
+    { "source": "/downloads/(.*)", "destination": "/public/downloads/$1" },
+    { "source": "/(.*)", "destination": "/public/$1" }
+  ]
+}
