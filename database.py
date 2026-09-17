@@ -25,7 +25,7 @@ def get_db():
             conn = sqlite3.connect(DB_PATH)
         except OSError:
             print("[WARNING] Read-only file system detected. Using in-memory sqlite.")
-            conn = sqlite3.connect(":memory:")
+            conn = sqlite3.connect("file::memory:?cache=shared", uri=True)
         conn.row_factory = sqlite3.Row
         return conn
     
