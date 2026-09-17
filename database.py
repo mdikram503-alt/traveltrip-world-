@@ -3,7 +3,9 @@ TravelTrip World — Database Layer (SQLite)
 Production-ready, ACID compliant, persistent storage.
 """
 
-import sqlite3
+import psycopg2
+import psycopg2.extras
+from urllib.parse import urlparse
 import os
 import hashlib
 import secrets
@@ -14,9 +16,16 @@ DB_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 DB_PATH = os.path.join(DB_DIR, "traveltrip.db")
 
 def get_db():
-    os.makedirs(DB_DIR, exist_ok=True)
-    conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row
+    db_url = os.getenv('POSTGRES_URL_NON_POOLING') or os.getenv('DATABASE_URL')
+    if not db_url:
+        print("[WARNING] DATABASE_URL is not set. Using local sqlite for testing if needed.")
+        import sqlite3
+        os.makedirs(DB_DIR, exist_ok=True)
+        conn = sqlite3.connect(DB_PATH)
+        conn.row_factory = sqlite3.Row
+        return conn
+    
+    conn = psycopg2.connect(db_url)
     return conn
 
 def hash_password(password: str, salt: str = None) -> str:
@@ -35,12 +44,15 @@ def verify_password(password: str, stored_hash: str) -> bool:
 def init_db():
     os.makedirs(DB_DIR, exist_ok=True)
     with get_db() as conn:
-        cursor = conn.cursor()
+        if hasattr(conn, 'row_factory'): # sqlite fallback
+            cursor = conn.cursor()
+        else:
+            cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
         
         # 1. Users table (Customer accounts & Admins)
         cursor.execute("""
         CREATE TABLE IF NOT EXISTS users (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            id INTEGER PRIMARY KEY SERIAL,
             name TEXT NOT NULL,
             email TEXT UNIQUE NOT NULL,
             password_hash TEXT NOT NULL,
@@ -52,7 +64,7 @@ def init_db():
         # 2. Orders & eSIM fulfillment table
         cursor.execute("""
         CREATE TABLE IF NOT EXISTS orders (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            id INTEGER PRIMARY KEY SERIAL,
             order_id TEXT UNIQUE NOT NULL,
             user_id INTEGER,
             buyer_name TEXT NOT NULL,
@@ -84,7 +96,7 @@ def init_db():
         # 3. 24/7 Health Monitoring Metrics table
         cursor.execute("""
         CREATE TABLE IF NOT EXISTS health_metrics (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            id INTEGER PRIMARY KEY SERIAL,
             timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             service_name TEXT NOT NULL,
             url TEXT NOT NULL,
@@ -102,12 +114,15 @@ def init_db():
 
 def seed_default_users():
     with get_db() as conn:
-        cursor = conn.cursor()
+        if hasattr(conn, 'row_factory'): # sqlite fallback
+            cursor = conn.cursor()
+        else:
+            cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
         cursor.execute("SELECT id FROM users WHERE role = 'admin'")
         if not cursor.fetchone():
             admin_pass = hash_password("AdminSecure2026!")
             cursor.execute(
-                "INSERT INTO users (name, email, password_hash, role) VALUES (?, ?, ?, ?)",
+                "INSERT INTO users (name, email, password_hash, role) VALUES (%s, %s, %s, %s)",
                 ("TravelTrip Admin", "admin@traveltrip.world", admin_pass, "admin")
             )
             conn.commit()
@@ -117,22 +132,37 @@ def create_user(name: str, email: str, password: str, role: str = "customer"):
     email = email.strip().lower()
     pass_hash = hash_password(password)
     with get_db() as conn:
-        cursor = conn.cursor()
+        if hasattr(conn, 'row_factory'): # sqlite fallback
+            cursor = conn.cursor()
+        else:
+            cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
         try:
-            cursor.execute(
-                "INSERT INTO users (name, email, password_hash, role) VALUES (?, ?, ?, ?)",
-                (name.strip(), email, pass_hash, role)
-            )
-            conn.commit()
-            return cursor.lastrowid
-        except sqlite3.IntegrityError:
+            if hasattr(conn, 'row_factory'):
+                cursor.execute(
+                    "INSERT INTO users (name, email, password_hash, role) VALUES (%s, %s, %s, %s)",
+                    (name.strip(), email, pass_hash, role)
+                )
+                conn.commit()
+                return cursor.lastrowid
+            else:
+                cursor.execute(
+                    "INSERT INTO users (name, email, password_hash, role) VALUES (%s, %s, %s, %s) RETURNING id",
+                    (name.strip(), email, pass_hash, role)
+                )
+                user_id = cursor.fetchone()[0]
+                conn.commit()
+                return user_id
+        except (psycopg2.IntegrityError, sqlite3.IntegrityError):
             return None
 
 def authenticate_user(email: str, password: str):
     email = email.strip().lower()
     with get_db() as conn:
-        cursor = conn.cursor()
-        cursor.execute("SELECT * FROM users WHERE email = ?", (email,))
+        if hasattr(conn, 'row_factory'): # sqlite fallback
+            cursor = conn.cursor()
+        else:
+            cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+        cursor.execute("SELECT * FROM users WHERE email = %s", (email,))
         user = cursor.fetchone()
         if user and verify_password(password, user["password_hash"]):
             return dict(user)
@@ -140,15 +170,21 @@ def authenticate_user(email: str, password: str):
 
 def get_user_by_id(user_id: int):
     with get_db() as conn:
-        cursor = conn.cursor()
-        cursor.execute("SELECT id, name, email, role, created_at FROM users WHERE id = ?", (user_id,))
+        if hasattr(conn, 'row_factory'): # sqlite fallback
+            cursor = conn.cursor()
+        else:
+            cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+        cursor.execute("SELECT id, name, email, role, created_at FROM users WHERE id = %s", (user_id,))
         row = cursor.fetchone()
         return dict(row) if row else None
 
 def get_user_by_email(email: str):
     with get_db() as conn:
-        cursor = conn.cursor()
-        cursor.execute("SELECT id, name, email, role, created_at FROM users WHERE email = ?", (email.strip().lower(),))
+        if hasattr(conn, 'row_factory'): # sqlite fallback
+            cursor = conn.cursor()
+        else:
+            cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+        cursor.execute("SELECT id, name, email, role, created_at FROM users WHERE email = %s", (email.strip().lower(),))
         row = cursor.fetchone()
         return dict(row) if row else None
 
@@ -158,14 +194,17 @@ def create_order(buyer_name: str, buyer_email: str, package_code: str,
                  payment_method: str = "paypal"):
     order_id = f"TT-{datetime.now().strftime('%Y%m%d')}-{secrets.token_hex(4).upper()}"
     with get_db() as conn:
-        cursor = conn.cursor()
+        if hasattr(conn, 'row_factory'): # sqlite fallback
+            cursor = conn.cursor()
+        else:
+            cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
         cursor.execute("""
             INSERT INTO orders (
                 order_id, user_id, buyer_name, buyer_email,
                 package_code, package_name, data_amount, validity,
                 price_usd, location_code, payment_method, payment_status,
                 esim_status, created_at, updated_at
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending', 'pending', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+            ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, 'pending', 'pending', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
         """, (
             order_id, user_id, buyer_name.strip(), buyer_email.strip().lower(),
             package_code, package_name, data_amount, validity,
@@ -176,22 +215,28 @@ def create_order(buyer_name: str, buyer_email: str, package_code: str,
 
 def get_order(order_id: str):
     with get_db() as conn:
-        cursor = conn.cursor()
-        cursor.execute("SELECT * FROM orders WHERE order_id = ?", (order_id,))
+        if hasattr(conn, 'row_factory'): # sqlite fallback
+            cursor = conn.cursor()
+        else:
+            cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+        cursor.execute("SELECT * FROM orders WHERE order_id = %s", (order_id,))
         row = cursor.fetchone()
         return dict(row) if row else None
 
 def update_order_payment(order_id: str, payment_status: str, payment_id: str, payment_details: dict = None):
     details_json = json.dumps(payment_details or {})
     with get_db() as conn:
-        cursor = conn.cursor()
+        if hasattr(conn, 'row_factory'): # sqlite fallback
+            cursor = conn.cursor()
+        else:
+            cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
         cursor.execute("""
             UPDATE orders SET
-                payment_status = ?,
-                payment_id = ?,
-                payment_details = ?,
+                payment_status = %s,
+                payment_id = %s,
+                payment_details = %s,
                 updated_at = CURRENT_TIMESTAMP
-            WHERE order_id = ?
+            WHERE order_id = %s
         """, (payment_status, payment_id, details_json, order_id))
         conn.commit()
 
@@ -200,19 +245,22 @@ def update_order_esim(order_id: str, esim_status: str, supplier_order_id: str = 
                       iccid: str = None, activation_code: str = None,
                       smdp_address: str = None, failure_reason: str = None):
     with get_db() as conn:
-        cursor = conn.cursor()
+        if hasattr(conn, 'row_factory'): # sqlite fallback
+            cursor = conn.cursor()
+        else:
+            cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
         cursor.execute("""
             UPDATE orders SET
-                esim_status = ?,
-                supplier_order_id = COALESCE(?, supplier_order_id),
-                qr_code_data = COALESCE(?, qr_code_data),
-                lpa_string = COALESCE(?, lpa_string),
-                iccid = COALESCE(?, iccid),
-                activation_code = COALESCE(?, activation_code),
-                smdp_address = COALESCE(?, smdp_address),
-                failure_reason = ?,
+                esim_status = %s,
+                supplier_order_id = COALESCE(%s, supplier_order_id),
+                qr_code_data = COALESCE(%s, qr_code_data),
+                lpa_string = COALESCE(%s, lpa_string),
+                iccid = COALESCE(%s, iccid),
+                activation_code = COALESCE(%s, activation_code),
+                smdp_address = COALESCE(%s, smdp_address),
+                failure_reason = %s,
                 updated_at = CURRENT_TIMESTAMP
-            WHERE order_id = ?
+            WHERE order_id = %s
         """, (
             esim_status, supplier_order_id, qr_code_data, lpa_string,
             iccid, activation_code, smdp_address, failure_reason, order_id
@@ -221,17 +269,20 @@ def update_order_esim(order_id: str, esim_status: str, supplier_order_id: str = 
 
 def get_user_orders(user_id: int = None, email: str = None):
     with get_db() as conn:
-        cursor = conn.cursor()
+        if hasattr(conn, 'row_factory'): # sqlite fallback
+            cursor = conn.cursor()
+        else:
+            cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
         if user_id and email:
             cursor.execute("""
                 SELECT * FROM orders 
-                WHERE user_id = ? OR LOWER(buyer_email) = LOWER(?)
+                WHERE user_id = %s OR LOWER(buyer_email) = LOWER(%s)
                 ORDER BY created_at DESC
             """, (user_id, email))
         elif user_id:
-            cursor.execute("SELECT * FROM orders WHERE user_id = ? ORDER BY created_at DESC", (user_id,))
+            cursor.execute("SELECT * FROM orders WHERE user_id = %s ORDER BY created_at DESC", (user_id,))
         elif email:
-            cursor.execute("SELECT * FROM orders WHERE LOWER(buyer_email) = LOWER(?) ORDER BY created_at DESC", (email,))
+            cursor.execute("SELECT * FROM orders WHERE LOWER(buyer_email) = LOWER(%s) ORDER BY created_at DESC", (email,))
         else:
             return []
         rows = cursor.fetchall()
@@ -239,21 +290,27 @@ def get_user_orders(user_id: int = None, email: str = None):
 
 def get_all_orders(status_filter: str = None, limit: int = 100):
     with get_db() as conn:
-        cursor = conn.cursor()
+        if hasattr(conn, 'row_factory'): # sqlite fallback
+            cursor = conn.cursor()
+        else:
+            cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
         if status_filter:
             cursor.execute("""
                 SELECT * FROM orders 
-                WHERE payment_status = ? OR esim_status = ?
-                ORDER BY created_at DESC LIMIT ?
+                WHERE payment_status = %s OR esim_status = %s
+                ORDER BY created_at DESC LIMIT %s
             """, (status_filter, status_filter, limit))
         else:
-            cursor.execute("SELECT * FROM orders ORDER BY created_at DESC LIMIT ?", (limit,))
+            cursor.execute("SELECT * FROM orders ORDER BY created_at DESC LIMIT %s", (limit,))
         rows = cursor.fetchall()
         return [dict(r) for r in rows]
 
 def get_all_customers():
     with get_db() as conn:
-        cursor = conn.cursor()
+        if hasattr(conn, 'row_factory'): # sqlite fallback
+            cursor = conn.cursor()
+        else:
+            cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
         cursor.execute("""
             SELECT u.id, u.name, u.email, u.role, u.created_at,
                    COUNT(o.id) as total_orders,
@@ -268,7 +325,10 @@ def get_all_customers():
 
 def get_dashboard_stats():
     with get_db() as conn:
-        cursor = conn.cursor()
+        if hasattr(conn, 'row_factory'): # sqlite fallback
+            cursor = conn.cursor()
+        else:
+            cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
         
         cursor.execute("SELECT COUNT(*) as total FROM orders")
         total_orders = cursor.fetchone()["total"]
@@ -299,19 +359,25 @@ def get_dashboard_stats():
 
 def log_health_check(service_name: str, url: str, status: str, latency_ms: float, is_healthy: bool, error_details: str = None):
     with get_db() as conn:
-        cursor = conn.cursor()
+        if hasattr(conn, 'row_factory'): # sqlite fallback
+            cursor = conn.cursor()
+        else:
+            cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
         cursor.execute("""
             INSERT INTO health_metrics (service_name, url, status, latency_ms, is_healthy, error_details)
-            VALUES (?, ?, ?, ?, ?, ?)
+            VALUES (%s, %s, %s, %s, %s, %s)
         """, (service_name, url, status, latency_ms, 1 if is_healthy else 0, error_details))
         conn.commit()
 
 def get_recent_health_metrics(limit: int = 15):
     with get_db() as conn:
-        cursor = conn.cursor()
+        if hasattr(conn, 'row_factory'): # sqlite fallback
+            cursor = conn.cursor()
+        else:
+            cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
         cursor.execute("""
             SELECT * FROM health_metrics 
-            ORDER BY id DESC LIMIT ?
+            ORDER BY id DESC LIMIT %s
         """, (limit,))
         rows = cursor.fetchall()
         return [dict(r) for r in rows]

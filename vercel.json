@@ -1,9 +1,15 @@
 {
-  "rewrites": [
-    { "source": "/", "destination": "/public/index.html" },
-    { "source": "/css/(.*)", "destination": "/public/css/$1" },
-    { "source": "/pages/(.*)", "destination": "/public/pages/$1" },
-    { "source": "/downloads/(.*)", "destination": "/public/downloads/$1" },
-    { "source": "/(.*)", "destination": "/public/$1" }
+  "builds": [
+    {
+      "src": "server.py",
+      "use": "@vercel/python"
+    }
+  ],
+  "routes": [
+    { "src": "/", "dest": "/public/index.html" },
+    { "src": "/css/(.*)", "dest": "/public/css/$1" },
+    { "src": "/pages/(.*)", "dest": "/public/pages/$1" },
+    { "src": "/downloads/(.*)", "dest": "/public/downloads/$1" },
+    { "src": "/(.*)", "dest": "server.py" }
   ]
 }
