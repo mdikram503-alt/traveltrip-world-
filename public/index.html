@@ -81,7 +81,7 @@
     <nav class="nav">
       <a class="active" href="/">Home</a>
       <a href="/pages/account.html">My eSIMs</a>
-      <a href="/pages/account.html">Orders</a>
+      <a href="/pages/account.html#orders">Orders</a>
       <a href="/pages/admin.html">Admin</a>
     </nav>
     <div class="right" id="nav-auth-slot">
@@ -95,6 +95,10 @@
     <h1>Stay Connected Anywhere with <span>TravelTrip eSIM</span></h1>
     <p>Zero roaming fees. Instant server delivery. Install in 2 minutes via QR code.</p>
     <a class="button" href="#destinations" style="font-size:1.05rem; padding:12px 28px;">Explore Destinations</a>
+    
+    <div style="margin-top: 30px; max-width: 500px; margin-left: auto; margin-right: auto; position: relative;">
+      <input type="text" id="searchInput" placeholder="Search for a country (e.g. Bangladesh, Japan)..." style="width: 100%; padding: 14px 20px; font-size: 1rem; border-radius: 30px; border: 1px solid var(--border); background: var(--bg-card); color: var(--text);">
+    </div>
   </section>
 
   <section id="destinations">
@@ -102,6 +106,31 @@
     <p class="muted">Live pricing verified directly by server</p>
 
     <div class="destinations-grid" id="dest-grid">
+      <!-- Bangladesh -->
+      <div class="dest-card">
+        <div>
+          <div class="dest-header">
+            <span class="dest-flag">🇧🇩</span>
+            <div>
+               <h3>Bangladesh</h3>
+               <span class="muted" style="font-size:0.85rem;">Grameenphone & Robi</span>
+            </div>
+          </div>
+          <p class="muted" style="font-size:0.9rem;">Enjoy seamless 4G high-speed connectivity across Bangladesh.</p>
+          <div class="features-row">
+            <span>2GB Data</span>
+            <span>7 Days</span>
+          </div>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:20px; border-top:1px solid var(--border); padding-top:16px;">
+          <div>
+            <span class="muted" style="font-size:0.75rem;">FROM</span>
+            <div style="font-size:1.3rem; font-weight:700; color:var(--primary);">$5.00 USD</div>
+          </div>
+          <a class="button" href="/pages/checkout.html?code=BD-2GB-7D&name=Bangladesh+2GB+(7+Days)&price=5.00&data=2+GB&validity=7+Days&location=Bangladesh&cc=BD">Buy Now</a>
+        </div>
+      </div>
+
       <!-- European Union -->
       <div class="dest-card">
         <div>
@@ -268,6 +297,23 @@
     } catch(e) {}
   }
   checkNavAuth();
+
+  // Search filter functionality
+  const searchInput = document.getElementById("searchInput");
+  if (searchInput) {
+    searchInput.addEventListener("input", function(e) {
+      const term = e.target.value.toLowerCase();
+      const cards = document.querySelectorAll(".dest-card");
+      cards.forEach(card => {
+        const text = card.innerText.toLowerCase();
+        if (text.includes(term)) {
+          card.style.display = "flex";
+        } else {
+          card.style.display = "none";
+        }
+      });
+    });
+  }
 </script>
 </body>
 </html>
