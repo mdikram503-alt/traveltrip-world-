@@ -596,6 +596,15 @@ def live_ping():
     return jsonify({"status": "ok", "timestamp": time.time(), "service": "TravelTripServer"})
 
 
+
+# Explicitly block all admin paths with clean 404
+@app.route("/admin", defaults={"path": ""})
+@app.route("/admin/<path:path>")
+@app.route("/api/admin", defaults={"path": ""})
+@app.route("/api/admin/<path:path>")
+def admin_purged_404(path=""):
+    return jsonify({"error": "Endpoint not found", "code": "NOT_FOUND"}), 404
+
 # ==============================================================================
 # ERROR HANDLERS (Clean HTML for Browser, JSON for APIs)
 # ==============================================================================
