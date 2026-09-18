@@ -5,31 +5,31 @@
   "rewrites": [
     {
       "source": "/esim/bangladesh",
-      "destination": "/esim-bangladesh.html"
+      "destination": "/esim/bangladesh.html"
     },
     {
       "source": "/esim/india",
-      "destination": "/esim-india.html"
+      "destination": "/esim/india.html"
     },
     {
       "source": "/esim/pakistan",
-      "destination": "/esim-pakistan.html"
+      "destination": "/esim/pakistan.html"
     },
     {
       "source": "/esim/united-arab-emirates",
-      "destination": "/esim-uae.html"
+      "destination": "/esim/united-arab-emirates.html"
     },
     {
       "source": "/esim/uae",
-      "destination": "/esim-uae.html"
+      "destination": "/esim/uae.html"
     },
     {
       "source": "/esim/oman",
-      "destination": "/esim-oman.html"
+      "destination": "/esim/oman.html"
     },
     {
       "source": "/esim/qatar",
-      "destination": "/esim-qatar.html"
+      "destination": "/esim/qatar.html"
     },
     {
       "source": "/destinations",
