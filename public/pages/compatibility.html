@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Compatible Devices Checker · TravelTrip World</title>
+  <meta name="description" content="Check if your smartphone supports eSIM. Complete list of compatible Apple iPhone, Samsung Galaxy, Google Pixel, and other devices.">
+  <link rel="canonical" href="https://traveltrip.world/compatible-devices">
+  <link rel="stylesheet" href="/css/site.css">
+  <style>
+    .device-search-bar {
+      margin: 28px 0;
+      max-width: 580px;
+    }
+    .device-brand-card {
+      background: #FFFFFF;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow-card);
+    }
+    .device-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 10px;
+      margin-top: 14px;
+    }
+    .device-item {
+      background: var(--bg-elevated);
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text-card);
+      border: 1px solid var(--border-light);
+    }
+    .carrier-lock-alert {
+      background: #FFFBEB;
+      border: 1px solid #FDE68A;
+      color: #92400E;
+      padding: 16px 20px;
+      border-radius: var(--radius);
+      margin-bottom: 24px;
+      font-size: 0.92rem;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+<div class="site-watermark-bg"></div>
+<header class="top">
+  <div class="shell top">
+    <a class="brand" href="/">
+      <img src="/images/logo-transparent.png" alt="Traveler traveltrip.world" class="brand-logo-img">
+      <div class="brand-text-wrap">
+        <span class="brand-title">traveltrip<span class="gold-accent">.world</span></span>
+        <span class="brand-sub">Traveler eSIM</span>
+      </div>
+    </a>
+    <nav class="nav">
+      <a href="/">Home</a>
+      <a href="/destinations">Destinations</a>
+      <a href="/how-it-works">How It Works</a>
+      <a href="/compatible-devices">Devices</a>
+      <a href="/faq">FAQ</a>
+      <a href="/pages/account.html">My eSIMs</a>
+    </nav>
+    <div class="nav-right" id="nav-auth-slot">
+      <span class="currency-badge">USD ▾</span>
+      <a class="button button-secondary" href="/pages/login.html">Sign In</a>
+    </div>
+  </div>
+</header>
+
+
+<main class="shell" style="padding-top:32px; padding-bottom:60px;">
+  <h1 class="section-heading-dark" style="font-size:2.4rem;">Is Your Phone eSIM Compatible?</h1>
+  <p class="muted" style="font-size:1.05rem; margin-top:8px;">
+    Most modern smartphones manufactured after 2019 support digital eSIM profiles.
+  </p>
+
+  <div class="carrier-lock-alert">
+    <strong>⚠️ Important Requirement: Carrier Unlocked Device</strong><br>
+    Your device must not be carrier-locked to a specific telecom network (e.g. AT&T, Verizon, Vodafone contract lock). You can verify this in:
+    <em>iPhone: Settings → General → About → Carrier Lock: "No SIM restrictions"</em>.
+  </div>
+
+  <div class="device-search-bar">
+    <input type="text" id="dev-search" placeholder="🔍 Type your device name (e.g. iPhone 15, S23, Pixel 8)..." onkeyup="filterDevices()">
+  </div>
+
+  <!-- Apple -->
+  <div class="device-brand-card watermark-shade">
+    <h2 style="font-size:1.3rem; color:var(--primary-dark);">🍎 Apple Devices (iOS)</h2>
+    <div class="device-list">
+      <div class="device-item">iPhone 16 / 16 Plus / Pro / Max</div>
+      <div class="device-item">iPhone 15 / 15 Plus / Pro / Max</div>
+      <div class="device-item">iPhone 14 / 14 Plus / Pro / Max</div>
+      <div class="device-item">iPhone 13 / 13 mini / Pro / Max</div>
+      <div class="device-item">iPhone 12 / 12 mini / Pro / Max</div>
+      <div class="device-item">iPhone 11 / 11 Pro / Max</div>
+      <div class="device-item">iPhone XS / XS Max / XR</div>
+      <div class="device-item">iPhone SE (2nd & 3rd gen)</div>
+      <div class="device-item">iPad Pro (Cellular models)</div>
+      <div class="device-item">iPad Air & mini (Cellular)</div>
+    </div>
+  </div>
+
+  <!-- Samsung -->
+  <div class="device-brand-card watermark-shade">
+    <h2 style="font-size:1.3rem; color:var(--primary-dark);">📱 Samsung Galaxy Devices</h2>
+    <div class="device-list">
+      <div class="device-item">Galaxy S24 / S24+ / S24 Ultra</div>
+      <div class="device-item">Galaxy S23 / S23+ / S23 Ultra</div>
+      <div class="device-item">Galaxy S22 / S22+ / S22 Ultra</div>
+      <div class="device-item">Galaxy S21 / S21+ / S21 Ultra</div>
+      <div class="device-item">Galaxy S20 / S20+ / S20 Ultra</div>
+      <div class="device-item">Galaxy Z Fold 6 / 5 / 4 / 3 / 2</div>
+      <div class="device-item">Galaxy Z Flip 6 / 5 / 4 / 3</div>
+      <div class="device-item">Galaxy Note 20 / 20 Ultra</div>
+    </div>
+  </div>
+
+  <!-- Google Pixel -->
+  <div class="device-brand-card watermark-shade">
+    <h2 style="font-size:1.3rem; color:var(--primary-dark);">🌐 Google Pixel</h2>
+    <div class="device-list">
+      <div class="device-item">Pixel 9 / 9 Pro / 9 Pro XL</div>
+      <div class="device-item">Pixel 8 / 8 Pro / 8a</div>
+      <div class="device-item">Pixel 7 / 7 Pro / 7a</div>
+      <div class="device-item">Pixel 6 / 6 Pro / 6a</div>
+      <div class="device-item">Pixel 5 / 5a</div>
+      <div class="device-item">Pixel 4 / 4 XL / 4a</div>
+      <div class="device-item">Pixel 3 / 3 XL / 3a</div>
+    </div>
+  </div>
+</main>
+<footer>
+  <div class="shell footer-inner">
+    <div class="footer-left">
+      <div class="footer-brand">TravelTrip World</div>
+      <p class="footer-text">
+        Traveler eSIM is owned by <strong>Mohammad Akram</strong>.<br>
+        <strong>ABDULLAH TRADING - F.Z.C.</strong> Office C1-1F-SF0218, Ajman Free Zone C1 Building,<br>
+        Ajman Free Zone, UAE. License: 51845.<br>
+        Official WhatsApp Support: <a href="https://wa.me/971524413931" style="color:var(--primary); font-weight:700;">+971 52 441 3931</a>
+      </p>
+    </div>
+    <div class="footer-links">
+      <a href="/destinations">Destinations</a>
+      <a href="/how-it-works">How It Works</a>
+      <a href="/compatible-devices">Compatibility</a>
+      <a href="/faq">FAQ</a>
+      <a href="/terms">Terms</a>
+      <a href="/privacy">Privacy</a>
+      <a href="/refund-policy">Refund Policy</a>
+    </div>
+  </div>
+</footer>
+<a href="https://wa.me/971524413931" class="floating-whatsapp" target="_blank" rel="noopener">
+  <span>💬 WhatsApp: +971 52 441 3931</span>
+</a>
+
+<script>
+  function filterDevices() {
+    const q = document.getElementById("dev-search").value.toLowerCase();
+    const items = document.querySelectorAll(".device-item");
+    items.forEach(it => {
+      it.style.display = it.textContent.toLowerCase().includes(q) ? "block" : "none";
+    });
+  }
+</script>
+</body>
+</html>

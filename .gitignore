@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+data/traveltrip.db*
+*.db
+*.db-wal
+*.db-shm
+fix_db.py
+database_new.py
+write_clean.py
+.env

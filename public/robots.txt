@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /pages/admin.html
+Disallow: /api/admin/
+Disallow: /admin
+
+Sitemap: https://traveltrip.world/sitemap.xml

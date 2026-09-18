@@ -1,0 +1,16 @@
+{
+  "name": "TravelTrip World eSIM",
+  "short_name": "TravelTrip",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F4F0E8",
+  "theme_color": "#172A68",
+  "description": "Traveler eSIM by Mohammad Akram - Instant 4G/5G mobile data connectivity in 165+ countries without roaming fees.",
+  "icons": [
+    {
+      "src": "/images/logo-transparent.png",
+      "sizes": "192x192 512x512",
+      "type": "image/png"
+    }
+  ]
+}

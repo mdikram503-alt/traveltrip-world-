@@ -3,147 +3,253 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Sign In / Register · TravelTrip World</title>
+  <title>Sign In & Account Access · TravelTrip World</title>
+  <meta name="description" content="Secure login, customer account creation, and password recovery for TravelTrip.world eSIM orders.">
   <link rel="stylesheet" href="/css/site.css">
   <style>
     .auth-container {
-      max-width: 440px;
-      margin: 60px auto;
+      max-width: 460px;
+      margin: 48px auto;
     }
-    .tabs {
+    .auth-tabs {
       display: flex;
-      border-bottom: 1px solid var(--border);
+      background: var(--bg-elevated);
+      padding: 4px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border);
       margin-bottom: 24px;
+      gap: 4px;
     }
-    .tab-btn {
+    .auth-tab-btn {
       flex: 1;
-      padding: 12px;
+      padding: 10px 14px;
       background: none;
       border: none;
       color: var(--text-muted);
-      font-size: 1rem;
-      font-weight: 600;
+      font-size: 0.88rem;
+      font-weight: 700;
       cursor: pointer;
       text-align: center;
-      border-bottom: 2px solid transparent;
+      border-radius: var(--radius-pill);
+      transition: all 0.2s ease;
     }
-    .tab-btn.active {
-      color: #fff;
-      border-bottom-color: var(--primary);
+    .auth-tab-btn.active {
+      color: #FFFFFF;
+      background: var(--primary);
+      box-shadow: 0 2px 8px rgba(26, 54, 148, 0.25);
     }
-    .auth-error {
-      background: rgba(239, 68, 68, 0.15);
-      border: 1px solid var(--danger);
-      color: #FCA5A5;
-      padding: 10px 14px;
-      border-radius: 8px;
-      font-size: 0.85rem;
-      margin-bottom: 16px;
+    .auth-msg-box {
+      padding: 12px 16px;
+      border-radius: var(--radius-sm);
+      font-size: 0.86rem;
+      margin-bottom: 18px;
       display: none;
+      line-height: 1.5;
+    }
+    .auth-msg-error {
+      background: #FEF2F2;
+      border: 1px solid #FECACA;
+      color: #DC2626;
+    }
+    .auth-msg-success {
+      background: #ECFDF5;
+      border: 1px solid #A7F3D0;
+      color: #059669;
+    }
+    .auth-msg-info {
+      background: #EFF6FF;
+      border: 1px solid #BFDBFE;
+      color: #1E40AF;
+    }
+    .forgot-link {
+      color: var(--primary);
+      font-size: 0.82rem;
+      font-weight: 600;
+      text-decoration: none;
+      float: right;
+      margin-top: 14px;
+      cursor: pointer;
+    }
+    .forgot-link:hover {
+      text-decoration: underline;
     }
   </style>
 </head>
 <body>
 
+<div class="site-watermark-bg"></div>
+
+<!-- HEADER -->
 <header class="top">
   <div class="shell top">
     <a class="brand" href="/">
-      <span class="mark">✈</span>TravelTrip <small>eSIM</small>
+      <img src="/images/logo-transparent.png" alt="Traveler traveltrip.world" class="brand-logo-img">
+      <div class="brand-text-wrap">
+        <span class="brand-title">traveltrip<span class="gold-accent">.world</span></span>
+        <span class="brand-sub">Traveler eSIM</span>
+      </div>
     </a>
     <nav class="nav">
       <a href="/">Home</a>
       <a href="/pages/account.html">My eSIMs</a>
-      <a href="/pages/admin.html">Admin</a>
+      <a href="/pages/admin.html">Admin Portal</a>
     </nav>
   </div>
 </header>
 
 <main class="shell">
   <div class="auth-container">
-    <div class="card">
-      <div class="tabs">
-        <button id="tab-login" class="tab-btn active" onclick="switchTab('login')">Sign In</button>
-        <button id="tab-register" class="tab-btn" onclick="switchTab('register')">Create Account</button>
+    <div class="card watermark-shade">
+      
+      <!-- TABS: Sign In / Create Account / Forgot Password -->
+      <div class="auth-tabs">
+        <button id="tab-login" class="auth-tab-btn active" onclick="switchTab('login')">Sign In</button>
+        <button id="tab-register" class="auth-tab-btn" onclick="switchTab('register')">Register</button>
+        <button id="tab-recovery" class="auth-tab-btn" onclick="switchTab('recovery')">Forgot Password</button>
       </div>
 
-      <div id="auth-error" class="auth-error"></div>
+      <!-- Notification Alerts -->
+      <div id="auth-msg" class="auth-msg-box"></div>
 
-      <!-- Login Form -->
+      <!-- 1. SIGN IN FORM -->
       <form id="form-login" onsubmit="handleLogin(event)">
         <label for="login-email">Email Address</label>
-        <input id="login-email" type="email" placeholder="name@example.com" required>
+        <input id="login-email" type="email" placeholder="name@example.com" required autocomplete="email">
 
-        <label for="login-password">Password</label>
-        <input id="login-password" type="password" placeholder="••••••••" required>
+        <div style="overflow:hidden;">
+          <a class="forgot-link" onclick="switchTab('recovery')">Forgot password? / পাসওয়ার্ড পুনরুদ্ধার</a>
+          <label for="login-password">Password</label>
+        </div>
+        <input id="login-password" type="password" placeholder="••••••••" required autocomplete="current-password">
 
-        <button type="submit" class="button" style="width:100%; margin-top:24px; height:44px;">
-          Sign In
+        <button type="submit" class="button" style="width:100%; margin-top:22px; height:46px; font-size:0.95rem;">
+          Sign In to Account
         </button>
 
-        <div style="margin-top:16px; text-align:center;">
-          <p class="muted" style="font-size:0.8rem;">
+        <div style="margin-top:20px; padding-top:16px; border-top:1px solid var(--border); text-align:center;">
+          <p class="muted" style="font-size:0.80rem;">
             Default Admin Login: <strong>admin@traveltrip.world</strong> / <strong>AdminSecure2026!</strong>
           </p>
         </div>
       </form>
 
-      <!-- Register Form -->
+      <!-- 2. REGISTER FORM -->
       <form id="form-register" style="display:none;" onsubmit="handleRegister(event)">
         <label for="reg-name">Full Name</label>
-        <input id="reg-name" type="text" placeholder="John Doe" required>
+        <input id="reg-name" type="text" placeholder="Mohammad Akram" required autocomplete="name">
 
         <label for="reg-email">Email Address</label>
-        <input id="reg-email" type="email" placeholder="name@example.com" required>
+        <input id="reg-email" type="email" placeholder="name@example.com" required autocomplete="email">
 
-        <label for="reg-password">Password (minimum 6 characters)</label>
-        <input id="reg-password" type="password" placeholder="••••••••" minlength="6" required>
+        <label for="reg-password">Create Password (minimum 6 characters)</label>
+        <input id="reg-password" type="password" placeholder="••••••••" minlength="6" required autocomplete="new-password">
 
-        <button type="submit" class="button" style="width:100%; margin-top:24px; height:44px;">
+        <button type="submit" class="button" style="width:100%; margin-top:24px; height:46px; font-size:0.95rem;">
           Create Customer Account
         </button>
       </form>
+
+      <!-- 3. PASSWORD RECOVERY (পাসওয়ার্ড পুনরুদ্ধার) FORM -->
+      <div id="form-recovery" style="display:none;">
+        <!-- Step A: Request Code -->
+        <div id="recovery-step-1">
+          <p class="muted" style="font-size:0.86rem; margin-bottom:16px;">
+            আপনার অ্যাকাউন্টের ইমেইল দিন। পাসওয়ার্ড রিসেট করার জন্য একটি ভেরিফিকেশন কোড দেওয়া হবে:
+          </p>
+          <label for="rec-email">Account Email</label>
+          <input id="rec-email" type="email" placeholder="name@example.com" required>
+
+          <button type="button" class="button" onclick="requestRecoveryCode()" style="width:100%; margin-top:20px; height:46px;">
+            Send Recovery Code / কোড পান
+          </button>
+        </div>
+
+        <!-- Step B: Enter Code & New Password -->
+        <div id="recovery-step-2" style="display:none;">
+          <div class="auth-msg-box auth-msg-info" style="display:block;" id="rec-code-hint"></div>
+
+          <label for="rec-code">6-Digit Recovery Code</label>
+          <input id="rec-code" type="text" placeholder="e.g. 123456" maxlength="32" required>
+
+          <label for="rec-new-password">New Password (minimum 6 characters)</label>
+          <input id="rec-new-password" type="password" placeholder="••••••••" minlength="6" required>
+
+          <button type="button" class="button" onclick="submitPasswordReset()" style="width:100%; margin-top:20px; height:46px;">
+            Reset Password / পাসওয়ার্ড পরিবর্তন করুন
+          </button>
+          
+          <div style="text-align:center; margin-top:14px;">
+            <a onclick="switchTab('login')" style="color:var(--text-muted); font-size:0.82rem; cursor:pointer;">
+              ← Back to Sign In
+            </a>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 </main>
 
 <footer>
-  <div class="shell foot">
-    <div><b>TravelTrip World</b><p>Automated eSIM Global Connectivity</p></div>
-    <div class="muted">24/7 Monitored Infrastructure</div>
+  <div class="shell footer-inner">
+    <div class="footer-left">
+      <div class="footer-brand">TravelTrip.world</div>
+      <p class="footer-text">
+        Traveler eSIM is owned by <strong>Mohammad Akram</strong>.<br>
+        Ajman Free Zone, UAE. Official WhatsApp: <a href="https://wa.me/971524413931" style="color:var(--primary); font-weight:700;">+971 52 441 3931</a>
+      </p>
+    </div>
+    <div class="footer-links">
+      <a href="/">Home</a>
+      <a href="/pages/account.html">eSIM Orders</a>
+      <a href="https://wa.me/971524413931">WhatsApp Support</a>
+    </div>
   </div>
 </footer>
 
 <script>
   const urlParams = new URLSearchParams(window.location.search);
-  if (urlParams.get("tab") === "register") {
-    switchTab("register");
-  }
+  const initialTab = urlParams.get("tab") || "login";
+  switchTab(initialTab);
 
   function switchTab(tab) {
-    const errorBox = document.getElementById("auth-error");
-    errorBox.style.display = "none";
+    hideMsg();
+    const tabs = ["login", "register", "recovery"];
+    tabs.forEach(t => {
+      const btn = document.getElementById("tab-" + t);
+      const form = document.getElementById("form-" + t);
+      if (btn && form) {
+        if (t === tab) {
+          btn.classList.add("active");
+          form.style.display = "block";
+        } else {
+          btn.classList.remove("active");
+          form.style.display = "none";
+        }
+      }
+    });
 
-    if (tab === "login") {
-      document.getElementById("tab-login").classList.add("active");
-      document.getElementById("tab-register").classList.remove("active");
-      document.getElementById("form-login").style.display = "block";
-      document.getElementById("form-register").style.display = "none";
-    } else {
-      document.getElementById("tab-login").classList.remove("active");
-      document.getElementById("tab-register").classList.add("active");
-      document.getElementById("form-login").style.display = "none";
-      document.getElementById("form-register").style.display = "block";
+    if (tab === "recovery") {
+      document.getElementById("recovery-step-1").style.display = "block";
+      document.getElementById("recovery-step-2").style.display = "none";
     }
   }
 
-  function showError(msg) {
-    const box = document.getElementById("auth-error");
-    box.textContent = msg;
+  function showMsg(text, type = "error") {
+    const box = document.getElementById("auth-msg");
+    box.className = "auth-msg-box auth-msg-" + type;
+    box.textContent = text;
     box.style.display = "block";
+  }
+
+  function hideMsg() {
+    const box = document.getElementById("auth-msg");
+    box.style.display = "none";
   }
 
   async function handleLogin(e) {
     e.preventDefault();
+    hideMsg();
     const email = document.getElementById("login-email").value.trim();
     const password = document.getElementById("login-password").value;
 
@@ -156,18 +262,22 @@
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Login failed");
 
-      if (data.user && data.user.role === "admin") {
-        window.location.href = "/pages/admin.html";
-      } else {
-        window.location.href = "/pages/account.html";
-      }
+      showMsg("Login successful! Redirecting...", "success");
+      setTimeout(() => {
+        if (data.user && data.user.role === "admin") {
+          window.location.href = "/pages/admin.html";
+        } else {
+          window.location.href = "/pages/account.html";
+        }
+      }, 600);
     } catch(err) {
-      showError(err.message);
+      showMsg(err.message, "error");
     }
   }
 
   async function handleRegister(e) {
     e.preventDefault();
+    hideMsg();
     const name = document.getElementById("reg-name").value.trim();
     const email = document.getElementById("reg-email").value.trim();
     const password = document.getElementById("reg-password").value;
@@ -181,9 +291,70 @@
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Registration failed");
 
-      window.location.href = "/pages/account.html";
+      showMsg("Account created! Redirecting to your eSIM dashboard...", "success");
+      setTimeout(() => {
+        window.location.href = "/pages/account.html";
+      }, 700);
     } catch(err) {
-      showError(err.message);
+      showMsg(err.message, "error");
+    }
+  }
+
+  async function requestRecoveryCode() {
+    hideMsg();
+    const email = document.getElementById("rec-email").value.trim();
+    if (!email) {
+      showMsg("Please enter your account email", "error");
+      return;
+    }
+
+    try {
+      const res = await fetch("/api/auth/forgot-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Failed to generate recovery code");
+
+      document.getElementById("recovery-step-1").style.display = "none";
+      document.getElementById("recovery-step-2").style.display = "block";
+      
+      const hint = document.getElementById("rec-code-hint");
+      hint.innerHTML = `<strong>Recovery Code Generated:</strong> <span style="font-size:1.2rem; letter-spacing:2px; font-weight:800; color:var(--primary);">${data.reset_code}</span><br><small>Enter this 6-digit code below to set your new password.</small>`;
+      document.getElementById("rec-code").value = data.reset_code;
+      showMsg("Verification code generated successfully!", "success");
+    } catch(err) {
+      showMsg(err.message, "error");
+    }
+  }
+
+  async function submitPasswordReset() {
+    hideMsg();
+    const email = document.getElementById("rec-email").value.trim();
+    const code = document.getElementById("rec-code").value.trim();
+    const new_password = document.getElementById("rec-new-password").value;
+
+    if (!code || !new_password) {
+      showMsg("Please enter both the recovery code and new password", "error");
+      return;
+    }
+
+    try {
+      const res = await fetch("/api/auth/reset-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, code, new_password })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Failed to reset password");
+
+      showMsg(data.message || "Password changed! Redirecting...", "success");
+      setTimeout(() => {
+        window.location.href = "/pages/account.html";
+      }, 1000);
+    } catch(err) {
+      showMsg(err.message, "error");
     }
   }
 </script>

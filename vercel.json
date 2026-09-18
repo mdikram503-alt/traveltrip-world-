@@ -1,10 +1,103 @@
 {
+  "version": 2,
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.traveltrip.world"
+        }
+      ],
+      "destination": "https://traveltrip.world/$1",
+      "permanent": true
+    }
+  ],
   "rewrites": [
-    { "source": "/", "destination": "/public/index.html" },
-    { "source": "/css/(.*)", "destination": "/public/css/$1" },
-    { "source": "/js/(.*)", "destination": "/public/js/$1" },
-    { "source": "/pages/(.*)", "destination": "/public/pages/$1" },
-    { "source": "/downloads/(.*)", "destination": "/public/downloads/$1" },
-    { "source": "/(.*)", "destination": "/api/index" }
+    {
+      "source": "/",
+      "destination": "/public/index.html"
+    },
+    {
+      "source": "/images/(.*)",
+      "destination": "/public/images/$1"
+    },
+    {
+      "source": "/css/(.*)",
+      "destination": "/public/css/$1"
+    },
+    {
+      "source": "/js/(.*)",
+      "destination": "/public/js/$1"
+    },
+    {
+      "source": "/pages/(.*)",
+      "destination": "/public/pages/$1"
+    },
+    {
+      "source": "/downloads/(.*)",
+      "destination": "/public/downloads/$1"
+    },
+    {
+      "source": "/destinations",
+      "destination": "/public/pages/destinations.html"
+    },
+    {
+      "source": "/how-it-works",
+      "destination": "/public/pages/how-it-works.html"
+    },
+    {
+      "source": "/compatible-devices",
+      "destination": "/public/pages/compatibility.html"
+    },
+    {
+      "source": "/faq",
+      "destination": "/public/pages/faq.html"
+    },
+    {
+      "source": "/terms",
+      "destination": "/public/pages/terms.html"
+    },
+    {
+      "source": "/privacy",
+      "destination": "/public/pages/privacy.html"
+    },
+    {
+      "source": "/refund-policy",
+      "destination": "/public/pages/refund-policy.html"
+    },
+    {
+      "source": "/robots.txt",
+      "destination": "/public/robots.txt"
+    },
+    {
+      "source": "/sitemap.xml",
+      "destination": "/public/sitemap.xml"
+    },
+    {
+      "source": "/api/(.*)",
+      "destination": "/api/index.py"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        },
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=63072000; includeSubDomains; preload"
+        }
+      ]
+    }
   ]
 }

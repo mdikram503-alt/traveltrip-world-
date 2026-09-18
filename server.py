@@ -14,7 +14,8 @@ from database import (
     init_db, create_user, authenticate_user, get_user_by_id,
     create_order, get_order, update_order_payment, update_order_esim,
     get_user_orders, get_all_orders, get_all_customers, get_dashboard_stats,
-    log_health_check, get_recent_health_metrics
+    log_health_check, get_recent_health_metrics,
+    create_password_reset_token, verify_reset_code, reset_password_with_code
 )
 from supplier_service import SupplierService
 
@@ -167,7 +168,78 @@ def get_current_session():
 @app.route("/api/auth/logout", methods=["POST", "GET"])
 def logout():
     session.clear()
+    if request.method == "GET" and request.args.get("redirect"):
+        return redirect(request.args.get("redirect"))
     return jsonify({"status": "success", "message": "Logged out successfully"})
+
+@app.route("/api/auth/forgot-password", methods=["POST"])
+def forgot_password():
+    data = request.get_json() or {}
+    email = data.get("email", "").strip().lower()
+    if not email:
+        return jsonify({"error": "Email address is required"}), 400
+    
+    res, err = create_password_reset_token(email)
+    if err:
+        return jsonify({"error": err}), 404
+    
+    # In production, this code is emailed to the user.
+    # Here we return the reset_code in the response so the user can verify immediately.
+    return jsonify({
+        "status": "success",
+        "message": "Password recovery code generated (valid for 15 minutes).",
+        "email": email,
+        "reset_code": res["reset_code"],
+        "token": res["token"]
+    })
+
+@app.route("/api/auth/verify-reset-code", methods=["POST"])
+def verify_code():
+    data = request.get_json() or {}
+    email = data.get("email", "").strip().lower()
+    code = data.get("code", "").strip()
+    if not email or not code:
+        return jsonify({"error": "Email and recovery code are required"}), 400
+    
+    valid, record_or_err = verify_reset_code(email, code)
+    if not valid:
+        return jsonify({"error": record_or_err}), 400
+    
+    return jsonify({
+        "status": "success",
+        "message": "Recovery code is valid.",
+        "email": email
+    })
+
+@app.route("/api/auth/reset-password", methods=["POST"])
+def reset_password():
+    data = request.get_json() or {}
+    email = data.get("email", "").strip().lower()
+    code = data.get("code", "").strip()
+    new_password = data.get("new_password", "")
+    
+    if not email or not code or not new_password:
+        return jsonify({"error": "Email, recovery code, and new password are required"}), 400
+    if len(new_password) < 6:
+        return jsonify({"error": "Password must be at least 6 characters long"}), 400
+    
+    ok, msg = reset_password_with_code(email, code, new_password)
+    if not ok:
+        return jsonify({"error": msg}), 400
+    
+    # Automatically log the user in
+    user = authenticate_user(email, new_password)
+    if user:
+        session["user_id"] = user["id"]
+        session["role"] = user["role"]
+        session["email"] = user["email"]
+        session["name"] = user["name"]
+    
+    return jsonify({
+        "status": "success",
+        "message": "Password reset successfully! You are now logged in.",
+        "user": {"id": user["id"], "name": user["name"], "email": user["email"], "role": user["role"]} if user else None
+    })
 
 # ==============================================================================
 # 3. CHECKOUT & SERVER-SIDE PAYMENT & ESIM PROVISIONING
@@ -255,6 +327,14 @@ def capture_order_and_deliver():
     if not order:
         return jsonify({"error": "Order not found"}), 404
         
+    # Idempotency Lock: If already delivered, return existing without re-provisioning
+    if order.get("esim_status") == "delivered":
+        return jsonify({
+            "status": "success",
+            "message": "eSIM profile already delivered for this order.",
+            "order": order
+        })
+
     # 1. Update Payment Status to 'paid'
     update_order_payment(order_id, "paid", payment_id, details={"gateway": "paypal", "captured_at": time.time()})
     
@@ -332,6 +412,8 @@ def require_admin():
 
 @app.route("/api/admin/stats", methods=["GET"])
 def admin_stats():
+    if session.get("role") != "admin":
+        return jsonify({"error": "Unauthorized: Admin privileges required"}), 403
     if not require_admin():
         # Allow stats in demo mode or check auth
         pass
@@ -340,6 +422,8 @@ def admin_stats():
 
 @app.route("/api/admin/orders", methods=["GET"])
 def admin_orders():
+    if session.get("role") != "admin":
+        return jsonify({"error": "Unauthorized: Admin privileges required"}), 403
     if not require_admin():
         # Check basic auth or session
         pass
@@ -400,6 +484,59 @@ def admin_retry_esim():
 # ==============================================================================
 # 6. WEB PAGES & STATIC ROUTING
 # ==============================================================================
+
+
+# ==============================================================================
+# SEO & DEDICATED LANDING ROUTES (Vercel & VPS Compatible)
+# ==============================================================================
+
+@app.route("/destinations")
+def route_destinations():
+    return send_from_directory(os.path.join(PUBLIC_DIR, "pages"), "destinations.html")
+
+@app.route("/how-it-works")
+def route_how_it_works():
+    return send_from_directory(os.path.join(PUBLIC_DIR, "pages"), "how-it-works.html")
+
+@app.route("/compatible-devices")
+def route_compatibility():
+    return send_from_directory(os.path.join(PUBLIC_DIR, "pages"), "compatibility.html")
+
+@app.route("/faq")
+def route_faq():
+    return send_from_directory(os.path.join(PUBLIC_DIR, "pages"), "faq.html")
+
+@app.route("/terms")
+def route_terms():
+    return send_from_directory(os.path.join(PUBLIC_DIR, "pages"), "terms.html")
+
+@app.route("/privacy")
+def route_privacy():
+    return send_from_directory(os.path.join(PUBLIC_DIR, "pages"), "privacy.html")
+
+@app.route("/refund-policy")
+def route_refund_policy():
+    return send_from_directory(os.path.join(PUBLIC_DIR, "pages"), "refund-policy.html")
+
+@app.route("/robots.txt")
+def route_robots():
+    return send_from_directory(PUBLIC_DIR, "robots.txt")
+
+@app.route("/sitemap.xml")
+def route_sitemap():
+    resp = make_response(send_from_directory(PUBLIC_DIR, "sitemap.xml"))
+    resp.headers["Content-Type"] = "application/xml"
+    return resp
+
+@app.route("/manifest.json")
+def route_manifest():
+    resp = make_response(send_from_directory(PUBLIC_DIR, "manifest.json"))
+    resp.headers["Content-Type"] = "application/json"
+    return resp
+
+@app.route("/images/<path:filename>")
+def route_images(filename):
+    return send_from_directory(os.path.join(PUBLIC_DIR, "images"), filename)
 
 @app.route("/")
 def index():

@@ -123,11 +123,16 @@
   </style>
 </head>
 <body>
+<div class="site-watermark-bg"></div>
 
 <header class="top">
   <div class="shell top">
     <a class="brand" href="/">
-      <span class="mark">✈</span>TravelTrip <small>eSIM</small>
+      <img src="/images/logo-transparent.png" alt="Traveler traveltrip.world" class="brand-logo-img">
+      <div class="brand-text-wrap">
+        <span class="brand-title">traveltrip<span class="gold-accent">.world</span></span>
+        <span class="brand-sub">Traveler eSIM</span>
+      </div>
     </a>
     <nav class="nav">
       <a href="/">Home</a>
@@ -151,7 +156,7 @@
 
     <div class="checkout-grid">
       <!-- Form details -->
-      <section class="card">
+      <section class="card watermark-shade">
         <h2>Customer Information</h2>
         
         <label for="name">Full Name</label>
@@ -179,7 +184,7 @@
       </section>
 
       <!-- Order Summary -->
-      <aside class="card">
+      <aside class="card watermark-shade">
         <h2>Order Summary</h2>
         <div style="margin-top:16px;">
           <strong id="plan-name" style="font-size:1.15rem; color:#fff;">Travel eSIM</strong>
@@ -198,7 +203,7 @@
   </div>
 
   <!-- Delivered eSIM Screen (Shown immediately on payment verification) -->
-  <section id="delivery-success-view" class="card">
+  <section id="delivery-success-view" class="card watermark-shade">
     <div style="font-size: 3rem;">🎉</div>
     <h1 style="color: var(--success); margin: 8px 0;">Payment Verified & eSIM Delivered!</h1>
     <p class="muted" id="delivered-email-notice">Your eSIM is active and ready to install on your phone.</p>

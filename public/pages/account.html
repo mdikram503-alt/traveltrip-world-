@@ -85,11 +85,16 @@
   </style>
 </head>
 <body>
+<div class="site-watermark-bg"></div>
 
 <header class="top">
   <div class="shell top">
     <a class="brand" href="/">
-      <span class="mark">✈</span>TravelTrip <small>eSIM</small>
+      <img src="/images/logo-transparent.png" alt="Traveler traveltrip.world" class="brand-logo-img">
+      <div class="brand-text-wrap">
+        <span class="brand-title">traveltrip<span class="gold-accent">.world</span></span>
+        <span class="brand-sub">Traveler eSIM</span>
+      </div>
     </a>
     <nav class="nav">
       <a href="/">Home</a>
@@ -116,7 +121,7 @@
   </div>
 
   <!-- Signed Out View -->
-  <div id="signed-out-card" class="card" style="display:none; text-align:center; padding: 40px 20px;">
+  <div id="signed-out-card" class="card watermark-shade" style="display:none; text-align:center; padding: 40px 20px;">
     <div style="font-size: 2.5rem; margin-bottom: 12px;">🔐</div>
     <h2>Sign In to view your eSIMs</h2>
     <p class="muted" style="margin: 8px 0 20px;">Log in to access your purchased eSIMs, active data plans, and QR installation codes.</p>
@@ -147,7 +152,7 @@
 
     <section style="margin-top: 48px;">
       <h2>Complete Order History</h2>
-      <div class="card" style="padding:0; overflow-x:auto; margin-top:16px;">
+      <div class="card watermark-shade" style="padding:0; overflow-x:auto; margin-top:16px;">
         <table>
           <thead>
             <tr>
@@ -171,17 +176,35 @@
 
 <!-- Modal for full QR view -->
 <div id="qr-modal" class="modal" onclick="closeModal(event)">
-  <div class="modal-content" onclick="event.stopPropagation()">
-    <h2 id="modal-pkg-name" style="margin-bottom:6px;">eSIM QR Code</h2>
-    <p class="muted" style="font-size:0.85rem;">Scan this QR with your phone's camera</p>
-    <div style="background:#fff; padding:16px; border-radius:12px; display:inline-block; margin:16px 0;">
-      <img id="modal-qr-img" style="width:240px; height:240px; display:block;" src="" alt="eSIM QR">
+  <div class="modal-content watermark-shade" onclick="event.stopPropagation()" style="max-width:520px; text-align:center;">
+    <h2 id="modal-pkg-name" style="margin-bottom:4px; font-size:1.35rem; color:var(--primary-dark);">eSIM QR Code & Setup</h2>
+    <p class="muted" style="font-size:0.85rem;">Point your device camera to scan and install</p>
+    
+    <div style="background:#fff; padding:16px; border-radius:16px; border:1px solid var(--border); display:inline-block; margin:16px 0; box-shadow:0 4px 14px rgba(0,0,0,0.06);">
+      <img id="modal-qr-img" style="width:220px; height:220px; display:block;" src="" alt="eSIM QR">
     </div>
-    <div class="lpa-preview" style="text-align:left; margin:12px 0;">
-      <span id="modal-lpa-text">LPA:...</span>
-      <button class="button" style="padding:4px 8px; font-size:0.75rem;" onclick="copyModalLPA()">Copy</button>
+
+    <!-- 1-Click LPA Copy -->
+    <div class="lpa-preview" style="text-align:left; margin:10px 0; background:#FFFFFF; border:1px solid var(--border); padding:8px 12px; border-radius:8px;">
+      <span id="modal-lpa-text" style="font-size:0.78rem; font-family:monospace; color:var(--text-card); overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">LPA:...</span>
+      <button id="copy-lpa-btn" class="button" style="padding:4px 10px; font-size:0.76rem;" onclick="copyModalLPA()">📋 Copy LPA</button>
     </div>
-    <button class="button button-secondary" style="width:100%; margin-top:12px;" onclick="closeModal()">Close</button>
+
+    <!-- Quick Device Setup Tabs -->
+    <div style="margin-top:16px; text-align:left; background:var(--bg-elevated); padding:12px; border-radius:10px; border:1px solid var(--border-light); font-size:0.82rem;">
+      <div style="display:flex; gap:8px; margin-bottom:8px;">
+        <button id="tab-modal-ios" class="button" style="padding:4px 12px; font-size:0.75rem;" onclick="setModalTab('ios')">🍎 iPhone</button>
+        <button id="tab-modal-android" class="button button-secondary" style="padding:4px 12px; font-size:0.75rem;" onclick="setModalTab('android')">🤖 Android</button>
+      </div>
+      <div id="modal-inst-ios">
+        <strong>iPhone Setup:</strong> Settings → Cellular → Add eSIM → Scan QR (or Enter Details Manually) → Turn Roaming ON at destination.
+      </div>
+      <div id="modal-inst-android" style="display:none;">
+        <strong>Android Setup:</strong> Settings → SIM Manager → Add eSIM → Scan QR Code → Set as Mobile Data & enable Data Roaming.
+      </div>
+    </div>
+
+    <button class="button button-secondary" style="width:100%; margin-top:16px;" onclick="closeModal()">Close</button>
   </div>
 </div>
 
@@ -218,7 +241,7 @@
     document.getElementById("user-title").textContent = `Welcome, ${user.name}`;
     document.getElementById("user-subtitle").textContent = `${user.email} · Customer Account`;
     document.getElementById("auth-nav").innerHTML = `
-      <span style="color:#fff; font-size:0.9rem; margin-right:12px;">👤 ${user.name}</span>
+      <span style="color:var(--text-card); font-size:0.9rem; margin-right:12px;">👤 ${user.name}</span>
       <button class="button button-secondary" onclick="logout()">Sign Out</button>
     `;
   }
@@ -246,7 +269,7 @@
     
     if (delivered.length === 0) {
       list.innerHTML = `
-        <div class="card" style="grid-column: 1 / -1; text-align:center; padding:32px;">
+        <div class="card watermark-shade" style="grid-column: 1 / -1; text-align:center; padding:32px;">
           <p class="muted">You don't have any active eSIM profiles yet.</p>
           <a class="button" href="/#destinations" style="margin-top:12px;">Browse Destinations</a>
         </div>
@@ -255,11 +278,11 @@
     }
 
     list.innerHTML = delivered.map(order => `
-      <div class="esim-card">
+      <div class="esim-card watermark-shade">
         <div>
           <div class="esim-card-head">
             <div>
-              <strong style="font-size:1.1rem; color:#fff;">${escapeHtml(order.package_name)}</strong>
+              <strong style="font-size:1.1rem; color:var(--text-card);">${escapeHtml(order.package_name)}</strong>
               <div class="muted" style="font-size:0.85rem;">${order.data_amount || '1 GB'} · ${order.validity || '7 Days'}</div>
             </div>
             <span class="badge badge-delivered">Active</span>
@@ -272,11 +295,11 @@
           <div style="font-size:0.82rem; margin-bottom:8px;">
             <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
               <span class="muted">ICCID:</span>
-              <span style="font-family:monospace; color:#fff;">${order.iccid || '--'}</span>
+              <span style="font-family:monospace; color:var(--text-card);">${order.iccid || '--'}</span>
             </div>
             <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
               <span class="muted">Order:</span>
-              <span style="color:#fff;">${order.order_id}</span>
+              <span style="color:var(--text-card);">${order.order_id}</span>
             </div>
           </div>
 

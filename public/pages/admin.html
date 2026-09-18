@@ -77,11 +77,16 @@
   </style>
 </head>
 <body>
+<div class="site-watermark-bg"></div>
 
 <header class="top">
   <div class="shell top">
     <a class="brand" href="/">
-      <span class="mark">✈</span>TravelTrip <small>Admin Portal</small>
+      <img src="/images/logo-transparent.png" alt="Traveler traveltrip.world" class="brand-logo-img">
+      <div class="brand-text-wrap">
+        <span class="brand-title">traveltrip<span class="gold-accent">.world</span></span>
+        <span class="brand-sub">Traveler eSIM</span>
+      </div>
     </a>
     <nav class="nav">
       <a href="/">Home</a>
@@ -105,27 +110,27 @@
 
   <!-- Top Metrics -->
   <div class="admin-stats-grid">
-    <div class="stat-card">
+    <div class="stat-card watermark-shade">
       <div class="stat-label">Total Revenue</div>
       <div class="stat-val" id="st-revenue" style="color:var(--primary);">$0.00</div>
     </div>
-    <div class="stat-card">
+    <div class="stat-card watermark-shade">
       <div class="stat-label">Total Orders</div>
       <div class="stat-val" id="st-orders">0</div>
     </div>
-    <div class="stat-card">
+    <div class="stat-card watermark-shade">
       <div class="stat-label">Paid Orders</div>
       <div class="stat-val" id="st-paid" style="color:var(--success);">0</div>
     </div>
-    <div class="stat-card">
+    <div class="stat-card watermark-shade">
       <div class="stat-label">Delivered eSIMs</div>
       <div class="stat-val" id="st-delivered" style="color:#34D399;">0</div>
     </div>
-    <div class="stat-card">
+    <div class="stat-card watermark-shade">
       <div class="stat-label">Failed Payments</div>
       <div class="stat-val" id="st-failed" style="color:var(--danger);">0</div>
     </div>
-    <div class="stat-card">
+    <div class="stat-card watermark-shade">
       <div class="stat-label">Total Customers</div>
       <div class="stat-val" id="st-customers">0</div>
     </div>
@@ -150,7 +155,7 @@
       <button class="button button-secondary" style="padding:4px 10px; font-size:0.8rem;" onclick="filterOrders('pending')">Pending</button>
     </div>
 
-    <div class="card" style="padding:0; overflow-x:auto;">
+    <div class="card watermark-shade" style="padding:0; overflow-x:auto;">
       <table>
         <thead>
           <tr>
@@ -174,7 +179,7 @@
 
   <!-- SECTION 2: CUSTOMERS -->
   <section id="sec-customers" style="display:none;">
-    <div class="card" style="padding:0; overflow-x:auto;">
+    <div class="card watermark-shade" style="padding:0; overflow-x:auto;">
       <table>
         <thead>
           <tr>
@@ -204,28 +209,28 @@
     </div>
 
     <div class="health-grid">
-      <div class="health-card healthy" id="card-web">
+      <div class="health-card healthy watermark-shade" id="card-web">
         <h4 style="color:#fff;">1. TravelTrip Web Server</h4>
         <p class="muted" style="font-size:0.8rem; margin:4px 0;">Frontend & Public Pages</p>
         <div style="font-size:1.3rem; font-weight:700; color:var(--success);" id="web-status">Operational</div>
         <div class="muted" style="font-size:0.75rem; margin-top:8px;">Response Time: <span id="web-latency">--</span></div>
       </div>
 
-      <div class="health-card healthy" id="card-api">
+      <div class="health-card healthy watermark-shade" id="card-api">
         <h4 style="color:#fff;">2. Catalog eSIM API</h4>
         <p class="muted" style="font-size:0.8rem; margin:4px 0;">/catalog/esim/packages</p>
         <div style="font-size:1.3rem; font-weight:700; color:var(--success);" id="api-status">Operational</div>
         <div class="muted" style="font-size:0.75rem; margin-top:8px;">Response Time: <span id="api-latency">--</span></div>
       </div>
 
-      <div class="health-card healthy" id="card-supplier">
+      <div class="health-card healthy watermark-shade" id="card-supplier">
         <h4 style="color:#fff;">3. Wholesale Supplier</h4>
         <p class="muted" style="font-size:0.8rem; margin:4px 0;">panel.resellportal.com</p>
         <div style="font-size:1.3rem; font-weight:700; color:var(--success);" id="sup-status">Connected</div>
         <div class="muted" style="font-size:0.75rem; margin-top:8px;">Response Time: <span id="sup-latency">--</span></div>
       </div>
 
-      <div class="health-card healthy" id="card-db">
+      <div class="health-card healthy watermark-shade" id="card-db">
         <h4 style="color:#fff;">4. Database & Daemon</h4>
         <p class="muted" style="font-size:0.8rem; margin:4px 0;">SQLite Storage & Auth Vault</p>
         <div style="font-size:1.3rem; font-weight:700; color:var(--success);">Online (100%)</div>
@@ -233,7 +238,7 @@
       </div>
     </div>
 
-    <div class="card" style="padding:0; overflow-x:auto;">
+    <div class="card watermark-shade" style="padding:0; overflow-x:auto;">
       <h4 style="padding:16px 20px; border-bottom:1px solid var(--border);">Recent Continuous VPS Health Telemetry Logs</h4>
       <table>
         <thead>
@@ -254,7 +259,7 @@
 
   <!-- SECTION 4: PACKAGES CATALOG -->
   <section id="sec-packages" style="display:none;">
-    <div class="card" style="padding:0; overflow-x:auto;">
+    <div class="card watermark-shade" style="padding:0; overflow-x:auto;">
       <table>
         <thead>
           <tr>
