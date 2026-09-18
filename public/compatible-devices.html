@@ -3,15 +3,11 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Compatible Devices Checker · TravelTrip World</title>
-  <meta name="description" content="Check if your smartphone supports eSIM. Complete list of compatible Apple iPhone, Samsung Galaxy, Google Pixel, and other devices.">
+  <title>Compatible Devices (2026 Updated) · TravelTrip World</title>
+  <meta name="description" content="Check if your smartphone supports TravelTrip World eSIM: Apple iPhone, Samsung Galaxy, Google Pixel, and modern unlocked 5G handsets.">
   <link rel="canonical" href="https://traveltrip.world/compatible-devices">
   <link rel="stylesheet" href="/css/site.css">
   <style>
-    .device-search-bar {
-      margin: 28px 0;
-      max-width: 580px;
-    }
     .device-brand-card {
       background: #FFFFFF;
       border: 1px solid var(--border);
@@ -24,26 +20,48 @@
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
       gap: 10px;
-      margin-top: 14px;
+      margin-top: 16px;
     }
     .device-item {
       background: var(--bg-elevated);
       padding: 10px 14px;
-      border-radius: var(--radius-sm);
-      font-size: 0.88rem;
-      font-weight: 600;
-      color: var(--text-card);
-      border: 1px solid var(--border-light);
+      border-radius: 6px;
+      font-size: 0.9rem;
+      color: var(--text-dark);
+      border: 1px solid var(--border);
+    }
+    .device-search-bar {
+      margin-bottom: 24px;
+    }
+    .device-search-bar input {
+      width: 100%;
+      padding: 14px 18px;
+      font-size: 1rem;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border);
+      background: #FFFFFF;
+      box-shadow: var(--shadow-card);
+      outline: none;
     }
     .carrier-lock-alert {
-      background: #FFFBEB;
-      border: 1px solid #FDE68A;
-      color: #92400E;
+      background: #EFF6FF;
+      border-left: 4px solid var(--secondary);
       padding: 16px 20px;
-      border-radius: var(--radius);
+      border-radius: 4px;
       margin-bottom: 24px;
       font-size: 0.92rem;
-      line-height: 1.5;
+      color: #1E3A8A;
+      line-height: 1.6;
+    }
+    .regional-alert {
+      background: #FFFBEB;
+      border-left: 4px solid #F59E0B;
+      padding: 16px 20px;
+      border-radius: 4px;
+      margin-bottom: 24px;
+      font-size: 0.92rem;
+      color: #92400E;
+      line-height: 1.6;
     }
   </style>
 </head>
@@ -52,7 +70,7 @@
 <header class="top">
   <div class="shell top">
     <a class="brand" href="/">
-      <img src="/images/logo-transparent.png" alt="Traveler traveltrip.world" class="brand-logo-img">
+      <img src="/images/logo-transparent.png" alt="TravelTrip World" class="brand-logo-img">
       <div class="brand-text-wrap">
         <span class="brand-title">traveltrip<span class="gold-accent">.world</span></span>
         <span class="brand-sub">Traveler eSIM</span>
@@ -73,26 +91,32 @@
   </div>
 </header>
 
-
 <main class="shell" style="padding-top:32px; padding-bottom:60px;">
   <h1 class="section-heading-dark" style="font-size:2.4rem;">Is Your Phone eSIM Compatible?</h1>
   <p class="muted" style="font-size:1.05rem; margin-top:8px;">
-    Most modern smartphones manufactured after 2019 support digital eSIM profiles.
+    Verified device compatibility matrix updated for 2026. Search your smartphone model below.
   </p>
 
   <div class="carrier-lock-alert">
-    <strong>⚠️ Important Requirement: Carrier Unlocked Device</strong><br>
-    Your device must not be carrier-locked to a specific telecom network (e.g. AT&T, Verizon, Vodafone contract lock). You can verify this in:
-    <em>iPhone: Settings → General → About → Carrier Lock: "No SIM restrictions"</em>.
+    <strong>🔒 Crucial Pre-requisite: Carrier Unlocked Device</strong><br>
+    Your handset must be carrier-unlocked (not tied to a specific operator contract).<br>
+    • <em>iPhone: Settings → General → About → Carrier Lock: "No SIM restrictions"</em>.<br>
+    • <em>Android: Settings → Network & Internet / Connections → SIMs (Status: Unlocked)</em>.
+  </div>
+
+  <div class="regional-alert">
+    <strong>⚠️ Regional Hardware Variations:</strong><br>
+    • iPhones manufactured for mainland China (with 2 physical nano-SIM trays) do not feature eSIM microchips.<br>
+    • Select Samsung Galaxy variants sold in specific Asian/carrier markets may not support eSIM. Always check your device menu for <em>"Add eSIM / SIM Manager"</em>.
   </div>
 
   <div class="device-search-bar">
-    <input type="text" id="dev-search" placeholder="🔍 Type your device name (e.g. iPhone 15, S23, Pixel 8)..." onkeyup="filterDevices()">
+    <input type="text" id="dev-search" placeholder="🔍 Search device model (e.g. iPhone 16, S25, Pixel 9, Fold)..." onkeyup="filterDevices()">
   </div>
 
   <!-- Apple -->
   <div class="device-brand-card watermark-shade">
-    <h2 style="font-size:1.3rem; color:var(--primary-dark);">🍎 Apple Devices (iOS)</h2>
+    <h2 style="font-size:1.3rem; color:var(--primary-dark);">📱 Apple Devices (iOS)</h2>
     <div class="device-list">
       <div class="device-item">iPhone 16 / 16 Plus / Pro / Max</div>
       <div class="device-item">iPhone 15 / 15 Plus / Pro / Max</div>
@@ -102,8 +126,8 @@
       <div class="device-item">iPhone 11 / 11 Pro / Max</div>
       <div class="device-item">iPhone XS / XS Max / XR</div>
       <div class="device-item">iPhone SE (2nd & 3rd gen)</div>
-      <div class="device-item">iPad Pro (Cellular models)</div>
-      <div class="device-item">iPad Air & mini (Cellular)</div>
+      <div class="device-item">iPad Pro 11" & 13" (M4/M2 Cellular)</div>
+      <div class="device-item">iPad Air & mini (Cellular models)</div>
     </div>
   </div>
 
@@ -111,31 +135,49 @@
   <div class="device-brand-card watermark-shade">
     <h2 style="font-size:1.3rem; color:var(--primary-dark);">📱 Samsung Galaxy Devices</h2>
     <div class="device-list">
+      <div class="device-item">Galaxy S25 / S25+ / S25 Ultra</div>
       <div class="device-item">Galaxy S24 / S24+ / S24 Ultra</div>
       <div class="device-item">Galaxy S23 / S23+ / S23 Ultra</div>
       <div class="device-item">Galaxy S22 / S22+ / S22 Ultra</div>
       <div class="device-item">Galaxy S21 / S21+ / S21 Ultra</div>
       <div class="device-item">Galaxy S20 / S20+ / S20 Ultra</div>
-      <div class="device-item">Galaxy Z Fold 6 / 5 / 4 / 3 / 2</div>
+      <div class="device-item">Galaxy Z Fold 6 / 5 / 4 / 3</div>
       <div class="device-item">Galaxy Z Flip 6 / 5 / 4 / 3</div>
+      <div class="device-item">Galaxy A55 5G / A54 5G / A35 5G</div>
       <div class="device-item">Galaxy Note 20 / 20 Ultra</div>
     </div>
   </div>
 
   <!-- Google Pixel -->
   <div class="device-brand-card watermark-shade">
-    <h2 style="font-size:1.3rem; color:var(--primary-dark);">🌐 Google Pixel</h2>
+    <h2 style="font-size:1.3rem; color:var(--primary-dark);">📱 Google Pixel</h2>
     <div class="device-list">
       <div class="device-item">Pixel 9 / 9 Pro / 9 Pro XL</div>
+      <div class="device-item">Pixel 9 Pro Fold</div>
       <div class="device-item">Pixel 8 / 8 Pro / 8a</div>
       <div class="device-item">Pixel 7 / 7 Pro / 7a</div>
       <div class="device-item">Pixel 6 / 6 Pro / 6a</div>
-      <div class="device-item">Pixel 5 / 5a</div>
+      <div class="device-item">Pixel Fold / Pixel 5 / 5a</div>
       <div class="device-item">Pixel 4 / 4 XL / 4a</div>
       <div class="device-item">Pixel 3 / 3 XL / 3a</div>
     </div>
   </div>
+
+  <!-- Other Global Handsets -->
+  <div class="device-brand-card watermark-shade">
+    <h2 style="font-size:1.3rem; color:var(--primary-dark);">📱 Other 5G Android Flagships</h2>
+    <div class="device-list">
+      <div class="device-item">Xiaomi 15 / 14 / 14 Pro / 14T</div>
+      <div class="device-item">Xiaomi 13 / 13 Pro / 13T Pro</div>
+      <div class="device-item">OnePlus 12 / 11 / Open</div>
+      <div class="device-item">Motorola Razr 50 / 40 Ultra</div>
+      <div class="device-item">Motorola Edge 50 / 40 Pro</div>
+      <div class="device-item">Sony Xperia 1 VI / 1 V / 5 V</div>
+      <div class="device-item">Honor Magic 6 Pro / 5 Pro</div>
+    </div>
+  </div>
 </main>
+
 <footer>
   <div class="shell footer-inner">
     <div class="footer-left">
@@ -158,18 +200,15 @@
     </div>
   </div>
 </footer>
-<a href="https://wa.me/971524413931" class="floating-whatsapp" target="_blank" rel="noopener">
-  <span>💬 WhatsApp: +971 52 441 3931</span>
-</a>
 
 <script>
-  function filterDevices() {
-    const q = document.getElementById("dev-search").value.toLowerCase();
-    const items = document.querySelectorAll(".device-item");
-    items.forEach(it => {
-      it.style.display = it.textContent.toLowerCase().includes(q) ? "block" : "none";
-    });
-  }
+function filterDevices() {
+  const q = document.getElementById('dev-search').value.toLowerCase();
+  const items = document.querySelectorAll('.device-item');
+  items.forEach(item => {
+    item.style.display = item.textContent.toLowerCase().includes(q) ? 'block' : 'none';
+  });
+}
 </script>
 </body>
 </html>

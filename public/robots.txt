@@ -1,7 +1,7 @@
 User-agent: *
 Allow: /
-Disallow: /pages/admin.html
-Disallow: /api/admin/
-Disallow: /admin
+Disallow: /api/
+Disallow: /checkout
+Disallow: /account
 
 Sitemap: https://traveltrip.world/sitemap.xml
