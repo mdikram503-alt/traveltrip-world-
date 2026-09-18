@@ -297,61 +297,71 @@ from datetime import timedelta
 
 def create_password_reset_token(email: str):
     email_clean = email.lower().strip()
-    with get_db() as conn:
-        cursor = conn.cursor()
-        cursor.execute("SELECT id, name FROM users WHERE email = ?", (email_clean,))
-        user = cursor.fetchone()
-        if not user:
-            return None, "No account found with this email address"
-        
-        token = secrets.token_urlsafe(24)
-        reset_code = f"{secrets.randbelow(900000) + 100000}"
-        expires_at = datetime.now() + timedelta(minutes=15)
-        
-        cursor.execute("""
-            INSERT INTO password_resets (email, token, reset_code, expires_at, used)
-            VALUES (?, ?, ?, ?, 0)
-        """, (email_clean, token, reset_code, expires_at.strftime("%Y-%m-%d %H:%M:%S")))
-        conn.commit()
-        return {
-            "token": token,
-            "reset_code": reset_code,
-            "email": email_clean,
-            "expires_at": expires_at.strftime("%Y-%m-%d %H:%M:%S")
-        }, None
+    try:
+        init_db()
+        with get_db() as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT id, name FROM users WHERE email = ?", (email_clean,))
+            user = cursor.fetchone()
+            if not user:
+                return None, "No account found with this email address"
+            
+            token = secrets.token_urlsafe(24)
+            reset_code = f"{secrets.randbelow(900000) + 100000}"
+            expires_at = datetime.now() + timedelta(minutes=15)
+            
+            cursor.execute("""
+                INSERT INTO password_resets (email, token, reset_code, expires_at, used)
+                VALUES (?, ?, ?, ?, 0)
+            """, (email_clean, token, reset_code, expires_at.strftime("%Y-%m-%d %H:%M:%S")))
+            conn.commit()
+            return {
+                "token": token,
+                "reset_code": reset_code,
+                "email": email_clean,
+                "expires_at": expires_at.strftime("%Y-%m-%d %H:%M:%S")
+            }, None
+    except Exception as e:
+        return None, str(e)
 
 def verify_reset_code(email: str, code_or_token: str):
     email_clean = email.lower().strip()
     code_clean = code_or_token.strip()
-    with get_db() as conn:
-        cursor = conn.cursor()
-        cursor.execute("""
-            SELECT * FROM password_resets
-            WHERE email = ? AND (reset_code = ? OR token = ?) AND used = 0
-            ORDER BY id DESC LIMIT 1
-        """, (email_clean, code_clean, code_clean))
-        record = cursor.fetchone()
-        if not record:
-            return False, "Invalid or expired recovery code"
-        
-        expires_at = datetime.strptime(record["expires_at"], "%Y-%m-%d %H:%M:%S")
-        if datetime.now() > expires_at:
-            return False, "Recovery code has expired. Please request a new one."
-        return True, dict(record)
+    try:
+        init_db()
+        with get_db() as conn:
+            cursor = conn.cursor()
+            cursor.execute("""
+                SELECT * FROM password_resets
+                WHERE email = ? AND (reset_code = ? OR token = ?) AND used = 0
+                ORDER BY created_at DESC LIMIT 1
+            """, (email_clean, code_clean, code_clean))
+            record = cursor.fetchone()
+            if not record:
+                return False, "Invalid or expired recovery code"
+            
+            expires_at = datetime.strptime(record["expires_at"], "%Y-%m-%d %H:%M:%S")
+            if datetime.now() > expires_at:
+                return False, "Recovery code has expired. Please request a new one."
+            
+            return True, dict(record)
+    except Exception as e:
+        return False, str(e)
 
 def reset_password_with_code(email: str, code_or_token: str, new_password: str):
-    is_valid, record_or_err = verify_reset_code(email, code_or_token)
-    if not is_valid:
-        return False, record_or_err
-    
-    if len(new_password) < 6:
-        return False, "Password must be at least 6 characters long"
+    valid, res = verify_reset_code(email, code_or_token)
+    if not valid:
+        return False, res
     
     email_clean = email.lower().strip()
-    with get_db() as conn:
-        cursor = conn.cursor()
-        new_hash = hash_password(new_password)
-        cursor.execute("UPDATE users SET password_hash = ? WHERE email = ?", (new_hash, email_clean))
-        cursor.execute("UPDATE password_resets SET used = 1 WHERE id = ?", (record_or_err["id"],))
-        conn.commit()
-    return True, "Password reset successfully. You can now log in with your new password."
+    try:
+        init_db()
+        with get_db() as conn:
+            cursor = conn.cursor()
+            new_hash = hash_password(new_password)
+            cursor.execute("UPDATE users SET password_hash = ? WHERE email = ?", (new_hash, email_clean))
+            cursor.execute("UPDATE password_resets SET used = 1 WHERE id = ?", (res["id"],))
+            conn.commit()
+            return True, "Password has been successfully updated"
+    except Exception as e:
+        return False, str(e)
