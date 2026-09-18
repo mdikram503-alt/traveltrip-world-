@@ -298,45 +298,115 @@
   checkAuth();
 </script>
 
+
 <style>
+  .dest-filter-container {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding: 6px 2px 14px;
+    margin-bottom: 20px;
+    scrollbar-width: thin;
+  }
   .dest-pill {
     white-space: nowrap;
-    padding: 9px 18px;
+    padding: 10px 20px;
     background: #FFFFFF;
     border: 1px solid #CBD5E1;
     border-radius: 999px;
-    font-size: 0.9rem;
+    font-size: 0.92rem;
     font-weight: 700;
     color: #334155;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
   }
-  .dest-pill:hover { border-color: var(--primary); color: var(--primary); }
+  .dest-pill:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+    transform: translateY(-1px);
+  }
   .dest-pill.active {
     background: var(--primary);
     color: #FFFFFF;
     border-color: var(--primary);
-    box-shadow: 0 4px 12px rgba(26, 54, 148, 0.2);
+    box-shadow: 0 4px 14px rgba(26, 54, 148, 0.25);
+  }
+
+  .filter-bar-wrap {
+    background: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    border-radius: 16px;
+    padding: 16px 22px;
+    margin-bottom: 32px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03);
   }
 
   .filter-chip {
-    padding: 6px 14px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 8px;
-    font-size: 0.82rem;
+    padding: 8px 16px;
+    background: #F8FAFC;
+    border: 1px solid #CBD5E1;
+    border-radius: 10px;
+    font-size: 0.85rem;
     font-weight: 700;
-    color: #E2E8F0;
+    color: #475569;
     cursor: pointer;
     transition: all 0.2s;
   }
-  .filter-chip:hover { border-color: #38BDF8; color: #38BDF8; }
+  .filter-chip:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+  }
   .filter-chip.active {
-    background: #0284C7;
+    background: var(--primary);
     color: #FFFFFF;
-    border-color: #0284C7;
+    border-color: var(--primary);
+    box-shadow: 0 2px 8px rgba(26, 54, 148, 0.2);
   }
 
+  /* Group Section Container */
+  .duration-group-block {
+    margin-bottom: 36px;
+  }
+  .duration-group-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 12px;
+    margin-bottom: 18px;
+    border-bottom: 2px solid #F1F5F9;
+  }
+  .duration-group-title {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #0F172A;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .duration-group-badge {
+    font-size: 0.78rem;
+    font-weight: 700;
+    background: #EEF2FF;
+    color: var(--primary);
+    padding: 4px 12px;
+    border-radius: 999px;
+  }
+
+  .plans-subgrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 20px;
+  }
+
+  /* Card Item */
   .plan-card-item {
     background: #FFFFFF;
     border: 1px solid #E2E8F0;
@@ -345,40 +415,54 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
   }
   .plan-card-item:hover {
     transform: translateY(-4px);
-    box-shadow: 0 12px 28px rgba(0,0,0,0.1);
-    border-color: var(--primary);
+    box-shadow: 0 12px 28px rgba(0,0,0,0.09);
+    border-color: #38BDF8;
   }
-  .plan-badge-unlimited {
-    background: #8B5CF6;
+  .plan-card-item.featured {
+    border: 2px solid var(--primary);
+    box-shadow: 0 8px 24px rgba(26, 54, 148, 0.12);
+  }
+  .featured-ribbon {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: var(--primary);
     color: #fff;
-    font-size: 0.72rem;
+    font-size: 0.68rem;
     font-weight: 800;
-    padding: 3px 8px;
-    border-radius: 6px;
+    padding: 3px 12px;
+    border-bottom-left-radius: 8px;
+    text-transform: uppercase;
     letter-spacing: 0.5px;
   }
-  .plan-badge-popular {
-    background: #10B981;
-    color: #fff;
-    font-size: 0.72rem;
+
+  .data-hero-text {
+    font-size: 1.8rem;
     font-weight: 800;
-    padding: 3px 8px;
-    border-radius: 6px;
+    color: #0F172A;
+    margin: 4px 0 2px;
+    letter-spacing: -0.5px;
   }
-  .plan-badge-standard {
-    background: #0284C7;
-    color: #fff;
-    font-size: 0.72rem;
+  .plan-price-large {
+    font-size: 1.6rem;
     font-weight: 800;
-    padding: 3px 8px;
-    border-radius: 6px;
+    color: var(--primary);
+  }
+  .price-per-day {
+    font-size: 0.76rem;
+    color: #64748B;
+    font-weight: 600;
   }
 </style>
+
+
 
 <script>
   let currentLoc = 'EU';
@@ -415,7 +499,7 @@
 
   async function fetchAndRenderPlans() {
     const grid = document.getElementById('live-plans-grid');
-    grid.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:30px; color:#94A3B8;">Loading available offers...</div>';
+    grid.innerHTML = '<div style="text-align:center; padding:40px; color:#64748B;"><span style="font-size:1.5rem;">⏳</span><br>Organizing authentic plans...</div>';
 
     try {
       let url = `/api/catalog/packages?location=${currentLoc}`;
@@ -428,63 +512,134 @@
 
       if (!packages.length) {
         grid.innerHTML = `
-          <div style="grid-column:1/-1; text-align:center; padding:40px; background:#F8FAFC; border-radius:12px;">
-            <p style="font-weight:700; color:#334155; margin-bottom:6px;">No offers match this exact combination.</p>
-            <p style="font-size:0.86rem; color:#64748B;">Try selecting "All" durations or "All Offers" to view full availability.</p>
-            <button class="button button-secondary" onclick="setDurationFilter(''); setTypeFilter('');" style="margin-top:12px; font-size:0.84rem;">Clear Filters</button>
+          <div style="text-align:center; padding:48px 20px; background:#F8FAFC; border:1px dashed #CBD5E1; border-radius:16px; margin:20px 0;">
+            <div style="font-size:2rem; margin-bottom:8px;">🔍</div>
+            <h4 style="font-size:1.1rem; color:#1E293B; margin-bottom:6px;">No offers match this exact combination</h4>
+            <p style="font-size:0.88rem; color:#64748B; margin-bottom:14px;">Try selecting "All Durations" or "All Offers" to view the full available catalog.</p>
+            <button class="button button-secondary" onclick="setDurationFilter(''); setTypeFilter('');" style="font-size:0.86rem; padding:8px 18px;">Show All Available Offers</button>
           </div>
         `;
         return;
       }
 
-      grid.innerHTML = packages.map(pkg => {
-        const isUnlimited = pkg.unlimited || pkg.data.toLowerCase().includes('unlimited');
-        const badgeHtml = isUnlimited ? '<span class="plan-badge-unlimited">♾️ UNLIMITED</span>' :
-                          (pkg.validity === '7 Days' && pkg.data === '3 GB' ? '<span class="plan-badge-popular">🔥 BEST SELLER</span>' :
-                          '<span class="plan-badge-standard">⚡ 5G ROAMING</span>');
+      // Group packages by duration for clean, organized presentation
+      const orderGroups = ['7 Days', '30 Days', '15 Days', '3 Days'];
+      const grouped = {};
 
-        const checkoutUrl = `/checkout?code=${encodeURIComponent(pkg.packageCode)}&name=${encodeURIComponent(pkg.name)}&price=${pkg.priceUsd}&data=${encodeURIComponent(pkg.data)}&validity=${encodeURIComponent(pkg.validity)}&location=${currentLoc}`;
+      packages.forEach(p => {
+        const v = p.validity || 'Other';
+        if (!grouped[v]) grouped[v] = [];
+        grouped[v].push(p);
+      });
 
-        return `
-          <div class="plan-card-item">
-            <div>
-              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-                ${badgeHtml}
-                <span style="font-size:0.8rem; font-weight:700; color:#64748B; background:#F1F5F9; padding:3px 8px; border-radius:6px;">${pkg.validity}</span>
+      let finalHtml = '';
+
+      // Render organized groups
+      const allGroupKeys = Object.keys(grouped).sort((a, b) => {
+        const idxA = orderGroups.indexOf(a);
+        const idxB = orderGroups.indexOf(b);
+        return (idxA !== -1 ? idxA : 99) - (idxB !== -1 ? idxB : 99);
+      });
+
+      allGroupKeys.forEach(groupName => {
+        const pkgs = grouped[groupName];
+        let groupIcon = '📅';
+        let groupNote = 'Vacation & Tourist Plans';
+
+        if (groupName.includes('3 Day')) {
+          groupIcon = '⚡';
+          groupNote = 'Short Trips, Stopovers & Transit';
+        } else if (groupName.includes('7 Day')) {
+          groupIcon = '🔥';
+          groupNote = 'Most Popular for 1-Week Vacations';
+        } else if (groupName.includes('15 Day')) {
+          groupIcon = '🚀';
+          groupNote = 'Extended Holiday & Multi-City Travels';
+        } else if (groupName.includes('30 Day')) {
+          groupIcon = '🗓️';
+          groupNote = 'Monthly Stay, Business & Digital Nomads';
+        }
+
+        const cardsHtml = pkgs.map(pkg => {
+          const isUnlimited = pkg.unlimited || pkg.data.toLowerCase().includes('unlimited');
+          const isBestSeller = !isUnlimited && (pkg.data === '3 GB' || pkg.data === '10 GB');
+          
+          const daysNum = parseInt(pkg.validity) || 7;
+          const priceNum = parseFloat(pkg.priceUsd) || 5;
+          const perDay = (priceNum / daysNum).toFixed(2);
+
+          const badgeHtml = isUnlimited ? '<span style="background:#8B5CF6; color:#fff; font-size:0.72rem; font-weight:800; padding:3px 8px; border-radius:6px;">♾️ UNLIMITED</span>' :
+                            (isBestSeller ? '<span style="background:#10B981; color:#fff; font-size:0.72rem; font-weight:800; padding:3px 8px; border-radius:6px;">🔥 POPULAR</span>' :
+                            '<span style="background:#0284C7; color:#fff; font-size:0.72rem; font-weight:800; padding:3px 8px; border-radius:6px;">⚡ HIGH SPEED</span>');
+
+          const checkoutUrl = `/checkout?code=${encodeURIComponent(pkg.packageCode)}&name=${encodeURIComponent(pkg.name)}&price=${pkg.priceUsd}&data=${encodeURIComponent(pkg.data)}&validity=${encodeURIComponent(pkg.validity)}&location=${currentLoc}`;
+
+          return `
+            <div class="plan-card-item ${isBestSeller ? 'featured' : ''}">
+              ${isBestSeller ? '<span class="featured-ribbon">Best Value</span>' : ''}
+              <div>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                  ${badgeHtml}
+                  <span style="font-size:0.8rem; font-weight:700; color:#475569; background:#F1F5F9; padding:3px 8px; border-radius:6px;">${pkg.validity}</span>
+                </div>
+                <div class="data-hero-text" style="${isUnlimited ? 'color:#7C3AED;' : ''}">${pkg.data}</div>
+                <div style="font-size:0.88rem; font-weight:600; color:#334155; margin-bottom:6px;">${pkg.name}</div>
+                <div style="font-size:0.8rem; color:#64748B; margin-bottom:14px; display:flex; align-items:center; gap:4px;">
+                  <span>📶</span> <span>${pkg.network}</span>
+                </div>
+                <ul style="list-style:none; padding:0; margin:0 0 16px; font-size:0.78rem; color:#475569; line-height:1.7;">
+                  <li>✓ Instant Digital Delivery (&lt;60s)</li>
+                  <li>✓ Hotspot &amp; Tethering Included</li>
+                  <li>✓ Tier-1 Prepaid (Zero Bill Shock)</li>
+                </ul>
               </div>
-              <h3 style="font-size:1.6rem; font-weight:800; color:#0F172A; margin:0 0 6px;">${pkg.data}</h3>
-              <div style="font-size:0.86rem; font-weight:600; color:#475569; margin-bottom:6px;">${pkg.name}</div>
-              <div style="font-size:0.8rem; color:#64748B; margin-bottom:14px; display:flex; align-items:center; gap:4px;">
-                <span>📶</span> <span>${pkg.network}</span>
+              <div style="border-top:1px solid #F1F5F9; padding-top:14px;">
+                <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:12px;">
+                  <div>
+                    <span style="font-size:0.75rem; color:#64748B; display:block;">Total Price</span>
+                    <span class="plan-price-large">$${priceNum.toFixed(2)}</span> <span style="font-size:0.75rem; color:#64748B; font-weight:600;">USD</span>
+                  </div>
+                  <div style="text-align:right;">
+                    <span class="price-per-day">$${perDay} / day</span>
+                  </div>
+                </div>
+                <a href="${checkoutUrl}" class="button button-primary" style="display:block; text-align:center; padding:11px; font-weight:700; border-radius:10px; text-decoration:none; font-size:0.92rem; box-shadow:0 2px 8px rgba(26,54,148,0.15);">
+                  Select &amp; Buy eSIM &rarr;
+                </a>
               </div>
-              <ul style="list-style:none; padding:0; margin:0 0 16px; font-size:0.78rem; color:#475569; line-height:1.7;">
-                <li>✓ High-Speed 4G/5G Coverage</li>
-                <li>✓ Hotspot &amp; Tethering Supported</li>
-                <li>✓ Instant QR Code Delivery (&lt;60s)</li>
-              </ul>
             </div>
-            <div style="border-top:1px solid #F1F5F9; padding-top:14px;">
-              <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:12px;">
-                <span style="font-size:0.8rem; color:#64748B; font-weight:600;">Price</span>
-                <span style="font-size:1.5rem; font-weight:800; color:var(--primary);">$${parseFloat(pkg.priceUsd).toFixed(2)} <span style="font-size:0.75rem; font-weight:600; color:#64748B;">USD</span></span>
+          `;
+        }).join('');
+
+        finalHtml += `
+          <div class="duration-group-block">
+            <div class="duration-group-header">
+              <div class="duration-group-title">
+                <span>${groupIcon}</span>
+                <span>${groupName} Options</span>
+                <span class="duration-group-badge">${pkgs.length} Offers</span>
               </div>
-              <a href="${checkoutUrl}" class="button button-primary" style="display:block; text-align:center; padding:10px; font-weight:700; border-radius:10px; text-decoration:none; font-size:0.92rem;">
-                Select &amp; Buy eSIM &rarr;
-              </a>
+              <span style="font-size:0.82rem; color:#64748B;">${groupNote}</span>
+            </div>
+            <div class="plans-subgrid">
+              ${cardsHtml}
             </div>
           </div>
         `;
-      }).join('');
+      });
+
+      grid.innerHTML = finalHtml;
     } catch(err) {
-      grid.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:30px; color:#DC2626;">Error loading offers. Please try again.</div>';
+      grid.innerHTML = '<div style="text-align:center; padding:30px; color:#DC2626;">Error loading offers. Please refresh.</div>';
     }
   }
 
-  // Auto load default Europe plans on start
+  // Auto initialize on load
   document.addEventListener('DOMContentLoaded', () => {
     fetchAndRenderPlans();
   });
 </script>
+
 
 </body>
 </html>
