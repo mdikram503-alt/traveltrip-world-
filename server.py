@@ -780,7 +780,7 @@ def handle_404(e):
 @app.errorhandler(Exception)
 def handle_500(e):
     if request.path.startswith("/api/"):
-        return jsonify({"error": "An unexpected server issue occurred", "code": "INTERNAL_ERROR"}), 500
+        return jsonify({"error": str(e), "code": "INTERNAL_ERROR"}), 500
     p500 = os.path.join(PUBLIC_DIR, "pages", "500.html")
     if os.path.exists(p500):
         return send_from_directory(os.path.join(PUBLIC_DIR, "pages"), "500.html"), 500
