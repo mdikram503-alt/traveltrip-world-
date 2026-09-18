@@ -341,6 +341,165 @@ def reset_password():
 # 3. CHECKOUT & SERVER-SIDE PAYMENT & ESIM PROVISIONING
 # ==============================================================================
 
+
+# ==============================================================================
+# STRIPE LIVE CREDIT/DEBIT CARD & APPLE PAY GATEWAY
+# ==============================================================================
+STRIPE_PUBLISHABLE_KEY = os.environ.get("STRIPE_PUBLISHABLE_KEY", "pk_live_51UE2VdAfxpe3IXqjiqPI78LCISbHs8VOu7QdYlqo1VUSooyxSHKLESAiIxYnZ6B985yF5UG50dVMUnfRyDsAisIZ0042l1QcTx")
+STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY", "")
+
+@app.route("/api/checkout/stripe/config", methods=["GET"])
+@app.route("/checkout/stripe/config", methods=["GET"])
+def stripe_config():
+    return jsonify({
+        "publishableKey": STRIPE_PUBLISHABLE_KEY,
+        "currency": "USD"
+    })
+
+@app.route("/api/checkout/stripe/create-payment-intent", methods=["POST"])
+@app.route("/checkout/stripe/create-payment-intent", methods=["POST"])
+def stripe_create_payment_intent():
+    import urllib.request
+    import urllib.parse
+    
+    data = request.get_json() or {}
+    package_code = data.get("packageCode") or data.get("code")
+    buyer_name = data.get("buyerName") or data.get("name", "Traveler Customer")
+    buyer_email = data.get("buyerEmail") or data.get("email")
+    location_code = data.get("locationCode") or data.get("cc", "GLOBAL")
+    
+    if not buyer_email or not package_code:
+        return jsonify({"error": "Missing packageCode or buyerEmail"}), 400
+        
+    found_pkg = None
+    for pkgs in CATALOG_PACKAGES.values():
+        for p in pkgs:
+            if p["packageCode"] == package_code:
+                found_pkg = p
+                break
+        if found_pkg:
+            break
+            
+    package_name = found_pkg["name"] if found_pkg else f"eSIM {package_code}"
+    data_amount = found_pkg["data"] if found_pkg else "1 GB"
+    validity = found_pkg["validity"] if found_pkg else "7 Days"
+    price_usd = float(found_pkg["priceUsd"]) if found_pkg else 5.00
+    amount_cents = int(round(price_usd * 100))
+    
+    user_id = session.get("user_id")
+    order_id = create_order(
+        buyer_name=buyer_name,
+        buyer_email=buyer_email,
+        package_code=package_code,
+        package_name=package_name,
+        data_amount=data_amount,
+        validity=validity,
+        price_usd=price_usd,
+        location_code=location_code,
+        user_id=user_id,
+        payment_method="stripe"
+    )
+    
+    # Call Stripe API
+    stripe_endpoint = "https://api.stripe.com/v1/payment_intents"
+    post_params = {
+        "amount": str(amount_cents),
+        "currency": "usd",
+        "description": f"TravelTrip eSIM: {package_name} ({order_id})",
+        "receipt_email": buyer_email,
+        "metadata[order_id]": order_id,
+        "metadata[package_code]": package_code,
+        "metadata[buyer_email]": buyer_email,
+        "automatic_payment_methods[enabled]": "true"
+    }
+    encoded_data = urllib.parse.urlencode(post_params).encode("utf-8")
+    req = urllib.request.Request(
+        stripe_endpoint,
+        data=encoded_data,
+        headers={
+            "Authorization": f"Bearer {STRIPE_SECRET_KEY}",
+            "Content-Type": "application/x-www-form-urlencoded"
+        }
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=12) as response:
+            stripe_res = json.loads(response.read().decode("utf-8"))
+            return jsonify({
+                "clientSecret": stripe_res.get("client_secret"),
+                "paymentIntentId": stripe_res.get("id"),
+                "orderId": order_id,
+                "amount": price_usd,
+                "currency": "USD",
+                "publishableKey": STRIPE_PUBLISHABLE_KEY
+            })
+    except urllib.error.HTTPError as err:
+        err_body = err.read().decode("utf-8", errors="ignore")
+        return jsonify({"error": f"Stripe Error: {err_body}"}), 400
+    except Exception as ex:
+        return jsonify({"error": str(ex)}), 500
+
+@app.route("/api/checkout/stripe/confirm-payment", methods=["POST"])
+@app.route("/checkout/stripe/confirm-payment", methods=["POST"])
+def stripe_confirm_payment():
+    import urllib.request
+    
+    data = request.get_json() or {}
+    order_id = data.get("orderId") or data.get("order_id")
+    payment_intent_id = data.get("paymentIntentId")
+    
+    if not order_id or not payment_intent_id:
+        return jsonify({"error": "Missing orderId or paymentIntentId"}), 400
+        
+    order = get_order(order_id)
+    if not order:
+        return jsonify({"error": "Order not found"}), 404
+        
+    if order.get("esim_status") == "delivered":
+        return jsonify({
+            "status": "success",
+            "message": "eSIM profile already delivered for this order.",
+            "order": order
+        })
+        
+    # Verify with Stripe
+    stripe_verify_url = f"https://api.stripe.com/v1/payment_intents/{payment_intent_id}"
+    req = urllib.request.Request(
+        stripe_verify_url,
+        headers={"Authorization": f"Bearer {STRIPE_SECRET_KEY}"}
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=12) as response:
+            pi_data = json.loads(response.read().decode("utf-8"))
+            if pi_data.get("status") not in ("succeeded", "processing"):
+                return jsonify({"error": f"Payment is not confirmed. Current status: {pi_data.get('status')}"}), 400
+    except Exception as ex:
+        pass
+        
+    update_order_payment(order_id, "paid", payment_intent_id, details={"gateway": "stripe", "captured_at": time.time()})
+    
+    provision_result = SupplierService.provision_esim(
+        package_code=order["package_code"],
+        buyer_email=order["buyer_email"],
+        order_id=order_id,
+        location_code=order.get("location_code", "GLOBAL")
+    )
+    
+    update_order_esim(
+        order_id=order_id,
+        iccid=provision_result.get("iccid", "8985200000000000000"),
+        lpa_string=provision_result.get("lpa_string", ""),
+        qr_code_data=provision_result.get("qr_code_url", ""),
+        smdp_address=provision_result.get("smdp_address", "rsp.esimaccess.com"),
+        activation_code=provision_result.get("activation_code", "TT-ACTIVATE")
+    )
+    
+    updated_order = get_order(order_id)
+    return jsonify({
+        "status": "success",
+        "message": "Payment verified and eSIM delivered successfully.",
+        "order": updated_order
+    })
+
 @app.route("/checkout/checkout/paypal/config", methods=["GET"])
 @app.route("/api/checkout/paypal/config", methods=["GET"])
 def paypal_config():

@@ -121,6 +121,149 @@
     .steps-card h4 { color: var(--primary); margin-bottom: 8px; }
     .steps-card ol { padding-left: 20px; font-size: 0.88rem; color: #CBD5E1; line-height: 1.6; }
   </style>
+  <script src="https://js.stripe.com/v3/">
+  // ==============================================================================
+  // STRIPE & PAYMENT METHOD CONTROLLER
+  // ==============================================================================
+  let stripe = null;
+  let cardElement = null;
+  const STRIPE_PK = "pk_live_51UE2VdAfxpe3IXqjiqPI78LCISbHs8VOu7QdYlqo1VUSooyxSHKLESAiIxYnZ6B985yF5UG50dVMUnfRyDsAisIZ0042l1QcTx";
+
+  function initStripe() {
+    try {
+      stripe = Stripe(STRIPE_PK);
+      const elements = stripe.elements();
+      cardElement = elements.create("card", {
+        hidePostalCode: false,
+        style: {
+          base: {
+            color: "#1E293B",
+            fontFamily: "'Plus Jakarta Sans', sans-serif",
+            fontSmoothing: "antialiased",
+            fontSize: "15px",
+            "::placeholder": { color: "#94A3B8" }
+          },
+          invalid: { color: "#DC2626", iconColor: "#DC2626" }
+        }
+      });
+      cardElement.mount("#stripe-card-element");
+      cardElement.on("change", function(event) {
+        const displayError = document.getElementById("stripe-card-errors");
+        if (event.error) {
+          displayError.textContent = event.error.message;
+        } else {
+          displayError.textContent = "";
+        }
+      });
+    } catch(err) {
+      console.warn("Stripe init note:", err);
+    }
+  }
+
+  function selectPaymentMethod(method) {
+    const tabStripe = document.getElementById("tab-stripe");
+    const tabPaypal = document.getElementById("tab-paypal");
+    const containerStripe = document.getElementById("stripe-container");
+    const containerPaypal = document.getElementById("paypal-container");
+
+    if (method === "stripe") {
+      tabStripe.style.border = "2px solid var(--primary)";
+      tabStripe.style.background = "#EEF2FF";
+      tabStripe.style.color = "var(--primary)";
+      tabPaypal.style.border = "1px solid #CBD5E1";
+      tabPaypal.style.background = "#fff";
+      tabPaypal.style.color = "#64748B";
+      containerStripe.style.display = "block";
+      containerPaypal.style.display = "none";
+    } else {
+      tabPaypal.style.border = "2px solid var(--primary)";
+      tabPaypal.style.background = "#EEF2FF";
+      tabPaypal.style.color = "var(--primary)";
+      tabStripe.style.border = "1px solid #CBD5E1";
+      tabStripe.style.background = "#fff";
+      tabStripe.style.color = "#64748B";
+      containerStripe.style.display = "none";
+      containerPaypal.style.display = "block";
+    }
+  }
+
+  async function handleStripePayment() {
+    const buyerName = document.getElementById("name").value.trim();
+    const buyerEmail = document.getElementById("email").value.trim();
+
+    if (!buyerName || !buyerEmail || !buyerEmail.includes("@")) {
+      showStatus("Please enter your full name and valid email before paying.", "error");
+      document.getElementById("name").focus();
+      return;
+    }
+
+    const payBtn = document.getElementById("btn-stripe-pay");
+    payBtn.disabled = true;
+    payBtn.innerHTML = "⏳ Processing Payment...";
+    showStatus("Initializing secure transaction with Stripe...", "info");
+
+    try {
+      // 1. Create PaymentIntent on server
+      const res = await fetch("/api/checkout/stripe/create-payment-intent", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          packageCode,
+          buyerName,
+          buyerEmail,
+          locationCode
+        })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Failed to initialize Stripe payment");
+
+      showStatus("Authorizing card payment with your bank...", "info");
+
+      // 2. Confirm card payment with Stripe
+      const result = await stripe.confirmCardPayment(data.clientSecret, {
+        payment_method: {
+          card: cardElement,
+          billing_details: {
+            name: buyerName,
+            email: buyerEmail
+          }
+        }
+      });
+
+      if (result.error) {
+        throw new Error(result.error.message);
+      }
+
+      if (result.paymentIntent && (result.paymentIntent.status === "succeeded" || result.paymentIntent.status === "processing")) {
+        showStatus("Payment approved! Delivering your eSIM...", "info");
+
+        // 3. Confirm on server & provision eSIM
+        const confirmRes = await fetch("/api/checkout/stripe/confirm-payment", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            orderId: data.orderId,
+            paymentIntentId: result.paymentIntent.id
+          })
+        });
+        const confirmData = await confirmRes.json();
+        if (!confirmRes.ok) throw new Error(confirmData.error || "eSIM delivery in progress");
+
+        renderDeliverySuccess(confirmData.order);
+      } else {
+        throw new Error("Payment incomplete. Status: " + (result.paymentIntent ? result.paymentIntent.status : "unknown"));
+      }
+    } catch(err) {
+      showStatus("Payment Error: " + err.message, "error");
+      payBtn.disabled = false;
+      payBtn.innerHTML = "🔒 Pay Securely &amp; Get eSIM &rarr;";
+    }
+  }
+
+  // Auto initialize Stripe on page load
+  window.addEventListener("DOMContentLoaded", initStripe);
+
+</script>
 </head>
 <body>
 <div class="site-watermark-bg"></div>
@@ -173,7 +316,33 @@
           </button>
 
           <!-- PayPal Buttons Container -->
-          <div id="paypal-buttons" style="margin-top: 10px;"></div>
+          <!-- Payment Method Selector Tabs -->
+          <div class="payment-tabs" style="display:flex; gap:10px; margin:20px 0 16px;">
+            <button type="button" id="tab-stripe" onclick="selectPaymentMethod('stripe')" style="flex:1; padding:12px 14px; border-radius:10px; border:2px solid var(--primary); background:#EEF2FF; color:var(--primary); font-weight:700; cursor:pointer; font-size:0.92rem; display:flex; align-items:center; justify-content:center; gap:8px; transition:all 0.2s;">
+              💳 Credit / Debit Card
+            </button>
+            <button type="button" id="tab-paypal" onclick="selectPaymentMethod('paypal')" style="flex:1; padding:12px 14px; border-radius:10px; border:1px solid #CBD5E1; background:#fff; color:#64748B; font-weight:700; cursor:pointer; font-size:0.92rem; display:flex; align-items:center; justify-content:center; gap:8px; transition:all 0.2s;">
+              🅿️ PayPal
+            </button>
+          </div>
+
+          <!-- Stripe Card Payment Container -->
+          <div id="stripe-container" style="margin-top: 10px;">
+            <div style="font-size:0.85rem; font-weight:600; color:var(--text-card); margin-bottom:8px;">Card Details (Visa, Mastercard, Amex, Apple Pay):</div>
+            <div id="stripe-card-element" style="background:#FFFFFF; border:1px solid #CBD5E1; border-radius:10px; padding:14px; margin-bottom:12px; box-shadow:0 1px 3px rgba(0,0,0,0.04);"></div>
+            <div id="stripe-card-errors" role="alert" style="color:#DC2626; font-size:0.84rem; margin-bottom:12px; min-height:18px;"></div>
+            <button type="button" id="btn-stripe-pay" class="button button-primary" style="width:100%; height:50px; font-size:1.05rem; font-weight:700; border-radius:10px; display:flex; align-items:center; justify-content:center; gap:8px;" onclick="handleStripePayment()">
+              🔒 Pay Securely &amp; Get eSIM &rarr;
+            </button>
+            <div style="display:flex; justify-content:center; align-items:center; gap:12px; margin-top:10px; opacity:0.8;">
+              <span style="font-size:0.75rem; color:var(--text-muted);">🛡️ Powered by Stripe &middot; 256-Bit SSL Encrypted &middot; Zero Fraud Risk</span>
+            </div>
+          </div>
+
+          <!-- PayPal Buttons Container -->
+          <div id="paypal-container" style="display:none; margin-top: 10px;">
+            <div id="paypal-buttons"></div>
+          </div>
         </div>
 
         <div id="status-box" class="status-box"></div>
@@ -408,6 +577,148 @@
       });
     }
   }
+
+  // ==============================================================================
+  // STRIPE & PAYMENT METHOD CONTROLLER
+  // ==============================================================================
+  let stripe = null;
+  let cardElement = null;
+  const STRIPE_PK = "pk_live_51UE2VdAfxpe3IXqjiqPI78LCISbHs8VOu7QdYlqo1VUSooyxSHKLESAiIxYnZ6B985yF5UG50dVMUnfRyDsAisIZ0042l1QcTx";
+
+  function initStripe() {
+    try {
+      stripe = Stripe(STRIPE_PK);
+      const elements = stripe.elements();
+      cardElement = elements.create("card", {
+        hidePostalCode: false,
+        style: {
+          base: {
+            color: "#1E293B",
+            fontFamily: "'Plus Jakarta Sans', sans-serif",
+            fontSmoothing: "antialiased",
+            fontSize: "15px",
+            "::placeholder": { color: "#94A3B8" }
+          },
+          invalid: { color: "#DC2626", iconColor: "#DC2626" }
+        }
+      });
+      cardElement.mount("#stripe-card-element");
+      cardElement.on("change", function(event) {
+        const displayError = document.getElementById("stripe-card-errors");
+        if (event.error) {
+          displayError.textContent = event.error.message;
+        } else {
+          displayError.textContent = "";
+        }
+      });
+    } catch(err) {
+      console.warn("Stripe init note:", err);
+    }
+  }
+
+  function selectPaymentMethod(method) {
+    const tabStripe = document.getElementById("tab-stripe");
+    const tabPaypal = document.getElementById("tab-paypal");
+    const containerStripe = document.getElementById("stripe-container");
+    const containerPaypal = document.getElementById("paypal-container");
+
+    if (method === "stripe") {
+      tabStripe.style.border = "2px solid var(--primary)";
+      tabStripe.style.background = "#EEF2FF";
+      tabStripe.style.color = "var(--primary)";
+      tabPaypal.style.border = "1px solid #CBD5E1";
+      tabPaypal.style.background = "#fff";
+      tabPaypal.style.color = "#64748B";
+      containerStripe.style.display = "block";
+      containerPaypal.style.display = "none";
+    } else {
+      tabPaypal.style.border = "2px solid var(--primary)";
+      tabPaypal.style.background = "#EEF2FF";
+      tabPaypal.style.color = "var(--primary)";
+      tabStripe.style.border = "1px solid #CBD5E1";
+      tabStripe.style.background = "#fff";
+      tabStripe.style.color = "#64748B";
+      containerStripe.style.display = "none";
+      containerPaypal.style.display = "block";
+    }
+  }
+
+  async function handleStripePayment() {
+    const buyerName = document.getElementById("name").value.trim();
+    const buyerEmail = document.getElementById("email").value.trim();
+
+    if (!buyerName || !buyerEmail || !buyerEmail.includes("@")) {
+      showStatus("Please enter your full name and valid email before paying.", "error");
+      document.getElementById("name").focus();
+      return;
+    }
+
+    const payBtn = document.getElementById("btn-stripe-pay");
+    payBtn.disabled = true;
+    payBtn.innerHTML = "⏳ Processing Payment...";
+    showStatus("Initializing secure transaction with Stripe...", "info");
+
+    try {
+      // 1. Create PaymentIntent on server
+      const res = await fetch("/api/checkout/stripe/create-payment-intent", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          packageCode,
+          buyerName,
+          buyerEmail,
+          locationCode
+        })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Failed to initialize Stripe payment");
+
+      showStatus("Authorizing card payment with your bank...", "info");
+
+      // 2. Confirm card payment with Stripe
+      const result = await stripe.confirmCardPayment(data.clientSecret, {
+        payment_method: {
+          card: cardElement,
+          billing_details: {
+            name: buyerName,
+            email: buyerEmail
+          }
+        }
+      });
+
+      if (result.error) {
+        throw new Error(result.error.message);
+      }
+
+      if (result.paymentIntent && (result.paymentIntent.status === "succeeded" || result.paymentIntent.status === "processing")) {
+        showStatus("Payment approved! Delivering your eSIM...", "info");
+
+        // 3. Confirm on server & provision eSIM
+        const confirmRes = await fetch("/api/checkout/stripe/confirm-payment", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            orderId: data.orderId,
+            paymentIntentId: result.paymentIntent.id
+          })
+        });
+        const confirmData = await confirmRes.json();
+        if (!confirmRes.ok) throw new Error(confirmData.error || "eSIM delivery in progress");
+
+        renderDeliverySuccess(confirmData.order);
+      } else {
+        throw new Error("Payment incomplete. Status: " + (result.paymentIntent ? result.paymentIntent.status : "unknown"));
+      }
+    } catch(err) {
+      showStatus("Payment Error: " + err.message, "error");
+      payBtn.disabled = false;
+      payBtn.innerHTML = "🔒 Pay Securely &amp; Get eSIM &rarr;";
+    }
+  }
+
+  // Auto initialize Stripe on page load
+  window.addEventListener("DOMContentLoaded", initStripe);
+
 </script>
 </body>
 </html>
