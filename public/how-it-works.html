@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>How eSIM Works · iPhone & Android Step-by-Step Guide · TravelTrip World</title>
+  <meta name="description" content="Simple 3-step guide to installing and activating your TravelTrip eSIM profile on iPhone and Android devices. No physical SIM needed.">
+  <link rel="canonical" href="https://traveltrip.world/how-it-works">
+  <link rel="stylesheet" href="/css/site.css">
+  <style>
+    .guide-tabs {
+      display: flex;
+      gap: 12px;
+      margin: 28px 0 24px;
+    }
+    .guide-tab-btn {
+      padding: 10px 24px;
+      border-radius: var(--radius-pill);
+      background: #FFFFFF;
+      border: 1px solid var(--border);
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      cursor: pointer;
+    }
+    .guide-tab-btn.active {
+      background: var(--primary);
+      color: #FFFFFF;
+      border-color: var(--primary);
+    }
+    .guide-step-card {
+      background: #FFFFFF;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 18px;
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+      box-shadow: var(--shadow-card);
+    }
+    .step-num {
+      width: 44px;
+      height: 44px;
+      background: var(--primary);
+      color: #FFFFFF;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+  </style>
+</head>
+<body>
+<div class="site-watermark-bg"></div>
+<header class="top">
+  <div class="shell top">
+    <a class="brand" href="/">
+      <img src="/images/logo-transparent.png" alt="Traveler traveltrip.world" class="brand-logo-img">
+      <div class="brand-text-wrap">
+        <span class="brand-title">traveltrip<span class="gold-accent">.world</span></span>
+        <span class="brand-sub">Traveler eSIM</span>
+      </div>
+    </a>
+    <nav class="nav">
+      <a href="/">Home</a>
+      <a href="/destinations">Destinations</a>
+      <a href="/how-it-works">How It Works</a>
+      <a href="/compatible-devices">Devices</a>
+      <a href="/faq">FAQ</a>
+      <a href="/pages/account.html">My eSIMs</a>
+    </nav>
+    <div class="nav-right" id="nav-auth-slot">
+      <span class="currency-badge">USD ▾</span>
+      <a class="button button-secondary" href="/pages/login.html">Sign In</a>
+    </div>
+  </div>
+</header>
+
+
+<main class="shell" style="padding-top:32px; padding-bottom:60px; max-width:860px;">
+  <h1 class="section-heading-dark" style="font-size:2.4rem;">How TravelTrip eSIM Works</h1>
+  <p class="muted" style="font-size:1.05rem; margin-top:8px;">
+    An eSIM is a digital SIM card built into your phone. Follow this step-by-step guide to get connected in under 2 minutes.
+  </p>
+
+  <div class="guide-tabs">
+    <button id="btn-ios" class="guide-tab-btn active" onclick="switchGuide('ios')">🍎 Apple iPhone Setup</button>
+    <button id="btn-android" class="guide-tab-btn" onclick="switchGuide('android')">🤖 Android & Samsung Setup</button>
+  </div>
+
+  <!-- iOS Guide -->
+  <div id="guide-ios">
+    <div class="guide-step-card watermark-shade">
+      <div class="step-num">1</div>
+      <div>
+        <h3 style="font-size:1.15rem; margin-bottom:6px;">Connect to Wi-Fi</h3>
+        <p class="muted">Make sure your iPhone is connected to an active Wi-Fi network (at home, airport, or hotel) before scanning.</p>
+      </div>
+    </div>
+    <div class="guide-step-card watermark-shade">
+      <div class="step-num">2</div>
+      <div>
+        <h3 style="font-size:1.15rem; margin-bottom:6px;">Open Camera & Scan QR Code</h3>
+        <p class="muted">
+          Go to <strong>Settings → Cellular (or Mobile Data) → Add eSIM</strong>.<br>
+          Select <strong>Use QR Code</strong> and point your camera at the QR code shown on your TravelTrip account screen or order confirmation.
+        </p>
+      </div>
+    </div>
+    <div class="guide-step-card watermark-shade">
+      <div class="step-num">3</div>
+      <div>
+        <h3 style="font-size:1.15rem; margin-bottom:6px;">Turn On Data Roaming at Destination</h3>
+        <p class="muted">
+          Label your new plan as <em>Travel</em>. When you land at your destination airport, set <strong>Cellular Data</strong> to your TravelTrip eSIM and switch <strong>Data Roaming: ON</strong>. You're online!
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Android Guide -->
+  <div id="guide-android" style="display:none;">
+    <div class="guide-step-card watermark-shade">
+      <div class="step-num">1</div>
+      <div>
+        <h3 style="font-size:1.15rem; margin-bottom:6px;">Connect to Wi-Fi</h3>
+        <p class="muted">Ensure your phone has Wi-Fi connectivity to download the carrier eSIM profile.</p>
+      </div>
+    </div>
+    <div class="guide-step-card watermark-shade">
+      <div class="step-num">2</div>
+      <div>
+        <h3 style="font-size:1.15rem; margin-bottom:6px;">Go to SIM Manager & Add eSIM</h3>
+        <p class="muted">
+          Open <strong>Settings → Connections / Network & Internet → SIM Manager → Add eSIM</strong>.<br>
+          Tap <strong>Scan QR code from service provider</strong> and scan your TravelTrip QR.
+        </p>
+      </div>
+    </div>
+    <div class="guide-step-card watermark-shade">
+      <div class="step-num">3</div>
+      <div>
+        <h3 style="font-size:1.15rem; margin-bottom:6px;">Enable Mobile Data & Roaming</h3>
+        <p class="muted">
+          Choose TravelTrip as your primary Mobile Data SIM and ensure <strong>Roaming</strong> is enabled under Mobile Network settings.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:36px; text-align:center;">
+    <a href="/destinations" class="button button-lg">Find Your Plan & Get Started &rarr;</a>
+  </div>
+</main>
+<footer>
+  <div class="shell footer-inner">
+    <div class="footer-left">
+      <div class="footer-brand">TravelTrip World</div>
+      <p class="footer-text">
+        Traveler eSIM is owned by <strong>Mohammad Akram</strong>.<br>
+        <strong>ABDULLAH TRADING - F.Z.C.</strong> Office C1-1F-SF0218, Ajman Free Zone C1 Building,<br>
+        Ajman Free Zone, UAE. License: 51845.<br>
+        Official WhatsApp Support: <a href="https://wa.me/971524413931" style="color:var(--primary); font-weight:700;">+971 52 441 3931</a>
+      </p>
+    </div>
+    <div class="footer-links">
+      <a href="/destinations">Destinations</a>
+      <a href="/how-it-works">How It Works</a>
+      <a href="/compatible-devices">Compatibility</a>
+      <a href="/faq">FAQ</a>
+      <a href="/terms">Terms</a>
+      <a href="/privacy">Privacy</a>
+      <a href="/refund-policy">Refund Policy</a>
+    </div>
+  </div>
+</footer>
+<a href="https://wa.me/971524413931" class="floating-whatsapp" target="_blank" rel="noopener">
+  <span>💬 WhatsApp: +971 52 441 3931</span>
+</a>
+
+<script>
+  function switchGuide(type) {
+    if (type === 'ios') {
+      document.getElementById('btn-ios').classList.add('active');
+      document.getElementById('btn-android').classList.remove('active');
+      document.getElementById('guide-ios').style.display = 'block';
+      document.getElementById('guide-android').style.display = 'none';
+    } else {
+      document.getElementById('btn-android').classList.add('active');
+      document.getElementById('btn-ios').classList.remove('active');
+      document.getElementById('guide-ios').style.display = 'none';
+      document.getElementById('guide-android').style.display = 'block';
+    }
+  }
+</script>
+</body>
+</html>

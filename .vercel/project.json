@@ -1,0 +1,16 @@
+{
+  "projectId": "prj_KLMtAPoUwjTJEEmXL5q0j9aOLjoN",
+  "orgId": "team_AyxWJ55jeZ30OQYvVWmFHwGy",
+  "projectName": "traveler-esim",
+  "settings": {
+    "createdAt": 1788665163203,
+    "framework": null,
+    "devCommand": null,
+    "installCommand": null,
+    "buildCommand": null,
+    "outputDirectory": null,
+    "rootDirectory": null,
+    "directoryListing": false,
+    "nodeVersion": "24.x"
+  }
+}

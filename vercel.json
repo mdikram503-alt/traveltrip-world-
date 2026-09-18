@@ -4,84 +4,60 @@
   "trailingSlash": false,
   "rewrites": [
     {
-      "source": "/css/(.*)",
-      "destination": "/public/css/$1"
-    },
-    {
-      "source": "/js/(.*)",
-      "destination": "/public/js/$1"
-    },
-    {
-      "source": "/images/(.*)",
-      "destination": "/public/images/$1"
-    },
-    {
-      "source": "/downloads/(.*)",
-      "destination": "/public/downloads/$1"
-    },
-    {
-      "source": "/pages/(.*)",
-      "destination": "/public/pages/$1"
-    },
-    {
       "source": "/destinations",
-      "destination": "/public/pages/destinations.html"
+      "destination": "/destinations.html"
     },
     {
       "source": "/how-it-works",
-      "destination": "/public/pages/how-it-works.html"
+      "destination": "/how-it-works.html"
     },
     {
       "source": "/compatible-devices",
-      "destination": "/public/pages/compatibility.html"
+      "destination": "/compatible-devices.html"
+    },
+    {
+      "source": "/compatibility",
+      "destination": "/compatibility.html"
     },
     {
       "source": "/faq",
-      "destination": "/public/pages/faq.html"
+      "destination": "/faq.html"
     },
     {
       "source": "/terms",
-      "destination": "/public/pages/terms.html"
+      "destination": "/terms.html"
     },
     {
       "source": "/privacy",
-      "destination": "/public/pages/privacy.html"
+      "destination": "/privacy.html"
     },
     {
       "source": "/refund-policy",
-      "destination": "/public/pages/refund-policy.html"
+      "destination": "/refund-policy.html"
     },
     {
-      "source": "/robots.txt",
-      "destination": "/public/robots.txt"
+      "source": "/login",
+      "destination": "/login.html"
     },
     {
-      "source": "/sitemap.xml",
-      "destination": "/public/sitemap.xml"
+      "source": "/account",
+      "destination": "/account.html"
     },
     {
-      "source": "/manifest.json",
-      "destination": "/public/manifest.json"
-    },
-    {
-      "source": "/admin",
-      "destination": "/public/pages/admin.html"
+      "source": "/checkout",
+      "destination": "/checkout.html"
     },
     {
       "source": "/api/(.*)",
-      "destination": "/api/index.py"
+      "destination": "/api"
     },
     {
       "source": "/catalog/(.*)",
-      "destination": "/api/index.py"
+      "destination": "/api"
     },
     {
       "source": "/checkout/(.*)",
-      "destination": "/api/index.py"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/api/index.py"
+      "destination": "/api"
     }
   ],
   "headers": [
