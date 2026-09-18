@@ -10,9 +10,19 @@ import secrets
 import json
 from datetime import datetime
 
-DB_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
-os.makedirs(DB_DIR, exist_ok=True)
-DB_PATH = os.path.join(DB_DIR, "traveltrip.db")
+# Check if running in serverless/read-only environment (e.g. Vercel / AWS Lambda)
+IS_SERVERLESS = bool(os.environ.get("VERCEL") or os.environ.get("AWS_LAMBDA_FUNCTION_NAME"))
+
+if IS_SERVERLESS:
+    DB_DIR = "/tmp"
+    DB_PATH = os.path.join(DB_DIR, "traveltrip.db")
+else:
+    DB_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
+    try:
+        os.makedirs(DB_DIR, exist_ok=True)
+    except Exception:
+        DB_DIR = "/tmp"
+    DB_PATH = os.path.join(DB_DIR, "traveltrip.db")
 
 def get_db():
     conn = sqlite3.connect(DB_PATH, timeout=30.0)
