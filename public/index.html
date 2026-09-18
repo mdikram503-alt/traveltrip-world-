@@ -119,12 +119,12 @@
       <a href="/how-it-works">How It Works</a>
       <a href="/compatible-devices">Devices</a>
       <a href="/faq">FAQ</a>
-      <a href="/pages/account.html">My eSIMs</a>
+      <a href="/account">My eSIMs</a>
     </nav>
     
     <div class="nav-right" id="nav-auth-slot">
       <span class="currency-badge">USD ▾</span>
-      <a class="button button-secondary" href="/pages/login.html" id="auth-btn">Sign In</a>
+      <a class="button button-secondary" href="/login" id="auth-btn">Sign In</a>
       
     </div>
   </div>
@@ -174,7 +174,7 @@
     
     <div class="destinations-grid">
       <!-- Europe -->
-      <a href="/pages/checkout.html?pkg=EU-1GB-7D" class="dest-card dest-eu">
+      <a href="/checkout?pkg=EU-1GB-7D" class="dest-card dest-eu">
         <span class="dest-code">EU</span>
         <div>
           <h3 class="dest-name">Europe</h3>
@@ -184,7 +184,7 @@
       </a>
 
       <!-- France -->
-      <a href="/pages/checkout.html?pkg=EU-3GB-30D" class="dest-card dest-fr">
+      <a href="/checkout?pkg=EU-3GB-30D" class="dest-card dest-fr">
         <span class="dest-code">FR</span>
         <div>
           <h3 class="dest-name">France</h3>
@@ -194,7 +194,7 @@
       </a>
 
       <!-- Gulf (GCC) -->
-      <a href="/pages/checkout.html?pkg=GCC-1GB-7D" class="dest-card dest-gcc">
+      <a href="/checkout?pkg=GCC-1GB-7D" class="dest-card dest-gcc">
         <span class="dest-code">GCC</span>
         <div>
           <h3 class="dest-name">Gulf (GCC)</h3>
@@ -204,7 +204,7 @@
       </a>
 
       <!-- Japan -->
-      <a href="/pages/checkout.html?pkg=JP-1GB-7D" class="dest-card dest-jp">
+      <a href="/checkout?pkg=JP-1GB-7D" class="dest-card dest-jp">
         <span class="dest-code">JP</span>
         <div>
           <h3 class="dest-name">Japan</h3>
@@ -214,7 +214,7 @@
       </a>
 
       <!-- Singapore -->
-      <a href="/pages/checkout.html?pkg=SG-1GB-7D" class="dest-card dest-sg">
+      <a href="/checkout?pkg=SG-1GB-7D" class="dest-card dest-sg">
         <span class="dest-code">SG</span>
         <div>
           <h3 class="dest-name">Singapore</h3>
@@ -224,7 +224,7 @@
       </a>
 
       <!-- Thailand -->
-      <a href="/pages/checkout.html?pkg=TH-50GB-10D" class="dest-card dest-th">
+      <a href="/checkout?pkg=TH-50GB-10D" class="dest-card dest-th">
         <span class="dest-code">TH</span>
         <div>
           <h3 class="dest-name">Thailand</h3>
@@ -235,7 +235,7 @@
     </div>
 
     <div style="font-size:0.92rem; font-weight:700; color:var(--primary);">
-      • <a href="/pages/checkout.html" style="color:var(--primary); text-decoration:none;">All destinations</a>
+      • <a href="/checkout" style="color:var(--primary); text-decoration:none;">All destinations</a>
     </div>
   </section>
 
@@ -283,14 +283,14 @@
         slot.innerHTML = `
           <span class="currency-badge">USD ▾</span>
           <span style="font-size:0.88rem; font-weight:700; color:var(--primary-dark);">Hi, ${d.user.name.split(' ')[0]}</span>
-          <a class="button button-secondary" href="/pages/account.html" style="padding:6px 14px; font-size:0.84rem;">My eSIMs</a>
+          <a class="button button-secondary" href="/account" style="padding:6px 14px; font-size:0.84rem;">My eSIMs</a>
           <button class="button" onclick="handleLogout()" style="padding:6px 14px; font-size:0.84rem; background:#FEF2F2; color:#DC2626; border:1px solid #FECACA; box-shadow:none;">Log Out</button>
         `;
       } else {
         slot.innerHTML = `
           <span class="currency-badge">USD ▾</span>
-          <a class="button button-secondary" href="/pages/login.html">Sign In</a>
-          <a class="button" href="/pages/login.html?tab=register" style="padding:8px 18px; font-size:0.86rem;">Register</a>
+          <a class="button button-secondary" href="/login">Sign In</a>
+          <a class="button" href="/login?tab=register" style="padding:8px 18px; font-size:0.86rem;">Register</a>
         `;
       }
     } catch(e) {}

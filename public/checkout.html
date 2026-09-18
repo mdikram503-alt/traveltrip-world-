@@ -136,11 +136,11 @@
     </a>
     <nav class="nav">
       <a href="/">Home</a>
-      <a href="/pages/account.html">My eSIMs</a>
-      <a href="/pages/account.html">Orders</a>
+      <a href="/account">My eSIMs</a>
+      <a href="/account">Orders</a>
           </nav>
     <div class="right" id="auth-nav-slot">
-      <a class="button button-secondary" href="/pages/login.html">Sign In</a>
+      <a class="button button-secondary" href="/login">Sign In</a>
     </div>
   </div>
 </header>
@@ -253,7 +253,7 @@
     </div>
 
     <div style="margin: 24px 0;">
-      <a class="button" href="/pages/account.html">View in My eSIMs Account</a>
+      <a class="button" href="/account">View in My eSIMs Account</a>
       <a class="button button-secondary" href="/" style="margin-left: 12px;">Browse More Plans</a>
     </div>
   </section>
@@ -295,7 +295,7 @@
         document.getElementById("email").value = data.user.email;
         document.getElementById("auth-nav-slot").innerHTML = `
           <span style="font-size:0.85rem; margin-right:8px; color:#fff;">👤 ${data.user.name}</span>
-          <a class="button button-secondary" href="/pages/account.html">My Account</a>
+          <a class="button button-secondary" href="/account">My Account</a>
         `;
       }
     } catch(e) {}

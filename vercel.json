@@ -113,5 +113,37 @@
         }
       ]
     }
+  ],
+  "redirects": [
+    {
+      "source": "/pages/login.html",
+      "destination": "/login",
+      "permanent": true
+    },
+    {
+      "source": "/pages/login",
+      "destination": "/login",
+      "permanent": true
+    },
+    {
+      "source": "/pages/destinations.html",
+      "destination": "/destinations",
+      "permanent": true
+    },
+    {
+      "source": "/pages/how-it-works.html",
+      "destination": "/how-it-works",
+      "permanent": true
+    },
+    {
+      "source": "/pages/compatibility.html",
+      "destination": "/compatible-devices",
+      "permanent": true
+    },
+    {
+      "source": "/pages/faq.html",
+      "destination": "/faq",
+      "permanent": true
+    }
   ]
 }
