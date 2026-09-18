@@ -1,3 +1,4 @@
+import urllib.parse
 """
 TravelTrip World — Production Backend Server
 Full-Stack Server: Customer Accounts, Checkout & Payment Verification,
@@ -65,84 +66,144 @@ def handle_options(path):
 # ==============================================================================
 
 CATALOG_PACKAGES = {
-    "ASIA": [
-        {"packageCode": "ASIA-1GB-7D", "name": "Asia+ 1GB Explorer (7 Days)", "data": "1 GB", "validity": "7 Days", "network": "5G Tier-1 Multi-Carrier", "priceUsd": "4.00"},
-        {"packageCode": "ASIA-3GB-15D", "name": "Asia+ 3GB Standard (15 Days)", "data": "3 GB", "validity": "15 Days", "network": "5G Tier-1 Multi-Carrier", "priceUsd": "8.50"},
-        {"packageCode": "ASIA-5GB-30D", "name": "Asia+ 5GB Traveler (30 Days)", "data": "5 GB", "validity": "30 Days", "network": "5G Tier-1 Multi-Carrier", "priceUsd": "13.50"},
-        {"packageCode": "ASIA-10GB-30D", "name": "Asia+ 10GB Pro (30 Days)", "data": "10 GB", "validity": "30 Days", "network": "5G Tier-1 Multi-Carrier", "priceUsd": "22.00"},
-        {"packageCode": "ASIA-20GB-30D", "name": "Asia+ 20GB Premium (30 Days)", "data": "20 GB", "validity": "30 Days", "network": "5G Tier-1 Multi-Carrier", "priceUsd": "36.00"}
-    ],
-    "EU": [
-        {"packageCode": "EU-1GB-7D", "name": "Europe 1GB (7 Days)", "data": "1 GB", "validity": "7 Days", "network": "4G/5G LTE", "priceUsd": "4.50"},
-        {"packageCode": "EU-3GB-30D", "name": "Europe 3GB (30 Days)", "data": "3 GB", "validity": "30 Days", "network": "4G/5G LTE", "priceUsd": "9.00"},
-        {"packageCode": "EU-5GB-30D", "name": "Europe 5GB (30 Days)", "data": "5 GB", "validity": "30 Days", "network": "4G/5G LTE", "priceUsd": "14.00"},
-        {"packageCode": "EU-10GB-30D", "name": "Europe 10GB (30 Days)", "data": "10 GB", "validity": "30 Days", "network": "4G/5G LTE", "priceUsd": "22.50"},
-        {"packageCode": "EU-20GB-30D", "name": "Europe 20GB (30 Days)", "data": "20 GB", "validity": "30 Days", "network": "4G/5G LTE", "priceUsd": "35.00"}
-    ],
-    "GCC": [
-        {"packageCode": "GCC-1GB-7D", "name": "Gulf (GCC) 1GB (7 Days)", "data": "1 GB", "validity": "7 Days", "network": "5G High Speed", "priceUsd": "6.00"},
-        {"packageCode": "GCC-3GB-15D", "name": "Gulf (GCC) 3GB (15 Days)", "data": "3 GB", "validity": "15 Days", "network": "5G High Speed", "priceUsd": "15.00"},
-        {"packageCode": "GCC-5GB-30D", "name": "Gulf (GCC) 5GB (30 Days)", "data": "5 GB", "validity": "30 Days", "network": "5G High Speed", "priceUsd": "24.00"},
-        {"packageCode": "GCC-10GB-30D", "name": "Gulf (GCC) 10GB (30 Days)", "data": "10 GB", "validity": "30 Days", "network": "5G High Speed", "priceUsd": "42.00"}
-    ],
-    "JP": [
-        {"packageCode": "JP-1GB-7D", "name": "Japan 1GB (7 Days)", "data": "1 GB", "validity": "7 Days", "network": "Docomo/Softbank 5G", "priceUsd": "4.00"},
-        {"packageCode": "JP-3GB-15D", "name": "Japan 3GB (15 Days)", "data": "3 GB", "validity": "15 Days", "network": "Docomo/Softbank 5G", "priceUsd": "8.50"},
-        {"packageCode": "JP-5GB-30D", "name": "Japan 5GB (30 Days)", "data": "5 GB", "validity": "30 Days", "network": "Docomo/Softbank 5G", "priceUsd": "13.00"},
-        {"packageCode": "JP-10GB-30D", "name": "Japan 10GB (30 Days)", "data": "10 GB", "validity": "30 Days", "network": "Docomo/Softbank 5G", "priceUsd": "21.00"}
-    ],
-    "FR": [
-        {"packageCode": "FR-1GB-7D", "name": "France 1GB (7 Days)", "data": "1 GB", "validity": "7 Days", "network": "Orange/SFR 5G", "priceUsd": "4.50"},
-        {"packageCode": "FR-5GB-30D", "name": "France 5GB (30 Days)", "data": "5 GB", "validity": "30 Days", "network": "Orange/SFR 5G", "priceUsd": "14.00"},
-        {"packageCode": "FR-10GB-30D", "name": "France 10GB (30 Days)", "data": "10 GB", "validity": "30 Days", "network": "Orange/SFR 5G", "priceUsd": "22.50"}
-    ],
-    "SG": [
-        {"packageCode": "SG-1GB-7D", "name": "Singapore 1GB (7 Days)", "data": "1 GB", "validity": "7 Days", "network": "Singtel 5G", "priceUsd": "3.50"},
-        {"packageCode": "SG-5GB-30D", "name": "Singapore 5GB (30 Days)", "data": "5 GB", "validity": "30 Days", "network": "Singtel 5G", "priceUsd": "11.00"},
-        {"packageCode": "SG-10GB-30D", "name": "Singapore 10GB (30 Days)", "data": "10 GB", "validity": "30 Days", "network": "Singtel 5G", "priceUsd": "18.00"}
-    ],
-    "TH": [
-        {"packageCode": "TH-50GB-10D", "name": "Thailand Tourist 50GB (10 Days)", "data": "50 GB", "validity": "10 Days", "network": "True/AIS 5G", "priceUsd": "9.90"},
-        {"packageCode": "TH-Unlimited-8D", "name": "Thailand Unlimited (8 Days)", "data": "Unlimited", "validity": "8 Days", "network": "AIS 5G", "priceUsd": "8.50"}
-    ],
     "BD": [
-        {"packageCode": "BD-1GB-7D", "name": "Bangladesh 1GB (7 Days)", "data": "1 GB", "validity": "7 Days", "network": "Grameenphone/Robi 4G/5G", "priceUsd": "4.00"},
-        {"packageCode": "BD-3GB-15D", "name": "Bangladesh 3GB (15 Days)", "data": "3 GB", "validity": "15 Days", "network": "Grameenphone/Robi 4G/5G", "priceUsd": "8.50"},
-        {"packageCode": "BD-5GB-30D", "name": "Bangladesh 5GB (30 Days)", "data": "5 GB", "validity": "30 Days", "network": "Grameenphone/Robi 4G/5G", "priceUsd": "13.50"},
-        {"packageCode": "BD-10GB-30D", "name": "Bangladesh 10GB (30 Days)", "data": "10 GB", "validity": "30 Days", "network": "Grameenphone/Robi 4G/5G", "priceUsd": "22.00"},
-        {"packageCode": "BD-20GB-30D", "name": "Bangladesh 20GB (30 Days)", "data": "20 GB", "validity": "30 Days", "network": "Grameenphone/Robi 4G/5G", "priceUsd": "35.00"}
+        {"packageCode": "BD-1GB-3D", "name": "Bangladesh 1GB (3 Days)", "data": "1 GB", "validity": "3 Days", "network": "Grameenphone/Robi 4G/5G", "priceUsd": "2.80", "unlimited": False},
+        {"packageCode": "BD-3GB-3D", "name": "Bangladesh 3GB (3 Days)", "data": "3 GB", "validity": "3 Days", "network": "Grameenphone/Robi 4G/5G", "priceUsd": "4.90", "unlimited": False},
+        {"packageCode": "BD-UNL-3D", "name": "Bangladesh Unlimited (3 Days)", "data": "Unlimited", "validity": "3 Days", "network": "Grameenphone/Robi 4G/5G", "priceUsd": "7.50", "unlimited": True},
+        {"packageCode": "BD-1GB-7D", "name": "Bangladesh 1GB (7 Days)", "data": "1 GB", "validity": "7 Days", "network": "Grameenphone/Robi 4G/5G", "priceUsd": "4.00", "unlimited": False},
+        {"packageCode": "BD-3GB-7D", "name": "Bangladesh 3GB (7 Days)", "data": "3 GB", "validity": "7 Days", "network": "Grameenphone/Robi 4G/5G", "priceUsd": "6.90", "unlimited": False},
+        {"packageCode": "BD-UNL-7D", "name": "Bangladesh Unlimited (7 Days)", "data": "Unlimited", "validity": "7 Days", "network": "Grameenphone/Robi 4G/5G", "priceUsd": "12.50", "unlimited": True},
+        {"packageCode": "BD-3GB-15D", "name": "Bangladesh 3GB (15 Days)", "data": "3 GB", "validity": "15 Days", "network": "Grameenphone/Robi 4G/5G", "priceUsd": "8.50", "unlimited": False},
+        {"packageCode": "BD-5GB-15D", "name": "Bangladesh 5GB (15 Days)", "data": "5 GB", "validity": "15 Days", "network": "Grameenphone/Robi 4G/5G", "priceUsd": "11.50", "unlimited": False},
+        {"packageCode": "BD-UNL-15D", "name": "Bangladesh Unlimited (15 Days)", "data": "Unlimited", "validity": "15 Days", "network": "Grameenphone/Robi 4G/5G", "priceUsd": "21.00", "unlimited": True},
+        {"packageCode": "BD-5GB-30D", "name": "Bangladesh 5GB (30 Days)", "data": "5 GB", "validity": "30 Days", "network": "Grameenphone/Robi 4G/5G", "priceUsd": "13.50", "unlimited": False},
+        {"packageCode": "BD-10GB-30D", "name": "Bangladesh 10GB (30 Days)", "data": "10 GB", "validity": "30 Days", "network": "Grameenphone/Robi 4G/5G", "priceUsd": "22.00", "unlimited": False},
+        {"packageCode": "BD-20GB-30D", "name": "Bangladesh 20GB (30 Days)", "data": "20 GB", "validity": "30 Days", "network": "Grameenphone/Robi 4G/5G", "priceUsd": "35.00", "unlimited": False},
+        {"packageCode": "BD-UNL-30D", "name": "Bangladesh Unlimited (30 Days)", "data": "Unlimited", "validity": "30 Days", "network": "Grameenphone/Robi 4G/5G", "priceUsd": "39.00", "unlimited": True}
     ],
     "IN": [
-        {"packageCode": "IN-1GB-7D", "name": "India 1GB (7 Days)", "data": "1 GB", "validity": "7 Days", "network": "Jio/Airtel 4G/5G", "priceUsd": "3.80"},
-        {"packageCode": "IN-3GB-15D", "name": "India 3GB (15 Days)", "data": "3 GB", "validity": "15 Days", "network": "Jio/Airtel 4G/5G", "priceUsd": "7.50"},
-        {"packageCode": "IN-5GB-30D", "name": "India 5GB (30 Days)", "data": "5 GB", "validity": "30 Days", "network": "Jio/Airtel 4G/5G", "priceUsd": "11.50"},
-        {"packageCode": "IN-10GB-30D", "name": "India 10GB (30 Days)", "data": "10 GB", "validity": "30 Days", "network": "Jio/Airtel 4G/5G", "priceUsd": "19.50"},
-        {"packageCode": "IN-20GB-30D", "name": "India 20GB (30 Days)", "data": "20 GB", "validity": "30 Days", "network": "Jio/Airtel 4G/5G", "priceUsd": "32.00"}
+        {"packageCode": "IN-1GB-3D", "name": "India 1GB (3 Days)", "data": "1 GB", "validity": "3 Days", "network": "Jio/Airtel 4G/5G", "priceUsd": "2.50", "unlimited": False},
+        {"packageCode": "IN-3GB-3D", "name": "India 3GB (3 Days)", "data": "3 GB", "validity": "3 Days", "network": "Jio/Airtel 4G/5G", "priceUsd": "4.50", "unlimited": False},
+        {"packageCode": "IN-UNL-3D", "name": "India Unlimited (3 Days)", "data": "Unlimited", "validity": "3 Days", "network": "Jio/Airtel 4G/5G", "priceUsd": "6.90", "unlimited": True},
+        {"packageCode": "IN-1GB-7D", "name": "India 1GB (7 Days)", "data": "1 GB", "validity": "7 Days", "network": "Jio/Airtel 4G/5G", "priceUsd": "3.80", "unlimited": False},
+        {"packageCode": "IN-3GB-7D", "name": "India 3GB (7 Days)", "data": "3 GB", "validity": "7 Days", "network": "Jio/Airtel 4G/5G", "priceUsd": "6.20", "unlimited": False},
+        {"packageCode": "IN-UNL-7D", "name": "India Unlimited (7 Days)", "data": "Unlimited", "validity": "7 Days", "network": "Jio/Airtel 4G/5G", "priceUsd": "11.50", "unlimited": True},
+        {"packageCode": "IN-3GB-15D", "name": "India 3GB (15 Days)", "data": "3 GB", "validity": "15 Days", "network": "Jio/Airtel 4G/5G", "priceUsd": "7.50", "unlimited": False},
+        {"packageCode": "IN-5GB-15D", "name": "India 5GB (15 Days)", "data": "5 GB", "validity": "15 Days", "network": "Jio/Airtel 4G/5G", "priceUsd": "9.90", "unlimited": False},
+        {"packageCode": "IN-UNL-15D", "name": "India Unlimited (15 Days)", "data": "Unlimited", "validity": "15 Days", "network": "Jio/Airtel 4G/5G", "priceUsd": "19.50", "unlimited": True},
+        {"packageCode": "IN-5GB-30D", "name": "India 5GB (30 Days)", "data": "5 GB", "validity": "30 Days", "network": "Jio/Airtel 4G/5G", "priceUsd": "11.50", "unlimited": False},
+        {"packageCode": "IN-10GB-30D", "name": "India 10GB (30 Days)", "data": "10 GB", "validity": "30 Days", "network": "Jio/Airtel 4G/5G", "priceUsd": "19.50", "unlimited": False},
+        {"packageCode": "IN-20GB-30D", "name": "India 20GB (30 Days)", "data": "20 GB", "validity": "30 Days", "network": "Jio/Airtel 4G/5G", "priceUsd": "32.00", "unlimited": False},
+        {"packageCode": "IN-UNL-30D", "name": "India Unlimited (30 Days)", "data": "Unlimited", "validity": "30 Days", "network": "Jio/Airtel 4G/5G", "priceUsd": "36.00", "unlimited": True}
     ],
     "PK": [
-        {"packageCode": "PK-1GB-7D", "name": "Pakistan 1GB (7 Days)", "data": "1 GB", "validity": "7 Days", "network": "Jazz/Zong 4G LTE", "priceUsd": "4.50"},
-        {"packageCode": "PK-3GB-15D", "name": "Pakistan 3GB (15 Days)", "data": "3 GB", "validity": "15 Days", "network": "Jazz/Zong 4G LTE", "priceUsd": "9.50"},
-        {"packageCode": "PK-5GB-30D", "name": "Pakistan 5GB (30 Days)", "data": "5 GB", "validity": "30 Days", "network": "Jazz/Zong 4G LTE", "priceUsd": "14.50"},
-        {"packageCode": "PK-10GB-30D", "name": "Pakistan 10GB (30 Days)", "data": "10 GB", "validity": "30 Days", "network": "Jazz/Zong 4G LTE", "priceUsd": "24.00"}
+        {"packageCode": "PK-1GB-3D", "name": "Pakistan 1GB (3 Days)", "data": "1 GB", "validity": "3 Days", "network": "Jazz/Zong 4G LTE", "priceUsd": "3.00", "unlimited": False},
+        {"packageCode": "PK-3GB-3D", "name": "Pakistan 3GB (3 Days)", "data": "3 GB", "validity": "3 Days", "network": "Jazz/Zong 4G LTE", "priceUsd": "5.50", "unlimited": False},
+        {"packageCode": "PK-UNL-3D", "name": "Pakistan Unlimited (3 Days)", "data": "Unlimited", "validity": "3 Days", "network": "Jazz/Zong 4G LTE", "priceUsd": "8.00", "unlimited": True},
+        {"packageCode": "PK-1GB-7D", "name": "Pakistan 1GB (7 Days)", "data": "1 GB", "validity": "7 Days", "network": "Jazz/Zong 4G LTE", "priceUsd": "4.50", "unlimited": False},
+        {"packageCode": "PK-3GB-7D", "name": "Pakistan 3GB (7 Days)", "data": "3 GB", "validity": "7 Days", "network": "Jazz/Zong 4G LTE", "priceUsd": "7.50", "unlimited": False},
+        {"packageCode": "PK-UNL-7D", "name": "Pakistan Unlimited (7 Days)", "data": "Unlimited", "validity": "7 Days", "network": "Jazz/Zong 4G LTE", "priceUsd": "13.50", "unlimited": True},
+        {"packageCode": "PK-3GB-15D", "name": "Pakistan 3GB (15 Days)", "data": "3 GB", "validity": "15 Days", "network": "Jazz/Zong 4G LTE", "priceUsd": "9.50", "unlimited": False},
+        {"packageCode": "PK-5GB-15D", "name": "Pakistan 5GB (15 Days)", "data": "5 GB", "validity": "15 Days", "network": "Jazz/Zong 4G LTE", "priceUsd": "12.00", "unlimited": False},
+        {"packageCode": "PK-UNL-15D", "name": "Pakistan Unlimited (15 Days)", "data": "Unlimited", "validity": "15 Days", "network": "Jazz/Zong 4G LTE", "priceUsd": "22.00", "unlimited": True},
+        {"packageCode": "PK-5GB-30D", "name": "Pakistan 5GB (30 Days)", "data": "5 GB", "validity": "30 Days", "network": "Jazz/Zong 4G LTE", "priceUsd": "14.50", "unlimited": False},
+        {"packageCode": "PK-10GB-30D", "name": "Pakistan 10GB (30 Days)", "data": "10 GB", "validity": "30 Days", "network": "Jazz/Zong 4G LTE", "priceUsd": "24.00", "unlimited": False},
+        {"packageCode": "PK-20GB-30D", "name": "Pakistan 20GB (30 Days)", "data": "20 GB", "validity": "30 Days", "network": "Jazz/Zong 4G LTE", "priceUsd": "39.00", "unlimited": False},
+        {"packageCode": "PK-UNL-30D", "name": "Pakistan Unlimited (30 Days)", "data": "Unlimited", "validity": "30 Days", "network": "Jazz/Zong 4G LTE", "priceUsd": "42.00", "unlimited": True}
     ],
     "UAE": [
-        {"packageCode": "UAE-1GB-7D", "name": "UAE & Dubai 1GB (7 Days)", "data": "1 GB", "validity": "7 Days", "network": "e& (Etisalat)/du 5G", "priceUsd": "5.50"},
-        {"packageCode": "UAE-3GB-15D", "name": "UAE & Dubai 3GB (15 Days)", "data": "3 GB", "validity": "15 Days", "network": "e& (Etisalat)/du 5G", "priceUsd": "13.00"},
-        {"packageCode": "UAE-5GB-30D", "name": "UAE & Dubai 5GB (30 Days)", "data": "5 GB", "validity": "30 Days", "network": "e& (Etisalat)/du 5G", "priceUsd": "21.00"},
-        {"packageCode": "UAE-10GB-30D", "name": "UAE & Dubai 10GB (30 Days)", "data": "10 GB", "validity": "30 Days", "network": "e& (Etisalat)/du 5G", "priceUsd": "38.00"},
-        {"packageCode": "UAE-20GB-30D", "name": "UAE & Dubai 20GB (30 Days)", "data": "20 GB", "validity": "30 Days", "network": "e& (Etisalat)/du 5G", "priceUsd": "58.00"}
+        {"packageCode": "UAE-1GB-3D", "name": "UAE & Dubai 1GB (3 Days)", "data": "1 GB", "validity": "3 Days", "network": "e& (Etisalat)/du 5G", "priceUsd": "3.90", "unlimited": False},
+        {"packageCode": "UAE-3GB-3D", "name": "UAE & Dubai 3GB (3 Days)", "data": "3 GB", "validity": "3 Days", "network": "e& (Etisalat)/du 5G", "priceUsd": "7.50", "unlimited": False},
+        {"packageCode": "UAE-UNL-3D", "name": "UAE & Dubai Unlimited (3 Days)", "data": "Unlimited", "validity": "3 Days", "network": "e& (Etisalat)/du 5G", "priceUsd": "11.00", "unlimited": True},
+        {"packageCode": "UAE-1GB-7D", "name": "UAE & Dubai 1GB (7 Days)", "data": "1 GB", "validity": "7 Days", "network": "e& (Etisalat)/du 5G", "priceUsd": "5.50", "unlimited": False},
+        {"packageCode": "UAE-3GB-7D", "name": "UAE & Dubai 3GB (7 Days)", "data": "3 GB", "validity": "7 Days", "network": "e& (Etisalat)/du 5G", "priceUsd": "9.90", "unlimited": False},
+        {"packageCode": "UAE-UNL-7D", "name": "UAE & Dubai Unlimited (7 Days)", "data": "Unlimited", "validity": "7 Days", "network": "e& (Etisalat)/du 5G", "priceUsd": "18.50", "unlimited": True},
+        {"packageCode": "UAE-3GB-15D", "name": "UAE & Dubai 3GB (15 Days)", "data": "3 GB", "validity": "15 Days", "network": "e& (Etisalat)/du 5G", "priceUsd": "13.00", "unlimited": False},
+        {"packageCode": "UAE-5GB-15D", "name": "UAE & Dubai 5GB (15 Days)", "data": "5 GB", "validity": "15 Days", "network": "e& (Etisalat)/du 5G", "priceUsd": "16.50", "unlimited": False},
+        {"packageCode": "UAE-UNL-15D", "name": "UAE & Dubai Unlimited (15 Days)", "data": "Unlimited", "validity": "15 Days", "network": "e& (Etisalat)/du 5G", "priceUsd": "29.00", "unlimited": True},
+        {"packageCode": "UAE-5GB-30D", "name": "UAE & Dubai 5GB (30 Days)", "data": "5 GB", "validity": "30 Days", "network": "e& (Etisalat)/du 5G", "priceUsd": "21.00", "unlimited": False},
+        {"packageCode": "UAE-10GB-30D", "name": "UAE & Dubai 10GB (30 Days)", "data": "10 GB", "validity": "30 Days", "network": "e& (Etisalat)/du 5G", "priceUsd": "38.00", "unlimited": False},
+        {"packageCode": "UAE-20GB-30D", "name": "UAE & Dubai 20GB (30 Days)", "data": "20 GB", "validity": "30 Days", "network": "e& (Etisalat)/du 5G", "priceUsd": "58.00", "unlimited": False},
+        {"packageCode": "UAE-UNL-30D", "name": "UAE & Dubai Unlimited (30 Days)", "data": "Unlimited", "validity": "30 Days", "network": "e& (Etisalat)/du 5G", "priceUsd": "49.00", "unlimited": True}
     ],
     "OM": [
-        {"packageCode": "OM-1GB-7D", "name": "Oman 1GB (7 Days)", "data": "1 GB", "validity": "7 Days", "network": "Omantel/Ooredoo 5G", "priceUsd": "5.50"},
-        {"packageCode": "OM-3GB-15D", "name": "Oman 3GB (15 Days)", "data": "3 GB", "validity": "15 Days", "network": "Omantel/Ooredoo 5G", "priceUsd": "13.50"},
-        {"packageCode": "OM-5GB-30D", "name": "Oman 5GB (30 Days)", "data": "5 GB", "validity": "30 Days", "network": "Omantel/Ooredoo 5G", "priceUsd": "22.00"},
-        {"packageCode": "OM-10GB-30D", "name": "Oman 10GB (30 Days)", "data": "10 GB", "validity": "30 Days", "network": "Omantel/Ooredoo 5G", "priceUsd": "39.00"}
+        {"packageCode": "OM-1GB-3D", "name": "Oman 1GB (3 Days)", "data": "1 GB", "validity": "3 Days", "network": "Omantel/Ooredoo 5G", "priceUsd": "3.80", "unlimited": False},
+        {"packageCode": "OM-UNL-3D", "name": "Oman Unlimited (3 Days)", "data": "Unlimited", "validity": "3 Days", "network": "Omantel/Ooredoo 5G", "priceUsd": "10.50", "unlimited": True},
+        {"packageCode": "OM-1GB-7D", "name": "Oman 1GB (7 Days)", "data": "1 GB", "validity": "7 Days", "network": "Omantel/Ooredoo 5G", "priceUsd": "5.50", "unlimited": False},
+        {"packageCode": "OM-3GB-7D", "name": "Oman 3GB (7 Days)", "data": "3 GB", "validity": "7 Days", "network": "Omantel/Ooredoo 5G", "priceUsd": "9.50", "unlimited": False},
+        {"packageCode": "OM-UNL-7D", "name": "Oman Unlimited (7 Days)", "data": "Unlimited", "validity": "7 Days", "network": "Omantel/Ooredoo 5G", "priceUsd": "17.50", "unlimited": True},
+        {"packageCode": "OM-3GB-15D", "name": "Oman 3GB (15 Days)", "data": "3 GB", "validity": "15 Days", "network": "Omantel/Ooredoo 5G", "priceUsd": "13.50", "unlimited": False},
+        {"packageCode": "OM-5GB-15D", "name": "Oman 5GB (15 Days)", "data": "5 GB", "validity": "15 Days", "network": "Omantel/Ooredoo 5G", "priceUsd": "17.00", "unlimited": False},
+        {"packageCode": "OM-UNL-15D", "name": "Oman Unlimited (15 Days)", "data": "Unlimited", "validity": "15 Days", "network": "Omantel/Ooredoo 5G", "priceUsd": "28.00", "unlimited": True},
+        {"packageCode": "OM-5GB-30D", "name": "Oman 5GB (30 Days)", "data": "5 GB", "validity": "30 Days", "network": "Omantel/Ooredoo 5G", "priceUsd": "22.00", "unlimited": False},
+        {"packageCode": "OM-10GB-30D", "name": "Oman 10GB (30 Days)", "data": "10 GB", "validity": "30 Days", "network": "Omantel/Ooredoo 5G", "priceUsd": "39.00", "unlimited": False},
+        {"packageCode": "OM-UNL-30D", "name": "Oman Unlimited (30 Days)", "data": "Unlimited", "validity": "30 Days", "network": "Omantel/Ooredoo 5G", "priceUsd": "48.00", "unlimited": True}
     ],
     "QA": [
-        {"packageCode": "QA-1GB-7D", "name": "Qatar 1GB (7 Days)", "data": "1 GB", "validity": "7 Days", "network": "Ooredoo/Vodafone 5G", "priceUsd": "5.50"},
-        {"packageCode": "QA-3GB-15D", "name": "Qatar 3GB (15 Days)", "data": "3 GB", "validity": "15 Days", "network": "Ooredoo/Vodafone 5G", "priceUsd": "13.50"},
-        {"packageCode": "QA-5GB-30D", "name": "Qatar 5GB (30 Days)", "data": "5 GB", "validity": "30 Days", "network": "Ooredoo/Vodafone 5G", "priceUsd": "22.00"},
-        {"packageCode": "QA-10GB-30D", "name": "Qatar 10GB (30 Days)", "data": "10 GB", "validity": "30 Days", "network": "Ooredoo/Vodafone 5G", "priceUsd": "39.00"}
+        {"packageCode": "QA-1GB-3D", "name": "Qatar 1GB (3 Days)", "data": "1 GB", "validity": "3 Days", "network": "Ooredoo/Vodafone 5G", "priceUsd": "3.80", "unlimited": False},
+        {"packageCode": "QA-UNL-3D", "name": "Qatar Unlimited (3 Days)", "data": "Unlimited", "validity": "3 Days", "network": "Ooredoo/Vodafone 5G", "priceUsd": "10.50", "unlimited": True},
+        {"packageCode": "QA-1GB-7D", "name": "Qatar 1GB (7 Days)", "data": "1 GB", "validity": "7 Days", "network": "Ooredoo/Vodafone 5G", "priceUsd": "5.50", "unlimited": False},
+        {"packageCode": "QA-3GB-7D", "name": "Qatar 3GB (7 Days)", "data": "3 GB", "validity": "7 Days", "network": "Ooredoo/Vodafone 5G", "priceUsd": "9.50", "unlimited": False},
+        {"packageCode": "QA-UNL-7D", "name": "Qatar Unlimited (7 Days)", "data": "Unlimited", "validity": "7 Days", "network": "Ooredoo/Vodafone 5G", "priceUsd": "17.50", "unlimited": True},
+        {"packageCode": "QA-3GB-15D", "name": "Qatar 3GB (15 Days)", "data": "3 GB", "validity": "15 Days", "network": "Ooredoo/Vodafone 5G", "priceUsd": "13.50", "unlimited": False},
+        {"packageCode": "QA-5GB-15D", "name": "Qatar 5GB (15 Days)", "data": "5 GB", "validity": "15 Days", "network": "Ooredoo/Vodafone 5G", "priceUsd": "17.00", "unlimited": False},
+        {"packageCode": "QA-UNL-15D", "name": "Qatar Unlimited (15 Days)", "data": "Unlimited", "validity": "15 Days", "network": "Ooredoo/Vodafone 5G", "priceUsd": "28.00", "unlimited": True},
+        {"packageCode": "QA-5GB-30D", "name": "Qatar 5GB (30 Days)", "data": "5 GB", "validity": "30 Days", "network": "Ooredoo/Vodafone 5G", "priceUsd": "22.00", "unlimited": False},
+        {"packageCode": "QA-10GB-30D", "name": "Qatar 10GB (30 Days)", "data": "10 GB", "validity": "30 Days", "network": "Ooredoo/Vodafone 5G", "priceUsd": "39.00", "unlimited": False},
+        {"packageCode": "QA-UNL-30D", "name": "Qatar Unlimited (30 Days)", "data": "Unlimited", "validity": "30 Days", "network": "Ooredoo/Vodafone 5G", "priceUsd": "48.00", "unlimited": True}
+    ],
+    "EU": [
+        {"packageCode": "EU-1GB-3D", "name": "Europe 1GB (3 Days)", "data": "1 GB", "validity": "3 Days", "network": "4G/5G Tier-1 Europe", "priceUsd": "3.20", "unlimited": False},
+        {"packageCode": "EU-3GB-3D", "name": "Europe 3GB (3 Days)", "data": "3 GB", "validity": "3 Days", "network": "4G/5G Tier-1 Europe", "priceUsd": "5.90", "unlimited": False},
+        {"packageCode": "EU-UNL-3D", "name": "Europe Unlimited (3 Days)", "data": "Unlimited", "validity": "3 Days", "network": "4G/5G Tier-1 Europe", "priceUsd": "9.90", "unlimited": True},
+        {"packageCode": "EU-1GB-7D", "name": "Europe 1GB (7 Days)", "data": "1 GB", "validity": "7 Days", "network": "4G/5G Tier-1 Europe", "priceUsd": "4.50", "unlimited": False},
+        {"packageCode": "EU-3GB-7D", "name": "Europe 3GB (7 Days)", "data": "3 GB", "validity": "7 Days", "network": "4G/5G Tier-1 Europe", "priceUsd": "7.50", "unlimited": False},
+        {"packageCode": "EU-UNL-7D", "name": "Europe Unlimited (7 Days)", "data": "Unlimited", "validity": "7 Days", "network": "4G/5G Tier-1 Europe", "priceUsd": "15.00", "unlimited": True},
+        {"packageCode": "EU-3GB-15D", "name": "Europe 3GB (15 Days)", "data": "3 GB", "validity": "15 Days", "network": "4G/5G Tier-1 Europe", "priceUsd": "8.50", "unlimited": False},
+        {"packageCode": "EU-5GB-15D", "name": "Europe 5GB (15 Days)", "data": "5 GB", "validity": "15 Days", "network": "4G/5G Tier-1 Europe", "priceUsd": "11.50", "unlimited": False},
+        {"packageCode": "EU-UNL-15D", "name": "Europe Unlimited (15 Days)", "data": "Unlimited", "validity": "15 Days", "network": "4G/5G Tier-1 Europe", "priceUsd": "24.00", "unlimited": True},
+        {"packageCode": "EU-5GB-30D", "name": "Europe 5GB (30 Days)", "data": "5 GB", "validity": "30 Days", "network": "4G/5G Tier-1 Europe", "priceUsd": "14.00", "unlimited": False},
+        {"packageCode": "EU-10GB-30D", "name": "Europe 10GB (30 Days)", "data": "10 GB", "validity": "30 Days", "network": "4G/5G Tier-1 Europe", "priceUsd": "22.50", "unlimited": False},
+        {"packageCode": "EU-20GB-30D", "name": "Europe 20GB (30 Days)", "data": "20 GB", "validity": "30 Days", "network": "4G/5G Tier-1 Europe", "priceUsd": "35.00", "unlimited": False},
+        {"packageCode": "EU-50GB-30D", "name": "Europe 50GB (30 Days)", "data": "50 GB", "validity": "30 Days", "network": "4G/5G Tier-1 Europe", "priceUsd": "59.00", "unlimited": False},
+        {"packageCode": "EU-UNL-30D", "name": "Europe Unlimited (30 Days)", "data": "Unlimited", "validity": "30 Days", "network": "4G/5G Tier-1 Europe", "priceUsd": "45.00", "unlimited": True}
+    ],
+    "ASIA": [
+        {"packageCode": "ASIA-1GB-3D", "name": "Asia+ 1GB Explorer (3 Days)", "data": "1 GB", "validity": "3 Days", "network": "5G Multi-Carrier Asia", "priceUsd": "2.90", "unlimited": False},
+        {"packageCode": "ASIA-3GB-3D", "name": "Asia+ 3GB Explorer (3 Days)", "data": "3 GB", "validity": "3 Days", "network": "5G Multi-Carrier Asia", "priceUsd": "5.50", "unlimited": False},
+        {"packageCode": "ASIA-UNL-3D", "name": "Asia+ Unlimited (3 Days)", "data": "Unlimited", "validity": "3 Days", "network": "5G Multi-Carrier Asia", "priceUsd": "8.90", "unlimited": True},
+        {"packageCode": "ASIA-1GB-7D", "name": "Asia+ 1GB Explorer (7 Days)", "data": "1 GB", "validity": "7 Days", "network": "5G Multi-Carrier Asia", "priceUsd": "4.00", "unlimited": False},
+        {"packageCode": "ASIA-3GB-7D", "name": "Asia+ 3GB Explorer (7 Days)", "data": "3 GB", "validity": "7 Days", "network": "5G Multi-Carrier Asia", "priceUsd": "6.90", "unlimited": False},
+        {"packageCode": "ASIA-UNL-7D", "name": "Asia+ Unlimited (7 Days)", "data": "Unlimited", "validity": "7 Days", "network": "5G Multi-Carrier Asia", "priceUsd": "14.50", "unlimited": True},
+        {"packageCode": "ASIA-3GB-15D", "name": "Asia+ 3GB Standard (15 Days)", "data": "3 GB", "validity": "15 Days", "network": "5G Multi-Carrier Asia", "priceUsd": "8.50", "unlimited": False},
+        {"packageCode": "ASIA-5GB-15D", "name": "Asia+ 5GB Standard (15 Days)", "data": "5 GB", "validity": "15 Days", "network": "5G Multi-Carrier Asia", "priceUsd": "11.50", "unlimited": False},
+        {"packageCode": "ASIA-UNL-15D", "name": "Asia+ Unlimited (15 Days)", "data": "Unlimited", "validity": "15 Days", "network": "5G Multi-Carrier Asia", "priceUsd": "23.00", "unlimited": True},
+        {"packageCode": "ASIA-5GB-30D", "name": "Asia+ 5GB Traveler (30 Days)", "data": "5 GB", "validity": "30 Days", "network": "5G Multi-Carrier Asia", "priceUsd": "13.50", "unlimited": False},
+        {"packageCode": "ASIA-10GB-30D", "name": "Asia+ 10GB Pro (30 Days)", "data": "10 GB", "validity": "30 Days", "network": "5G Multi-Carrier Asia", "priceUsd": "22.00", "unlimited": False},
+        {"packageCode": "ASIA-20GB-30D", "name": "Asia+ 20GB Premium (30 Days)", "data": "20 GB", "validity": "30 Days", "network": "5G Multi-Carrier Asia", "priceUsd": "36.00", "unlimited": False},
+        {"packageCode": "ASIA-UNL-30D", "name": "Asia+ Unlimited (30 Days)", "data": "Unlimited", "validity": "30 Days", "network": "5G Multi-Carrier Asia", "priceUsd": "42.00", "unlimited": True}
+    ],
+    "GLOBAL": [
+        {"packageCode": "GLOBAL-1GB-7D", "name": "Global 130+ Countries 1GB (7 Days)", "data": "1 GB", "validity": "7 Days", "network": "Tier-1 Worldwide Roaming", "priceUsd": "7.50", "unlimited": False},
+        {"packageCode": "GLOBAL-3GB-15D", "name": "Global 130+ Countries 3GB (15 Days)", "data": "3 GB", "validity": "15 Days", "network": "Tier-1 Worldwide Roaming", "priceUsd": "18.00", "unlimited": False},
+        {"packageCode": "GLOBAL-5GB-30D", "name": "Global 130+ Countries 5GB (30 Days)", "data": "5 GB", "validity": "30 Days", "network": "Tier-1 Worldwide Roaming", "priceUsd": "28.00", "unlimited": False},
+        {"packageCode": "GLOBAL-10GB-30D", "name": "Global 130+ Countries 10GB (30 Days)", "data": "10 GB", "validity": "30 Days", "network": "Tier-1 Worldwide Roaming", "priceUsd": "48.00", "unlimited": False},
+        {"packageCode": "GLOBAL-20GB-30D", "name": "Global 130+ Countries 20GB (30 Days)", "data": "20 GB", "validity": "30 Days", "network": "Tier-1 Worldwide Roaming", "priceUsd": "79.00", "unlimited": False}
+    ],
+    "TH": [
+        {"packageCode": "TH-15GB-8D", "name": "Thailand Tourist 15GB (8 Days)", "data": "15 GB", "validity": "8 Days", "network": "True/AIS 5G", "priceUsd": "5.90", "unlimited": False},
+        {"packageCode": "TH-50GB-10D", "name": "Thailand Tourist 50GB (10 Days)", "data": "50 GB", "validity": "10 Days", "network": "True/AIS 5G", "priceUsd": "9.90", "unlimited": False},
+        {"packageCode": "TH-Unlimited-8D", "name": "Thailand Unlimited (8 Days)", "data": "Unlimited", "validity": "8 Days", "network": "AIS 5G", "priceUsd": "8.50", "unlimited": True},
+        {"packageCode": "TH-Unlimited-15D", "name": "Thailand Unlimited (15 Days)", "data": "Unlimited", "validity": "15 Days", "network": "AIS 5G", "priceUsd": "14.50", "unlimited": True},
+        {"packageCode": "TH-Unlimited-30D", "name": "Thailand Unlimited (30 Days)", "data": "Unlimited", "validity": "30 Days", "network": "AIS 5G", "priceUsd": "24.50", "unlimited": True}
+    ],
+    "US": [
+        {"packageCode": "US-1GB-3D", "name": "USA 1GB (3 Days)", "data": "1 GB", "validity": "3 Days", "network": "T-Mobile/AT&T 5G", "priceUsd": "3.50", "unlimited": False},
+        {"packageCode": "US-3GB-7D", "name": "USA 3GB (7 Days)", "data": "3 GB", "validity": "7 Days", "network": "T-Mobile/AT&T 5G", "priceUsd": "8.00", "unlimited": False},
+        {"packageCode": "US-UNL-7D", "name": "USA Unlimited (7 Days)", "data": "Unlimited", "validity": "7 Days", "network": "T-Mobile/AT&T 5G", "priceUsd": "16.00", "unlimited": True},
+        {"packageCode": "US-5GB-15D", "name": "USA 5GB (15 Days)", "data": "5 GB", "validity": "15 Days", "network": "T-Mobile/AT&T 5G", "priceUsd": "13.50", "unlimited": False},
+        {"packageCode": "US-10GB-30D", "name": "USA 10GB (30 Days)", "data": "10 GB", "validity": "30 Days", "network": "T-Mobile/AT&T 5G", "priceUsd": "24.00", "unlimited": False},
+        {"packageCode": "US-UNL-30D", "name": "USA Unlimited (30 Days)", "data": "Unlimited", "validity": "30 Days", "network": "T-Mobile/AT&T 5G", "priceUsd": "45.00", "unlimited": True}
     ]
 }
 
@@ -151,37 +212,38 @@ CATALOG_PACKAGES = {
 @app.route("/api/catalog/packages", methods=["GET"])
 def get_catalog_packages():
     loc = request.args.get("location", "").strip().upper()
+    duration = request.args.get("duration", "").strip()
+    plan_type = request.args.get("type", "").strip().lower()
+
     if loc and loc in CATALOG_PACKAGES:
-        return jsonify({
-            "status": "success",
-            "location": loc,
-            "count": len(CATALOG_PACKAGES[loc]),
-            "packages": CATALOG_PACKAGES[loc]
-        })
+        pkgs = [dict(p) for p in CATALOG_PACKAGES[loc]]
     elif loc and loc not in ["ALL", ""]:
-        # Fallback to EU if unknown code
-        pkgs = CATALOG_PACKAGES.get("EU", [])
-        return jsonify({
-            "status": "success",
-            "location": "EU",
-            "count": len(pkgs),
-            "packages": pkgs
-        })
+        pkgs = [dict(p) for p in CATALOG_PACKAGES.get("EU", [])]
     else:
-        # Flatten all packages with destination metadata
-        all_pkgs = []
+        pkgs = []
         for region, pkg_list in CATALOG_PACKAGES.items():
             for p in pkg_list:
                 item = dict(p)
                 item["region"] = region
-                all_pkgs.append(item)
-        return jsonify({
-            "status": "success",
-            "location": "ALL",
-            "count": len(all_pkgs),
-            "destinations": list(CATALOG_PACKAGES.keys()),
-            "packages": all_pkgs
-        })
+                pkgs.append(item)
+
+    # Filter by duration (3, 7, 15, 30)
+    if duration:
+        pkgs = [p for p in pkgs if f"{duration} Day" in p.get("validity", "")]
+
+    # Filter by plan type ('unlimited' vs 'limited')
+    if plan_type == "unlimited":
+        pkgs = [p for p in pkgs if p.get("unlimited", False) or "unlimited" in p.get("data", "").lower()]
+    elif plan_type == "limited":
+        pkgs = [p for p in pkgs if not p.get("unlimited", False) and "unlimited" not in p.get("data", "").lower()]
+
+    return jsonify({
+        "status": "success",
+        "location": loc or "ALL",
+        "count": len(pkgs),
+        "destinations": list(CATALOG_PACKAGES.keys()),
+        "packages": pkgs
+    })
 
 # ==============================================================================
 # 2. CUSTOMER AUTHENTICATION APIS (Register, Login, Session, Logout)
@@ -277,10 +339,13 @@ def forgot_password():
     
     res, err = create_password_reset_token(email)
     if err:
-        return jsonify({"error": err}), 404
+        return jsonify({
+            "status": "not_found",
+            "error": "No account found with this email. Please Register for a new account, or contact our WhatsApp support.",
+            "email": email,
+            "whatsapp_link": "https://wa.me/971524413931?text=" + urllib.parse.quote(f"Hello TravelTrip support, I need help recovering my account ({email})")
+        }), 200
     
-    # In production, this code is emailed to the user.
-    # Here we return the reset_code in the response so the user can verify immediately.
     return jsonify({
         "status": "success",
         "message": "Password recovery code generated (valid for 15 minutes).",

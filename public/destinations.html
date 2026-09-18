@@ -7,6 +7,7 @@
   <meta name="description" content="Browse high-speed 4G/5G prepaid travel eSIM plans for Europe, Asia, Americas, Middle East and 165+ countries. No roaming charges. Instant QR delivery.">
   <link rel="canonical" href="https://traveltrip.world/destinations">
   <link rel="stylesheet" href="/css/site.css">
+  <script src="/js/i18n.js"></script>
   <style>
     .search-box {
       margin: 32px 0 24px;
@@ -195,6 +196,45 @@
     </span>
   </div>
 
+  
+  <!-- DURATION & DATA TYPE FILTERS -->
+  <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:12px; padding:14px 18px; margin:20px 0; display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:12px; box-shadow:0 2px 8px rgba(0,0,0,0.04);">
+    <div style="display:flex; align-items:center; flex-wrap:wrap; gap:8px;">
+      <span style="font-size:0.8rem; font-weight:700; color:#64748B; text-transform:uppercase;">Duration:</span>
+      <button type="button" class="d-chip d-chip-dur active" onclick="filterTableDuration('')">All</button>
+      <button type="button" class="d-chip d-chip-dur" onclick="filterTableDuration('3 Days')">⚡ 3 Days</button>
+      <button type="button" class="d-chip d-chip-dur" onclick="filterTableDuration('7 Days')">📅 7 Days</button>
+      <button type="button" class="d-chip d-chip-dur" onclick="filterTableDuration('15 Days')">🚀 15 Days</button>
+      <button type="button" class="d-chip d-chip-dur" onclick="filterTableDuration('30 Days')">🗓️ 30 Days</button>
+    </div>
+    <div style="display:flex; align-items:center; flex-wrap:wrap; gap:8px;">
+      <span style="font-size:0.8rem; font-weight:700; color:#64748B; text-transform:uppercase;">Type:</span>
+      <button type="button" class="d-chip d-chip-type active" onclick="filterTableType('')">All Types</button>
+      <button type="button" class="d-chip d-chip-type" onclick="filterTableType('limited')">Fixed Data</button>
+      <button type="button" class="d-chip d-chip-type" onclick="filterTableType('unlimited')">♾️ Unlimited</button>
+    </div>
+  </div>
+
+  <style>
+    .d-chip {
+      padding: 6px 14px;
+      background: #F1F5F9;
+      border: 1px solid #CBD5E1;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #475569;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .d-chip:hover { border-color: var(--primary); color: var(--primary); }
+    .d-chip.active {
+      background: var(--primary);
+      color: #FFFFFF;
+      border-color: var(--primary);
+    }
+  </style>
+
   <div class="plans-comparison-table watermark-shade">
     <table>
       <thead>
@@ -365,6 +405,75 @@ async function syncLiveCatalog() {
 }
 document.addEventListener('DOMContentLoaded', syncLiveCatalog);
 </script>
+
+<script>
+  let tableDur = '';
+  let tableType = '';
+
+  function filterTableDuration(dur) {
+    tableDur = dur;
+    document.querySelectorAll('.d-chip-dur').forEach(b => {
+      b.classList.toggle('active', (dur === '' && b.textContent === 'All') || b.textContent.includes(dur));
+    });
+    loadComparisonTable();
+  }
+
+  function filterTableType(t) {
+    tableType = t;
+    document.querySelectorAll('.d-chip-type').forEach(b => {
+      b.classList.toggle('active', (t === '' && b.textContent.includes('All')) ||
+                                   (t === 'limited' && b.textContent.includes('Fixed')) ||
+                                   (t === 'unlimited' && b.textContent.includes('Unlimited')));
+    });
+    loadComparisonTable();
+  }
+
+  async function loadComparisonTable() {
+    try {
+      const res = await fetch('/api/catalog/packages');
+      const data = await res.json();
+      let pkgs = data.packages || [];
+
+      if (tableDur) {
+        pkgs = pkgs.filter(p => p.validity.includes(tableDur));
+      }
+      if (tableType === 'unlimited') {
+        pkgs = pkgs.filter(p => p.unlimited || p.data.toLowerCase().includes('unlimited'));
+      } else if (tableType === 'limited') {
+        pkgs = pkgs.filter(p => !p.unlimited && !p.data.toLowerCase().includes('unlimited'));
+      }
+
+      const tbody = document.querySelector('.plans-comparison-table tbody');
+      if (!tbody) return;
+
+      if (!pkgs.length) {
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:30px; color:#64748B;">No packages found matching these filter criteria.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = pkgs.map(p => {
+        const checkoutUrl = `/checkout?code=${encodeURIComponent(p.packageCode)}&name=${encodeURIComponent(p.name)}&price=${p.priceUsd}&data=${encodeURIComponent(p.data)}&validity=${encodeURIComponent(p.validity)}&location=${p.region || 'GLOBAL'}`;
+        const isUnl = p.unlimited || p.data.toLowerCase().includes('unlimited');
+        return `
+          <tr>
+            <td><strong>${p.region || 'GLOBAL'}</strong></td>
+            <td>${p.name}</td>
+            <td><span style="font-weight:700; ${isUnl ? 'color:#8B5CF6;' : ''}">${p.data}</span></td>
+            <td><span style="background:#F1F5F9; padding:2px 8px; border-radius:6px; font-size:0.8rem; font-weight:600;">${p.validity}</span></td>
+            <td style="font-size:0.85rem; color:#64748B;">${p.network}</td>
+            <td style="font-weight:800; color:var(--primary); font-size:1.05rem;">$${parseFloat(p.priceUsd).toFixed(2)}</td>
+            <td><a href="${checkoutUrl}" class="button button-primary" style="padding:6px 14px; font-size:0.82rem; text-decoration:none;">Buy eSIM &rarr;</a></td>
+          </tr>
+        `;
+      }).join('');
+    } catch(err) {
+      console.error('Failed to load table:', err);
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', loadComparisonTable);
+</script>
+
 </body>
 
 </html>

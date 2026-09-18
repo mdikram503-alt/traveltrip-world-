@@ -3,9 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Sign In & Account Access · TravelTrip World</title>
+  <title>Sign In & Account Access – TravelTrip World</title>
   <meta name="description" content="Secure login, customer account creation, and password recovery for TravelTrip.world eSIM orders.">
   <link rel="stylesheet" href="/css/site.css">
+  <script src="/js/i18n.js"></script>
   <style>
     .auth-container {
       max-width: 460px;
@@ -91,8 +92,10 @@
     </a>
     <nav class="nav">
       <a href="/">Home</a>
+      <a href="/destinations">Destinations</a>
       <a href="/account">My eSIMs</a>
-          </nav>
+    </nav>
+    <div class="right" id="auth-nav-slot"></div>
   </div>
 </header>
 
@@ -116,7 +119,7 @@
         <input id="login-email" type="email" placeholder="name@example.com" required autocomplete="email">
 
         <div style="overflow:hidden;">
-          <a class="forgot-link" onclick="switchTab('recovery')">Forgot password? / পাসওয়ার্ড পুনরুদ্ধার</a>
+          <a class="forgot-link" onclick="switchTab('recovery')">Forgot password? / পাসওয়ার্ড ভুলে গেছেন?</a>
           <label for="login-password">Password</label>
         </div>
         <input id="login-password" type="password" placeholder="••••••••" required autocomplete="current-password">
@@ -124,14 +127,12 @@
         <button type="submit" class="button" style="width:100%; margin-top:22px; height:46px; font-size:0.95rem;">
           Sign In to Account
         </button>
-
-
       </form>
 
       <!-- 2. REGISTER FORM -->
       <form id="form-register" style="display:none;" onsubmit="handleRegister(event)">
         <label for="reg-name">Full Name</label>
-        <input id="reg-name" type="text" placeholder="Mohammad Akram" required autocomplete="name">
+        <input id="reg-name" type="text" placeholder="John Doe" required autocomplete="name">
 
         <label for="reg-email">Email Address</label>
         <input id="reg-email" type="email" placeholder="name@example.com" required autocomplete="email">
@@ -144,19 +145,26 @@
         </button>
       </form>
 
-      <!-- 3. PASSWORD RECOVERY (পাসওয়ার্ড পুনরুদ্ধার) FORM -->
+      <!-- 3. PASSWORD RECOVERY FORM -->
       <div id="form-recovery" style="display:none;">
         <!-- Step A: Request Code -->
         <div id="recovery-step-1">
           <p class="muted" style="font-size:0.86rem; margin-bottom:16px;">
-            আপনার অ্যাকাউন্টের ইমেইল দিন। পাসওয়ার্ড রিসেট করার জন্য একটি ভেরিফিকেশন কোড দেওয়া হবে:
+            Enter your account email below. We will verify your account and provide a 6-digit recovery code to reset your password.
           </p>
           <label for="rec-email">Account Email</label>
           <input id="rec-email" type="email" placeholder="name@example.com" required>
 
           <button type="button" class="button" onclick="requestRecoveryCode()" style="width:100%; margin-top:20px; height:46px;">
-            Send Recovery Code / কোড পান
+            Send Recovery Code / কোড পাঠান
           </button>
+
+          <div style="margin-top:20px; padding:12px; background:rgba(255,255,255,0.03); border:1px dashed rgba(255,255,255,0.15); border-radius:8px; text-align:center;">
+            <span style="font-size:0.8rem; color:#94A3B8;">Need immediate manual assistance?</span><br>
+            <a href="https://wa.me/971524413931?text=Hello%20TravelTrip%20Support,%20I%20need%20help%20recovering%20my%20account" target="_blank" style="display:inline-block; margin-top:6px; color:#22C55E; font-weight:700; font-size:0.85rem; text-decoration:none;">
+              💬 Instant 24/7 WhatsApp Support (+971 52 441 3931)
+            </a>
+          </div>
         </div>
 
         <!-- Step B: Enter Code & New Password -->
@@ -196,6 +204,7 @@
     </div>
     <div class="footer-links">
       <a href="/">Home</a>
+      <a href="/destinations">Destinations</a>
       <a href="/account">eSIM Orders</a>
       <a href="https://wa.me/971524413931">WhatsApp Support</a>
     </div>
@@ -203,43 +212,39 @@
 </footer>
 
 <script>
-  const urlParams = new URLSearchParams(window.location.search);
-  const initialTab = urlParams.get("tab") || "login";
-  switchTab(initialTab);
-
   function switchTab(tab) {
     hideMsg();
-    const tabs = ["login", "register", "recovery"];
-    tabs.forEach(t => {
-      const btn = document.getElementById("tab-" + t);
-      const form = document.getElementById("form-" + t);
-      if (btn && form) {
-        if (t === tab) {
-          btn.classList.add("active");
-          form.style.display = "block";
-        } else {
-          btn.classList.remove("active");
-          form.style.display = "none";
-        }
-      }
-    });
+    document.getElementById("tab-login").classList.remove("active");
+    document.getElementById("tab-register").classList.remove("active");
+    document.getElementById("tab-recovery").classList.remove("active");
 
-    if (tab === "recovery") {
+    document.getElementById("form-login").style.display = "none";
+    document.getElementById("form-register").style.display = "none";
+    document.getElementById("form-recovery").style.display = "none";
+
+    if (tab === "login") {
+      document.getElementById("tab-login").classList.add("active");
+      document.getElementById("form-login").style.display = "block";
+    } else if (tab === "register") {
+      document.getElementById("tab-register").classList.add("active");
+      document.getElementById("form-register").style.display = "block";
+    } else if (tab === "recovery") {
+      document.getElementById("tab-recovery").classList.add("active");
+      document.getElementById("form-recovery").style.display = "block";
       document.getElementById("recovery-step-1").style.display = "block";
       document.getElementById("recovery-step-2").style.display = "none";
     }
   }
 
-  function showMsg(text, type = "error") {
+  function showMsg(text, type) {
     const box = document.getElementById("auth-msg");
-    box.className = "auth-msg-box auth-msg-" + type;
-    box.textContent = text;
+    box.className = `auth-msg-box auth-msg-${type}`;
+    box.innerHTML = text;
     box.style.display = "block";
   }
 
   function hideMsg() {
-    const box = document.getElementById("auth-msg");
-    box.style.display = "none";
+    document.getElementById("auth-msg").style.display = "none";
   }
 
   async function handleLogin(e) {
@@ -257,13 +262,10 @@
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Login failed");
 
-      showMsg("Login successful! Redirecting...", "success");
+      showMsg("Signed in successfully! Redirecting...", "success");
       setTimeout(() => {
-        if (data.user && data.user.role === "admin") {
-          window.location.href = "/account";
-        } else {
-          window.location.href = "/account";
-        }
+        const urlParams = new URLSearchParams(window.location.search);
+        window.location.href = urlParams.get("redirect") || "/account";
       }, 600);
     } catch(err) {
       showMsg(err.message, "error");
@@ -286,10 +288,10 @@
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Registration failed");
 
-      showMsg("Account created! Redirecting to your eSIM dashboard...", "success");
+      showMsg("Account created successfully! Redirecting...", "success");
       setTimeout(() => {
         window.location.href = "/account";
-      }, 700);
+      }, 600);
     } catch(err) {
       showMsg(err.message, "error");
     }
@@ -310,15 +312,21 @@
         body: JSON.stringify({ email })
       });
       const data = await res.json();
+      
+      if (data.status === "not_found") {
+        showMsg(`${data.error} <br><a href="javascript:void(0)" onclick="switchTab('register')" style="color:#0284C7; font-weight:700; text-decoration:underline;">Click here to Register for free &rarr;</a>`, "info");
+        return;
+      }
+      
       if (!res.ok) throw new Error(data.error || "Failed to generate recovery code");
 
       document.getElementById("recovery-step-1").style.display = "none";
       document.getElementById("recovery-step-2").style.display = "block";
       
       const hint = document.getElementById("rec-code-hint");
-      hint.innerHTML = `<strong>Recovery Code Generated:</strong> <span style="font-size:1.2rem; letter-spacing:2px; font-weight:800; color:var(--primary);">${data.reset_code}</span><br><small>Enter this 6-digit code below to set your new password.</small>`;
+      hint.innerHTML = `<strong>Recovery Code Generated:</strong> <span style="font-size:1.25rem; letter-spacing:2px; font-weight:800; color:var(--primary);">${data.reset_code}</span><br><small>Enter this 6-digit code below along with your new password.</small>`;
       document.getElementById("rec-code").value = data.reset_code;
-      showMsg("Verification code generated successfully!", "success");
+      showMsg("Verification code generated! Enter your new password below.", "success");
     } catch(err) {
       showMsg(err.message, "error");
     }
@@ -344,7 +352,7 @@
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed to reset password");
 
-      showMsg(data.message || "Password changed! Redirecting...", "success");
+      showMsg(data.message || "Password changed! Redirecting to account...", "success");
       setTimeout(() => {
         window.location.href = "/account";
       }, 1000);

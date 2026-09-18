@@ -96,6 +96,7 @@
   }
   </script>
   <link rel="stylesheet" href="/css/site.css">
+  <script src="/js/i18n.js"></script>
 </head>
 <body>
 
@@ -169,83 +170,66 @@
   </div>
 
   <!-- POPULAR DESTINATIONS (EXACT 6 CARDS AS IN SCREENSHOT) -->
-  <section id="destinations" style="margin-bottom: 40px;">
-    <h2 class="section-heading-dark">Popular Destinations</h2>
-    
-    <div class="destinations-grid">
-      <!-- Asia+ (18 Countries) -->
-      <a href="/checkout?pkg=ASIA-1GB-7D&code=ASIA-1GB-7D&name=Asia%2B%201GB%20(7%20Days)&price=4.00&data=1%20GB&validity=7%20Days&location=ASIA" class="dest-card dest-asia">
-        <span class="dest-code">ASIA</span>
-        <div>
-          <h3 class="dest-name">Asia (18 Countries)</h3>
-          <div class="dest-meta">1GB - 20GB &bull; 7 to 30 Days<br>Japan, Korea, Singapore, Thai, Vietnam</div>
-          <span class="dest-link">View live plans &rarr;</span>
-        </div>
-      </a>
-
-      <!-- Europe -->
-      <a href="/checkout?pkg=EU-1GB-7D" class="dest-card dest-eu">
-        <span class="dest-code">EU</span>
-        <div>
-          <h3 class="dest-name">Europe</h3>
-          <div class="dest-meta">Limited & Unlimited<br>3–30 days</div>
-          <span class="dest-link">View live plans &rarr;</span>
-        </div>
-      </a>
-
-      <!-- France -->
-      <a href="/checkout?pkg=EU-3GB-30D" class="dest-card dest-fr">
-        <span class="dest-code">FR</span>
-        <div>
-          <h3 class="dest-name">France</h3>
-          <div class="dest-meta">Limited & Unlimited<br>3–30 days</div>
-          <span class="dest-link">View live plans &rarr;</span>
-        </div>
-      </a>
-
-      <!-- Gulf (GCC) -->
-      <a href="/checkout?pkg=GCC-1GB-7D" class="dest-card dest-gcc">
-        <span class="dest-code">GCC</span>
-        <div>
-          <h3 class="dest-name">Gulf (GCC)</h3>
-          <div class="dest-meta">Limited & Unlimited<br>3–30 days</div>
-          <span class="dest-link">View live plans &rarr;</span>
-        </div>
-      </a>
-
-      <!-- Japan -->
-      <a href="/checkout?pkg=JP-1GB-7D" class="dest-card dest-jp">
-        <span class="dest-code">JP</span>
-        <div>
-          <h3 class="dest-name">Japan</h3>
-          <div class="dest-meta">Limited & Unlimited<br>3–30 days</div>
-          <span class="dest-link">View live plans &rarr;</span>
-        </div>
-      </a>
-
-      <!-- Singapore -->
-      <a href="/checkout?pkg=SG-1GB-7D" class="dest-card dest-sg">
-        <span class="dest-code">SG</span>
-        <div>
-          <h3 class="dest-name">Singapore</h3>
-          <div class="dest-meta">Limited & Unlimited<br>3–30 days</div>
-          <span class="dest-link">View live plans &rarr;</span>
-        </div>
-      </a>
-
-      <!-- Thailand -->
-      <a href="/checkout?pkg=TH-50GB-10D" class="dest-card dest-th">
-        <span class="dest-code">TH</span>
-        <div>
-          <h3 class="dest-name">Thailand</h3>
-          <div class="dest-meta">Limited & Unlimited<br>3–30 days</div>
-          <span class="dest-link">View live plans &rarr;</span>
-        </div>
-      </a>
+  <!-- INTERACTIVE GLOBAL ESIM PLAN EXPLORER (3D, 7D, 15D, 30D, LIMITED & UNLIMITED) -->
+  <section id="destinations" style="margin-bottom: 50px;">
+    <div style="text-align:center; max-width:750px; margin:0 auto 28px;">
+      <div class="section-tag" style="display:inline-block; padding:4px 14px; border-radius:999px; background:#EEF2FF; color:var(--primary); font-weight:700; font-size:0.8rem; margin-bottom:10px;">
+        OFFICIAL 165+ DESTINATIONS
+      </div>
+      <h2 class="section-heading-dark" style="font-size:2.2rem; margin-bottom:8px;">Choose Your Destination &amp; Data Plan</h2>
+      <p class="muted" style="font-size:0.95rem;">
+        Authentic wholesale high-speed 5G/4G travel plans. Choose your duration from 3 to 30 days, or go 100% Unlimited. Instant QR delivery.
+      </p>
     </div>
 
-    <div style="font-size:0.92rem; font-weight:700; color:var(--primary);">
-      • <a href="/checkout" style="color:var(--primary); text-decoration:none;">All destinations</a>
+    <!-- A. DESTINATION SELECTOR PILLS -->
+    <div class="dest-filter-container" style="display:flex; gap:8px; overflow-x:auto; padding-bottom:12px; margin-bottom:20px; scrollbar-width:thin;">
+      <button type="button" class="dest-pill active" onclick="selectDestination('EU')" data-loc="EU">🇪🇺 Europe (33)</button>
+      <button type="button" class="dest-pill" onclick="selectDestination('ASIA')" data-loc="ASIA">🌏 Asia+ (18)</button>
+      <button type="button" class="dest-pill" onclick="selectDestination('UAE')" data-loc="UAE">🇦🇪 UAE &amp; Dubai</button>
+      <button type="button" class="dest-pill" onclick="selectDestination('BD')" data-loc="BD">🇧🇩 Bangladesh</button>
+      <button type="button" class="dest-pill" onclick="selectDestination('IN')" data-loc="IN">🇮🇳 India</button>
+      <button type="button" class="dest-pill" onclick="selectDestination('PK')" data-loc="PK">🇵🇰 Pakistan</button>
+      <button type="button" class="dest-pill" onclick="selectDestination('OM')" data-loc="OM">🇴🇲 Oman</button>
+      <button type="button" class="dest-pill" onclick="selectDestination('QA')" data-loc="QA">🇶🇦 Qatar</button>
+      <button type="button" class="dest-pill" onclick="selectDestination('TH')" data-loc="TH">🇹🇭 Thailand</button>
+      <button type="button" class="dest-pill" onclick="selectDestination('US')" data-loc="US">🇺🇸 USA</button>
+      <button type="button" class="dest-pill" onclick="selectDestination('GLOBAL')" data-loc="GLOBAL">🌍 Global (130+)</button>
+    </div>
+
+    <!-- B. DURATION & PLAN TYPE FILTERS -->
+    <div style="background:var(--bg-elevated); border:1px solid var(--border); border-radius:14px; padding:16px 20px; margin-bottom:28px; display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:16px;">
+      
+      <!-- Duration Pills (3, 7, 15, 30 Days) -->
+      <div style="display:flex; align-items:center; flex-wrap:wrap; gap:8px;">
+        <span style="font-size:0.82rem; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px; margin-right:4px;">Duration:</span>
+        <button type="button" class="filter-chip chip-duration active" onclick="setDurationFilter('')">All</button>
+        <button type="button" class="filter-chip chip-duration" onclick="setDurationFilter('3')">⚡ 3 Days</button>
+        <button type="button" class="filter-chip chip-duration" onclick="setDurationFilter('7')">📅 7 Days</button>
+        <button type="button" class="filter-chip chip-duration" onclick="setDurationFilter('15')">🚀 15 Days</button>
+        <button type="button" class="filter-chip chip-duration" onclick="setDurationFilter('30')">🗓️ 30 Days</button>
+      </div>
+
+      <!-- Plan Type (Fixed Data vs Unlimited) -->
+      <div style="display:flex; align-items:center; flex-wrap:wrap; gap:8px;">
+        <span style="font-size:0.82rem; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px; margin-right:4px;">Data Type:</span>
+        <button type="button" class="filter-chip chip-type active" onclick="setTypeFilter('')">All Offers</button>
+        <button type="button" class="filter-chip chip-type" onclick="setTypeFilter('limited')">📊 Fixed Data</button>
+        <button type="button" class="filter-chip chip-type" onclick="setTypeFilter('unlimited')">♾️ Unlimited</button>
+      </div>
+    </div>
+
+    <!-- C. DYNAMIC PACKAGE CARDS GRID -->
+    <div id="live-plans-grid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(260px, 1fr)); gap:20px;">
+      <!-- Populated dynamically via JS -->
+      <div style="grid-column:1/-1; text-align:center; padding:40px; color:var(--text-muted);">
+        Loading live carrier plans...
+      </div>
+    </div>
+
+    <div style="margin-top:24px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+      <span style="font-size:0.86rem; color:var(--text-muted);">Showing authentic wholesale offers with automated instant carrier provisioning.</span>
+      <a href="/destinations" style="font-weight:700; color:var(--primary); font-size:0.92rem; text-decoration:none;">View all 165+ destination countries &rarr;</a>
     </div>
   </section>
 
@@ -313,5 +297,194 @@
 
   checkAuth();
 </script>
+
+<style>
+  .dest-pill {
+    white-space: nowrap;
+    padding: 9px 18px;
+    background: #FFFFFF;
+    border: 1px solid #CBD5E1;
+    border-radius: 999px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #334155;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .dest-pill:hover { border-color: var(--primary); color: var(--primary); }
+  .dest-pill.active {
+    background: var(--primary);
+    color: #FFFFFF;
+    border-color: var(--primary);
+    box-shadow: 0 4px 12px rgba(26, 54, 148, 0.2);
+  }
+
+  .filter-chip {
+    padding: 6px 14px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #E2E8F0;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .filter-chip:hover { border-color: #38BDF8; color: #38BDF8; }
+  .filter-chip.active {
+    background: #0284C7;
+    color: #FFFFFF;
+    border-color: #0284C7;
+  }
+
+  .plan-card-item {
+    background: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    border-radius: 16px;
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+  }
+  .plan-card-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 28px rgba(0,0,0,0.1);
+    border-color: var(--primary);
+  }
+  .plan-badge-unlimited {
+    background: #8B5CF6;
+    color: #fff;
+    font-size: 0.72rem;
+    font-weight: 800;
+    padding: 3px 8px;
+    border-radius: 6px;
+    letter-spacing: 0.5px;
+  }
+  .plan-badge-popular {
+    background: #10B981;
+    color: #fff;
+    font-size: 0.72rem;
+    font-weight: 800;
+    padding: 3px 8px;
+    border-radius: 6px;
+  }
+  .plan-badge-standard {
+    background: #0284C7;
+    color: #fff;
+    font-size: 0.72rem;
+    font-weight: 800;
+    padding: 3px 8px;
+    border-radius: 6px;
+  }
+</style>
+
+<script>
+  let currentLoc = 'EU';
+  let currentDuration = '';
+  let currentType = '';
+
+  function selectDestination(loc) {
+    currentLoc = loc;
+    document.querySelectorAll('.dest-pill').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.loc === loc);
+    });
+    fetchAndRenderPlans();
+  }
+
+  function setDurationFilter(d) {
+    currentDuration = d;
+    document.querySelectorAll('.chip-duration').forEach(btn => {
+      const match = (d === '' && btn.textContent === 'All') || btn.textContent.includes(d + ' Day');
+      btn.classList.toggle('active', match);
+    });
+    fetchAndRenderPlans();
+  }
+
+  function setTypeFilter(t) {
+    currentType = t;
+    document.querySelectorAll('.chip-type').forEach(btn => {
+      const match = (t === '' && btn.textContent.includes('All')) ||
+                    (t === 'limited' && btn.textContent.includes('Fixed')) ||
+                    (t === 'unlimited' && btn.textContent.includes('Unlimited'));
+      btn.classList.toggle('active', match);
+    });
+    fetchAndRenderPlans();
+  }
+
+  async function fetchAndRenderPlans() {
+    const grid = document.getElementById('live-plans-grid');
+    grid.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:30px; color:#94A3B8;">Loading available offers...</div>';
+
+    try {
+      let url = `/api/catalog/packages?location=${currentLoc}`;
+      if (currentDuration) url += `&duration=${currentDuration}`;
+      if (currentType) url += `&type=${currentType}`;
+
+      const res = await fetch(url);
+      const data = await res.json();
+      const packages = data.packages || [];
+
+      if (!packages.length) {
+        grid.innerHTML = `
+          <div style="grid-column:1/-1; text-align:center; padding:40px; background:#F8FAFC; border-radius:12px;">
+            <p style="font-weight:700; color:#334155; margin-bottom:6px;">No offers match this exact combination.</p>
+            <p style="font-size:0.86rem; color:#64748B;">Try selecting "All" durations or "All Offers" to view full availability.</p>
+            <button class="button button-secondary" onclick="setDurationFilter(''); setTypeFilter('');" style="margin-top:12px; font-size:0.84rem;">Clear Filters</button>
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = packages.map(pkg => {
+        const isUnlimited = pkg.unlimited || pkg.data.toLowerCase().includes('unlimited');
+        const badgeHtml = isUnlimited ? '<span class="plan-badge-unlimited">♾️ UNLIMITED</span>' :
+                          (pkg.validity === '7 Days' && pkg.data === '3 GB' ? '<span class="plan-badge-popular">🔥 BEST SELLER</span>' :
+                          '<span class="plan-badge-standard">⚡ 5G ROAMING</span>');
+
+        const checkoutUrl = `/checkout?code=${encodeURIComponent(pkg.packageCode)}&name=${encodeURIComponent(pkg.name)}&price=${pkg.priceUsd}&data=${encodeURIComponent(pkg.data)}&validity=${encodeURIComponent(pkg.validity)}&location=${currentLoc}`;
+
+        return `
+          <div class="plan-card-item">
+            <div>
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                ${badgeHtml}
+                <span style="font-size:0.8rem; font-weight:700; color:#64748B; background:#F1F5F9; padding:3px 8px; border-radius:6px;">${pkg.validity}</span>
+              </div>
+              <h3 style="font-size:1.6rem; font-weight:800; color:#0F172A; margin:0 0 6px;">${pkg.data}</h3>
+              <div style="font-size:0.86rem; font-weight:600; color:#475569; margin-bottom:6px;">${pkg.name}</div>
+              <div style="font-size:0.8rem; color:#64748B; margin-bottom:14px; display:flex; align-items:center; gap:4px;">
+                <span>📶</span> <span>${pkg.network}</span>
+              </div>
+              <ul style="list-style:none; padding:0; margin:0 0 16px; font-size:0.78rem; color:#475569; line-height:1.7;">
+                <li>✓ High-Speed 4G/5G Coverage</li>
+                <li>✓ Hotspot &amp; Tethering Supported</li>
+                <li>✓ Instant QR Code Delivery (&lt;60s)</li>
+              </ul>
+            </div>
+            <div style="border-top:1px solid #F1F5F9; padding-top:14px;">
+              <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:12px;">
+                <span style="font-size:0.8rem; color:#64748B; font-weight:600;">Price</span>
+                <span style="font-size:1.5rem; font-weight:800; color:var(--primary);">$${parseFloat(pkg.priceUsd).toFixed(2)} <span style="font-size:0.75rem; font-weight:600; color:#64748B;">USD</span></span>
+              </div>
+              <a href="${checkoutUrl}" class="button button-primary" style="display:block; text-align:center; padding:10px; font-weight:700; border-radius:10px; text-decoration:none; font-size:0.92rem;">
+                Select &amp; Buy eSIM &rarr;
+              </a>
+            </div>
+          </div>
+        `;
+      }).join('');
+    } catch(err) {
+      grid.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:30px; color:#DC2626;">Error loading offers. Please try again.</div>';
+    }
+  }
+
+  // Auto load default Europe plans on start
+  document.addEventListener('DOMContentLoaded', () => {
+    fetchAndRenderPlans();
+  });
+</script>
+
 </body>
 </html>

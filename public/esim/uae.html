@@ -26,6 +26,7 @@
   <meta name="twitter:image" content="https://traveltrip.world/images/logo.png">
 
   <link rel="stylesheet" href="/css/site.css">
+  <script src="/js/i18n.js"></script>
 
   <!-- JSON-LD Structured Data (Product, Breadcrumbs, FAQs) -->
   <script type="application/ld+json">
@@ -227,7 +228,46 @@
       </span>
     </div>
 
-    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:20px;">
+    
+    <!-- DURATION & ALLOWANCE FILTER BAR -->
+    <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:12px; padding:12px 18px; margin:20px 0; display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:12px; box-shadow:0 2px 8px rgba(0,0,0,0.04);">
+      <div style="display:flex; align-items:center; flex-wrap:wrap; gap:8px;">
+        <span style="font-size:0.8rem; font-weight:700; color:#64748B; text-transform:uppercase;">Duration:</span>
+        <button type="button" class="c-chip c-chip-dur active" onclick="filterCountryPlans('')">All Offers</button>
+        <button type="button" class="c-chip c-chip-dur" onclick="filterCountryPlans('3 Days')">⚡ 3 Days</button>
+        <button type="button" class="c-chip c-chip-dur" onclick="filterCountryPlans('7 Days')">📅 7 Days</button>
+        <button type="button" class="c-chip c-chip-dur" onclick="filterCountryPlans('15 Days')">🚀 15 Days</button>
+        <button type="button" class="c-chip c-chip-dur" onclick="filterCountryPlans('30 Days')">🗓️ 30 Days</button>
+      </div>
+      <div style="display:flex; align-items:center; flex-wrap:wrap; gap:8px;">
+        <span style="font-size:0.8rem; font-weight:700; color:#64748B; text-transform:uppercase;">Type:</span>
+        <button type="button" class="c-chip c-chip-type active" onclick="filterCountryType('')">All Data</button>
+        <button type="button" class="c-chip c-chip-type" onclick="filterCountryType('limited')">Fixed Data</button>
+        <button type="button" class="c-chip c-chip-type" onclick="filterCountryType('unlimited')">♾️ Unlimited</button>
+      </div>
+    </div>
+
+    <style>
+      .c-chip {
+        padding: 6px 12px;
+        background: #F1F5F9;
+        border: 1px solid #CBD5E1;
+        border-radius: 8px;
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: #475569;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .c-chip:hover { border-color: var(--primary); color: var(--primary); }
+      .c-chip.active {
+        background: var(--primary);
+        color: #FFFFFF;
+        border-color: var(--primary);
+      }
+    </style>
+    
+    <div id="country-plans-grid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(250px, 1fr)); gap:20px;">
 
         <div style="background:#fff; border:1px solid #E2E8F0; border-radius:16px; padding:24px; display:flex; flex-direction:column; justify-content:space-between; box-shadow:0 4px 20px rgba(0,0,0,0.06);">
           <div>
@@ -533,5 +573,91 @@
 
   checkAuth();
 </script>
+
+<script>
+  let cDur = '';
+  let cType = '';
+  const COUNTRY_CODE = 'UAE';
+
+  function filterCountryPlans(dur) {
+    cDur = dur;
+    document.querySelectorAll('.c-chip-dur').forEach(b => {
+      b.classList.toggle('active', (dur === '' && b.textContent === 'All Offers') || b.textContent.includes(dur));
+    });
+    renderCountryPlans();
+  }
+
+  function filterCountryType(t) {
+    cType = t;
+    document.querySelectorAll('.c-chip-type').forEach(b => {
+      b.classList.toggle('active', (t === '' && b.textContent.includes('All')) ||
+                                   (t === 'limited' && b.textContent.includes('Fixed')) ||
+                                   (t === 'unlimited' && b.textContent.includes('Unlimited')));
+    });
+    renderCountryPlans();
+  }
+
+  async function renderCountryPlans() {
+    const grid = document.getElementById('country-plans-grid');
+    if (!grid) return;
+
+    try {
+      let url = `/api/catalog/packages?location=${COUNTRY_CODE}`;
+      if (cDur) url += `&duration=${cDur.split(' ')[0]}`;
+      if (cType) url += `&type=${cType}`;
+
+      const res = await fetch(url);
+      const data = await res.json();
+      const pkgs = data.packages || [];
+
+      if (!pkgs.length) {
+        grid.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:36px; background:#F8FAFC; border-radius:12px; color:#64748B;">No offers matching this combination. Try clearing filters.</div>';
+        return;
+      }
+
+      grid.innerHTML = pkgs.map(p => {
+        const isUnl = p.unlimited || p.data.toLowerCase().includes('unlimited');
+        const badge = isUnl ? '<span style="background:#8B5CF6; color:#fff; font-size:0.72rem; font-weight:800; padding:3px 8px; border-radius:6px;">♾️ UNLIMITED</span>' :
+                              (p.validity.includes('7 Day') && p.data.includes('3 GB') ? '<span style="background:#10B981; color:#fff; font-size:0.72rem; font-weight:800; padding:3px 8px; border-radius:6px;">🔥 BEST SELLER</span>' :
+                              '<span style="background:#0284C7; color:#fff; font-size:0.72rem; font-weight:800; padding:3px 8px; border-radius:6px;">⚡ 5G ROAMING</span>');
+        
+        const checkoutUrl = `/checkout?code=${encodeURIComponent(p.packageCode)}&name=${encodeURIComponent(p.name)}&price=${p.priceUsd}&data=${encodeURIComponent(p.data)}&validity=${encodeURIComponent(p.validity)}&location=${COUNTRY_CODE}`;
+
+        return `
+          <div style="background:#fff; border:1px solid #E2E8F0; border-radius:16px; padding:22px; display:flex; flex-direction:column; justify-content:space-between; box-shadow:0 4px 18px rgba(0,0,0,0.05); transition:transform 0.2s;">
+            <div>
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                ${badge}
+                <span style="font-size:0.8rem; font-weight:700; color:#64748B; background:#F1F5F9; padding:3px 8px; border-radius:6px;">${p.validity}</span>
+              </div>
+              <h3 style="font-size:1.6rem; font-weight:800; color:#0F172A; margin:0 0 6px;">${p.data}</h3>
+              <div style="font-size:0.88rem; font-weight:600; color:#334155; margin-bottom:6px;">${p.name}</div>
+              <div style="font-size:0.8rem; color:#64748B; margin-bottom:14px;">📶 ${p.network}</div>
+              <ul style="list-style:none; padding:0; margin:0 0 16px; font-size:0.78rem; color:#64748B; line-height:1.7;">
+                <li>✓ Instant QR Code Delivery (&lt;60s)</li>
+                <li>✓ Hotspot &amp; Tethering Allowed</li>
+                <li>✓ Tier-1 Roaming Guaranteed</li>
+              </ul>
+            </div>
+            <div style="border-top:1px solid #F1F5F9; padding-top:14px;">
+              <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:12px;">
+                <span style="font-size:0.8rem; color:#64748B;">Total Price</span>
+                <span style="font-size:1.5rem; font-weight:800; color:var(--primary);">$${parseFloat(p.priceUsd).toFixed(2)} <span style="font-size:0.75rem; color:#64748B; font-weight:600;">USD</span></span>
+              </div>
+              <a href="${checkoutUrl}" class="button button-primary" style="display:block; text-align:center; padding:11px; font-weight:700; border-radius:10px; text-decoration:none; font-size:0.92rem;">
+                Buy eSIM &rarr;
+              </a>
+            </div>
+          </div>
+        `;
+      }).join('');
+    } catch(e) {
+      console.error(e);
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', renderCountryPlans);
+</script>
+
 </body>
 </html>
