@@ -799,3 +799,6 @@ footer {
   .destinations-grid { grid-template-columns: repeat(2, 1fr); }
   .hero-traveler { padding: 36px 24px; }
 }
+
+.dest-asia { background: #153E35; }
+.dest-asia:hover { background: #1B4D42; }

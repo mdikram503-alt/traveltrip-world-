@@ -65,6 +65,13 @@ def handle_options(path):
 # ==============================================================================
 
 CATALOG_PACKAGES = {
+    "ASIA": [
+        {"packageCode": "ASIA-1GB-7D", "name": "Asia+ 1GB Explorer (7 Days)", "data": "1 GB", "validity": "7 Days", "network": "5G Tier-1 Multi-Carrier", "priceUsd": "4.00"},
+        {"packageCode": "ASIA-3GB-15D", "name": "Asia+ 3GB Standard (15 Days)", "data": "3 GB", "validity": "15 Days", "network": "5G Tier-1 Multi-Carrier", "priceUsd": "8.50"},
+        {"packageCode": "ASIA-5GB-30D", "name": "Asia+ 5GB Traveler (30 Days)", "data": "5 GB", "validity": "30 Days", "network": "5G Tier-1 Multi-Carrier", "priceUsd": "13.50"},
+        {"packageCode": "ASIA-10GB-30D", "name": "Asia+ 10GB Pro (30 Days)", "data": "10 GB", "validity": "30 Days", "network": "5G Tier-1 Multi-Carrier", "priceUsd": "22.00"},
+        {"packageCode": "ASIA-20GB-30D", "name": "Asia+ 20GB Premium (30 Days)", "data": "20 GB", "validity": "30 Days", "network": "5G Tier-1 Multi-Carrier", "priceUsd": "36.00"}
+    ],
     "EU": [
         {"packageCode": "EU-1GB-7D", "name": "Europe 1GB (7 Days)", "data": "1 GB", "validity": "7 Days", "network": "4G/5G LTE", "priceUsd": "4.50"},
         {"packageCode": "EU-3GB-30D", "name": "Europe 3GB (30 Days)", "data": "3 GB", "validity": "30 Days", "network": "4G/5G LTE", "priceUsd": "9.00"},
@@ -358,6 +365,7 @@ def create_checkout_order():
 
 @app.route("/checkout/checkout/paypal/capture-order", methods=["POST"])
 @app.route("/api/checkout/verify-payment", methods=["POST"])
+@app.route("/api/checkout/capture-order", methods=["POST"])
 def capture_order_and_deliver():
     """
     CRITICAL FLOW:
