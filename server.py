@@ -22,8 +22,27 @@ from supplier_service import SupplierService
 # Base directory paths
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 PUBLIC_DIR = os.path.join(BASE_DIR, "public")
+if not os.path.exists(PUBLIC_DIR):
+    # Try one level up if invoked from api/
+    parent_public = os.path.join(os.path.dirname(BASE_DIR), "public")
+    if os.path.exists(parent_public):
+        PUBLIC_DIR = parent_public
 
 app = Flask(__name__, static_folder=PUBLIC_DIR, static_url_path="")
+
+# In-memory sliding rate limiter for authentication protection
+FAILED_LOGINS = {} # ip -> list of timestamps
+RECOVERY_REQUESTS = {} # ip -> list of timestamps
+
+def is_rate_limited(ip: str, store: dict, max_attempts=5, window_seconds=900) -> bool:
+    now = time.time()
+    attempts = [t for t in store.get(ip, []) if now - t < window_seconds]
+    store[ip] = attempts
+    return len(attempts) >= max_attempts
+
+def record_attempt(ip: str, store: dict):
+    store.setdefault(ip, []).append(time.time())
+
 app.secret_key = os.environ.get("FLASK_SECRET_KEY", secrets.token_hex(32))
 
 # CORS and JSON headers
@@ -124,12 +143,16 @@ def register():
 
 @app.route("/api/auth/login", methods=["POST"])
 def login():
+    client_ip = request.headers.get("X-Forwarded-For", request.remote_addr or "127.0.0.1").split(",")[0].strip()
+    if is_rate_limited(client_ip, FAILED_LOGINS, max_attempts=5, window_seconds=900):
+        return jsonify({"error": "Too many failed login attempts. Please try again in 15 minutes."}), 429
     data = request.get_json() or {}
     email = data.get("email", "").strip().lower()
     password = data.get("password", "")
     
     user = authenticate_user(email, password)
     if not user:
+        record_attempt(client_ip, FAILED_LOGINS)
         return jsonify({"error": "Invalid email or password"}), 401
     
     session["user_id"] = user["id"]
@@ -390,18 +413,29 @@ def get_customer_orders():
     user_id = session.get("user_id")
     user_email = session.get("email")
     
-    # Optional filter if queried by email parameter for guest lookup
-    query_email = request.args.get("email")
-    target_email = user_email or query_email
-    
-    if not user_id and not target_email:
-        return jsonify({"authenticated": False, "orders": []}), 401
+    # 1. Authenticated customer: strictly return their own orders
+    if user_id and user_email:
+        orders = get_user_orders(user_id=user_id, email=user_email)
+        return jsonify({
+            "status": "success",
+            "authenticated": True,
+            "orders": orders
+        })
         
-    orders = get_user_orders(user_id=user_id, email=target_email)
-    return jsonify({
-        "status": "success",
-        "orders": orders
-    })
+    # 2. Guest lookup: requires BOTH secret orderId AND matching buyer email
+    order_id = request.args.get("orderId", "").strip()
+    guest_email = request.args.get("email", "").strip().lower()
+    if order_id and guest_email:
+        order = get_order(order_id)
+        if order and order.get("buyer_email", "").lower() == guest_email:
+            return jsonify({
+                "status": "success",
+                "authenticated": False,
+                "orders": [order]
+            })
+        return jsonify({"error": "Order not found matching this email and ID", "orders": []}), 404
+        
+    return jsonify({"error": "Authentication required to view orders", "authenticated": False, "orders": []}), 401
 
 # ==============================================================================
 # 5. ADMIN OPERATIONS DASHBOARD APIS
@@ -564,6 +598,30 @@ def admin_page():
 def live_ping():
     return jsonify({"status": "ok", "timestamp": time.time(), "service": "TravelTripServer"})
 
+
+# ==============================================================================
+# ERROR HANDLERS (Clean HTML for Browser, JSON for APIs)
+# ==============================================================================
+
+@app.errorhandler(404)
+def handle_404(e):
+    if request.path.startswith("/api/"):
+        return jsonify({"error": "Endpoint not found", "code": "NOT_FOUND"}), 404
+    p404 = os.path.join(PUBLIC_DIR, "pages", "404.html")
+    if os.path.exists(p404):
+        return send_from_directory(os.path.join(PUBLIC_DIR, "pages"), "404.html"), 404
+    return "Page Not Found", 404
+
+@app.errorhandler(500)
+@app.errorhandler(Exception)
+def handle_500(e):
+    if request.path.startswith("/api/"):
+        return jsonify({"error": "An unexpected server issue occurred", "code": "INTERNAL_ERROR"}), 500
+    p500 = os.path.join(PUBLIC_DIR, "pages", "500.html")
+    if os.path.exists(p500):
+        return send_from_directory(os.path.join(PUBLIC_DIR, "pages"), "500.html"), 500
+    return "Temporary Maintenance", 500
+
 if __name__ == "__main__":
     init_db()
     port = int(os.environ.get("PORT", 8000))
@@ -571,3 +629,4 @@ if __name__ == "__main__":
     print(f"[SERVER] Admin Dashboard at http://127.0.0.1:{port}/pages/admin.html")
     print("[SERVER] Admin user: admin@traveltrip.world (password configured in DB)\n")
     app.run(host="0.0.0.0", port=port, debug=False)
+
