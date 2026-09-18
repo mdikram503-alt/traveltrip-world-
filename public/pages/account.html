@@ -127,13 +127,19 @@
     <a class="button" href="/login">Sign In to Your Account</a>
     <a class="button button-secondary" href="/login?tab=register" style="margin-left:8px;">Create New Account</a>
 
-    <div style="margin-top: 36px; padding-top: 24px; border-top: 1px solid var(--border); max-width: 400px; margin-left: auto; margin-right: auto;">
-      <h4>Bought as a guest?</h4>
-      <p class="muted" style="font-size: 0.85rem; margin-bottom: 10px;">Enter the email used during checkout to retrieve your eSIM:</p>
-      <div style="display:flex; gap:8px;">
-        <input id="guest-email" type="email" placeholder="your-email@example.com">
-        <button class="button" onclick="lookupGuestOrders()">Lookup</button>
+    <div style="margin-top: 36px; padding-top: 24px; border-top: 1px solid var(--border); max-width: 460px; margin-left: auto; margin-right: auto; text-align: left;">
+      <h4 style="color:var(--text-card); margin-bottom: 6px;">Bought as a guest?</h4>
+      <p class="muted" style="font-size: 0.85rem; margin-bottom: 12px;">
+        For your privacy and security, enter both your <strong>Order ID</strong> (e.g. TT-CA4B959C) and <strong>Checkout Email</strong> to view your eSIM profile:
+      </p>
+      <div style="display:flex; flex-direction:column; gap:10px;">
+        <input id="guest-order-id" type="text" class="input" placeholder="Order ID (e.g. TT-CA4B959C)" style="width:100%; padding:10px; border-radius:6px; border:1px solid var(--border); background:var(--bg-elevated); color:var(--text-card);">
+        <div style="display:flex; gap:8px;">
+          <input id="guest-email" type="email" class="input" placeholder="Checkout Email address" style="flex:1; padding:10px; border-radius:6px; border:1px solid var(--border); background:var(--bg-elevated); color:var(--text-card);">
+          <button class="button" onclick="lookupGuestOrders()" style="white-space:nowrap;">View eSIM</button>
+        </div>
       </div>
+      <div id="guest-error" style="color:#EF4444; font-size:0.85rem; margin-top:8px; font-weight:500;"></div>
     </div>
   </div>
 
@@ -341,13 +347,33 @@
     `).join("");
   }
 
-  function lookupGuestOrders() {
-    const email = document.getElementById("guest-email").value.trim();
-    if (!email || !email.includes("@")) { alert("Enter a valid email"); return; }
-    document.getElementById("signed-out-card").style.display = "none";
-    document.getElementById("signed-in-content").style.display = "block";
-    document.getElementById("user-title").textContent = `Orders for ${email}`;
-    loadOrders(email);
+  async function lookupGuestOrders() {
+    const orderId = document.getElementById("guest-order-id").value.trim();
+    const email = document.getElementById("guest-email").value.trim().toLowerCase();
+    const errEl = document.getElementById("guest-error");
+    if (errEl) errEl.textContent = "";
+
+    if (!orderId || !email || !email.includes("@")) {
+      if (errEl) errEl.textContent = "Please provide both your Order ID (e.g. TT-CA4B959C) and your checkout email.";
+      return;
+    }
+
+    try {
+      const res = await fetch(`/api/account/orders?orderId=${encodeURIComponent(orderId)}&email=${encodeURIComponent(email)}`);
+      const data = await res.json();
+      if (!res.ok || !data.orders || data.orders.length === 0) {
+        if (errEl) errEl.textContent = data.error || "No order found matching this Order ID and Email combination.";
+        return;
+      }
+      document.getElementById("signed-out-card").style.display = "none";
+      document.getElementById("signed-in-content").style.display = "block";
+      document.getElementById("user-title").textContent = `Order ${orderId}`;
+      document.getElementById("user-subtitle").textContent = `${email} · Verified Guest Access`;
+      renderEsims(data.orders);
+      renderOrdersTable(data.orders);
+    } catch(err) {
+      if (errEl) errEl.textContent = "Unable to connect to order verification service. Please try again.";
+    }
   }
 
   async function logout() {

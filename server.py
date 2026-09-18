@@ -101,14 +101,41 @@ CATALOG_PACKAGES = {
 }
 
 @app.route("/catalog/esim/packages", methods=["GET"])
+@app.route("/api/packages", methods=["GET"])
+@app.route("/api/catalog/packages", methods=["GET"])
 def get_catalog_packages():
-    loc = request.args.get("location", "EU").upper()
-    packages = CATALOG_PACKAGES.get(loc, CATALOG_PACKAGES.get("EU"))
-    return jsonify({
-        "status": "success",
-        "location": loc,
-        "packages": packages
-    })
+    loc = request.args.get("location", "").strip().upper()
+    if loc and loc in CATALOG_PACKAGES:
+        return jsonify({
+            "status": "success",
+            "location": loc,
+            "count": len(CATALOG_PACKAGES[loc]),
+            "packages": CATALOG_PACKAGES[loc]
+        })
+    elif loc and loc not in ["ALL", ""]:
+        # Fallback to EU if unknown code
+        pkgs = CATALOG_PACKAGES.get("EU", [])
+        return jsonify({
+            "status": "success",
+            "location": "EU",
+            "count": len(pkgs),
+            "packages": pkgs
+        })
+    else:
+        # Flatten all packages with destination metadata
+        all_pkgs = []
+        for region, pkg_list in CATALOG_PACKAGES.items():
+            for p in pkg_list:
+                item = dict(p)
+                item["region"] = region
+                all_pkgs.append(item)
+        return jsonify({
+            "status": "success",
+            "location": "ALL",
+            "count": len(all_pkgs),
+            "destinations": list(CATALOG_PACKAGES.keys()),
+            "packages": all_pkgs
+        })
 
 # ==============================================================================
 # 2. CUSTOMER AUTHENTICATION APIS (Register, Login, Session, Logout)
@@ -437,172 +464,26 @@ def get_customer_orders():
         
     return jsonify({"error": "Authentication required to view orders", "authenticated": False, "orders": []}), 401
 
-# ==============================================================================
-# 5. ADMIN OPERATIONS DASHBOARD APIS
-# ==============================================================================
-
-def require_admin():
-    return session.get("role") == "admin"
-
-@app.route("/api/admin/stats", methods=["GET"])
-def admin_stats():
-    if session.get("role") != "admin":
-        return jsonify({"error": "Unauthorized: Admin privileges required"}), 403
-    if not require_admin():
-        # Allow stats in demo mode or check auth
-        pass
-    stats = get_dashboard_stats()
-    return jsonify({"status": "success", "stats": stats})
-
-@app.route("/api/admin/orders", methods=["GET"])
-def admin_orders():
-    if session.get("role") != "admin":
-        return jsonify({"error": "Unauthorized: Admin privileges required"}), 403
-    if not require_admin():
-        # Check basic auth or session
-        pass
-    status_filter = request.args.get("filter")
-    orders = get_all_orders(status_filter=status_filter)
-    return jsonify({"status": "success", "orders": orders})
-
-@app.route("/api/admin/customers", methods=["GET"])
-def admin_customers():
-    if not require_admin():
-        pass
-    customers = get_all_customers()
-    return jsonify({"status": "success", "customers": customers})
-
-@app.route("/api/admin/health", methods=["GET"])
-def admin_health():
-    # Returns latest health metrics and real-time probes
-    recent_logs = get_recent_health_metrics(limit=15)
-    supplier_status = SupplierService.check_supplier_status()
-    
+# Health check endpoints
+@app.route("/api/health/live", methods=["GET"])
+@app.route("/api/health", methods=["GET"])
+def live_ping():
     return jsonify({
-        "status": "success",
-        "supplier_status": supplier_status,
-        "recent_metrics": recent_logs,
-        "server_time": time.strftime("%Y-%m-%d %H:%M:%S")
+        "status": "ok",
+        "timestamp": time.time(),
+        "service": "TravelTripServer",
+        "version": "2.0.0"
     })
 
-@app.route("/api/admin/retry-esim", methods=["POST"])
-def admin_retry_esim():
-    if not require_admin():
-        return jsonify({"error": "Unauthorized"}), 403
-    data = request.get_json() or {}
-    order_id = data.get("order_id")
-    order = get_order(order_id)
-    if not order:
-        return jsonify({"error": "Order not found"}), 404
-        
-    provision_result = SupplierService.provision_esim(
-        package_code=order["package_code"],
-        buyer_email=order["buyer_email"],
-        order_id=order_id,
-        location_code=order.get("location_code", "GLOBAL")
-    )
-    if provision_result and provision_result.get("success"):
-        update_order_esim(
-            order_id=order_id,
-            esim_status="delivered",
-            supplier_order_id=provision_result["supplier_order_id"],
-            qr_code_data=provision_result["qr_code_url"],
-            lpa_string=provision_result["lpa_string"],
-            iccid=provision_result["iccid"],
-            activation_code=provision_result["activation_code"],
-            smdp_address=provision_result["smdp_address"]
-        )
-        return jsonify({"status": "success", "message": "eSIM re-issued successfully!"})
-    return jsonify({"error": "Supplier retry failed"}), 500
-
-# ==============================================================================
-# 6. WEB PAGES & STATIC ROUTING
-# ==============================================================================
-
-
-# ==============================================================================
-# SEO & DEDICATED LANDING ROUTES (Vercel & VPS Compatible)
-# ==============================================================================
-
-@app.route("/destinations")
-def route_destinations():
-    return send_from_directory(os.path.join(PUBLIC_DIR, "pages"), "destinations.html")
-
-@app.route("/how-it-works")
-def route_how_it_works():
-    return send_from_directory(os.path.join(PUBLIC_DIR, "pages"), "how-it-works.html")
-
-@app.route("/compatible-devices")
-def route_compatibility():
-    return send_from_directory(os.path.join(PUBLIC_DIR, "pages"), "compatibility.html")
-
-@app.route("/faq")
-def route_faq():
-    return send_from_directory(os.path.join(PUBLIC_DIR, "pages"), "faq.html")
-
-@app.route("/terms")
-def route_terms():
-    return send_from_directory(os.path.join(PUBLIC_DIR, "pages"), "terms.html")
-
-@app.route("/privacy")
-def route_privacy():
-    return send_from_directory(os.path.join(PUBLIC_DIR, "pages"), "privacy.html")
-
-@app.route("/refund-policy")
-def route_refund_policy():
-    return send_from_directory(os.path.join(PUBLIC_DIR, "pages"), "refund-policy.html")
-
-@app.route("/robots.txt")
-def route_robots():
-    return send_from_directory(PUBLIC_DIR, "robots.txt")
-
-@app.route("/sitemap.xml")
-def route_sitemap():
-    resp = make_response(send_from_directory(PUBLIC_DIR, "sitemap.xml"))
-    resp.headers["Content-Type"] = "application/xml"
-    return resp
-
-@app.route("/manifest.json")
-def route_manifest():
-    resp = make_response(send_from_directory(PUBLIC_DIR, "manifest.json"))
-    resp.headers["Content-Type"] = "application/json"
-    return resp
-
-@app.route("/images/<path:filename>")
-def route_images(filename):
-    return send_from_directory(os.path.join(PUBLIC_DIR, "images"), filename)
-
-@app.route("/")
-def index():
-    return send_from_directory(PUBLIC_DIR, "index.html")
-
-@app.route("/pages/<path:filename>")
-def serve_pages(filename):
-    return send_from_directory(os.path.join(PUBLIC_DIR, "pages"), filename)
-
-@app.route("/css/<path:filename>")
-def serve_css(filename):
-    return send_from_directory(os.path.join(PUBLIC_DIR, "css"), filename)
-
-@app.route("/js/<path:filename>")
-def serve_js(filename):
-    return send_from_directory(os.path.join(PUBLIC_DIR, "js"), filename)
-
-, "admin.html")
-
-# Health ping
-@app.route("/api/health/live", methods=["GET"])
-def live_ping():
-    return jsonify({"status": "ok", "timestamp": time.time(), "service": "TravelTripServer"})
-
-
-
 # Explicitly block all admin paths with clean 404
-@app.route("/admin", defaults={"path": ""})
-@app.route("/admin/<path:path>")
-@app.route("/api/admin", defaults={"path": ""})
-@app.route("/api/admin/<path:path>")
+@app.route("/admin", defaults={"path": ""}, strict_slashes=False)
+@app.route("/admin/<path:path>", strict_slashes=False)
 def admin_purged_404(path=""):
+    return jsonify({"error": "Endpoint not found", "code": "NOT_FOUND"}), 404
+
+@app.route("/api/admin", defaults={"path": ""}, strict_slashes=False)
+@app.route("/api/admin/<path:path>", strict_slashes=False)
+def api_admin_purged_404(path=""):
     return jsonify({"error": "Endpoint not found", "code": "NOT_FOUND"}), 404
 
 # ==============================================================================
