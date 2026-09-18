@@ -104,6 +104,45 @@ CATALOG_PACKAGES = {
     "TH": [
         {"packageCode": "TH-50GB-10D", "name": "Thailand Tourist 50GB (10 Days)", "data": "50 GB", "validity": "10 Days", "network": "True/AIS 5G", "priceUsd": "9.90"},
         {"packageCode": "TH-Unlimited-8D", "name": "Thailand Unlimited (8 Days)", "data": "Unlimited", "validity": "8 Days", "network": "AIS 5G", "priceUsd": "8.50"}
+    ],
+    "BD": [
+        {"packageCode": "BD-1GB-7D", "name": "Bangladesh 1GB (7 Days)", "data": "1 GB", "validity": "7 Days", "network": "Grameenphone/Robi 4G/5G", "priceUsd": "4.00"},
+        {"packageCode": "BD-3GB-15D", "name": "Bangladesh 3GB (15 Days)", "data": "3 GB", "validity": "15 Days", "network": "Grameenphone/Robi 4G/5G", "priceUsd": "8.50"},
+        {"packageCode": "BD-5GB-30D", "name": "Bangladesh 5GB (30 Days)", "data": "5 GB", "validity": "30 Days", "network": "Grameenphone/Robi 4G/5G", "priceUsd": "13.50"},
+        {"packageCode": "BD-10GB-30D", "name": "Bangladesh 10GB (30 Days)", "data": "10 GB", "validity": "30 Days", "network": "Grameenphone/Robi 4G/5G", "priceUsd": "22.00"},
+        {"packageCode": "BD-20GB-30D", "name": "Bangladesh 20GB (30 Days)", "data": "20 GB", "validity": "30 Days", "network": "Grameenphone/Robi 4G/5G", "priceUsd": "35.00"}
+    ],
+    "IN": [
+        {"packageCode": "IN-1GB-7D", "name": "India 1GB (7 Days)", "data": "1 GB", "validity": "7 Days", "network": "Jio/Airtel 4G/5G", "priceUsd": "3.80"},
+        {"packageCode": "IN-3GB-15D", "name": "India 3GB (15 Days)", "data": "3 GB", "validity": "15 Days", "network": "Jio/Airtel 4G/5G", "priceUsd": "7.50"},
+        {"packageCode": "IN-5GB-30D", "name": "India 5GB (30 Days)", "data": "5 GB", "validity": "30 Days", "network": "Jio/Airtel 4G/5G", "priceUsd": "11.50"},
+        {"packageCode": "IN-10GB-30D", "name": "India 10GB (30 Days)", "data": "10 GB", "validity": "30 Days", "network": "Jio/Airtel 4G/5G", "priceUsd": "19.50"},
+        {"packageCode": "IN-20GB-30D", "name": "India 20GB (30 Days)", "data": "20 GB", "validity": "30 Days", "network": "Jio/Airtel 4G/5G", "priceUsd": "32.00"}
+    ],
+    "PK": [
+        {"packageCode": "PK-1GB-7D", "name": "Pakistan 1GB (7 Days)", "data": "1 GB", "validity": "7 Days", "network": "Jazz/Zong 4G LTE", "priceUsd": "4.50"},
+        {"packageCode": "PK-3GB-15D", "name": "Pakistan 3GB (15 Days)", "data": "3 GB", "validity": "15 Days", "network": "Jazz/Zong 4G LTE", "priceUsd": "9.50"},
+        {"packageCode": "PK-5GB-30D", "name": "Pakistan 5GB (30 Days)", "data": "5 GB", "validity": "30 Days", "network": "Jazz/Zong 4G LTE", "priceUsd": "14.50"},
+        {"packageCode": "PK-10GB-30D", "name": "Pakistan 10GB (30 Days)", "data": "10 GB", "validity": "30 Days", "network": "Jazz/Zong 4G LTE", "priceUsd": "24.00"}
+    ],
+    "UAE": [
+        {"packageCode": "UAE-1GB-7D", "name": "UAE & Dubai 1GB (7 Days)", "data": "1 GB", "validity": "7 Days", "network": "e& (Etisalat)/du 5G", "priceUsd": "5.50"},
+        {"packageCode": "UAE-3GB-15D", "name": "UAE & Dubai 3GB (15 Days)", "data": "3 GB", "validity": "15 Days", "network": "e& (Etisalat)/du 5G", "priceUsd": "13.00"},
+        {"packageCode": "UAE-5GB-30D", "name": "UAE & Dubai 5GB (30 Days)", "data": "5 GB", "validity": "30 Days", "network": "e& (Etisalat)/du 5G", "priceUsd": "21.00"},
+        {"packageCode": "UAE-10GB-30D", "name": "UAE & Dubai 10GB (30 Days)", "data": "10 GB", "validity": "30 Days", "network": "e& (Etisalat)/du 5G", "priceUsd": "38.00"},
+        {"packageCode": "UAE-20GB-30D", "name": "UAE & Dubai 20GB (30 Days)", "data": "20 GB", "validity": "30 Days", "network": "e& (Etisalat)/du 5G", "priceUsd": "58.00"}
+    ],
+    "OM": [
+        {"packageCode": "OM-1GB-7D", "name": "Oman 1GB (7 Days)", "data": "1 GB", "validity": "7 Days", "network": "Omantel/Ooredoo 5G", "priceUsd": "5.50"},
+        {"packageCode": "OM-3GB-15D", "name": "Oman 3GB (15 Days)", "data": "3 GB", "validity": "15 Days", "network": "Omantel/Ooredoo 5G", "priceUsd": "13.50"},
+        {"packageCode": "OM-5GB-30D", "name": "Oman 5GB (30 Days)", "data": "5 GB", "validity": "30 Days", "network": "Omantel/Ooredoo 5G", "priceUsd": "22.00"},
+        {"packageCode": "OM-10GB-30D", "name": "Oman 10GB (30 Days)", "data": "10 GB", "validity": "30 Days", "network": "Omantel/Ooredoo 5G", "priceUsd": "39.00"}
+    ],
+    "QA": [
+        {"packageCode": "QA-1GB-7D", "name": "Qatar 1GB (7 Days)", "data": "1 GB", "validity": "7 Days", "network": "Ooredoo/Vodafone 5G", "priceUsd": "5.50"},
+        {"packageCode": "QA-3GB-15D", "name": "Qatar 3GB (15 Days)", "data": "3 GB", "validity": "15 Days", "network": "Ooredoo/Vodafone 5G", "priceUsd": "13.50"},
+        {"packageCode": "QA-5GB-30D", "name": "Qatar 5GB (30 Days)", "data": "5 GB", "validity": "30 Days", "network": "Ooredoo/Vodafone 5G", "priceUsd": "22.00"},
+        {"packageCode": "QA-10GB-30D", "name": "Qatar 10GB (30 Days)", "data": "10 GB", "validity": "30 Days", "network": "Ooredoo/Vodafone 5G", "priceUsd": "39.00"}
     ]
 }
 

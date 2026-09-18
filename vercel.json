@@ -4,6 +4,34 @@
   "trailingSlash": false,
   "rewrites": [
     {
+      "source": "/esim/bangladesh",
+      "destination": "/esim-bangladesh.html"
+    },
+    {
+      "source": "/esim/india",
+      "destination": "/esim-india.html"
+    },
+    {
+      "source": "/esim/pakistan",
+      "destination": "/esim-pakistan.html"
+    },
+    {
+      "source": "/esim/united-arab-emirates",
+      "destination": "/esim-uae.html"
+    },
+    {
+      "source": "/esim/uae",
+      "destination": "/esim-uae.html"
+    },
+    {
+      "source": "/esim/oman",
+      "destination": "/esim-oman.html"
+    },
+    {
+      "source": "/esim/qatar",
+      "destination": "/esim-qatar.html"
+    },
+    {
       "source": "/destinations",
       "destination": "/destinations.html"
     },
