@@ -2,388 +2,578 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Secure Checkout – TravelTrip eSIM</title>
-  <link rel="stylesheet" href="/css/site.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Secure Checkout · TravelTrip World eSIM</title>
+  <meta name="description" content="Secure, instant 256-bit encrypted checkout for TravelTrip World travel eSIM. Pay with Apple Pay, Google Pay, Samsung Pay, or Credit Card.">
+  <link rel="icon" type="image/png" href="/images/logo-transparent.png">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Maya CSS Theme -->
+  <link rel="stylesheet" href="/css/maya-theme.css?v=2.0">
+  
   <script src="https://js.stripe.com/v3/"></script>
-  <script src="/js/i18n.js"></script>
+  <script src="/js/i18n.js?v=2.0"></script>
+
   <style>
-    .checkout-grid {
-      display: grid;
-      grid-template-columns: 1.4fr 1fr;
-      gap: 24px;
-      margin-top: 24px;
+    body {
+      background-color: #F8FAFC;
+      color: #1E293B;
+      font-family: var(--font-primary);
     }
-    @media (max-width: 768px) {
-      .checkout-grid { grid-template-columns: 1fr; }
+    
+    .checkout-wrapper {
+      max-width: 1140px;
+      margin: 40px auto 80px auto;
+      padding: 0 20px;
     }
-    .back-link {
-      display: inline-block;
-      margin-top: 20px;
-      color: var(--primary);
-      text-decoration: none;
-      font-size: 0.9rem;
-    }
-    .page-head {
-      margin: 16px 0 24px;
-    }
-    .page-head h1 {
-      font-size: 1.8rem;
-      margin-bottom: 6px;
-    }
-    .checkout-total {
-      font-size: 1.6rem;
+
+    .checkout-breadcrumb {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 32px;
+      font-size: 14px;
       font-weight: 700;
-      color: var(--primary);
-      margin: 16px 0;
+      color: #94A3B8;
+      flex-wrap: wrap;
     }
-    .secure-note {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      margin-top: 12px;
-      line-height: 1.4;
+    .checkout-breadcrumb .step.active {
+      color: var(--maya-primary);
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
-    .status-box {
+    .checkout-breadcrumb .step.completed {
+      color: var(--maya-green);
+    }
+    .checkout-breadcrumb .separator {
+      color: #CBD5E1;
+    }
+
+    .checkout-layout {
+      display: grid;
+      grid-template-columns: 1.35fr 1fr;
+      gap: 32px;
+      align-items: start;
+    }
+    @media (max-width: 860px) {
+      .checkout-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .maya-card {
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      border-radius: var(--radius-xl);
+      padding: 32px;
+      box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+    }
+
+    .card-title {
+      font-family: var(--font-heading);
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--maya-pitch-black);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-label {
+      display: block;
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #334155;
+      margin-bottom: 8px;
+    }
+    .form-input {
+      width: 100%;
       padding: 12px 16px;
-      border-radius: 8px;
-      background: var(--bg-elevated);
-      margin-top: 16px;
-      font-size: 0.9rem;
+      border: 1.5px solid #CBD5E1;
+      border-radius: var(--radius-md);
+      font-family: var(--font-primary);
+      font-size: 15px;
+      color: #0F172A;
+      background: #FFFFFF;
+      transition: var(--transition);
+      outline: none;
+    }
+    .form-input:focus {
+      border-color: var(--maya-primary);
+      box-shadow: 0 0 0 4px rgba(61, 56, 208, 0.1);
+    }
+
+    /* Maya Wallet Badges */
+    .wallet-showcase {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+      padding: 12px 16px;
+      background: #F1F5F9;
+      border-radius: var(--radius-md);
+    }
+    .wallet-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 6px 12px;
+      border-radius: 6px;
+    }
+    .badge-apple {
+      background: #000000;
+      color: #FFFFFF;
+    }
+    .badge-google {
+      background: #FFFFFF;
+      color: #1F2937;
+      border: 1px solid #E2E8F0;
+    }
+    .badge-samsung {
+      background: #0A3E54;
+      color: #38BDF8;
+    }
+    .badge-cards {
+      background: #E2E8F0;
+      color: #334155;
+    }
+
+    .payment-divider {
+      display: flex;
+      align-items: center;
+      text-align: center;
+      margin: 20px 0 16px 0;
+      color: #94A3B8;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+    .payment-divider::before, .payment-divider::after {
+      content: '';
+      flex: 1;
+      border-bottom: 1px solid #E2E8F0;
+    }
+    .payment-divider:not(:empty)::before { margin-right: 14px; }
+    .payment-divider:not(:empty)::after { margin-left: 14px; }
+
+    /* Stripe Card Container */
+    #card-element {
+      background: #FFFFFF;
+      border: 1.5px solid #CBD5E1;
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      transition: var(--transition);
+    }
+    #card-element.StripeElement--focus {
+      border-color: var(--maya-primary);
+      box-shadow: 0 0 0 4px rgba(61, 56, 208, 0.1);
+    }
+
+    /* Status Box */
+    .status-box {
+      padding: 14px 18px;
+      border-radius: var(--radius-md);
+      margin-top: 18px;
+      font-size: 14px;
+      font-weight: 500;
       display: none;
     }
     .status-box.active { display: block; }
-    .status-box.info { border-left: 4px solid var(--primary); color: #E2E8F0; }
-    .status-box.error { border-left: 4px solid var(--danger); color: #FCA5A5; }
-    .status-box.success { border-left: 4px solid var(--success); color: #6EE7B7; }
+    .status-box.info {
+      background: var(--maya-primary-extra-light);
+      border-left: 4px solid var(--maya-primary);
+      color: var(--maya-primary);
+    }
+    .status-box.error {
+      background: #FEF2F2;
+      border-left: 4px solid #EF4444;
+      color: #DC2626;
+    }
+    .status-box.success {
+      background: var(--maya-green-bg);
+      border-left: 4px solid var(--maya-green);
+      color: var(--maya-green-hover);
+    }
 
-    /* Delivered eSIM Post-Payment Display */
+    /* Order Summary Card */
+    .summary-card {
+      background: #FFFFFF;
+      border: 2px solid var(--maya-primary-light);
+      border-radius: var(--radius-xl);
+      padding: 28px;
+      box-shadow: var(--shadow-md);
+      position: sticky;
+      top: 90px;
+    }
+    .summary-badge {
+      background: var(--maya-green-bg);
+      color: var(--maya-green-hover);
+      font-size: 11.5px;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      display: inline-block;
+      margin-bottom: 12px;
+    }
+    .summary-title {
+      font-family: var(--font-heading);
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--maya-pitch-black);
+      line-height: 1.15;
+      margin-bottom: 4px;
+    }
+    .summary-dest {
+      font-size: 14px;
+      color: #64748B;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+    .summary-pricing-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      border-radius: var(--radius-md);
+      padding: 16px;
+      margin-bottom: 20px;
+    }
+    .summary-price-big {
+      font-family: var(--font-heading);
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--maya-primary);
+    }
+    .summary-checklist {
+      list-style: none;
+      margin-bottom: 24px;
+      border-bottom: 1px solid #F1F5F9;
+      padding-bottom: 20px;
+    }
+    .summary-checklist li {
+      font-size: 13.5px;
+      color: #475569;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .summary-checklist li span {
+      color: var(--maya-green);
+      font-weight: 800;
+    }
+
+    .btn-pay-main {
+      background: var(--maya-primary);
+      color: #FFFFFF;
+      border: none;
+      width: 100%;
+      padding: 16px 24px;
+      border-radius: var(--radius-full);
+      font-family: var(--font-heading);
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: 0 4px 16px rgba(61, 56, 208, 0.35);
+    }
+    .btn-pay-main:hover {
+      background: var(--maya-primary-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(61, 56, 208, 0.45);
+    }
+
+    /* Delivered Post-Payment View */
     #delivery-success-view {
       display: none;
-      margin-top: 24px;
+      background: #FFFFFF;
+      border: 2px solid var(--maya-green);
+      border-radius: var(--radius-xl);
+      padding: 40px;
       text-align: center;
+      max-width: 720px;
+      margin: 40px auto;
+      box-shadow: var(--shadow-lg);
     }
     .qr-container {
       background: #FFFFFF;
       padding: 16px;
-      border-radius: 16px;
+      border: 1px solid #E2E8F0;
+      border-radius: var(--radius-lg);
       display: inline-block;
-      margin: 20px 0;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+      margin: 24px 0;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
     }
     .qr-container img {
-      width: 240px;
-      height: 240px;
+      width: 220px;
+      height: 220px;
       display: block;
-    }
-    .esim-details-box {
-      text-align: left;
-      background: var(--bg-elevated);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 20px;
-      margin: 20px auto;
-      max-width: 600px;
     }
     .detail-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 8px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-      font-size: 0.9rem;
+      padding: 10px 0;
+      border-bottom: 1px solid #F1F5F9;
+      font-size: 14px;
+      text-align: left;
     }
-    .detail-row:last-child { border-bottom: none; }
-    .detail-label { color: var(--text-muted); }
-    .detail-val {
-      font-family: monospace;
-      font-weight: 600;
-      color: #fff;
-      word-break: break-all;
-    }
+    .detail-label { color: #64748B; font-weight: 600; }
+    .detail-val { font-family: monospace; font-weight: 700; color: #0F172A; }
     .copy-btn {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      color: var(--primary);
-      padding: 4px 8px;
+      background: var(--maya-primary-extra-light);
+      border: 1px solid rgba(61, 56, 208, 0.2);
+      color: var(--maya-primary);
+      padding: 4px 10px;
       border-radius: 6px;
-      font-size: 0.75rem;
+      font-size: 12px;
+      font-weight: 700;
       cursor: pointer;
       margin-left: 8px;
+      transition: var(--transition);
     }
-    .copy-btn:hover { background: var(--border); }
-    .steps-card {
-      text-align: left;
-      margin: 20px auto;
-      max-width: 600px;
-      background: rgba(6, 182, 212, 0.05);
-      border: 1px solid rgba(6, 182, 212, 0.2);
-      border-radius: 12px;
-      padding: 18px;
-    }
-    .steps-card h4 { color: var(--primary); margin-bottom: 8px; }
-    .steps-card ol { padding-left: 20px; font-size: 0.88rem; color: #CBD5E1; line-height: 1.6; }
-
-    /* Payment Wallets & Badges Styling */
-    .wallet-showcase {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 14px;
-      padding: 10px 12px;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 8px;
-    }
-    .wallet-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      font-size: 0.78rem;
-      font-weight: 700;
-      padding: 5px 10px;
-      border-radius: 6px;
-      letter-spacing: 0.3px;
-    }
-    .badge-apple {
-      background: #000000;
-      color: #FFFFFF;
-      border: 1px solid #444444;
-    }
-    .badge-google {
-      background: #FFFFFF;
-      color: #1F2937;
-      border: 1px solid #E5E7EB;
-    }
-    .badge-samsung {
-      background: #0C4A60;
-      color: #38BDF8;
-      border: 1px solid #0284C7;
-    }
-    .badge-cards {
-      background: rgba(255, 255, 255, 0.08);
-      color: #E2E8F0;
-      border: 1px solid rgba(255, 255, 255, 0.15);
-    }
-    .payment-divider {
-      display: flex;
-      align-items: center;
-      text-align: center;
-      margin: 16px 0 14px;
-      color: #94A3B8;
-      font-size: 0.75rem;
-      font-weight: 700;
-      letter-spacing: 1px;
-    }
-    .payment-divider::before, .payment-divider::after {
-      content: '';
-      flex: 1;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-    }
-    .payment-divider:not(:empty)::before { margin-right: 12px; }
-    .payment-divider:not(:empty)::after { margin-left: 12px; }
-    
-    #payment-request-container {
-      margin-bottom: 14px;
-    }
-    #payment-request-button {
-      min-height: 48px;
-    }
-    .wallet-note {
-      font-size: 0.8rem;
-      color: #94A3B8;
-      margin-top: 6px;
-      line-height: 1.4;
+    .copy-btn:hover {
+      background: var(--maya-primary);
+      color: white;
     }
   </style>
 </head>
 <body>
-<div class="site-watermark-bg"></div>
 
-<header class="top">
-  <div class="shell top">
-    <a class="brand" href="/">
-      <img src="/images/logo-transparent.png" alt="Traveler traveltrip.world" class="brand-logo-img">
-      <div class="brand-text-wrap">
-        <span class="brand-title">traveltrip<span class="gold-accent">.world</span></span>
-        <span class="brand-sub">Traveler eSIM</span>
-      </div>
-    </a>
-    <nav class="nav">
-      <a href="/">Home</a>
-      <a href="/destinations">Destinations</a>
-      <a href="/account">My eSIMs</a>
-      <a href="/how-it-works">How It Works</a>
-    </nav>
-    <div class="right" id="auth-nav-slot">
-      <a class="button button-secondary" href="/login">Sign In</a>
+  <!-- Top Announcement Bar -->
+  <aside class="maya-top-bar" aria-label="Security Notice">
+    <div class="trust-stars">
+      <span>★ ★ ★ ★ ★</span>
+      <span>4.8 / 5 Trustpilot</span>
     </div>
-  </div>
-</header>
+    <span class="top-badge">SSL ENCRYPTED</span>
+    <span>256-Bit Bank Grade Secure Checkout · Instant QR Delivery</span>
+  </aside>
 
-<main class="shell">
-  <div id="checkout-view">
-    <a id="back" class="back-link" href="/">← Back to plans</a>
-    <section class="page-head">
-      <h1>Secure Checkout</h1>
-      <p class="muted">Instant server-verified payment & automated eSIM delivery</p>
-    </section>
+  <!-- Navbar -->
+  <header class="maya-navbar">
+    <div class="maya-nav-container">
+      <a href="/" class="maya-logo" aria-label="TravelTrip World">
+        <div class="maya-logo-icon">📶</div>
+        <div class="maya-logo-text">
+          <span class="brand-name">TRAVELTRIP</span>
+          <span class="brand-sub">TRAVELER eSIM</span>
+        </div>
+      </a>
 
-    <div class="checkout-grid">
-      <!-- Form details -->
-      <section class="card watermark-shade">
-        <h2>Customer Information</h2>
+      <div class="maya-nav-actions">
+        <div id="i18n-language-selector"></div>
+        <a href="https://wa.me/8801830022204" target="_blank" class="maya-pill" style="color: #25D366; border-color: rgba(37, 211, 102, 0.3);">
+          💬 24/7 Live Support
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="checkout-wrapper">
+    
+    <!-- Breadcrumb Steps -->
+    <div class="checkout-breadcrumb">
+      <span class="step completed">✓ 1. Select Plan</span>
+      <span class="separator">➔</span>
+      <span class="step active">💳 2. Secure Checkout &amp; Delivery</span>
+      <span class="separator">➔</span>
+      <span class="step">📲 3. Instant Connect</span>
+    </div>
+
+    <!-- Active Checkout Form & Order Summary -->
+    <div id="checkout-view">
+      <div class="checkout-layout">
         
-        <label for="name">Full Name</label>
-        <input id="name" type="text" placeholder="John Doe" autocomplete="name" required>
+        <!-- Left: Traveler Info & Payment Methods -->
+        <div class="maya-card">
+          <h2 class="card-title">
+            <span>👤</span> Traveler &amp; Delivery Information
+          </h2>
 
-        <label for="email">Email for Instant QR Delivery</label>
-        <input id="email" type="email" placeholder="john@example.com" autocomplete="email" required>
-
-        <div style="margin-top:24px;">
-          <h3 style="font-size:1.05rem; margin-bottom:12px;">Payment Method</h3>
-
-          <!-- Payment Method Selector Tabs -->
-          <div class="payment-tabs" style="display:flex; gap:10px; margin:16px 0 14px;">
-            <button type="button" id="tab-stripe" onclick="selectPaymentMethod('stripe')" style="flex:1; padding:12px 14px; border-radius:10px; border:2px solid var(--primary); background:#EEF2FF; color:var(--primary); font-weight:700; cursor:pointer; font-size:0.92rem; display:flex; align-items:center; justify-content:center; gap:8px; transition:all 0.2s;">
-              💳 Card /  Pay / G Pay
-            </button>
-            <button type="button" id="tab-paypal" onclick="selectPaymentMethod('paypal')" style="flex:1; padding:12px 14px; border-radius:10px; border:1px solid #CBD5E1; background:#fff; color:#64748B; font-weight:700; cursor:pointer; font-size:0.92rem; display:flex; align-items:center; justify-content:center; gap:8px; transition:all 0.2s;">
-              🅿️ PayPal
-            </button>
+          <div class="form-group">
+            <label for="name" class="form-label">Full Name</label>
+            <input id="name" type="text" class="form-input" placeholder="e.g. Mohammad Akram" autocomplete="name" required>
           </div>
 
-          <!-- Stripe & Wallets Payment Container -->
-          <div id="stripe-container" style="margin-top: 10px;">
-            <!-- Accepted Wallets & Cards Showcase -->
+          <div class="form-group">
+            <label for="email" class="form-label">Email for Instant QR Delivery</label>
+            <input id="email" type="email" class="form-input" placeholder="e.g. traveler@example.com" autocomplete="email" required>
+            <span style="font-size: 12px; color: #64748B; margin-top: 4px; display: block;">
+              ⚡ Your digital eSIM QR code will be generated and emailed instantly upon payment.
+            </span>
+          </div>
+
+          <div style="margin-top: 32px;">
+            <h2 class="card-title">
+              <span>💳</span> Payment Method
+            </h2>
+
+            <!-- Wallet Badges -->
             <div class="wallet-showcase">
-              <span style="font-size:0.75rem; color:#CBD5E1; font-weight:600; margin-right:4px;">Accepted:</span>
               <span class="wallet-badge badge-apple"> Apple Pay</span>
               <span class="wallet-badge badge-google">G Pay</span>
               <span class="wallet-badge badge-samsung">Samsung Pay</span>
-              <span class="wallet-badge badge-cards">Visa • MC • Amex</span>
+              <span class="wallet-badge badge-cards">Credit / Debit</span>
             </div>
 
-            <!-- Native 1-Click Apple Pay & Google Pay Button (Auto-rendered by Stripe if wallet active) -->
-            <div id="payment-request-container" style="display:none;">
+            <!-- Apple Pay / Google Pay Express Button -->
+            <div id="payment-request-container" style="display: none; margin-bottom: 16px;">
               <div id="payment-request-button"></div>
-              <div class="payment-divider"><span>OR PAY WITH CARD</span></div>
+              <p class="wallet-note">⚡ Tap above for 1-click Express Checkout with  Pay or G Pay.</p>
+              <div class="payment-divider">OR PAY WITH CARD / PAYPAL</div>
             </div>
 
-            <!-- Device Wallet Detection Info Banner -->
-            <div id="wallet-device-banner" class="wallet-note" style="background:rgba(6,182,212,0.08); border:1px solid rgba(6,182,212,0.25); border-radius:8px; padding:10px 14px; margin-bottom:12px; color:#A5F3FC;">
-              💡 <b>1-Click Wallets:</b>  <b>Apple Pay</b> is available on iPhone/Mac Safari, and <b>Google Pay</b> on Android/Chrome with an active wallet. You can also pay directly using any Debit or Credit card below:
+            <!-- Payment Method Tabs -->
+            <div class="maya-filter-toolbar" style="margin-bottom: 20px; border-bottom: none; padding-bottom: 0;">
+              <div class="maya-duration-tabs" id="payment-tabs">
+                <button type="button" class="maya-tab-btn active" id="tab-card" onclick="selectPaymentMethod('card')">
+                  💳 Credit / Debit Card
+                </button>
+                <button type="button" class="maya-tab-btn" id="tab-paypal" onclick="selectPaymentMethod('paypal')">
+                  🅿️ PayPal
+                </button>
+              </div>
             </div>
 
-            <!-- Card Elements Input -->
-            <div style="font-size:0.85rem; font-weight:600; color:var(--text-card); margin-bottom:8px;">Debit or Credit Card:</div>
-            <div id="stripe-card-element" style="background:#FFFFFF; border:1px solid #CBD5E1; border-radius:10px; padding:14px; margin-bottom:12px; box-shadow:0 1px 3px rgba(0,0,0,0.04);"></div>
-            <div id="stripe-card-errors" role="alert" style="color:#DC2626; font-size:0.84rem; margin-bottom:12px; min-height:18px;"></div>
-            
-            <button type="button" id="btn-stripe-pay" class="button button-primary" style="width:100%; height:50px; font-size:1.05rem; font-weight:700; border-radius:10px; display:flex; align-items:center; justify-content:center; gap:8px;" onclick="handleStripePayment()">
-              🔒 Pay Securely &amp; Get eSIM →
-            </button>
-            <div style="display:flex; justify-content:center; align-items:center; gap:12px; margin-top:10px; opacity:0.85;">
-              <span style="font-size:0.75rem; color:var(--text-muted);">🛡️ Powered by Stripe · 256-Bit SSL · Apple Pay &amp; Google Pay Certified</span>
+            <!-- Card Element -->
+            <div id="card-container">
+              <div class="form-group">
+                <label class="form-label">Card Details</label>
+                <div id="card-element"></div>
+                <div id="card-errors" style="color: #EF4444; font-size: 13px; margin-top: 6px;"></div>
+              </div>
+
+              <button id="stripe-pay-button" type="button" class="btn-pay-main" onclick="handleStripePayment()">
+                <span>🔒</span> Complete Secure Payment
+              </button>
+            </div>
+
+            <!-- PayPal Element -->
+            <div id="paypal-container" style="display: none;">
+              <div id="paypal-button-container"></div>
+            </div>
+
+            <div id="status-box" class="status-box"></div>
+          </div>
+        </div>
+
+        <!-- Right: Maya Order Summary -->
+        <div>
+          <div class="summary-card">
+            <span class="summary-badge">ORDER SUMMARY</span>
+            <div id="package-info">
+              <div class="summary-title" id="summary-pkg-name">Global Travel eSIM</div>
+              <div class="summary-dest" id="summary-pkg-dest">📍 165+ Countries Supported</div>
+            </div>
+
+            <div class="summary-pricing-row">
+              <div>
+                <span style="font-size: 12px; color: #64748B; display: block;">Total Amount</span>
+                <span class="summary-price-big" id="total">$0.00 USD</span>
+              </div>
+              <span style="font-size: 12px; font-weight: 700; color: var(--maya-green);">100% Prepaid</span>
+            </div>
+
+            <ul class="summary-checklist">
+              <li><span>✓</span> Instant QR code email delivery in &lt; 2 mins</li>
+              <li><span>✓</span> 5G / 4G LTE high-speed tier-1 data</li>
+              <li><span>✓</span> Free mobile hotspot &amp; tethering included</li>
+              <li><span>✓</span> Keep your WhatsApp &amp; original number active</li>
+              <li><span>✓</span> Zero hidden fees · No subscription required</li>
+              <li><span>✓</span> 100% Money-Back Guarantee</li>
+            </ul>
+
+            <div style="font-size: 12px; color: #94A3B8; text-align: center; line-height: 1.5;">
+              🔒 256-bit SSL encrypted transaction.<br>
+              eSIM QR code profile is emailed instantly after payment.
             </div>
           </div>
+        </div>
 
-          <!-- PayPal Buttons Container -->
-          <div id="paypal-container" style="display:none; margin-top: 10px;">
-            <div id="paypal-buttons"></div>
+      </div>
+    </div>
+
+    <!-- Post-Payment Instant Delivery Screen -->
+    <div id="delivery-success-view">
+      <div style="font-size: 48px; margin-bottom: 12px;">🎉</div>
+      <h2 style="font-family: var(--font-heading); font-size: 28px; font-weight: 800; color: var(--maya-pitch-black); margin-bottom: 8px;">
+        Payment Successful! Your eSIM is Ready
+      </h2>
+      <p style="color: #64748B; font-size: 15px; margin-bottom: 24px;">
+        A copy of your QR code and activation instructions have been sent to your email.
+      </p>
+
+      <div class="qr-container">
+        <img id="qr-image" src="" alt="eSIM Activation QR Code">
+      </div>
+
+      <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 12px; padding: 20px; max-width: 560px; margin: 0 auto 24px auto;">
+        <div class="detail-row">
+          <span class="detail-label">eSIM ICCID:</span>
+          <span class="detail-val" id="esim-iccid">-</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">LPA Activation String:</span>
+          <div style="display: flex; align-items: center;">
+            <span class="detail-val" id="esim-lpa" style="font-size: 12px; max-width: 260px; overflow: hidden; text-overflow: ellipsis;">-</span>
+            <button class="copy-btn" id="btn-copy-lpa" onclick="copyLPA()">Copy</button>
           </div>
         </div>
-
-        <div id="status-box" class="status-box"></div>
-        <p class="secure-note">
-          🔒 Payments are securely verified by our backend server. No secret credentials or keys are exposed.
-        </p>
-      </section>
-
-      <!-- Order Summary -->
-      <aside class="card watermark-shade">
-        <h2>Order Summary</h2>
-        <div style="margin-top:16px;">
-          <strong id="plan-name" style="font-size:1.15rem; color:#fff;">Travel eSIM</strong>
-          <div id="plan-meta" class="muted" style="margin: 8px 0;">--</div>
-          <div id="total" class="checkout-total">$0.00 USD</div>
-        </div>
-        <hr style="border:0; border-top:1px solid var(--border); margin:16px 0;">
-        <ul style="list-style:none; font-size:0.85rem; color:var(--text-muted); line-height:1.8; padding-left:0;">
-          <li>✓ Instant digital QR delivery on-screen</li>
-          <li>✓ Automated carrier provisioning (ResellPortal)</li>
-          <li>✓ 100% No physical SIM card required</li>
-          <li>✓ Apple Pay, Google Pay, Samsung Pay &amp; Cards</li>
-          <li>✓ 24/7 Global Connectivity Guarantee</li>
-        </ul>
-      </aside>
-    </div>
-  </div>
-
-  <!-- Delivered eSIM Screen (Shown immediately on payment verification) -->
-  <section id="delivery-success-view" class="card watermark-shade">
-    <div style="font-size: 3rem;">🎉</div>
-    <h1 style="color: var(--success); margin: 8px 0;">Payment Verified &amp; eSIM Delivered!</h1>
-    <p class="muted" id="delivered-email-notice">Your eSIM is active and ready to install on your phone.</p>
-
-    <!-- Crisp Scannable QR Code -->
-    <div class="qr-container">
-      <img id="esim-qr-img" src="" alt="Scan this QR code to install eSIM">
-    </div>
-    <div>
-      <span class="badge badge-delivered">Ready to Install</span>
-    </div>
-
-    <!-- Activation Details -->
-    <div class="esim-details-box">
-      <div class="detail-row">
-        <span class="detail-label">Order Number:</span>
-        <span class="detail-val" id="disp-order-id"></span>
-      </div>
-      <div class="detail-row">
-        <span class="detail-label">ICCID:</span>
-        <span class="detail-val" id="disp-iccid"></span>
-      </div>
-      <div class="detail-row">
-        <span class="detail-label">SM-DP+ Address:</span>
-        <span class="detail-val" id="disp-smdp"></span>
-      </div>
-      <div class="detail-row">
-        <span class="detail-label">Activation Code:</span>
-        <span class="detail-val" id="disp-act-code"></span>
-      </div>
-      <div class="detail-row" style="flex-direction: column; align-items: flex-start; gap: 6px;">
-        <span class="detail-label">Manual LPA String:</span>
-        <div style="display: flex; width: 100%; align-items: center;">
-          <span class="detail-val" id="disp-lpa" style="font-size: 0.78rem; background: rgba(0,0,0,0.3); padding: 6px; border-radius: 6px; flex: 1;"></span>
-          <button class="copy-btn" onclick="copyLPA()">Copy</button>
+        <div class="detail-row">
+          <span class="detail-label">Activation Code / Matching ID:</span>
+          <span class="detail-val" id="esim-matching-id">-</span>
         </div>
       </div>
+
+      <div style="display: flex; justify-content: center; gap: 16px; flex-wrap: wrap;">
+        <a id="esim-direct-link" href="#" class="btn-pay-main" style="width: auto; padding: 12px 28px; text-decoration: none;">
+          📲 1-Tap Add to Phone
+        </a>
+        <a href="/account.html" class="maya-pill" style="padding: 12px 24px; font-size: 15px; background: white;">
+          Go to My eSIMs
+        </a>
+      </div>
     </div>
 
-    <!-- 3 Step Quick Instructions -->
-    <div class="steps-card">
-      <h4>How to activate right now:</h4>
-      <ol>
-        <li><b>iOS:</b> Settings &rarr; Cellular / Mobile Data &rarr; Add eSIM &rarr; Scan QR Code.</li>
-        <li><b>Android:</b> Settings &rarr; Network &amp; Internet &rarr; SIMs &rarr; Add eSIM &rarr; Scan QR Code.</li>
-        <li>Turn on <b>Data Roaming</b> once you arrive at your destination.</li>
-      </ol>
-    </div>
+  </main>
 
-    <div style="margin: 24px 0;">
-      <a class="button" href="/account">View in My eSIMs Account</a>
-      <a class="button button-secondary" href="/" style="margin-left: 12px;">Browse More Plans</a>
+  <!-- Footer -->
+  <footer class="maya-footer" style="padding: 40px 20px 24px 20px; margin-top: 60px;">
+    <div class="maya-container" style="text-align: center;">
+      <div style="display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 16px; flex-wrap: wrap;">
+        <span class="payment-badge-pill"> Apple Pay</span>
+        <span class="payment-badge-pill">G Pay</span>
+        <span class="payment-badge-pill">Samsung Pay</span>
+        <span class="payment-badge-pill">💳 Visa</span>
+        <span class="payment-badge-pill">💳 Mastercard</span>
+        <span class="payment-badge-pill">💳 Amex</span>
+      </div>
+      <p style="font-size: 13px; color: #64748B;">
+        &copy; 2026 TravelTrip World · Traveler eSIM. Owned by Mohammad Akram.
+      </p>
     </div>
-  </section>
-</main>
-
-<footer>
-  <div class="shell foot">
-    <div><b>TravelTrip World</b><p>Automated eSIM Global Connectivity</p></div>
-    <div class="muted">24/7 Monitored Infrastructure</div>
-  </div>
-</footer>
+  </footer>
 
 <script>
   const params = new URLSearchParams(location.search);
