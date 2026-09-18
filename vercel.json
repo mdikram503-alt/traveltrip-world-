@@ -79,11 +79,24 @@
       ]
     },
     {
+      "source": "/(css|js|images|downloads)/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
       "source": "/robots.txt",
       "headers": [
         {
           "key": "Content-Type",
           "value": "text/plain"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=86400"
         }
       ]
     },
@@ -93,6 +106,10 @@
         {
           "key": "Content-Type",
           "value": "application/xml"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=86400"
         }
       ]
     }
