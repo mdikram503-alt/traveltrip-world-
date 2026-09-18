@@ -19,8 +19,8 @@ logger = logging.getLogger(__name__)
 
 # ResellPortal Wholesale API
 SUPPLIER_URL = os.environ.get("SUPPLIER_URL", "https://panel.resellportal.com")
-SUPPLIER_API_KEY = os.environ.get("SUPPLIER_API_KEY", "")
-SUPPLIER_API_SECRET = os.environ.get("SUPPLIER_API_SECRET", "")
+SUPPLIER_API_KEY = os.environ.get("SUPPLIER_API_KEY", "rp_4db2bdd924945fccf00b061721c9fe43d08ab965b7d634be")
+SUPPLIER_API_SECRET = os.environ.get("SUPPLIER_API_SECRET", "rps_b452a3d3e75540d82f2a8f4931bbc54c95e127bba601e182df5580029378eced")
 SMDP_DEFAULT = os.environ.get("DEFAULT_SMDP", "rsp.esimaccess.com")
 
 class SupplierService:
