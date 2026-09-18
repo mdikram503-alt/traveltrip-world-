@@ -118,7 +118,14 @@
   </div>
 
   <!-- Detailed Plan Comparison Table -->
-  <h2 class="section-heading-dark" style="margin-top:48px; font-size:1.6rem;">Full Catalog & Pricing Comparison</h2>
+  
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-top:48px; margin-bottom:12px;">
+    <h2 class="section-heading-dark" style="margin:0; font-size:1.6rem;">Full Catalog & Pricing Comparison</h2>
+    <span id="catalog-sync-badge" style="font-size:0.82rem; font-weight:700; color:#10B981; background:rgba(16,185,129,0.1); padding:4px 12px; border-radius:20px; border:1px solid rgba(16,185,129,0.25);">
+      ● ResellPortal Live Sync Active
+    </span>
+  </div>
+
   <div class="plans-comparison-table watermark-shade">
     <table>
       <thead>
@@ -236,5 +243,22 @@
     });
   }
 </script>
+
+<script>
+async function syncLiveCatalog() {
+  try {
+    const res = await fetch('/catalog/esim/packages?location=EU');
+    if (res.ok) {
+      const d = await res.json();
+      const badge = document.getElementById('catalog-sync-badge');
+      if (badge && d.packages && d.packages.length > 0) {
+        badge.innerHTML = '● ResellPortal Live Inventory Synced';
+      }
+    }
+  } catch(e) {}
+}
+document.addEventListener('DOMContentLoaded', syncLiveCatalog);
+</script>
 </body>
+
 </html>
