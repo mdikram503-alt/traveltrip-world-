@@ -123,15 +123,21 @@ def init_db():
     seed_default_users()
 
 def seed_default_users():
-    admin_email = "admin@traveltrip.world"
+    admin_email = os.environ.get("ADMIN_EMAIL", "admin@traveltrip.world").strip().lower()
+    custom_admin_pwd = os.environ.get("ADMIN_PASSWORD")
     with get_db() as conn:
         cursor = conn.cursor()
         cursor.execute("SELECT id FROM users WHERE email = ?", (admin_email,))
-        if not cursor.fetchone():
+        existing = cursor.fetchone()
+        if not existing:
+            pwd = custom_admin_pwd or secrets.token_urlsafe(24)
             cursor.execute(
                 "INSERT INTO users (name, email, password_hash, role) VALUES (?, ?, ?, ?)",
-                ("TravelTrip Admin", admin_email, hash_password(os.environ.get("ADMIN_PASSWORD", secrets.token_urlsafe(16))), "admin")
+                ("TravelTrip Operations", admin_email, hash_password(pwd), "admin")
             )
+            conn.commit()
+        elif custom_admin_pwd:
+            cursor.execute("UPDATE users SET password_hash = ? WHERE id = ?", (hash_password(custom_admin_pwd), existing["id"]))
             conn.commit()
 
 def create_user(name, email, password, role="customer"):
