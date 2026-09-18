@@ -569,5 +569,5 @@ if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8000))
     print(f"\n[SERVER] TravelTrip Live Server starting on http://127.0.0.1:{port}")
     print(f"[SERVER] Admin Dashboard at http://127.0.0.1:{port}/pages/admin.html")
-    print(f"[SERVER] Default Admin Login: admin@traveltrip.world / AdminSecure2026!\n")
+    print("[SERVER] Admin user: admin@traveltrip.world (password configured in DB)\n")
     app.run(host="0.0.0.0", port=port, debug=False)

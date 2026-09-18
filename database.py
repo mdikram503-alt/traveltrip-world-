@@ -120,7 +120,7 @@ def seed_default_users():
         if not cursor.fetchone():
             cursor.execute(
                 "INSERT INTO users (name, email, password_hash, role) VALUES (?, ?, ?, ?)",
-                ("TravelTrip Admin", admin_email, hash_password("Admin2026!"), "admin")
+                ("TravelTrip Admin", admin_email, hash_password(os.environ.get("ADMIN_PASSWORD", secrets.token_urlsafe(16))), "admin")
             )
             conn.commit()
 
