@@ -343,7 +343,7 @@ def forgot_password():
             "status": "not_found",
             "error": "No account found with this email. Please Register for a new account, or contact our WhatsApp support.",
             "email": email,
-            "whatsapp_link": "https://wa.me/971524413931?text=" + urllib.parse.quote(f"Hello TravelTrip support, I need help recovering my account ({email})")
+            "whatsapp_link": "https://wa.me/8801836089766?text=" + urllib.parse.quote(f"Hello TravelTrip support, I need help recovering my account ({email})")
         }), 200
     
     return jsonify({
