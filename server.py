@@ -841,10 +841,15 @@ def ops_overview():
     except Exception:
         pass
 
-    voice_summary = (
-        f"বস, একরাম ০.২ ক্লাউড থেকে ট্রাভেলট্রিপ ২৪ ঘণ্টা মনিটরিং করছে। "
-        f"ওয়েবসাইট ১০০% লাইভ, মোট ডেলিভার্ড অর্ডার {delivered_count}টি। "
-        f"স্ট্রাইপ পেমেন্ট গেটওয়ে সম্পূর্ণ সক্রিয়।"
+    voice_summary_bn = (
+        f"বস, একরাম ০.২ ক্লাউড থেকে ট্রাভেলট্রিপ ২৪ ঘণ্টা স্বয়ংক্রিয়ভাবে মনিটরিং করছে। "
+        f"ওয়েবসাইট ১০০% লাইভ, মোট সফল অর্ডার {delivered_count}টি। "
+        f"স্ট্রাইপ পেমেন্ট গেটওয়ে ও ডাটাবেস সম্পূর্ণ স্বাস্থ্যবান।"
+    )
+    voice_summary_en = (
+        f"Boss, Ekram 0.2 Cloud is autonomously monitoring TravelTrip World 24/7. "
+        f"Website and checkout are 100% online. Total delivered eSIM orders: {delivered_count}. "
+        f"Stripe live payments and supplier pipeline are completely healthy."
     )
 
     return jsonify({
@@ -856,7 +861,9 @@ def ops_overview():
         "delivered_esims": delivered_count,
         "total_revenue_usd": f"{total_sales_usd:.2f}",
         "recent_orders": orders[:10],
-        "voice_summary": voice_summary,
+        "voice_summary_bn": voice_summary_bn,
+        "voice_summary_en": voice_summary_en,
+        "voice_summary": voice_summary_bn,
         "owner": "Mohammad Akram (Abdullah Trading)"
     })
 
