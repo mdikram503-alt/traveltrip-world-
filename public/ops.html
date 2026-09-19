@@ -336,6 +336,58 @@
     </div>
 
 
+    
+    <!-- OFFICIAL EMAIL CO-PILOT & BOSS EXECUTIVE BRIEFING -->
+    <div class="card" style="border: 1px solid rgba(56, 189, 248, 0.4); background: linear-gradient(135deg, rgba(15, 23, 42, 0.85), rgba(8, 47, 73, 0.4)); margin: 24px 0;">
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 14px; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
+        <div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 22px;">✉️</span>
+            <h3 style="font-size: 17px; font-weight: 800; color: #fff;" data-i18n="email_copilot_title">অফিশিয়াল মেইল কো-পাইলট ও এক্সিকিউটিভ ব্রিফিং</h3>
+            <span style="background: rgba(56, 189, 248, 0.2); color: #38BDF8; font-size: 11px; font-weight: 800; padding: 2px 8px; border-radius: 10px;">AUTO-INBOX MONITOR</span>
+          </div>
+          <p style="font-size: 12.5px; color: var(--text-sub); margin-top: 2px;">
+            কানেক্টেড: <span style="color: #38BDF8; font-weight: 700;">traveltripworld8@gmail.com</span> &amp; <span style="color: #38BDF8; font-weight: 700;">abdullahtrdng@gmail.com</span>
+          </p>
+        </div>
+        <button class="action-btn" onclick="fetchEmailInbox()">🔄 <span data-i18n="refresh">রিফ্রেশ ইনবক্স</span></button>
+      </div>
+
+      <!-- Email List Stream -->
+      <div id="email-inbox-container" style="display: flex; flex-direction: column; gap: 12px;">
+        <div style="text-align: center; color: var(--text-sub); padding: 20px;">ইনবক্স লোড হচ্ছে...</div>
+      </div>
+    </div>
+
+    <!-- PROACTIVE CUSTOMER GUIDANCE & TROUBLESHOOTING DESK -->
+    <div class="card" style="border: 1px solid rgba(16, 185, 129, 0.4); background: linear-gradient(135deg, rgba(15, 23, 42, 0.85), rgba(6, 78, 59, 0.35)); margin: 24px 0;">
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 14px; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
+        <div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 22px;">🧭</span>
+            <h3 style="font-size: 17px; font-weight: 800; color: #fff;" data-i18n="guidance_desk_title">কাস্টমার গাইডলাইন ও ইনস্ট্যান্ট নেভিগেশন ডেস্ক</h3>
+            <span style="background: rgba(16, 185, 129, 0.2); color: #34D399; font-size: 11px; font-weight: 800; padding: 2px 8px; border-radius: 10px;">REVIEW BOOSTER</span>
+          </div>
+          <p style="font-size: 12.5px; color: var(--text-sub); margin-top: 2px;" data-i18n="guidance_desk_sub">গ্রাহক কোথাও আটকে গেলে তাৎক্ষণিক সহজ সমাধান ও পেইজের পজিটিভ রিভিউ বাড়ানোর রোডম্যাপ</p>
+        </div>
+      </div>
+
+      <!-- Problem Quick Selector Buttons -->
+      <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px;">
+        <button class="action-btn" onclick="loadTroubleshootGuide('no_internet')">📶 ইন্টারনেট পাচ্ছে না (No Net)</button>
+        <button class="action-btn" onclick="loadTroubleshootGuide('qr')">📷 QR স্ক্যান হচ্ছে না (Manual LPA)</button>
+        <button class="action-btn" onclick="loadTroubleshootGuide('iphone')">📱 iPhone ইনস্টল গাইড</button>
+        <button class="action-btn" onclick="loadTroubleshootGuide('android')">📲 Samsung / Android গাইড</button>
+        <button class="action-btn primary" onclick="loadTroubleshootGuide('review')" style="background: #F59E0B; color: #07090E;">⭐ ৫-স্টার রিভিউ আবেদন (Boost Reviews)</button>
+      </div>
+
+      <!-- Generated Guidance Card -->
+      <div id="guidance-result-box" style="background: rgba(0,0,0,0.35); border: 1px solid var(--border); border-radius: 12px; padding: 18px; line-height: 1.6; font-size: 13.5px; color: #F1F5F9;">
+        <div style="color: var(--text-sub);">একটি বাটনে চাপ দিন, তাৎক্ষণিক কাস্টমার সমাধান তৈরি হবে...</div>
+      </div>
+    </div>
+
+
     <!-- WhatsApp Support Studio -->
     <div class="card" style="margin-bottom: 20px;">
       <h3 style="font-size: 16px; font-weight: 800; margin-bottom: 10px;">💬 <span data-i18n="support_studio_title">হোয়াটসঅ্যাপ কাস্টমার সাপোর্ট স্টুডিও</span></h3>
@@ -749,6 +801,101 @@
 
     // Auto load first offer on startup
     generateFreshOffer();
+
+    
+    // Official Email Co-Pilot & Troubleshooting Desk Functions
+    async function fetchEmailInbox() {
+      try {
+        const res = await fetch("/api/email/inbox");
+        const data = await res.json();
+        const container = document.getElementById("email-inbox-container");
+
+        if (data.emails && data.emails.length > 0) {
+          container.innerHTML = data.emails.map(m => `
+            <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 12px; padding: 16px;">
+              <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 8px;">
+                <div>
+                  <div style="font-weight: 800; font-size: 14.5px; color: #fff;">${m.sender_name} <span style="font-weight: normal; font-size: 12px; color: var(--text-sub);">&lt;${m.sender_email}&gt;</span></div>
+                  <div style="font-size: 13px; color: var(--primary); font-weight: 600; margin-top: 2px;">📌 ${m.subject}</div>
+                  <div style="font-size: 11px; color: var(--text-sub); margin-top: 2px;">📥 ${m.inbox} · ${m.received_at}</div>
+                </div>
+                <span style="font-size: 11px; font-weight: 800; padding: 3px 8px; border-radius: 6px; background: ${m.urgency === 'High' ? 'rgba(239, 68, 68, 0.2)' : 'rgba(56, 189, 248, 0.2)'}; color: ${m.urgency === 'High' ? '#F87171' : '#38BDF8'};">${m.urgency} Urgency</span>
+              </div>
+
+              <!-- Boss Summary Box -->
+              <div style="margin: 12px 0; background: rgba(56, 189, 248, 0.08); border-left: 3px solid var(--primary); padding: 10px 14px; border-radius: 6px; font-size: 13px; color: #E2E8F0;">
+                <strong style="color: var(--primary);">🤖 বসকে সংক্ষেপে একরামের ব্রিফিং:</strong><br>
+                ${currentLang === 'en' ? m.boss_briefing_en : m.boss_briefing_bn}
+              </div>
+
+              <!-- Action Bar -->
+              <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px;">
+                <button class="action-btn" onclick="copyEmailSolution('${encodeURIComponent(currentLang === 'en' ? m.solution_guide_en : m.solution_guide_bn)}')">📋 সমাধান কপি করুন</button>
+                <a href="https://wa.me/8801836089766" target="_blank" class="action-btn primary" style="background: #16A34A; color: white;">💬 WhatsApp এ সমাধান দিন</a>
+                <button class="action-btn" onclick="sendQuickEmailReply('${m.id}', '${m.sender_email}')">✉️ মেইল উত্তর পাঠান</button>
+              </div>
+            </div>
+          `).join('');
+        } else {
+          container.innerHTML = `<div style="text-align: center; color: var(--text-sub); padding: 20px;">ইনবক্স সম্পূর্ণ ক্লিয়ার, কোনো পেন্ডিং সাপোর্ট মেইল নেই।</div>`;
+        }
+      } catch(e) {}
+    }
+
+    function copyEmailSolution(encoded) {
+      const text = decodeURIComponent(encoded);
+      navigator.clipboard.writeText(text).then(() => {
+        alert(currentLang === 'en' ? "✅ Solution copied to clipboard!" : "✅ সমাধান ক্লিপবোর্ডে কপি হয়েছে!");
+      });
+    }
+
+    async function sendQuickEmailReply(id, email) {
+      try {
+        const res = await fetch("/api/email/auto-reply", {
+          method: "POST",
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify({ email_id: id, to: email, body: "Thank you for reaching TravelTrip World. Your solution has been dispatched." })
+        });
+        const data = await res.json();
+        alert(data.message || "Email dispatched.");
+      } catch(e) {}
+    }
+
+    async function loadTroubleshootGuide(issue) {
+      try {
+        const res = await fetch("/api/support/troubleshoot", {
+          method: "POST",
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify({ issue: issue })
+        });
+        const data = await res.json();
+        const box = document.getElementById("guidance-result-box");
+        const guide = currentLang === 'en' ? data.guide_en : data.guide_bn;
+        box.innerHTML = `
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <strong style="font-size: 15px; color: #38BDF8;">${data.title}</strong>
+            <button class="action-btn" onclick="copyGuidanceText()" style="font-size: 11px;">📋 গাইড কপি করুন</button>
+          </div>
+          <div id="guidance-text-content" style="white-space: pre-line; color: #F1F5F9;">${guide}</div>
+          <div style="margin-top: 14px;">
+            <a href="${data.whatsapp_url}" target="_blank" class="action-btn primary" style="background: #16A34A; color: white;">💬 কাস্টমারকে WhatsApp-এ পাঠান</a>
+          </div>
+        `;
+      } catch(e) {}
+    }
+
+    function copyGuidanceText() {
+      const el = document.getElementById("guidance-text-content");
+      if (el) {
+        navigator.clipboard.writeText(el.innerText).then(() => {
+          alert(currentLang === 'en' ? "✅ Customer guide copied to clipboard! Paste into Facebook, Instagram, or WhatsApp." : "✅ গাইডটি কপি হয়েছে! ফেসবুক, ইনস্টাগ্রাম বা হোয়াটসঅ্যাপে পেস্ট করে দিন।");
+        });
+      }
+    }
+
+    // Auto trigger initial load
+    fetchEmailInbox();
+    loadTroubleshootGuide('no_internet');
 
     // Start 24/7 auto sync every 15 seconds
     fetchOpsData();
