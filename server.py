@@ -557,6 +557,8 @@ def stripe_confirm_payment():
     
     update_order_esim(
         order_id=order_id,
+        esim_status="delivered",
+        supplier_order_id=provision_result.get("supplier_order_id"),
         iccid=provision_result.get("iccid", "8985200000000000000"),
         lpa_string=provision_result.get("lpa_string", ""),
         qr_code_data=provision_result.get("qr_code_url", ""),

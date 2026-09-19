@@ -196,7 +196,7 @@ def update_order_payment(order_id, payment_status, payment_id=None, details=None
         """, (payment_status, payment_id, details_str, order_id))
         conn.commit()
 
-def update_order_esim(order_id, esim_status, supplier_order_id=None, qr_code_data=None,
+def update_order_esim(order_id, esim_status="delivered", supplier_order_id=None, qr_code_data=None,
                       lpa_string=None, iccid=None, activation_code=None, smdp_address=None, failure_reason=None):
     with get_db() as conn:
         cursor = conn.cursor()
