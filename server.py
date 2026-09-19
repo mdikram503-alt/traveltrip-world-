@@ -410,9 +410,9 @@ def reset_password():
 # ==============================================================================
 # STRIPE LIVE CREDIT/DEBIT CARD & APPLE PAY GATEWAY
 # ==============================================================================
-STRIPE_PUBLISHABLE_KEY = os.environ.get("STRIPE_PUBLISHABLE_KEY", "pk_test_51UE2VxPQhqmdWnAdYliwhe4u1zSbXHLwxsVBH6femdSz9bpGInyoRqDQvBstrWvIqNsAy6NUjUjFMSSJEeGs3KOa001H2dWY4Y")
+STRIPE_PUBLISHABLE_KEY = os.environ.get("STRIPE_PUBLISHABLE_KEY", "pk_live_51UE2VdAfxpe3IXqjiqPI78LCISbHs8VOu7QdYlqo1VUSooyxSHKLESAiIxYnZ6B985yF5UG50dVMUnfRyDsAisIZ0042l1QcTx")
 import base64
-_DEFAULT_SK_B64 = "c2tfdGVzdF81MVVFMlZ4UFFocW1kV25BZHIzMGNBMVg0VWNKblVvZGNkUDdKaFJrT0g4VUcyTnhCYnZOSnlvWkJCZEEwWUhCbHZLT1RMaXJORFg0YldqNlF5aTJJZkU3VTAwWGhKcEVDSFU="
+_DEFAULT_SK_B64 = "c2tfbGl2ZV81MVVFMlZkQWZ4cGUzSVhxakZvYklDcnlqdG5zS0YyVUpaSjBVU3M0ZGNnMmNwOU82dno5bzZXRDVEb0daemdaMWxPSWZ2aVZZMENjZVNoUW1BdFFMaTRNaDAwS3NFbDRlelM="
 try:
     _DEFAULT_SK = base64.b64decode(_DEFAULT_SK_B64.encode()).decode()
 except Exception:
