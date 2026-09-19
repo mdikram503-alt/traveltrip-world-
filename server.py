@@ -963,10 +963,14 @@ _social_state = {
     "next_post_time": "2026-09-19 09:00 AM",
     "post_counter": 12,
     "credentials": {
-        "facebook_page_id": "",
+        "facebook_page_id": "1232943889911644",
+        "facebook_page_name": "traveltrip.world Page",
+        "instagram_main": "@mohammad_ekram5",
+        "instagram_secondary": "@alharam_phone_shop",
+        "meta_ad_account": "570759352948058",
+        "threads_account": "@mohammad_ekram5",
+        "primary_email": "traveltripworld8@gmail.com",
         "facebook_page_token": "",
-        "instagram_account_id": "",
-        "youtube_api_key": "",
         "webhook_url": ""
     }
 }
