@@ -539,6 +539,46 @@
         </div>
       </div>
 
+      
+      <!-- Zapier Gmail Real-time Webhook Integration Card -->
+      <div class="card" style="border-left: 4px solid var(--primary);">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 10px; margin-bottom: 12px;">
+          <div>
+            <div class="card-title" style="margin-bottom: 4px;">⚡ <span>জ্যাপিয়ার জিমেইল অটোমেশন (Zapier Real-time Webhook)</span></div>
+            <p style="font-size: 13px; color: var(--text-muted);">কাস্টমার <strong>traveltripworld8@gmail.com</strong> বা <strong>abdullahtrdng@gmail.com</strong> এ মেইল পাঠালে মুহূর্তেই একরাম ইনবক্সে জমা হবে।</p>
+          </div>
+          <span style="font-size: 12px; font-weight: 700; background: var(--green-light); color: #00875A; padding: 4px 10px; border-radius: 20px;">● Webhook Live</span>
+        </div>
+
+        <div style="background: #F8FAFC; border: 1px solid var(--border); border-radius: var(--radius-md); padding: 16px; margin-bottom: 14px;">
+          <div style="font-size: 12px; font-weight: 700; color: var(--text-dark); margin-bottom: 6px;">আপনার লাইভ Webhook URL (Zapier এ পেস্ট করুন):</div>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <input type="text" readonly id="zapier-webhook-url" value="https://traveltrip.world/api/email/webhook" style="flex: 1; min-width: 260px; background: #FFFFFF; border: 1px solid var(--border); border-radius: 8px; padding: 9px 12px; font-family: monospace; font-size: 13px; color: var(--primary); font-weight: 700; outline: none;">
+            <button class="btn btn-primary" onclick="copyZapierUrl()">📋 কপি করুন</button>
+            <a href="https://zapier.com/apps/gmail/integrations/webhook" target="_blank" class="btn">🔗 Zapier খুলুন</a>
+            <button class="btn" onclick="sendZapierTest()">🧪 টেস্ট মেইল পাঠান</button>
+          </div>
+        </div>
+
+        <details style="font-size: 13px; color: var(--text-dark); cursor: pointer;">
+          <summary style="font-weight: 700; color: var(--primary); padding: 4px 0;">📖 Zapier ৩-ধাপের সহজ সেটআপ নির্দেশিকা (ক্লিক করে দেখুন)</summary>
+          <div style="margin-top: 10px; padding: 12px; background: #FFFFFF; border: 1px solid var(--border); border-radius: 8px; line-height: 1.7;">
+            <strong>ধাপ ১ (Trigger):</strong> <a href="https://zapier.com/apps/gmail/integrations/webhook" target="_blank" style="color: var(--primary); font-weight: 600;">Zapier Gmail Integration</a> পেজে গিয়ে <strong>Create Zap</strong> চাপুন। App দিন <code>Gmail</code> এবং Event দিন <code>New Email</code> (আপনার একাউন্ট <code>traveltripworld8@gmail.com</code> সিলেক্ট করুন)।<br>
+            <strong>ধাপ ২ (Action):</strong> App দিন <code>Webhooks by Zapier</code> এবং Event দিন <code>POST</code>।<br>
+            <strong>ধাপ ৩ (Data Mapping):</strong><br>
+            • <strong>URL:</strong> <code>https://traveltrip.world/api/email/webhook</code><br>
+            • <strong>Payload Type:</strong> <code>json</code><br>
+            • <strong>Data Fields:</strong><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;- <code>sender_name</code> ➔ From Name (কাস্টমারের নাম)<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;- <code>from_email</code> ➔ From Email (কাস্টমারের ইমেইল)<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;- <code>subject</code> ➔ Subject (মেইলের বিষয়)<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;- <code>body</code> ➔ Body Plain বা Snippet (মেসেজ)<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;- <code>inbox</code> ➔ To (traveltripworld8@gmail.com)<br>
+            • এবার <strong>Test step</strong> চাপলেই একরাম সাথে সাথে নোটিফিকেশন ও ব্রিফিং দিয়ে দিবে!
+          </div>
+        </details>
+      </div>
+
       <!-- Customer Guidance Navigation -->
       <div class="card">
         <div class="card-title">🧭 <span data-i18n="guide_title">কাস্টমার গাইডলাইন ও রোডম্যাপ</span></div>
@@ -889,6 +929,41 @@
           container.innerHTML = `<div style="text-align: center; color: var(--text-muted); padding: 16px;">ইনবক্স ক্লিয়ার।</div>`;
         }
       } catch(e) {}
+    }
+
+    
+    function copyZapierUrl() {
+      const urlInput = document.getElementById('zapier-webhook-url');
+      if (urlInput) {
+        navigator.clipboard.writeText(urlInput.value).then(() => {
+          alert(currentLang === 'en' ? '✅ Webhook URL copied! Paste into Zapier Action URL.' : '✅ Webhook URL কপি হয়েছে! Zapier এ Action URL এ পেস্ট করুন।');
+        });
+      }
+    }
+
+    async function sendZapierTest() {
+      try {
+        const payload = {
+          sender_name: "Test Customer (via Zapier)",
+          from_email: "customer.test@gmail.com",
+          subject: "Airport 5G inquiry",
+          body: "Hi, arriving in Dubai tomorrow, need fast 5G eSIM.",
+          inbox: "traveltripworld8@gmail.com"
+        };
+        const res = await fetch("/api/email/webhook", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        const d = await res.json();
+        if (d.success) {
+          playChaChing();
+          alert(currentLang === 'en' ? '✅ Test email ingested! Fetching updated inbox now.' : '✅ টেস্ট মেইল সফলভাবে একরাম ইনবক্সে যুক্ত হয়েছে! ইনবক্স রিফ্রেশ হচ্ছে।');
+          fetchEmailInbox();
+        }
+      } catch(e) {
+        alert("Test failed: " + e);
+      }
     }
 
     function copyEmailSolution(encoded) {
