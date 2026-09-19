@@ -1,3 +1,4 @@
+from datetime import datetime
 import urllib.parse
 """
 TravelTrip World — Production Backend Server
@@ -813,7 +814,8 @@ def ops_overview():
     delivered_count = 0
     total_sales_usd = 0.0
     try:
-        orders = get_all_orders(limit=25)
+        all_o = get_all_orders() or []
+        orders = all_o[:25]
         for o in orders:
             if o.get("esim_status") == "delivered":
                 delivered_count += 1
@@ -847,7 +849,7 @@ def ops_overview():
 
     return jsonify({
         "status": "healthy",
-        "server_time": datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S UTC"),
+        "server_time": datetime.now().strftime("%Y-%m-%d %I:%M:%S %p"),
         "website_online": True,
         "stripe_connected": stripe_connected,
         "balance_aed": balance_aed,
