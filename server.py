@@ -481,7 +481,7 @@ def stripe_create_payment_intent():
         "metadata[order_id]": order_id,
         "metadata[package_code]": package_code,
         "metadata[buyer_email]": buyer_email,
-        "automatic_payment_methods[enabled]": "true"
+        "payment_method_types[0]": "card"
     }
     encoded_data = urllib.parse.urlencode(post_params).encode("utf-8")
     req = urllib.request.Request(
