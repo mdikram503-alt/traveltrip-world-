@@ -1,16 +1,30 @@
 {
-  "name": "TravelTrip World eSIM",
-  "short_name": "TravelTrip",
-  "start_url": "/",
+  "name": "Ekram 0.2 \u00b7 TravelTrip Bot",
+  "short_name": "Ekram Bot",
+  "description": "24/7 Autonomous Operations, Social Marketing & Support Bot for TravelTrip World",
+  "start_url": "/ops.html?source=android_bot",
+  "scope": "/",
   "display": "standalone",
-  "background_color": "#F4F0E8",
-  "theme_color": "#172A68",
-  "description": "Traveler eSIM by Mohammad Akram - Instant 4G/5G mobile data connectivity in 165+ countries without roaming fees.",
+  "orientation": "portrait",
+  "background_color": "#F8FAFC",
+  "theme_color": "#3D38D0",
+  "categories": [
+    "business",
+    "travel",
+    "productivity"
+  ],
   "icons": [
     {
       "src": "/images/logo-transparent.png",
-      "sizes": "192x192 512x512",
-      "type": "image/png"
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/images/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ]
 }

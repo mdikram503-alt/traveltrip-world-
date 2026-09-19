@@ -5,6 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>TravelTrip World · Operations Hub</title>
   <link rel="icon" type="image/png" href="/images/logo-transparent.png">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#3D38D0">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Ekram Bot">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -345,6 +352,22 @@
         <a href="https://dashboard.stripe.com" target="_blank" class="btn-nav">💳 Stripe</a>
       </div>
     </header>
+
+    <!-- Android Bot App Install Prompt Banner -->
+    <div id="android-install-bar" style="display: none; background: linear-gradient(135deg, #EEF2FF, #E0E7FF); border: 1px solid #CDCAF6; border-radius: 12px; padding: 12px 18px; margin-bottom: 20px; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;">
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <span style="font-size: 24px;">📱</span>
+        <div>
+          <strong style="font-size: 13.5px; color: #1E293B;">Android Bot App ইনস্টল করুন</strong>
+          <div style="font-size: 11.5px; color: #64748B;">হোম স্ক্রিনে অ্যাপের মতো যুক্ত করে ল্যাপটপ ছাড়াই ২৪ ঘণ্টা ব্যবহার করুন</div>
+        </div>
+      </div>
+      <div style="display: flex; gap: 8px;">
+        <button id="btn-install-pwa" class="btn btn-primary" style="padding: 6px 14px; font-size: 12px;">📲 ইনস্টল করুন</button>
+        <button onclick="dismissInstallBanner()" class="btn" style="padding: 6px 10px; font-size: 12px;">✕</button>
+      </div>
+    </div>
+
 
     <!-- Clean Navigation Tabs -->
     <nav class="tabs-bar">
@@ -937,6 +960,49 @@
         alert(currentLang === 'en' ? "✅ Saved successfully!" : "✅ সংরক্ষিত হয়েছে!");
         closeCredentialsModal();
       } catch(e) {}
+    }
+
+    
+    // Android PWA Bot App Registration & Install Handler
+    let deferredPrompt;
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js').catch(() => {});
+    }
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      const bar = document.getElementById("android-install-bar");
+      if (bar) bar.style.display = "flex";
+    });
+
+    const installBtn = document.getElementById("btn-install-pwa");
+    if (installBtn) {
+      installBtn.addEventListener('click', async () => {
+        if (deferredPrompt) {
+          deferredPrompt.prompt();
+          const { outcome } = await deferredPrompt.userChoice;
+          if (outcome === 'accepted') {
+            document.getElementById("android-install-bar").style.display = "none";
+          }
+          deferredPrompt = null;
+        } else {
+          alert("আপনার ফোনের ব্রাউজার মেন্যু (৩টি ডট) থেকে 'Add to Home screen' বা 'Install app'-এ চাপ দিন।");
+        }
+      });
+    }
+
+    function dismissInstallBanner() {
+      const bar = document.getElementById("android-install-bar");
+      if (bar) bar.style.display = "none";
+    }
+
+    // Show banner on mobile devices automatically if not installed
+    if (/android|iphone|ipad/i.test(navigator.userAgent) && !window.matchMedia('(display-mode: standalone)').matches) {
+      setTimeout(() => {
+        const bar = document.getElementById("android-install-bar");
+        if (bar && bar.style.display !== "flex") bar.style.display = "flex";
+      }, 1500);
     }
 
     // Initialize cleanly
