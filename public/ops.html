@@ -3,140 +3,167 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Ekram 0.2 · TravelTrip Executive Control</title>
+  <title>TravelTrip World · Operations Hub</title>
   <link rel="icon" type="image/png" href="/images/logo-transparent.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
   <style>
     :root {
-      --bg: #07090E;
-      --card-bg: rgba(15, 23, 42, 0.65);
-      --card-border: rgba(255, 255, 255, 0.08);
-      --primary: #38BDF8;
-      --primary-glow: rgba(56, 189, 248, 0.15);
-      --green: #10B981;
-      --amber: #F59E0B;
-      --purple: #A855F7;
-      --text: #F8FAFC;
-      --text-muted: #94A3B8;
-      --text-dim: #64748B;
+      --primary: #3D38D0;
+      --primary-hover: #2F2AA8;
+      --primary-light: #EEF2FF;
+      --green: #00BB77;
+      --green-light: #E6F9F1;
+      --bg: #F8FAFC;
+      --surface: #FFFFFF;
+      --border: #E2E8F0;
+      --text-dark: #0E131F;
+      --text-muted: #64748B;
+      --text-light: #94A3B8;
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+      --shadow-card: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
-    body {
-      background: radial-gradient(circle at 50% 0%, #0F172A 0%, #07090E 70%);
-      color: var(--text);
-      min-height: 100vh;
-      padding: 24px 16px;
-      -webkit-font-smoothing: antialiased;
-    }
-    .container { max-width: 1080px; margin: 0 auto; }
 
-    /* Top Executive Navigation Bar */
-    .top-nav {
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+    body { background-color: var(--bg); color: var(--text-dark); min-height: 100vh; padding: 24px 16px; }
+    .container { max-width: 1040px; margin: 0 auto; }
+
+    /* Clean Navbar */
+    .navbar {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 14px 24px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding-bottom: 20px;
-      border-bottom: 1px solid var(--card-border);
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 24px;
       flex-wrap: wrap;
       gap: 16px;
     }
-    .brand-cluster {
+    .brand-box {
       display: flex;
       align-items: center;
       gap: 12px;
+      text-decoration: none;
     }
-    .status-indicator {
+    .brand-logo {
+      height: 38px;
+      width: auto;
+      display: block;
+    }
+    .brand-title {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--text-dark);
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+    }
+    .brand-title span { color: var(--primary); }
+    .brand-sub {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-muted);
+      letter-spacing: 0.05em;
+      margin-top: 2px;
+    }
+
+    /* Status Pill */
+    .status-pill {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      background: rgba(16, 185, 129, 0.1);
-      border: 1px solid rgba(16, 185, 129, 0.25);
+      gap: 6px;
+      background: var(--green-light);
+      color: #00875A;
       padding: 5px 12px;
       border-radius: 20px;
-      font-size: 11.5px;
+      font-size: 12px;
       font-weight: 700;
-      color: #34D399;
-      letter-spacing: 0.03em;
     }
-    .pulse-dot {
+    .dot-live {
       width: 7px;
       height: 7px;
       border-radius: 50%;
       background: var(--green);
-      box-shadow: 0 0 8px var(--green);
-      animation: pulse 2.5s infinite;
+      animation: pulse 2s infinite;
     }
-    @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(1.2); } }
+    @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.2); } }
 
-    /* Header Controls */
-    .header-actions {
+    /* Nav Buttons */
+    .nav-actions {
       display: flex;
       align-items: center;
       gap: 10px;
       flex-wrap: wrap;
     }
-    .lang-toggle {
+    .lang-selector {
       display: inline-flex;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid var(--card-border);
-      border-radius: 10px;
+      background: #F1F5F9;
       padding: 3px;
+      border-radius: var(--radius-sm);
     }
-    .lang-btn {
+    .lang-tab {
       background: transparent;
       border: none;
-      color: var(--text-muted);
-      padding: 6px 12px;
-      border-radius: 7px;
+      padding: 5px 12px;
       font-size: 12px;
       font-weight: 700;
+      color: var(--text-muted);
+      border-radius: 6px;
       cursor: pointer;
       transition: all 0.2s;
     }
-    .lang-btn.active {
-      background: rgba(56, 189, 248, 0.15);
+    .lang-tab.active {
+      background: var(--surface);
       color: var(--primary);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
     }
-    .nav-btn {
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid var(--card-border);
-      color: var(--text);
+    .btn-nav {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text-dark);
       padding: 7px 14px;
-      border-radius: 10px;
-      font-size: 12.5px;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
       font-weight: 600;
-      cursor: pointer;
       text-decoration: none;
+      cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 6px;
       transition: all 0.2s;
     }
-    .nav-btn:hover {
-      background: rgba(255, 255, 255, 0.08);
-      border-color: rgba(255, 255, 255, 0.2);
+    .btn-nav:hover {
+      border-color: var(--primary);
+      color: var(--primary);
     }
 
-    /* Modern Luxury Tab Bar */
-    .tab-bar {
+    /* Modern Tabs Bar */
+    .tabs-bar {
       display: flex;
       gap: 8px;
-      margin: 24px 0 20px 0;
-      background: rgba(255, 255, 255, 0.03);
-      padding: 5px;
-      border-radius: 14px;
-      border: 1px solid var(--card-border);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 6px;
+      border-radius: var(--radius-md);
+      margin-bottom: 24px;
+      box-shadow: var(--shadow-sm);
       overflow-x: auto;
     }
-    .tab-item {
+    .tab-btn {
       flex: 1;
       min-width: 140px;
-      padding: 11px 16px;
+      padding: 10px 16px;
       background: transparent;
       border: none;
-      border-radius: 10px;
+      border-radius: var(--radius-sm);
       color: var(--text-muted);
       font-size: 13.5px;
       font-weight: 700;
@@ -147,90 +174,75 @@
       gap: 8px;
       transition: all 0.2s;
     }
-    .tab-item:hover { color: #fff; background: rgba(255, 255, 255, 0.04); }
-    .tab-item.active {
-      background: #0F172A;
-      color: #fff;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-      border: 1px solid rgba(56, 189, 248, 0.3);
+    .tab-btn:hover { color: var(--primary); }
+    .tab-btn.active {
+      background: var(--primary-light);
+      color: var(--primary);
     }
 
     /* Tab Sections */
-    .tab-content { display: none; }
-    .tab-content.active { display: block; animation: fadeIn 0.3s ease; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; animation: fadeUp 0.25s ease; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* Executive Cards */
-    .exec-card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 16px;
+    /* Clean White Cards */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
       padding: 24px;
-      backdrop-filter: blur(16px);
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      box-shadow: var(--shadow-card);
       margin-bottom: 20px;
     }
-    .card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 18px;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
     .card-title {
-      font-size: 16px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 17px;
       font-weight: 800;
+      color: var(--text-dark);
       display: flex;
       align-items: center;
-      gap: 10px;
-      color: #fff;
-    }
-    .card-badge {
-      font-size: 11px;
-      padding: 3px 9px;
-      border-radius: 8px;
-      font-weight: 700;
+      gap: 8px;
+      margin-bottom: 16px;
     }
 
-    /* Metric Tiles Grid */
-    .metrics-grid {
+    /* Metric Grid */
+    .grid-metrics {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
       gap: 16px;
       margin-bottom: 20px;
     }
-    .metric-tile {
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid var(--card-border);
-      border-radius: 14px;
+    .metric-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
       padding: 20px;
-      position: relative;
+      box-shadow: var(--shadow-sm);
     }
     .metric-label {
-      font-size: 11.5px;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--text-muted);
-      font-weight: 700;
-      margin-bottom: 8px;
-    }
-    .metric-val {
-      font-size: 28px;
-      font-weight: 800;
-      color: #fff;
-    }
-    .metric-sub {
       font-size: 12px;
-      color: var(--text-dim);
-      margin-top: 6px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 6px;
+    }
+    .metric-value {
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--text-dark);
+    }
+    .metric-note {
+      font-size: 12px;
+      color: var(--text-light);
+      margin-top: 4px;
     }
 
-    /* Executive Voice Cockpit */
-    .voice-strip {
-      background: linear-gradient(135deg, rgba(56, 189, 248, 0.08), rgba(168, 85, 247, 0.08));
-      border: 1px solid rgba(56, 189, 248, 0.2);
-      border-radius: 14px;
+    /* Voice Strip */
+    .voice-banner {
+      background: var(--primary-light);
+      border: 1px solid #CDCAF6;
+      border-radius: var(--radius-md);
       padding: 16px 20px;
       display: flex;
       align-items: center;
@@ -241,32 +253,29 @@
     }
 
     /* Tables */
-    .table-container {
-      overflow-x: auto;
-      margin-top: 12px;
-    }
+    .table-responsive { overflow-x: auto; margin-top: 10px; }
     table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
     th {
       text-align: left;
       padding: 12px 10px;
       color: var(--text-muted);
-      border-bottom: 1px solid var(--card-border);
-      font-size: 11px;
+      border-bottom: 2px solid var(--border);
+      font-size: 11.5px;
       text-transform: uppercase;
+      font-weight: 700;
       letter-spacing: 0.04em;
     }
-    td { padding: 14px 10px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); }
-    .badge { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; }
-    .badge-success { background: rgba(16, 185, 129, 0.15); color: #34D399; }
-    .badge-pending { background: rgba(245, 158, 11, 0.15); color: #FBBF24; }
+    td { padding: 14px 10px; border-bottom: 1px solid #F1F5F9; color: var(--text-dark); }
+    .badge-pill { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; }
+    .badge-green { background: var(--green-light); color: #00875A; }
 
-    /* Inputs & Buttons */
+    /* Action Buttons */
     .btn {
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid var(--card-border);
-      color: #fff;
+      background: #F1F5F9;
+      border: 1px solid var(--border);
+      color: var(--text-dark);
       padding: 8px 16px;
-      border-radius: 10px;
+      border-radius: var(--radius-sm);
       font-size: 13px;
       font-weight: 700;
       cursor: pointer;
@@ -274,118 +283,132 @@
       align-items: center;
       gap: 6px;
       transition: all 0.2s;
+      text-decoration: none;
     }
-    .btn:hover { background: rgba(255, 255, 255, 0.12); border-color: var(--primary); }
-    .btn-primary { background: var(--primary); color: #07090E; border: none; }
-    .btn-primary:hover { background: #7dd3fc; }
-    .btn-purple { background: var(--purple); color: #fff; border: none; }
-    .btn-green { background: #16A34A; color: #fff; border: none; }
+    .btn:hover { background: #E2E8F0; }
+    .btn-primary {
+      background: var(--primary);
+      color: #FFFFFF;
+      border-color: var(--primary);
+    }
+    .btn-primary:hover { background: var(--primary-hover); }
+    .btn-whatsapp {
+      background: #25D366;
+      color: #FFFFFF;
+      border-color: #25D366;
+    }
+    .btn-whatsapp:hover { background: #1EBE5D; }
 
-    .toggle-switch { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; font-size: 13px; font-weight: 600; }
-    .toggle-switch input { display: none; }
-    .slider { width: 36px; height: 20px; background: rgba(255,255,255,0.15); border-radius: 20px; position: relative; transition: all 0.3s; }
-    .slider::before { content: ''; position: absolute; width: 14px; height: 14px; border-radius: 50%; background: #fff; top: 3px; left: 3px; transition: all 0.3s; }
-    input:checked + .slider { background: var(--green); }
+    /* Switch */
+    .toggle { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; font-size: 13px; font-weight: 600; }
+    .toggle input { display: none; }
+    .slider { width: 36px; height: 20px; background: #CBD5E1; border-radius: 20px; position: relative; transition: all 0.25s; }
+    .slider::before { content: ''; position: absolute; width: 14px; height: 14px; border-radius: 50%; background: #fff; top: 3px; left: 3px; transition: all 0.25s; }
+    input:checked + .slider { background: var(--primary); }
     input:checked + .slider::before { transform: translateX(16px); }
 
-    /* Clean Footer */
     .footer {
       text-align: center;
       margin-top: 40px;
-      font-size: 12px;
-      color: var(--text-dim);
+      font-size: 12.5px;
+      color: var(--text-muted);
       line-height: 1.6;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    
-    <!-- Top Executive Header -->
-    <header class="top-nav">
-      <div class="brand-cluster">
-        <span style="font-weight: 800; font-size: 16px; letter-spacing: 0.05em; color: #fff;">EKRAM 0.2</span>
-        <div class="status-indicator">
-          <div class="pulse-dot"></div>
-          <span data-i18n="badge_live">LIVE OPERATIONS</span>
-        </div>
-      </div>
 
-      <div class="header-actions">
-        <!-- Minimal Language Switcher -->
-        <div class="lang-toggle">
-          <button class="lang-btn active" id="btn-lang-bn" onclick="setLang('bn')">বাংলা</button>
-          <button class="lang-btn" id="btn-lang-en" onclick="setLang('en')">English</button>
+    <!-- Official Clean Header -->
+    <header class="navbar">
+      <a href="/" class="brand-box">
+        <img src="/images/logo-transparent.png" alt="TravelTrip World" class="brand-logo" onerror="this.src='/images/logo.png'">
+        <div>
+          <div class="brand-title">TRAVELTRIP <span>WORLD</span></div>
+          <div class="brand-sub">OPERATIONS &amp; CONTROL</div>
+        </div>
+      </a>
+
+      <div class="nav-actions">
+        <div class="status-pill">
+          <div class="dot-live"></div>
+          <span data-i18n="badge_live">Live System</span>
         </div>
 
-        <button class="nav-btn" onclick="fetchOpsData()">🔄 <span data-i18n="refresh">রিফ্রেশ</span></button>
-        <a href="https://traveltrip.world/checkout.html" target="_blank" class="nav-btn">🛒 <span data-i18n="checkout_btn">চেকআউট</span></a>
-        <a href="https://dashboard.stripe.com" target="_blank" class="nav-btn">💳 Stripe</a>
+        <div class="lang-selector">
+          <button class="lang-tab active" id="btn-lang-bn" onclick="setLang('bn')">বাংলা</button>
+          <button class="lang-tab" id="btn-lang-en" onclick="setLang('en')">English</button>
+        </div>
+
+        <button class="btn-nav" onclick="fetchOpsData()">🔄 <span data-i18n="btn_refresh">রিফ্রেশ</span></button>
+        <a href="https://traveltrip.world/checkout.html" target="_blank" class="btn-nav">🛒 <span data-i18n="btn_checkout">চেকআউট</span></a>
+        <a href="https://dashboard.stripe.com" target="_blank" class="btn-nav">💳 Stripe</a>
       </div>
     </header>
 
-    <!-- Luxury Tab Bar -->
-    <nav class="tab-bar">
-      <button class="tab-item active" onclick="switchTab('overview')">
+    <!-- Clean Navigation Tabs -->
+    <nav class="tabs-bar">
+      <button class="tab-btn active" onclick="switchTab('overview', this)">
         <span>📊</span> <span data-i18n="tab_overview">ওভারভিউ ও সেলস</span>
       </button>
-      <button class="tab-item" onclick="switchTab('marketing')">
+      <button class="tab-btn" onclick="switchTab('marketing', this)">
         <span>🚀</span> <span data-i18n="tab_marketing">সোশ্যাল মার্কেটিং</span>
       </button>
-      <button class="tab-item" onclick="switchTab('support')">
-        <span>✉️</span> <span data-i18n="tab_support">মেইল ও সাপোর্ট ডেস্ক</span>
+      <button class="tab-btn" onclick="switchTab('support', this)">
+        <span>✉️</span> <span data-i18n="tab_support">মেইল ও সাপোর্ট</span>
       </button>
-      <button class="tab-item" onclick="switchTab('settings')">
-        <span>⚡</span> <span data-i18n="tab_settings">অটোমেশন কন্ট্রোল</span>
+      <button class="tab-btn" onclick="switchTab('settings', this)">
+        <span>⚙️</span> <span data-i18n="tab_settings">সেটিংস</span>
       </button>
     </nav>
 
     <!-- TAB 1: OVERVIEW & SALES -->
-    <section id="tab-overview" class="tab-content active">
+    <section id="tab-overview" class="tab-panel active">
       
-      <!-- Spoken Audio Briefing Strip -->
-      <div class="voice-strip">
+      <!-- Audio Voice Strip -->
+      <div class="voice-banner">
         <div style="flex: 1;">
-          <div style="font-size: 11.5px; color: var(--primary); font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px;" data-i18n="voice_title">🤖 একরাম এক্সিকিউটিভ ব্রিফিং:</div>
-          <div id="voice-text" style="font-size: 14.5px; font-weight: 600; color: #E2E8F0;">লাইভ ডাটা লোড হচ্ছে...</div>
+          <div style="font-size: 11px; font-weight: 800; color: var(--primary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px;" data-i18n="voice_title">🤖 একরাম এক্সিকিউটিভ ব্রিফিং:</div>
+          <div id="voice-text" style="font-size: 14.5px; font-weight: 600; color: #1E293B;">লাইভ ডাটা লোড হচ্ছে...</div>
         </div>
-        <button class="btn btn-primary" onclick="speakBriefing()">🔊 <span data-i18n="listen_btn">শুনুন</span></button>
+        <button class="btn btn-primary" onclick="speakBriefing()">🔊 <span data-i18n="btn_listen">শুনুন</span></button>
       </div>
 
-      <!-- Key Metrics -->
-      <div class="metrics-grid">
-        <div class="metric-tile">
-          <div class="metric-label" data-i18n="metric_store_status">Storefront &amp; Checkout</div>
-          <div class="metric-val" id="val-site-status" style="color: var(--green);">ONLINE</div>
-          <div class="metric-sub" id="ping-text">SSL Secure · Edge Connected</div>
+      <!-- Stats Grid -->
+      <div class="grid-metrics">
+        <div class="metric-box">
+          <div class="metric-label" data-i18n="lbl_website">Storefront &amp; Checkout</div>
+          <div class="metric-value" id="val-site-status" style="color: var(--green);">Online</div>
+          <div class="metric-note" id="ping-text">SSL Active · Global Edge</div>
         </div>
 
-        <div class="metric-tile">
-          <div class="metric-label" data-i18n="metric_stripe_bal">Stripe Volume</div>
-          <div class="metric-val" id="stripe-bal" style="color: var(--primary);">د.إ 66.12</div>
-          <div class="metric-sub" data-i18n="metric_stripe_sub">সরাসরি লাইভ অ্যাকাউন্ট থেকে</div>
+        <div class="metric-box">
+          <div class="metric-label" data-i18n="lbl_stripe">Stripe Balance</div>
+          <div class="metric-value" id="stripe-bal" style="color: var(--primary);">د.إ 66.12</div>
+          <div class="metric-note" data-i18n="lbl_stripe_note">সরাসরি লাইভ অ্যাকাউন্ট থেকে</div>
         </div>
 
-        <div class="metric-tile">
-          <div class="metric-label" data-i18n="metric_orders_cnt">Delivered eSIMs</div>
-          <div class="metric-val" id="delivered-cnt" style="color: #34D399;">0</div>
-          <div class="metric-sub" data-i18n="metric_orders_sub">সফলভাবে সক্রিয় হয়েছে</div>
+        <div class="metric-box">
+          <div class="metric-label" data-i18n="lbl_orders">Delivered eSIMs</div>
+          <div class="metric-value" id="delivered-cnt" style="color: #0E131F;">0</div>
+          <div class="metric-note" data-i18n="lbl_orders_note">সফলভাবে সক্রিয় হয়েছে</div>
         </div>
 
-        <div class="metric-tile">
-          <div class="metric-label" data-i18n="metric_reliability">System Reliability</div>
-          <div class="metric-val" style="color: var(--purple);">99.99%</div>
-          <div class="metric-sub" data-i18n="metric_reliability_sub">সার্ভার স্বয়ংক্রিয়ভাবে সক্রিয়</div>
+        <div class="metric-box">
+          <div class="metric-label" data-i18n="lbl_uptime">System Status</div>
+          <div class="metric-value" style="color: var(--green);">Normal</div>
+          <div class="metric-note" data-i18n="lbl_uptime_note">সব সার্ভিস সচল রয়েছে</div>
         </div>
       </div>
 
-      <!-- Orders Stream -->
-      <div class="exec-card">
-        <div class="card-header">
-          <div class="card-title">📋 <span data-i18n="orders_stream_title">সাম্প্রতিক লাইভ অর্ডারসমূহ</span></div>
-          <span style="font-size: 12px; color: var(--text-dim);" id="last-sync-time">Syncing...</span>
+      <!-- Live Orders Table -->
+      <div class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+          <div class="card-title">📋 <span data-i18n="orders_title">সাম্প্রতিক লাইভ অর্ডারসমূহ</span></div>
+          <span style="font-size: 12px; color: var(--text-muted);" id="last-sync-time">Syncing...</span>
         </div>
-        <div class="table-container">
+        
+        <div class="table-responsive">
           <table>
             <thead>
               <tr>
@@ -406,136 +429,136 @@
     </section>
 
     <!-- TAB 2: SOCIAL MARKETING -->
-    <section id="tab-marketing" class="tab-content">
-      <div class="exec-card">
-        <div class="card-header">
+    <section id="tab-marketing" class="tab-panel">
+      <div class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 16px; margin-bottom: 20px; flex-wrap: wrap; gap: 12px;">
           <div>
-            <div class="card-title">🚀 <span data-i18n="social_studio_title">সোশ্যাল মিডিয়া মার্কেটিং স্টুডিও</span></div>
-            <p style="font-size: 12.5px; color: var(--text-muted); margin-top: 4px;" data-i18n="social_studio_sub">ফেসবুক, ইনস্টাগ্রাম ও ইউটিউবের জন্য স্বয়ংক্রিয় অফার তৈরি ও শিডিউলিং</p>
+            <div class="card-title">🚀 <span data-i18n="social_title">সোশ্যাল মিডিয়া অটো-পোস্টিং</span></div>
+            <p style="font-size: 13px; color: var(--text-muted);" data-i18n="social_sub">ফেসবুক, ইনস্টাগ্রাম ও ইউটিউবে আকর্ষণীয় ভ্রমণ অফার স্বয়ংক্রিয়ভাবে তৈরি ও শিডিউল</p>
           </div>
-          <div style="display: flex; gap: 10px; align-items: center;">
-            <select id="select-interval" onchange="updateInterval()" style="background: #0F172A; color: #fff; border: 1px solid var(--card-border); border-radius: 8px; padding: 6px 10px; font-size: 12px; font-weight: 700; outline: none;">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <select id="select-interval" onchange="updateInterval()" style="background: #F8FAFC; border: 1px solid var(--border); border-radius: 8px; padding: 6px 12px; font-size: 13px; font-weight: 700; color: var(--text-dark); outline: none;">
               <option value="60">প্রতি ১ ঘণ্টা পর পর</option>
               <option value="120">প্রতি ২ ঘণ্টা পর পর</option>
               <option value="240">প্রতি ৪ ঘণ্টা পর পর</option>
             </select>
-            <label class="toggle-switch">
+            <label class="toggle">
               <input type="checkbox" id="toggle-social-autopilot" checked onchange="toggleSocialAutoPilot()">
               <span class="slider"></span>
+              <span style="font-size: 13px; font-weight: 700; color: var(--text-dark);">সক্রিয়</span>
             </label>
           </div>
         </div>
 
-        <!-- Channel Status Badges -->
+        <!-- Channel Badges -->
         <div style="display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap;">
-          <span style="background: rgba(59, 130, 246, 0.12); color: #60A5FA; padding: 5px 12px; border-radius: 8px; font-size: 12px; font-weight: 700;">📘 Facebook Page: Ready</span>
-          <span style="background: rgba(236, 72, 153, 0.12); color: #F472B6; padding: 5px 12px; border-radius: 8px; font-size: 12px; font-weight: 700;">📸 Instagram: Ready</span>
-          <span style="background: rgba(239, 68, 68, 0.12); color: #F87171; padding: 5px 12px; border-radius: 8px; font-size: 12px; font-weight: 700;">▶️ YouTube Shorts: Ready</span>
+          <span class="badge-pill" style="background: #EFF6FF; color: #1D4ED8;">📘 Facebook Page: Ready</span>
+          <span class="badge-pill" style="background: #FDF2F8; color: #BE185D;">📸 Instagram: Ready</span>
+          <span class="badge-pill" style="background: #FEF2F2; color: #B91C1C;">▶️ YouTube Shorts: Ready</span>
         </div>
 
-        <!-- Generated Offer Layout -->
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; align-items: start;">
-          <!-- Visual Poster Card -->
-          <div style="background: radial-gradient(circle at 50% 0%, #1E1B4B, #0B0F19); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 16px; padding: 24px; text-align: center;">
-            <div id="visual-flag" style="font-size: 42px; margin-bottom: 8px;">🇦🇪</div>
-            <h3 id="visual-title" style="font-size: 18px; font-weight: 800; color: #fff;">United Arab Emirates</h3>
+        <!-- Clean Preview Grid -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; align-items: start;">
+          <!-- Left: Clean Destination Card -->
+          <div style="background: #F8FAFC; border: 1px solid var(--border); border-radius: var(--radius-md); padding: 24px; text-align: center;">
+            <div id="visual-flag" style="font-size: 48px; margin-bottom: 8px;">🇦🇪</div>
+            <h3 id="visual-title" style="font-size: 18px; font-weight: 800; color: var(--text-dark);">United Arab Emirates</h3>
             <div id="visual-plan" style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">Dubai Explorer 10GB · 30 Days</div>
-            <div style="margin: 18px 0; background: rgba(56, 189, 248, 0.08); border-radius: 12px; padding: 12px;">
-              <div id="visual-price" style="font-size: 30px; font-weight: 800; color: #38BDF8;">$8.50 <span style="font-size: 13px; color: var(--text-muted);">USD</span></div>
+            
+            <div style="margin: 18px 0; background: #FFFFFF; border: 1px solid var(--border); border-radius: 12px; padding: 14px;">
+              <div style="font-size: 11px; font-weight: 700; color: var(--text-light); text-transform: uppercase;">Offer Fare</div>
+              <div id="visual-price" style="font-size: 28px; font-weight: 800; color: var(--primary); margin-top: 2px;">$8.50 <span style="font-size: 13px; color: var(--text-muted);">USD</span></div>
             </div>
-            <div id="visual-badge" style="display: inline-block; background: rgba(16, 185, 129, 0.15); color: #34D399; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 8px;">⚡ 5G ULTRA SPEED</div>
+
+            <div id="visual-badge" style="display: inline-block; background: var(--green-light); color: #00875A; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px;">⚡ 5G Ultra Speed</div>
           </div>
 
-          <!-- Captions Box -->
+          <!-- Right: Pre-formatted Caption Box -->
           <div>
-            <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+            <div style="display: flex; gap: 8px; margin-bottom: 10px;">
               <button class="btn" id="tab-fb" onclick="switchSocialTab('fb')" style="padding: 6px 12px; font-size: 12px;">Facebook</button>
               <button class="btn" id="tab-ig" onclick="switchSocialTab('ig')" style="padding: 6px 12px; font-size: 12px;">Instagram</button>
               <button class="btn" id="tab-yt" onclick="switchSocialTab('yt')" style="padding: 6px 12px; font-size: 12px;">YouTube</button>
             </div>
-            <textarea id="social-caption-box" style="width: 100%; height: 160px; background: rgba(0,0,0,0.4); border: 1px solid var(--card-border); border-radius: 10px; color: #F8FAFC; padding: 12px; font-size: 12.5px; font-family: monospace; line-height: 1.5; resize: vertical; box-sizing: border-box; outline: none;"></textarea>
-            
+
+            <textarea id="social-caption-box" style="width: 100%; height: 160px; background: #FFFFFF; border: 1px solid var(--border); border-radius: 8px; color: #1E293B; padding: 12px; font-size: 12.5px; font-family: inherit; line-height: 1.5; resize: vertical; box-sizing: border-box; outline: none;"></textarea>
+
             <div style="display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap;">
-              <button class="btn" onclick="generateFreshOffer()">⚡ <span data-i18n="btn_gen_offer">নতুন অফার</span></button>
-              <button class="btn" onclick="copyCaption()">📋 <span data-i18n="btn_copy_caption">কপি ক্যাপশন</span></button>
-              <button class="btn btn-purple" onclick="publishOfferNow()">🚀 <span data-i18n="btn_publish_now">পাবলিশ করুন</span></button>
+              <button class="btn" onclick="generateFreshOffer()">⚡ নতুন অফার</button>
+              <button class="btn" onclick="copyCaption()">📋 কপি ক্যাপশন</button>
+              <button class="btn btn-primary" onclick="publishOfferNow()">🚀 পাবলিশ করুন</button>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- TAB 3: EMAIL & CUSTOMER SUPPORT -->
-    <section id="tab-support" class="tab-content">
+    <!-- TAB 3: EMAIL & SUPPORT -->
+    <section id="tab-support" class="tab-panel">
       
       <!-- Official Email Inboxes -->
-      <div class="exec-card">
-        <div class="card-header">
+      <div class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
           <div>
-            <div class="card-title">✉️ <span data-i18n="email_copilot_title">অফিশিয়াল মেইল ব্রিফিং</span></div>
-            <p style="font-size: 12px; color: var(--text-muted); margin-top: 3px;">traveltripworld8@gmail.com &amp; abdullahtrdng@gmail.com</p>
+            <div class="card-title">✉️ <span data-i18n="email_title">অফিশিয়াল মেইল ব্রিফিং</span></div>
+            <p style="font-size: 12.5px; color: var(--text-muted);">traveltripworld8@gmail.com &amp; abdullahtrdng@gmail.com</p>
           </div>
           <button class="btn" onclick="fetchEmailInbox()">🔄 রিফ্রেশ</button>
         </div>
+
         <div id="email-inbox-container" style="display: flex; flex-direction: column; gap: 12px;">
           <div style="text-align: center; color: var(--text-muted); padding: 16px;">ইনবক্স লোড হচ্ছে...</div>
         </div>
       </div>
 
-      <!-- Customer Guidance Navigation Desk -->
-      <div class="exec-card">
-        <div class="card-header">
-          <div>
-            <div class="card-title">🧭 <span data-i18n="guidance_desk_title">কাস্টমার গাইডলাইন ও রোডম্যাপ</span></div>
-            <p style="font-size: 12.5px; color: var(--text-muted); margin-top: 3px;">গ্রাহক কোথাও আটকে গেলে তাৎক্ষণিক সমাধান ও ৫-স্টার রিভিউ নিশ্চিতকরণ</p>
-          </div>
-        </div>
+      <!-- Customer Guidance Navigation -->
+      <div class="card">
+        <div class="card-title">🧭 <span data-i18n="guide_title">কাস্টমার গাইডলাইন ও রোডম্যাপ</span></div>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;" data-i18n="guide_sub">গ্রাহক কোথাও আটকে গেলে তাৎক্ষণিক সমাধান ও ৫-স্টার রিভিউ নিশ্চিতকরণ</p>
 
         <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px;">
           <button class="btn" onclick="loadTroubleshootGuide('no_internet')">📶 ইন্টারনেট পাচ্ছে না</button>
           <button class="btn" onclick="loadTroubleshootGuide('qr')">📷 QR স্ক্যান হচ্ছে না</button>
           <button class="btn" onclick="loadTroubleshootGuide('iphone')">📱 iPhone ইনস্টল</button>
           <button class="btn" onclick="loadTroubleshootGuide('android')">📲 Android ইনস্টল</button>
-          <button class="btn" onclick="loadTroubleshootGuide('review')" style="background: rgba(245, 158, 11, 0.15); color: #FBBF24; border-color: rgba(245, 158, 11, 0.3);">⭐ ৫-স্টার রিভিউ আবেদন</button>
+          <button class="btn" onclick="loadTroubleshootGuide('review')" style="background: #FEF3C7; color: #B45309; border-color: #FDE68A;">⭐ ৫-স্টার রিভিউ আবেদন</button>
         </div>
 
-        <div id="guidance-result-box" style="background: rgba(0,0,0,0.3); border: 1px solid var(--card-border); border-radius: 12px; padding: 16px; font-size: 13.5px; line-height: 1.6;">
+        <div id="guidance-result-box" style="background: #F8FAFC; border: 1px solid var(--border); border-radius: var(--radius-md); padding: 16px; font-size: 13.5px; line-height: 1.6;">
           <div style="color: var(--text-muted);">বাটন চাপুন, তাৎক্ষণিক কাস্টমার গাইডলাইন প্রস্তুত হবে...</div>
         </div>
       </div>
     </section>
 
-    <!-- TAB 4: SYSTEM AUTOMATION & SETTINGS -->
-    <section id="tab-settings" class="tab-content">
-      <div class="exec-card">
-        <div class="card-header">
-          <div class="card-title">⚡ <span data-i18n="auto_panel_title">অটোমেশন ও সিস্টেম কন্ট্রোল</span></div>
-        </div>
+    <!-- TAB 4: SETTINGS -->
+    <section id="tab-settings" class="tab-panel">
+      <div class="card">
+        <div class="card-title">⚙️ <span data-i18n="settings_title">সিস্টেম ও অটোমেশন সেটিংস</span></div>
 
         <div style="display: flex; flex-direction: column; gap: 16px;">
-          <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--card-border); padding-bottom: 14px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #F1F5F9; padding-bottom: 14px;">
             <div>
-              <div style="font-weight: 700; font-size: 14px; color: #fff;">🔔 নতুন অর্ডারে সাউন্ড অ্যালার্ট (Audio Chime)</div>
-              <div style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">গ্রাহক ই-সিম কিনলে ক্যাশ-রেজিস্টার চিম বাজবে</div>
+              <div style="font-weight: 700; font-size: 14px;">🔔 নতুন অর্ডারে সাউন্ড অ্যালার্ট (Audio Chime)</div>
+              <div style="font-size: 12.5px; color: var(--text-muted); margin-top: 2px;">গ্রাহক ই-সিম কিনলে ক্যাশ-রেজিস্টার চিম বাজবে</div>
             </div>
-            <label class="toggle-switch">
+            <label class="toggle">
               <input type="checkbox" id="toggle-sound-alert" checked>
               <span class="slider"></span>
             </label>
           </div>
 
-          <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--card-border); padding-bottom: 14px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #F1F5F9; padding-bottom: 14px;">
             <div>
-              <div style="font-weight: 700; font-size: 14px; color: #fff;">🛡️ ব্যাকগ্রাউন্ড হেলথ গার্ড (Watchdog Daemon)</div>
-              <div style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">ক্লাউড সার্ভার সংযোগ সার্বক্ষণিক পরীক্ষা করে</div>
+              <div style="font-weight: 700; font-size: 14px;">🛡️ ব্যাকগ্রাউন্ড হেলথ গার্ড (Watchdog)</div>
+              <div style="font-size: 12.5px; color: var(--text-muted); margin-top: 2px;">ক্লাউড সার্ভার সংযোগ সার্বক্ষণিক পরীক্ষা করে</div>
             </div>
-            <label class="toggle-switch">
+            <label class="toggle">
               <input type="checkbox" id="toggle-watchdog" checked>
               <span class="slider"></span>
             </label>
           </div>
 
-          <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px;">
+          <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px;">
             <button class="btn" onclick="testSoundAlert()">🎵 সাউন্ড টেস্ট</button>
             <button class="btn" onclick="exportOrdersCSV()">📥 অর্ডার CSV ডাউনলোড</button>
             <button class="btn" onclick="openCredentialsModal()">⚙️ সোশ্যাল API সেটিংস</button>
@@ -544,33 +567,33 @@
       </div>
     </section>
 
-    <!-- Footer -->
+    <!-- Clean Brand Footer -->
     <footer class="footer">
-      &copy; 2026 <strong>TravelTrip World</strong> · Ekram 0.2 Executive Control Center.<br>
-      Proprietary System of <strong>Mohammad Akram (Abdullah Trading)</strong>.
+      &copy; 2026 <strong>TravelTrip World</strong> · Proprietary Operations System.<br>
+      Owned by <strong>Mohammad Akram (Abdullah Trading)</strong>.
     </footer>
 
   </div>
 
   <!-- Credentials Modal -->
-  <div id="creds-modal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); z-index: 9999; align-items: center; justify-content: center; padding: 20px;">
-    <div style="background: #0F172A; border: 1px solid var(--card-border); border-radius: 16px; max-width: 500px; width: 100%; padding: 24px; box-shadow: 0 20px 50px rgba(0,0,0,0.7);">
+  <div id="creds-modal" style="display: none; position: fixed; inset: 0; background: rgba(14, 19, 31, 0.6); backdrop-filter: blur(4px); z-index: 9999; align-items: center; justify-content: center; padding: 20px;">
+    <div style="background: #FFFFFF; border: 1px solid var(--border); border-radius: var(--radius-lg); max-width: 480px; width: 100%; padding: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.15);">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-        <h3 style="font-size: 16px; font-weight: 800; color: #fff;">⚙️ সোশ্যাল চ্যানেল ও API সেটিংস</h3>
+        <h3 style="font-size: 16px; font-weight: 800; color: var(--text-dark);">⚙️ সোশ্যাল চ্যানেল ও API সেটিংস</h3>
         <button onclick="closeCredentialsModal()" style="background: transparent; border: none; color: var(--text-muted); font-size: 18px; cursor: pointer;">✕</button>
       </div>
       <div style="display: flex; flex-direction: column; gap: 12px;">
         <div>
-          <label style="font-size: 11.5px; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 4px;">Facebook Page Access Token / ID</label>
-          <input type="text" id="cfg-fb" placeholder="EAAB... বা Page ID" style="width: 100%; background: #1E293B; border: 1px solid var(--card-border); border-radius: 8px; color: #fff; padding: 10px; font-size: 13px; box-sizing: border-box; outline: none;">
+          <label style="font-size: 12px; font-weight: 700; color: var(--text-dark); display: block; margin-bottom: 4px;">Facebook Page Access Token / ID</label>
+          <input type="text" id="cfg-fb" placeholder="EAAB... বা Page ID" style="width: 100%; background: #F8FAFC; border: 1px solid var(--border); border-radius: 8px; color: var(--text-dark); padding: 10px; font-size: 13px; box-sizing: border-box; outline: none;">
         </div>
         <div>
-          <label style="font-size: 11.5px; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 4px;">Instagram Business Account ID</label>
-          <input type="text" id="cfg-ig" placeholder="178414..." style="width: 100%; background: #1E293B; border: 1px solid var(--card-border); border-radius: 8px; color: #fff; padding: 10px; font-size: 13px; box-sizing: border-box; outline: none;">
+          <label style="font-size: 12px; font-weight: 700; color: var(--text-dark); display: block; margin-bottom: 4px;">Instagram Business Account ID</label>
+          <input type="text" id="cfg-ig" placeholder="178414..." style="width: 100%; background: #F8FAFC; border: 1px solid var(--border); border-radius: 8px; color: var(--text-dark); padding: 10px; font-size: 13px; box-sizing: border-box; outline: none;">
         </div>
         <div>
-          <label style="font-size: 11.5px; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 4px;">Zapier / Make / Automated Webhook URL</label>
-          <input type="text" id="cfg-webhook" placeholder="https://hooks.zapier.com/..." style="width: 100%; background: #1E293B; border: 1px solid var(--card-border); border-radius: 8px; color: #fff; padding: 10px; font-size: 13px; box-sizing: border-box; outline: none;">
+          <label style="font-size: 12px; font-weight: 700; color: var(--text-dark); display: block; margin-bottom: 4px;">Zapier / Make / Webhook URL</label>
+          <input type="text" id="cfg-webhook" placeholder="https://hooks.zapier.com/..." style="width: 100%; background: #F8FAFC; border: 1px solid var(--border); border-radius: 8px; color: var(--text-dark); padding: 10px; font-size: 13px; box-sizing: border-box; outline: none;">
         </div>
       </div>
       <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
@@ -591,58 +614,54 @@
 
     const i18n = {
       bn: {
-        badge_live: "লাইভ অপারেশনস",
-        refresh: "রিফ্রেশ",
-        checkout_btn: "চেকআউট",
+        badge_live: "লাইভ সিস্টেম",
+        btn_refresh: "রিফ্রেশ",
+        btn_checkout: "চেকআউট",
         tab_overview: "ওভারভিউ ও সেলস",
         tab_marketing: "সোশ্যাল মার্কেটিং",
-        tab_support: "মেইল ও সাপোর্ট ডেস্ক",
-        tab_settings: "অটোমেশন কন্ট্রোল",
+        tab_support: "মেইল ও সাপোর্ট",
+        tab_settings: "সেটিংস",
         voice_title: "🤖 একরাম এক্সিকিউটিভ ব্রিফিং:",
-        listen_btn: "শুনুন",
-        metric_store_status: "স্টোর ও চেকআউট",
-        metric_stripe_bal: "স্ট্রাইপ ভলিউম",
-        metric_stripe_sub: "সরাসরি লাইভ একাউন্ট থেকে",
-        metric_orders_cnt: "ডেলিভার্ড ই-সিম",
-        metric_orders_sub: "সফলভাবে সক্রিয় হয়েছে",
-        metric_reliability: "সিস্টেম সক্রিয়তা",
-        metric_reliability_sub: "সার্ভার স্বয়ংক্রিয়ভাবে সক্রিয়",
-        orders_stream_title: "সাম্প্রতিক লাইভ অর্ডারসমূহ",
-        social_studio_title: "সোশ্যাল মিডিয়া মার্কেটিং স্টুডিও",
-        social_studio_sub: "ফেসবুক, ইনস্টাগ্রাম ও ইউটিউবের জন্য স্বয়ংক্রিয় অফার তৈরি ও শিডিউলিং",
-        btn_gen_offer: "নতুন অফার",
-        btn_copy_caption: "কপি ক্যাপশন",
-        btn_publish_now: "পাবলিশ করুন",
-        email_copilot_title: "অফিশিয়াল মেইল ব্রিফিং",
-        guidance_desk_title: "কাস্টমার গাইডলাইন ও রোডম্যাপ",
-        auto_panel_title: "অটোমেশন ও সিস্টেম কন্ট্রোল"
+        btn_listen: "শুনুন",
+        lbl_website: "স্টোর ও চেকআউট",
+        lbl_stripe: "স্ট্রাইপ ব্যালেন্স",
+        lbl_stripe_note: "সরাসরি লাইভ একাউন্ট থেকে",
+        lbl_orders: "ডেলিভার্ড ই-সিম",
+        lbl_orders_note: "সফলভাবে সক্রিয় হয়েছে",
+        lbl_uptime: "সিস্টেম স্ট্যাটাস",
+        lbl_uptime_note: "সব সার্ভিস সচল রয়েছে",
+        orders_title: "সাম্প্রতিক লাইভ অর্ডারসমূহ",
+        social_title: "সোশ্যাল মিডিয়া অটো-পোস্টিং",
+        social_sub: "ফেসবুক, ইনস্টাগ্রাম ও ইউটিউবে আকর্ষণীয় ভ্রমণ অফার স্বয়ংক্রিয়ভাবে তৈরি ও শিডিউল",
+        email_title: "অফিশিয়াল মেইল ব্রিফিং",
+        guide_title: "কাস্টমার গাইডলাইন ও রোডম্যাপ",
+        guide_sub: "গ্রাহক কোথাও আটকে গেলে তাৎক্ষণিক সমাধান ও ৫-স্টার রিভিউ নিশ্চিতকরণ",
+        settings_title: "সিস্টেম ও অটোমেশন সেটিংস"
       },
       en: {
-        badge_live: "LIVE OPERATIONS",
-        refresh: "Refresh",
-        checkout_btn: "Checkout",
+        badge_live: "Live System",
+        btn_refresh: "Refresh",
+        btn_checkout: "Checkout",
         tab_overview: "Overview & Sales",
         tab_marketing: "Social Marketing",
         tab_support: "Email & Support",
-        tab_settings: "Automation Control",
+        tab_settings: "Settings",
         voice_title: "🤖 Ekram Executive Briefing:",
-        listen_btn: "Listen",
-        metric_store_status: "Storefront & Checkout",
-        metric_stripe_bal: "Stripe Volume",
-        metric_stripe_sub: "Direct from Live Account",
-        metric_orders_cnt: "Delivered eSIMs",
-        metric_orders_sub: "Successfully activated",
-        metric_reliability: "System Reliability",
-        metric_reliability_sub: "Autonomous Edge Running",
-        orders_stream_title: "Recent Live Orders Stream",
-        social_studio_title: "Social Media Marketing Studio",
-        social_studio_sub: "Autonomous post generation & scheduling for FB, IG & YT",
-        btn_gen_offer: "New Offer",
-        btn_copy_caption: "Copy Caption",
-        btn_publish_now: "Publish Now",
-        email_copilot_title: "Official Email Briefing",
-        guidance_desk_title: "Customer Guidance & Roadmap",
-        auto_panel_title: "Automation & Controls"
+        btn_listen: "Listen",
+        lbl_website: "Storefront & Checkout",
+        lbl_stripe: "Stripe Balance",
+        lbl_stripe_note: "Direct from Live Account",
+        lbl_orders: "Delivered eSIMs",
+        lbl_orders_note: "Successfully activated",
+        lbl_uptime: "System Status",
+        lbl_uptime_note: "All services operational",
+        orders_title: "Recent Live Orders",
+        social_title: "Social Media Auto-Posting",
+        social_sub: "Autonomous post generation & scheduling for FB, IG & YT",
+        email_title: "Official Email Briefing",
+        guide_title: "Customer Guidance & Roadmap",
+        guide_sub: "Instant navigation for stuck travelers & review boosting",
+        settings_title: "System & Automation Settings"
       }
     };
 
@@ -660,17 +679,15 @@
       document.getElementById("voice-text").innerText = (lang === 'en' ? voiceSummaryEn : voiceSummaryBn) || "TravelTrip operations running smoothly.";
     }
 
-    function switchTab(tabId) {
-      document.querySelectorAll(".tab-content").forEach(el => el.classList.remove("active"));
-      document.querySelectorAll(".tab-item").forEach(el => el.classList.remove("active"));
+    function switchTab(tabId, btn) {
+      document.querySelectorAll(".tab-panel").forEach(el => el.classList.remove("active"));
+      document.querySelectorAll(".tab-btn").forEach(el => el.classList.remove("active"));
 
-      const targetContent = document.getElementById("tab-" + tabId);
-      if (targetContent) targetContent.classList.add("active");
-
-      event.currentTarget.classList.add("active");
+      const target = document.getElementById("tab-" + tabId);
+      if (target) target.classList.add("active");
+      if (btn) btn.classList.add("active");
     }
 
-    // Modern Audio Chime
     function playChaChing() {
       try {
         const ctx = new (window.AudioContext || window.webkitAudioContext)();
@@ -696,7 +713,6 @@
       }, 300);
     }
 
-    // Core Data Fetcher
     async function fetchOpsData() {
       try {
         const res = await fetch("/api/ops/overview");
@@ -712,11 +728,11 @@
 
         const siteStatusVal = document.getElementById("val-site-status");
         if (data.website_online) {
-          siteStatusVal.innerText = "ONLINE";
+          siteStatusVal.innerText = "Online";
           siteStatusVal.style.color = "var(--green)";
         } else {
-          siteStatusVal.innerText = "ALERT";
-          siteStatusVal.style.color = "var(--red)";
+          siteStatusVal.innerText = "Alert";
+          siteStatusVal.style.color = "#EF4444";
         }
 
         const currentOrders = data.recent_orders || [];
@@ -733,15 +749,15 @@
           tbody.innerHTML = currentOrders.map(o => `
             <tr>
               <td style="font-family: monospace; font-weight: 700; color: var(--primary);">${o.order_id || '-'}</td>
-              <td>${o.buyer_name || 'Traveler'}<br><span style="font-size: 11px; color: var(--text-muted);">${o.buyer_email || ''}</span></td>
+              <td><strong>${o.buyer_name || 'Traveler'}</strong><br><span style="font-size: 11.5px; color: var(--text-muted);">${o.buyer_email || ''}</span></td>
               <td>${o.package_name || o.package_code || 'eSIM'}</td>
               <td style="font-weight: 700;">$${parseFloat(o.price_usd || 0).toFixed(2)}</td>
-              <td><span class="badge badge-success">${(o.payment_status || 'paid').toUpperCase()}</span></td>
-              <td><span class="badge badge-success">${(o.esim_status || 'delivered').toUpperCase()}</span></td>
+              <td><span class="badge-pill badge-green">${(o.payment_status || 'paid').toUpperCase()}</span></td>
+              <td><span class="badge-pill badge-green">${(o.esim_status || 'delivered').toUpperCase()}</span></td>
             </tr>
           `).join('');
         } else {
-          tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--text-muted); padding: 24px;">${currentLang === 'en' ? 'Storefront is fully active and ready for live customers.' : 'চেকআউট সম্পূর্ণ প্রস্তুত, কোনো পেন্ডিং অর্ডার নেই।'}</td></tr>`;
+          tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--text-muted); padding: 24px;">${currentLang === 'en' ? 'Storefront is active and ready for live travelers.' : 'চেকআউট সম্পূর্ণ প্রস্তুত, কোনো পেন্ডিং অর্ডার নেই।'}</td></tr>`;
         }
       } catch(e) {}
     }
@@ -760,7 +776,6 @@
       }
     }
 
-    // Social Media Marketing Functions
     async function generateFreshOffer() {
       try {
         const res = await fetch("/api/social/generate");
@@ -779,9 +794,9 @@
 
     function switchSocialTab(tab) {
       activeSocialTab = tab;
-      document.getElementById("tab-fb").style.borderColor = (tab === 'fb') ? 'var(--primary)' : 'var(--card-border)';
-      document.getElementById("tab-ig").style.borderColor = (tab === 'ig') ? 'var(--primary)' : 'var(--card-border)';
-      document.getElementById("tab-yt").style.borderColor = (tab === 'yt') ? 'var(--primary)' : 'var(--card-border)';
+      document.getElementById("tab-fb").style.borderColor = (tab === 'fb') ? 'var(--primary)' : 'var(--border)';
+      document.getElementById("tab-ig").style.borderColor = (tab === 'ig') ? 'var(--primary)' : 'var(--border)';
+      document.getElementById("tab-yt").style.borderColor = (tab === 'yt') ? 'var(--primary)' : 'var(--border)';
 
       const box = document.getElementById("social-caption-box");
       if (!currentOffer) return;
@@ -819,7 +834,6 @@
       toggleSocialAutoPilot();
     }
 
-    // Official Email Inboxes
     async function fetchEmailInbox() {
       try {
         const res = await fetch("/api/email/inbox");
@@ -828,18 +842,18 @@
 
         if (data.emails && data.emails.length > 0) {
           container.innerHTML = data.emails.map(m => `
-            <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--card-border); border-radius: 12px; padding: 14px;">
+            <div style="background: #F8FAFC; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px;">
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                <span style="font-weight: 700; color: #fff; font-size: 13.5px;">${m.sender_name} <span style="font-size: 11px; color: var(--text-muted);">&lt;${m.sender_email}&gt;</span></span>
-                <span style="font-size: 10.5px; font-weight: 700; padding: 2px 7px; border-radius: 6px; background: rgba(56, 189, 248, 0.15); color: #38BDF8;">${m.urgency}</span>
+                <span style="font-weight: 700; color: var(--text-dark); font-size: 13.5px;">${m.sender_name} <span style="font-size: 11px; color: var(--text-muted);">&lt;${m.sender_email}&gt;</span></span>
+                <span style="font-size: 10.5px; font-weight: 700; padding: 2px 8px; border-radius: 6px; background: #EEF2FF; color: var(--primary);">${m.urgency}</span>
               </div>
-              <div style="font-size: 12.5px; color: var(--primary); font-weight: 600;">${m.subject}</div>
-              <div style="margin: 8px 0; background: rgba(56, 189, 248, 0.05); border-left: 2px solid var(--primary); padding: 8px 10px; font-size: 12.5px; color: #E2E8F0;">
+              <div style="font-size: 13px; color: var(--primary); font-weight: 600;">${m.subject}</div>
+              <div style="margin: 8px 0; background: #FFFFFF; border-left: 3px solid var(--primary); padding: 8px 12px; border-radius: 4px; font-size: 13px; color: #334155;">
                 <strong>🤖 সারসংক্ষেপ:</strong> ${currentLang === 'en' ? m.boss_briefing_en : m.boss_briefing_bn}
               </div>
               <div style="display: flex; gap: 8px; margin-top: 8px;">
                 <button class="btn" style="padding: 4px 10px; font-size: 11px;" onclick="copyEmailSolution('${encodeURIComponent(currentLang === 'en' ? m.solution_guide_en : m.solution_guide_bn)}')">📋 সমাধান কপি</button>
-                <a href="https://wa.me/8801836089766" target="_blank" class="btn btn-green" style="padding: 4px 10px; font-size: 11px;">💬 WhatsApp</a>
+                <a href="https://wa.me/8801836089766" target="_blank" class="btn btn-whatsapp" style="padding: 4px 10px; font-size: 11px;">💬 WhatsApp</a>
               </div>
             </div>
           `).join('');
@@ -855,7 +869,6 @@
       });
     }
 
-    // Customer Guidance Desk
     async function loadTroubleshootGuide(issue) {
       try {
         const res = await fetch("/api/support/troubleshoot", {
@@ -868,12 +881,12 @@
         const guide = currentLang === 'en' ? data.guide_en : data.guide_bn;
         box.innerHTML = `
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-            <strong style="color: #38BDF8; font-size: 14px;">${data.title}</strong>
+            <strong style="color: var(--primary); font-size: 14px;">${data.title}</strong>
             <button class="btn" onclick="copyGuidanceText()" style="padding: 3px 8px; font-size: 11px;">📋 কপি গাইড</button>
           </div>
-          <div id="guidance-text-content" style="white-space: pre-line; color: #F1F5F9; font-size: 13px;">${guide}</div>
+          <div id="guidance-text-content" style="white-space: pre-line; color: #334155; font-size: 13px;">${guide}</div>
           <div style="margin-top: 10px;">
-            <a href="${data.whatsapp_url}" target="_blank" class="btn btn-green" style="padding: 4px 12px; font-size: 11px;">💬 কাস্টমারকে WhatsApp-এ পাঠান</a>
+            <a href="${data.whatsapp_url}" target="_blank" class="btn btn-whatsapp" style="padding: 4px 12px; font-size: 11px;">💬 কাস্টমারকে WhatsApp-এ পাঠান</a>
           </div>
         `;
       } catch(e) {}
