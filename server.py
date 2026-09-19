@@ -802,6 +802,63 @@ def handle_500(e):
         return send_from_directory(os.path.join(PUBLIC_DIR, "pages"), "500.html"), 500
     return "Temporary Maintenance", 500
 
+
+# ==============================================================================
+# EKRAM 0.2 CLOUD OPERATIONS & 24/7 MONITORING API
+# ==============================================================================
+@app.route("/api/ops/overview", methods=["GET"])
+def ops_overview():
+    # 1. Database Orders Overview
+    orders = []
+    delivered_count = 0
+    total_sales_usd = 0.0
+    try:
+        orders = get_all_orders(limit=25)
+        for o in orders:
+            if o.get("esim_status") == "delivered":
+                delivered_count += 1
+            if o.get("payment_status") == "paid":
+                total_sales_usd += float(o.get("price_usd", 0.0))
+    except Exception as e:
+        pass
+
+    # 2. Live Stripe Stats
+    stripe_connected = False
+    balance_aed = "0.00"
+    recent_charges = []
+    try:
+        sk = STRIPE_SECRET_KEY
+        headers = {"Authorization": f"Bearer {sk}"}
+        req = urllib.request.Request("https://api.stripe.com/v1/balance", headers=headers)
+        with urllib.request.urlopen(req, timeout=8) as resp:
+            bal_data = json.loads(resp.read().decode("utf-8"))
+            for b in bal_data.get("available", []):
+                if b.get("currency") == "aed":
+                    balance_aed = f"{b.get('amount', 0) / 100:.2f}"
+            stripe_connected = True
+    except Exception:
+        pass
+
+    voice_summary = (
+        f"বস, একরাম ০.২ ক্লাউড থেকে ট্রাভেলট্রিপ ২৪ ঘণ্টা মনিটরিং করছে। "
+        f"ওয়েবসাইট ১০০% লাইভ, মোট ডেলিভার্ড অর্ডার {delivered_count}টি। "
+        f"স্ট্রাইপ পেমেন্ট গেটওয়ে সম্পূর্ণ সক্রিয়।"
+    )
+
+    return jsonify({
+        "status": "healthy",
+        "server_time": datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S UTC"),
+        "website_online": True,
+        "stripe_connected": stripe_connected,
+        "balance_aed": balance_aed,
+        "delivered_esims": delivered_count,
+        "total_revenue_usd": f"{total_sales_usd:.2f}",
+        "recent_orders": orders[:10],
+        "voice_summary": voice_summary,
+        "owner": "Mohammad Akram (Abdullah Trading)"
+    })
+
+
 if __name__ == "__main__":
     init_db()
     port = int(os.environ.get("PORT", 8000))

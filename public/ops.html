@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="bn">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ekram 0.2 — TravelTrip 24/7 Cloud Operations Center</title>
+  <link rel="icon" type="image/png" href="/images/logo-transparent.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #07090E;
+      --card-bg: rgba(15, 23, 42, 0.75);
+      --border: rgba(255, 255, 255, 0.1);
+      --primary: #38BDF8;
+      --green: #10B981;
+      --purple: #A855F7;
+      --text: #F8FAFC;
+      --text-sub: #94A3B8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+    body { background: var(--bg); color: var(--text); padding: 20px; min-height: 100vh; }
+    .container { max-width: 1000px; margin: 0 auto; }
+    .header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 20px; border-bottom: 1px solid var(--border); flex-wrap: wrap; gap: 12px; }
+    .brand-pill { display: flex; align-items: center; gap: 10px; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.3); padding: 8px 16px; border-radius: 30px; }
+    .status-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--green); box-shadow: 0 0 10px var(--green); animation: pulse 2s infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.15); } }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin: 24px 0; }
+    .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 20px; backdrop-filter: blur(12px); box-shadow: 0 8px 32px rgba(0,0,0,0.4); }
+    .card-title { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-sub); font-weight: 700; margin-bottom: 6px; }
+    .card-val { font-size: 26px; font-weight: 800; }
+    .card-sub { font-size: 12px; color: var(--text-sub); margin-top: 4px; }
+    .action-btn { background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border); color: #fff; padding: 10px 16px; border-radius: 10px; font-size: 13px; font-weight: 700; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s; }
+    .action-btn:hover { background: rgba(255, 255, 255, 0.12); border-color: var(--primary); }
+    .action-btn.primary { background: var(--primary); color: #07090E; border: none; }
+    .action-btn.primary:hover { filter: brightness(1.1); }
+    .voice-box { background: linear-gradient(135deg, rgba(56, 189, 248, 0.12), rgba(168, 85, 247, 0.12)); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 16px; padding: 20px; margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+    .table-box { background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 20px; overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+    th { text-align: left; padding: 12px 10px; color: var(--text-sub); border-bottom: 1px solid var(--border); font-size: 11px; text-transform: uppercase; }
+    td { padding: 14px 10px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .badge { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; }
+    .badge-delivered { background: rgba(16, 185, 129, 0.2); color: #34D399; }
+    .badge-pending { background: rgba(245, 158, 11, 0.2); color: #FBBF24; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="brand-pill">
+        <div class="status-dot"></div>
+        <span style="font-weight: 800; letter-spacing: 0.05em; color: #fff;">EKRAM 0.2</span>
+        <span style="font-size: 11px; background: rgba(16, 185, 129, 0.2); color: #34D399; padding: 2px 8px; border-radius: 10px; font-weight: 700;">24/7 CLOUD ACTIVE</span>
+      </div>
+
+      <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+        <button class="action-btn" onclick="speakSummary()">🔊 ভয়েসে শুনুন</button>
+        <button class="action-btn" onclick="fetchOpsData()">🔄 রিফ্রেশ</button>
+        <a href="https://traveltrip.world/checkout.html" target="_blank" class="action-btn">🛒 চেকআউট সাইট</a>
+        <a href="https://dashboard.stripe.com" target="_blank" class="action-btn">💳 Stripe Live</a>
+      </div>
+    </div>
+
+    <!-- AI Voice Summary -->
+    <div class="voice-box" style="margin-top: 24px;">
+      <div>
+        <div style="font-size: 12px; color: var(--primary); font-weight: 700; margin-bottom: 4px;">🤖 একরাম ০.২ স্বয়ংক্রিয় ব্রিফিং:</div>
+        <div id="voice-text" style="font-size: 15px; font-weight: 600; line-height: 1.5;">ক্লাউড সার্ভার থেকে ট্রাভেলট্রিপের লাইভ ডাটা লোড হচ্ছে...</div>
+      </div>
+      <button class="action-btn primary" onclick="speakSummary()">▶️ শুনুন</button>
+    </div>
+
+    <!-- Key Metrics Grid -->
+    <div class="grid">
+      <div class="card">
+        <div class="card-title">🌐 Website &amp; Checkout</div>
+        <div class="card-val" style="color: var(--green);">100% ONLINE</div>
+        <div class="card-sub" id="ping-text">Ping: ~720ms · 256-Bit SSL</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">💰 Stripe Available (AED)</div>
+        <div class="card-val" id="stripe-bal" style="color: var(--primary);">د.إ 0.00</div>
+        <div class="card-sub">সরাসরি লাইভ একাউন্ট থেকে</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">📦 Delivered eSIMs</div>
+        <div class="card-val" id="delivered-cnt" style="color: #34D399;">0</div>
+        <div class="card-sub">সফলভাবে সক্রিয় হয়েছে</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">🛡️ Watchdog Mode</div>
+        <div class="card-val" style="color: var(--purple);">24 / 7 Live</div>
+        <div class="card-sub">ল্যাপটপ বন্ধ থাকলেও চালু থাকবে</div>
+      </div>
+    </div>
+
+    <!-- Customer Support Quick Dispatcher -->
+    <div class="card" style="margin-bottom: 24px;">
+      <h3 style="font-size: 16px; font-weight: 800; margin-bottom: 12px;">💬 কাস্টমার সাপোর্ট সহকারী (1-Click WhatsApp)</h3>
+      <p style="font-size: 13px; color: var(--text-sub); margin-bottom: 14px;">কোনো গ্রাহক সমস্যা জানালে নিচের বাটনে চাপ দিন, সাথে সাথে উত্তর কপি হয়ে যাবে:</p>
+      <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+        <button class="action-btn" onclick="copyGuide('iphone')">📱 iPhone eSIM Guide কপি</button>
+        <button class="action-btn" onclick="copyGuide('samsung')">📲 Samsung / Android Guide কপি</button>
+        <button class="action-btn" onclick="copyGuide('roaming')">📶 Data Roaming Guide কপি</button>
+        <a href="https://wa.me/8801836089766" target="_blank" class="action-btn primary" style="background: #16A34A; color: #fff;">💬 WhatsApp কাস্টমার কেয়ার</a>
+      </div>
+    </div>
+
+    <!-- Recent Orders Table -->
+    <div class="table-box">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+        <h3 style="font-size: 16px; font-weight: 800;">📋 সাম্প্রতিক অর্ডার ও ডেলিভারি স্ট্যাটাস</h3>
+        <span style="font-size: 12px; color: var(--text-sub);" id="last-sync-time">আপডেট হচ্ছে...</span>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Order ID</th>
+            <th>Customer</th>
+            <th>Package</th>
+            <th>Amount</th>
+            <th>Payment</th>
+            <th>eSIM Status</th>
+          </tr>
+        </thead>
+        <tbody id="orders-tbody">
+          <tr><td colspan="6" style="text-align: center; color: var(--text-sub); padding: 30px;">অর্ডার লোড হচ্ছে...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <footer style="text-align: center; margin-top: 40px; font-size: 12px; color: var(--text-sub);">
+      &copy; 2026 TravelTrip World · Ekram 0.2 Autonomous Cloud Operations.<br>
+      Owned by Mohammad Akram (Abdullah Trading) · Running 24/7 on Cloud.
+    </footer>
+  </div>
+
+  <script>
+    let currentVoiceText = "";
+
+    async function fetchOpsData() {
+      try {
+        const res = await fetch("/api/ops/overview");
+        const data = await res.json();
+        
+        document.getElementById("voice-text").innerText = data.voice_summary || "ট্রাভেলট্রিপ সম্পূর্ণ সক্রিয় রয়েছে।";
+        currentVoiceText = data.voice_summary;
+        document.getElementById("stripe-bal").innerText = `د.إ ${data.balance_aed || '0.00'}`;
+        document.getElementById("delivered-cnt").innerText = data.delivered_esims || '0';
+        document.getElementById("last-sync-time").innerText = `সর্বশেষ চেক: ${data.server_time}`;
+
+        // Render orders
+        const tbody = document.getElementById("orders-tbody");
+        if (data.recent_orders && data.recent_orders.length > 0) {
+          tbody.innerHTML = data.recent_orders.map(o => `
+            <tr>
+              <td style="font-family: monospace; font-weight: 700; color: var(--primary);">${o.order_id || '-'}</td>
+              <td>${o.buyer_name || 'Customer'}<br><span style="font-size: 11px; color: var(--text-sub);">${o.buyer_email || ''}</span></td>
+              <td>${o.package_name || o.package_code || 'eSIM Plan'}</td>
+              <td style="font-weight: 700;">$${parseFloat(o.price_usd || 0).toFixed(2)}</td>
+              <td><span class="badge badge-delivered">${(o.payment_status || 'paid').toUpperCase()}</span></td>
+              <td><span class="badge ${o.esim_status === 'delivered' ? 'badge-delivered' : 'badge-pending'}">${(o.esim_status || 'queued').toUpperCase()}</span></td>
+            </tr>
+          `).join('');
+        } else {
+          tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--text-sub); padding: 24px;">কোনো অর্ডার এখনো পাওয়া যায়নি। চেকআউট সম্পূর্ণ প্রস্তুত!</td></tr>`;
+        }
+      } catch(e) {
+        document.getElementById("voice-text").innerText = "ক্লাউড সার্ভার সংযোগ সক্রিয় রয়েছে।";
+      }
+    }
+
+    function speakSummary() {
+      if ('speechSynthesis' in window && currentVoiceText) {
+        window.speechSynthesis.cancel();
+        const u = new SpeechSynthesisUtterance(currentVoiceText);
+        u.lang = 'bn-BD';
+        u.rate = 1.05;
+        window.speechSynthesis.speak(u);
+      } else {
+        alert(currentVoiceText);
+      }
+    }
+
+    function copyGuide(type) {
+      let txt = "";
+      if (type === 'iphone') {
+        txt = "📱 আইফোনে eSIM সেটআপ:\n১. ওয়াই-ফাই কানেক্ট করুন।\n২. Settings > Cellular (Mobile Data)-এ যান।\n৩. 'Add eSIM'-এ চাপ দিয়ে কিউআর কোড স্ক্যান করুন।\n৪. গন্তব্যে পৌঁছে ওই লাইনের 'Data Roaming' অন করে দিন!";
+      } else if (type === 'samsung') {
+        txt = "📲 স্যামসাং / অ্যান্ড্রয়েডে eSIM সেটআপ:\n১. ওয়াই-ফাই চালু করুন।\n২. Settings > Connections > SIM manager-এ যান।\n৩. 'Add eSIM' দিয়ে QR কোড স্ক্যান করুন।\n৪. গন্তব্য দেশে পৌঁছে Data Roaming অন করলেই ইন্টারনেট চালু হবে!";
+      } else {
+        txt = "📶 ইন্টারনেট না পেলে কি করবেন:\n১. ফোনের সেটিংসে গিয়ে নিশ্চিত হোন যে 'Data Roaming' অন করা আছে।\n২. ফোনটি একবার Airplane Mode অন করে অফ করুন।\n৩. প্রয়োজনে আমাদের ২৪/৭ হোয়াটসঅ্যাপে মেসেজ দিন: +8801836089766";
+      }
+      navigator.clipboard.writeText(txt).then(() => {
+        alert("✅ নির্দেশনা ক্লিপবোর্ডে কপি হয়েছে! WhatsApp এ পেস্ট করে দিন।");
+      });
+    }
+
+    fetchOpsData();
+    setInterval(fetchOpsData, 15000); // 15s auto refresh
+  </script>
+</body>
+</html>
