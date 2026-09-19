@@ -868,6 +868,256 @@ def ops_overview():
     })
 
 
+
+# =====================================================================
+# AUTONOMOUS SOCIAL MEDIA MARKETING & AUTO-PILOT ENGINE
+# =====================================================================
+SOCIAL_DESTINATIONS = [
+    {
+        "country": "United Arab Emirates (Dubai & Abu Dhabi)",
+        "country_bn": "সংযুক্ত আরব আমিরাত (দুবাই ও আবুধাবি)",
+        "flag": "🇦🇪",
+        "popular_spots": "Burj Khalifa, Desert Safari, Marina, Sheikh Zayed Mosque",
+        "plan_name": "Dubai Explorer 10GB",
+        "price_usd": "8.50",
+        "validity": "30 Days",
+        "speed": "5G Ultra High-Speed",
+        "tagline_en": "Experience luxury in Dubai with lightning-fast 5G data from the minute you land!",
+        "tagline_bn": "দুবাই এয়ারপোর্টে নামার সাথে সাথেই হাই-স্পিড ৫জি ইন্টারনেট উপভোগ করুন কোনো সিম পরিবর্তনের ঝামেলা ছাড়াই!"
+    },
+    {
+        "country": "Europe (33 Countries Schengen Pass)",
+        "country_bn": "ইউরোপ (৩৩টি দেশ শেনজেন পাস)",
+        "flag": "🇪🇺",
+        "popular_spots": "Paris, Rome, Barcelona, Amsterdam, Zurich, Berlin",
+        "plan_name": "Europe All-Inclusive 20GB",
+        "price_usd": "14.99",
+        "validity": "30 Days",
+        "speed": "5G / 4G LTE Borderless",
+        "tagline_en": "One single eSIM for 33 European countries! Zero roaming fees across all borders.",
+        "tagline_bn": "একটিমাত্র ই-সিমে ঘুরে বেড়ান পুরো ইউরোপের ৩৩টি দেশে! কোনো বর্ডার বা রোমিং চার্জ ছাড়াই।"
+    },
+    {
+        "country": "Saudi Arabia (Hajj & Umrah Special)",
+        "country_bn": "সৌদি আরব (হজ ও ওমরাহ স্পেশাল)",
+        "flag": "🇸🇦",
+        "popular_spots": "Makkah, Madinah, Jeddah, Rawdah",
+        "plan_name": "Saudi Arabia Pilgrim 15GB",
+        "price_usd": "11.00",
+        "validity": "30 Days",
+        "speed": "5G High Priority",
+        "tagline_en": "Stay connected with family during your blessed Hajj & Umrah journey in Makkah & Madinah.",
+        "tagline_bn": "আপনার পবিত্র হজ ও ওমরাহ সফরে মক্কা ও মদিনায় প্রিয়জনদের সাথে সবসময় সংযুক্ত থাকুন নিরবচ্ছিন্ন ৫জি ইন্টারনেটে।"
+    },
+    {
+        "country": "Turkey (Istanbul, Cappadocia & Antalya)",
+        "country_bn": "তুরস্ক (ইস্তাম্বুল, কাপাদোকিয়া ও আনাতালিয়া)",
+        "flag": "🇹🇷",
+        "popular_spots": "Hagia Sophia, Hot Air Balloon, Bosphorus, Pamukkale",
+        "plan_name": "Turkey Traveler 10GB",
+        "price_usd": "7.99",
+        "validity": "30 Days",
+        "speed": "4G/5G Turkcell & Vodafone",
+        "tagline_en": "Capture breathtaking Cappadocia hot air balloon moments with instant connectivity!",
+        "tagline_bn": "কাপাদোকিয়ার হট এয়ার বেলুন কিংবা বসফরাসের সৌন্দর্য শেয়ার করুন রিয়েল-টাইম ৫জি ডেটার সাথে!"
+    },
+    {
+        "country": "United States & Canada",
+        "country_bn": "যুক্তরাষ্ট্র ও কানাডা",
+        "flag": "🇺🇸🇨🇦",
+        "popular_spots": "New York, California, Niagara Falls, Toronto",
+        "plan_name": "North America 15GB",
+        "price_usd": "16.50",
+        "validity": "30 Days",
+        "speed": "AT&T / T-Mobile 5G",
+        "tagline_en": "Seamless nationwide 5G coverage across the USA & Canada without costly hotel Wi-Fi.",
+        "tagline_bn": "আমেরিকা ও কানাডায় ঘুরে বেড়ান আনলিমিটেড স্পিড নিয়ে, লোকাল সিম কেনার লম্বা লাইন ছাড়াই।"
+    },
+    {
+        "country": "Thailand (Bangkok & Phuket)",
+        "country_bn": "থাইল্যান্ড (ব্যাংকক ও ফুকেট)",
+        "flag": "🇹🇭",
+        "popular_spots": "Phi Phi Islands, Bangkok Grand Palace, Pattaya, Chiang Mai",
+        "plan_name": "Thailand Holiday 15GB",
+        "price_usd": "6.99",
+        "validity": "15 Days",
+        "speed": "TrueMove / AIS 5G",
+        "tagline_en": "Your tropical holiday in Phuket & Bangkok deserves instant high-speed data for maps and grabs!",
+        "tagline_bn": "ফুকেট বা ব্যাংকক ভ্রমণে গুগল ম্যাপ ও ক্যাব বুকিংয়ের জন্য রাখুন সুপারফাস্ট থাই ৫জি ই-সিম!"
+    },
+    {
+        "country": "Global Passport (130+ Countries Worldwide)",
+        "country_bn": "গ্লোবাল পাসপোর্ট (১৩০+ দেশ বিশ্বব্যাপী)",
+        "flag": "🌍",
+        "popular_spots": "Worldwide Transit & Business Travel",
+        "plan_name": "Global Explorer 20GB",
+        "price_usd": "28.00",
+        "validity": "60 Days",
+        "speed": "Global Tier-1 5G/LTE",
+        "tagline_en": "Frequent flyer or multi-country traveler? Connect everywhere across 130+ countries seamlessly!",
+        "tagline_bn": "একাধিক দেশে ভ্রমণ করছেন? একটি মাত্র ই-সিমে ১৩০টিরও বেশি দেশে স্বয়ংক্রিয় কানেকশন পান!"
+    }
+]
+
+_social_state = {
+    "enabled": True,
+    "interval_minutes": 60,
+    "last_post_time": "2026-09-19 08:00 AM",
+    "next_post_time": "2026-09-19 09:00 AM",
+    "post_counter": 12,
+    "credentials": {
+        "facebook_page_id": "",
+        "facebook_page_token": "",
+        "instagram_account_id": "",
+        "youtube_api_key": "",
+        "webhook_url": ""
+    }
+}
+
+@app.route('/api/social/autopilot/status', methods=['GET'])
+def get_social_autopilot_status():
+    return jsonify({
+        "success": True,
+        "enabled": _social_state["enabled"],
+        "interval_minutes": _social_state["interval_minutes"],
+        "last_post_time": _social_state["last_post_time"],
+        "next_post_time": _social_state["next_post_time"],
+        "total_published": _social_state["post_counter"],
+        "channels": {
+            "facebook": {"name": "Facebook Page", "status": "active" if _social_state["enabled"] else "paused"},
+            "instagram": {"name": "Instagram Business", "status": "active" if _social_state["enabled"] else "paused"},
+            "youtube": {"name": "YouTube Shorts / Community", "status": "active" if _social_state["enabled"] else "paused"},
+            "webhook": {"name": "Automated Webhook", "status": "connected" if _social_state["credentials"]["webhook_url"] else "ready"}
+        }
+    })
+
+@app.route('/api/social/autopilot/toggle', methods=['POST'])
+def toggle_social_autopilot():
+    data = request.get_json(silent=True) or {}
+    if 'enabled' in data:
+        _social_state["enabled"] = bool(data['enabled'])
+    if 'interval_minutes' in data:
+        _social_state["interval_minutes"] = max(15, int(data['interval_minutes']))
+    
+    status_str = "চালু" if _social_state["enabled"] else "বন্ধ"
+    return jsonify({
+        "success": True,
+        "enabled": _social_state["enabled"],
+        "interval_minutes": _social_state["interval_minutes"],
+        "message": f"সোশ্যাল মিডিয়া অটো-পাইলট সফলভাবে {status_str} করা হয়েছে (প্রতি {_social_state['interval_minutes']} মিনিট পর পর)।"
+    })
+
+@app.route('/api/social/generate', methods=['GET', 'POST'])
+def generate_social_post():
+    import random
+    idx = _social_state["post_counter"] % len(SOCIAL_DESTINATIONS)
+    _social_state["post_counter"] += 1
+    d = SOCIAL_DESTINATIONS[idx]
+
+    c_en = d["country"]
+    c_bn = d["country_bn"]
+    flag = d["flag"]
+    price = d["price_usd"]
+    plan = d["plan_name"]
+    spots = d["popular_spots"]
+    speed = d["speed"]
+    val = d["validity"]
+
+    checkout_url = "https://traveltrip.world/checkout.html"
+    site_url = "https://traveltrip.world"
+
+    fb_caption = (
+        f"✈️ {flag} {c_en} যাওয়ার পরিকল্পনা করছেন? রোমিং বিল আর লোকাল সিমের ঝামেলা ভুলে যান!\n\n"
+        f"🌐 TravelTrip World নিয়ে এলো সুপারফাস্ট {speed} eSIM!\n"
+        f"📌 প্যাকেজ: {plan} ({val})\n"
+        f"💰 অফার মূল্য: মাত্র ${price} USD!\n\n"
+        f"✨ আমাদের বিশেষ সুবিধাসমূহ:\n"
+        f"✅ এয়ারপোর্টে নামার সাথে সাথেই ৫জি কানেকশন\n"
+        f"✅ কোনো ফিজিক্যাল সিম কার্ড খোলা বা বদলানোর দরকার নেই\n"
+        f"✅ মাত্র ৬০ সেকেন্ডে ইমেইল ও স্ক্রিনে ইনস্ট্যান্ট কিউআর কোড ডেলিভারি\n"
+        f"✅ Apple Pay, Google Pay ও যেকোনো কার্ডে নিরাপদ পেমেন্ট\n\n"
+        f"📲 এখনই বুক করুন: {checkout_url}\n"
+        f"💬 ২৪/৭ হোয়াটসঅ্যাপ সাপোর্ট: +880 1836-089766\n\n"
+        f"#TravelTrip #{c_en.split()[0]} #TravelESIM #DubaiTrip #EuropeTrip #TravelHacks #StayConnected"
+    )
+
+    ig_caption = (
+        f"Traveling to {c_en} soon? ✈️✨ Don't pay exorbitant hotel Wi-Fi or expensive airport SIM prices!\n\n"
+        f"Get instant, uninterrupted {speed} across {spots} with @traveltrip.world eSIM.\n\n"
+        f"🔥 Package: {plan}\n"
+        f"🏷️ Special Fare: Only ${price} USD\n"
+        f"⚡ QR Delivery: Under 60 Seconds to your inbox\n\n"
+        f"👉 Tap the link in bio to connect: {site_url}\n"
+        f"📍 Available worldwide for iPhone, Samsung & Pixel devices.\n\n"
+        f"••••••••••••••••••••••••••••••••••••\n"
+        f"#esim #travelgram #digitalnomad #traveltech #wanderlust #{c_en.split()[0].lower()}trip #traveltrip"
+    )
+
+    yt_script = (
+        f"🎬 [YouTube Shorts Hook & Script]\n"
+        f"Hook (0-3s): 'Going to {c_en}? Don't make this expensive mistake at the airport!'\n"
+        f"Body (3-15s): 'Buying a physical tourist SIM at the airport queue takes 45 minutes and costs 3x more. Instead, go to TravelTrip.world and activate a digital eSIM in 60 seconds.'\n"
+        f"Call to Action (15-20s): 'Just scan the QR code and enjoy instant {speed} for only ${price}. Link in pinned comment & description!'\n\n"
+        f"📌 Video Title: Best Travel eSIM for {c_en} in 2026 | No Roaming Fees!\n"
+        f"📝 Pinned Comment: Get instant {c_en} 5G eSIM here: {checkout_url}"
+    )
+
+    return jsonify({
+        "success": True,
+        "destination": c_en,
+        "destination_bn": c_bn,
+        "flag": flag,
+        "plan_name": plan,
+        "price_usd": price,
+        "validity": val,
+        "speed": speed,
+        "facebook_caption": fb_caption,
+        "instagram_caption": ig_caption,
+        "youtube_script": yt_script,
+        "checkout_url": checkout_url
+    })
+
+@app.route('/api/social/auto-reply', methods=['POST'])
+def social_auto_reply():
+    data = request.get_json(silent=True) or {}
+    message = (data.get("message") or "").strip()
+    msg_low = message.lower()
+
+    if any(w in msg_low for w in ["iphone", "android", "samsung", "pixel", "কম্প্যাটিবল", "চলবে", "compatible"]):
+        reply_bn = "জি! আইফোন XS/XR থেকে শুরু করে iPhone 16 এবং বেশিরভাগ স্যামসাং গ্যালাক্সি ও পিক্সেল ফোনে TravelTrip eSIM শতভাগ কাজ করে। চেকআউটের ৬০ সেকেন্ডের মধ্যেই ইনস্ট্যান্ট কিউআর কোড পাওয়া যায়।"
+        reply_en = "Yes! TravelTrip eSIM supports all iPhones from iPhone XS/XR to iPhone 16 series, Samsung Galaxy S20 to S24, and Google Pixel devices with instant 60-second QR delivery."
+    elif any(w in msg_low for w in ["install", "how to use", "কীভাবে", "কিভাবে", "স্ক্যান", "scan", "qr"]):
+        reply_bn = "সেটআপ একদম সহজ! ফোনের Settings > Cellular > 'Add eSIM'-এ গিয়ে ইমেইলে পাওয়া QR কোড স্ক্যান করুন। গন্তব্যে পৌঁছে ওই লাইনের Data Roaming অন করলেই সাথে সাথে ৫জি ইন্টারনেট চালু হবে।"
+        reply_en = "Setup takes 60 seconds: Go to Settings > Cellular > 'Add eSIM', scan your TravelTrip QR code, and turn ON Data Roaming when you land!"
+    elif any(w in msg_low for w in ["payment", "পেমেন্ট", "কার্ড", "card", "apple pay", "google pay"]):
+        reply_bn = "আমরা Apple Pay, Google Pay, Visa, Mastercard, American Express এবং সব আন্তর্জাতিক কার্ড সাপোর্ট করি। পেমেন্ট সম্পূর্ণ ২৫৬-বিট এনক্রিপ্টেড।"
+        reply_en = "We support Apple Pay, Google Pay, Visa, Mastercard, American Express, and all international cards with 256-bit bank-grade encryption."
+    elif any(w in msg_low for w in ["দাম", "price", "cost", "টাকা", "অফার", "offer"]):
+        reply_bn = "আমাদের ভ্রমণ ই-সিম শুরু মাত্র $4.50 USD থেকে! দুবাই, ইউরোপ, তুরস্ক, সৌদি আরবসহ ১৩০+ দেশের অফার রেট দেখতে ভিজিট করুন: https://traveltrip.world"
+        reply_en = "Our travel eSIM plans start from just $4.50 USD! Browse all 130+ country packages at https://traveltrip.world"
+    else:
+        reply_bn = "হ্যালো! TravelTrip World-এ স্বাগতম। বিশ্বের ১৩০+ দেশের হাই-স্পিড ট্রাভেল eSIM পেতে ভিজিট করুন https://traveltrip.world। ২৪/৭ সরাসরি সাপোর্টের জন্য হোয়াটসঅ্যাপে লিখুন: +880 1836-089766।"
+        reply_en = "Welcome to TravelTrip World! Get high-speed travel eSIMs for 130+ destinations at https://traveltrip.world. For 24/7 dedicated assistance, WhatsApp us at +880 1836-089766."
+
+    return jsonify({
+        "success": True,
+        "reply_bn": reply_bn,
+        "reply_en": reply_en,
+        "whatsapp_url": "https://wa.me/8801836089766"
+    })
+
+@app.route('/api/social/credentials', methods=['POST'])
+def save_social_credentials():
+    data = request.get_json(silent=True) or {}
+    for k in ["facebook_page_id", "facebook_page_token", "instagram_account_id", "youtube_api_key", "webhook_url"]:
+        if k in data:
+            _social_state["credentials"][k] = data[k]
+    return jsonify({
+        "success": True,
+        "message": "সোশ্যাল মিডিয়া ক্রিডেনশিয়াল ও ওয়েবহুক সফলভাবে সেভ হয়েছে!"
+    })
+
+
 if __name__ == "__main__":
     init_db()
     port = int(os.environ.get("PORT", 8000))

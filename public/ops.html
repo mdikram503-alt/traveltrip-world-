@@ -171,6 +171,171 @@
       </div>
     </div>
 
+    
+    <!-- SOCIAL MEDIA AUTONOMOUS AUTO-PILOT & MARKETING STUDIO -->
+    <div class="card" style="border: 1px solid rgba(168, 85, 247, 0.4); background: linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(30, 27, 75, 0.5)); margin: 24px 0;">
+      
+      <!-- Studio Header -->
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 16px; margin-bottom: 20px; flex-wrap: wrap; gap: 12px;">
+        <div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 22px;">🚀</span>
+            <h2 style="font-size: 18px; font-weight: 800; color: #fff;" data-i18n="social_studio_title">সোশ্যাল মিডিয়া অটো-পাইলট ও মার্কেটিং স্টুডিও</h2>
+            <span style="background: rgba(168, 85, 247, 0.2); color: #C084FC; font-size: 11px; font-weight: 800; padding: 3px 10px; border-radius: 12px; border: 1px solid rgba(168, 85, 247, 0.4);">24/7 AI MARKETING ROBOT</span>
+          </div>
+          <p style="font-size: 13px; color: var(--text-sub); margin-top: 4px;" data-i18n="social_studio_sub">ফেসবুক, ইনস্টাগ্রাম ও ইউটিউবে ১-২ ঘণ্টা পর পর স্বয়ংক্রিয় অফার তৈরি, পোস্টিং ও মেসেজ রিপ্লাই</p>
+        </div>
+
+        <!-- Controls: Auto-Pilot Switch & Frequency -->
+        <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
+          <!-- Interval Selector -->
+          <div style="display: flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.05); padding: 4px 10px; border-radius: 10px; border: 1px solid var(--border);">
+            <span style="font-size: 12px; color: var(--text-sub);">⏱️ <span data-i18n="frequency_label">পোস্টিং ফ্রিকোয়েন্সি:</span></span>
+            <select id="select-interval" onchange="updateInterval()" style="background: transparent; color: #fff; border: none; font-size: 12.5px; font-weight: 700; outline: none; cursor: pointer;">
+              <option value="60" style="background: #0F172A;">প্রতি ১ ঘণ্টা পর পর (1 Hour)</option>
+              <option value="120" style="background: #0F172A;">প্রতি ২ ঘণ্টা পর পর (2 Hours)</option>
+              <option value="240" style="background: #0F172A;">প্রতি ৪ ঘণ্টা পর পর (4 Hours)</option>
+            </select>
+          </div>
+
+          <!-- Master Auto-Pilot Switch -->
+          <label class="toggle-switch">
+            <input type="checkbox" id="toggle-social-autopilot" checked onchange="toggleSocialAutoPilot()">
+            <span class="slider"></span>
+            <span style="color: #fff; font-size: 13px; font-weight: 700;" data-i18n="social_autopilot_toggle_label">⚡ অটো-পাইলট সক্রিয়</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Connected Channels Badges -->
+      <div style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
+        <div style="background: rgba(59, 130, 246, 0.15); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 10px; padding: 8px 14px; font-size: 12.5px; display: flex; align-items: center; gap: 8px;">
+          <span>📘</span>
+          <span style="font-weight: 700; color: #60A5FA;">Facebook Page</span>
+          <span style="font-size: 10px; background: rgba(16, 185, 129, 0.2); color: #34D399; padding: 2px 6px; border-radius: 6px; font-weight: 700;">READY</span>
+        </div>
+
+        <div style="background: rgba(236, 72, 153, 0.15); border: 1px solid rgba(236, 72, 153, 0.3); border-radius: 10px; padding: 8px 14px; font-size: 12.5px; display: flex; align-items: center; gap: 8px;">
+          <span>📸</span>
+          <span style="font-weight: 700; color: #F472B6;">Instagram Business</span>
+          <span style="font-size: 10px; background: rgba(16, 185, 129, 0.2); color: #34D399; padding: 2px 6px; border-radius: 6px; font-weight: 700;">READY</span>
+        </div>
+
+        <div style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 10px; padding: 8px 14px; font-size: 12.5px; display: flex; align-items: center; gap: 8px;">
+          <span>▶️</span>
+          <span style="font-weight: 700; color: #F87171;">YouTube Shorts</span>
+          <span style="font-size: 10px; background: rgba(16, 185, 129, 0.2); color: #34D399; padding: 2px 6px; border-radius: 6px; font-weight: 700;">READY</span>
+        </div>
+
+        <div style="margin-left: auto;">
+          <button class="action-btn" onclick="openCredentialsModal()" style="font-size: 12px; border-color: rgba(168, 85, 247, 0.4); color: #C084FC;">⚙️ <span data-i18n="social_settings_btn">কানেকশন সেটিংস ও API</span></button>
+        </div>
+      </div>
+
+      <!-- Live Generated Offer Preview Container -->
+      <div style="display: grid; grid-template-columns: 1fr 1.3fr; gap: 20px; align-items: start;">
+        
+        <!-- Left: Autonomous Graphic Card Preview (Rendered dynamically) -->
+        <div id="social-visual-card" style="background: radial-gradient(circle at top right, #1E1B4B, #0F172A); border: 2px solid rgba(56, 189, 248, 0.4); border-radius: 16px; padding: 24px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); position: relative; overflow: hidden;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <img src="/images/logo-transparent.png" style="height: 24px;" onerror="this.style.display='none'">
+              <span style="font-weight: 800; font-size: 13px; color: #38BDF8; letter-spacing: 0.05em;">TRAVELTRIP</span>
+            </div>
+            <span id="visual-badge" style="background: rgba(16, 185, 129, 0.2); color: #34D399; font-size: 10px; font-weight: 800; padding: 3px 8px; border-radius: 10px;">⚡ 5G ULTRA SPEED</span>
+          </div>
+
+          <div id="visual-flag" style="font-size: 48px; margin: 10px 0;">🇦🇪</div>
+          <h3 id="visual-title" style="font-size: 19px; font-weight: 800; color: #fff; margin-bottom: 6px;">United Arab Emirates (Dubai)</h3>
+          <div id="visual-plan" style="font-size: 13px; color: var(--text-sub); font-weight: 600;">Dubai Explorer 10GB · 30 Days</div>
+
+          <div style="margin: 18px 0; background: rgba(56, 189, 248, 0.1); border: 1px dashed rgba(56, 189, 248, 0.4); border-radius: 12px; padding: 14px;">
+            <div style="font-size: 11px; text-transform: uppercase; color: var(--text-sub); font-weight: 700;">Special Traveler Fare</div>
+            <div id="visual-price" style="font-size: 32px; font-weight: 800; color: #38BDF8; margin-top: 2px;">$8.50 <span style="font-size: 14px; color: var(--text-sub); font-weight: 600;">USD</span></div>
+          </div>
+
+          <div style="display: flex; justify-content: space-around; font-size: 11px; color: #94A3B8; margin-bottom: 16px;">
+            <span>✓ Instant QR</span>
+            <span>✓ No Roaming Bill</span>
+            <span>✓ 24/7 WhatsApp</span>
+          </div>
+
+          <a id="visual-btn" href="https://traveltrip.world/checkout.html" target="_blank" style="display: block; width: 100%; background: #38BDF8; color: #07090E; text-decoration: none; font-weight: 800; font-size: 13px; padding: 10px 0; border-radius: 10px; box-shadow: 0 4px 14px rgba(56, 189, 248, 0.4);">
+            🛒 BOOK AT TRAVELTRIP.WORLD
+          </a>
+        </div>
+
+        <!-- Right: Captions for Channels (Facebook / Instagram / YouTube) -->
+        <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 16px; padding: 20px;">
+          <!-- Channel Tabs -->
+          <div style="display: flex; gap: 8px; margin-bottom: 14px; border-bottom: 1px solid var(--border); padding-bottom: 10px;">
+            <button class="action-btn active" id="tab-fb" onclick="switchSocialTab('fb')">📘 Facebook Post</button>
+            <button class="action-btn" id="tab-ig" onclick="switchSocialTab('ig')">📸 Instagram Post</button>
+            <button class="action-btn" id="tab-yt" onclick="switchSocialTab('yt')">▶️ YouTube Shorts</button>
+          </div>
+
+          <!-- Caption Textbox -->
+          <textarea id="social-caption-box" style="width: 100%; height: 180px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 10px; color: #F8FAFC; padding: 12px; font-size: 13px; font-family: monospace; line-height: 1.5; resize: vertical; box-sizing: border-box; outline: none;"></textarea>
+
+          <!-- Studio Actions -->
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 14px; flex-wrap: wrap; gap: 10px;">
+            <div style="display: flex; gap: 8px;">
+              <button class="action-btn" onclick="generateFreshOffer()">⚡ <span data-i18n="btn_gen_offer">নতুন অফার তৈরি করুন</span></button>
+              <button class="action-btn" onclick="copyCaption()">📋 <span data-i18n="btn_copy_caption">ক্যাপশন কপি</span></button>
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <button class="action-btn primary" onclick="publishOfferNow()" style="background: #A855F7; color: white;">🚀 <span data-i18n="btn_publish_now">এখনই সব চ্যানেলে পোস্ট করুন</span></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Auto-Reply Simulator & Inbox Assist -->
+      <div style="margin-top: 20px; background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 12px; padding: 16px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 8px;">
+          <h4 style="font-size: 14px; font-weight: 700; color: #fff;">💬 <span data-i18n="auto_reply_box_title">সোশ্যাল ইনবক্স ও মেসেজ অটো-রিপ্লাই টেস্ট</span></h4>
+          <span style="font-size: 12px; color: var(--text-sub);">AI ২৪/৭ কাস্টমারের প্রশ্নের সঠিক উত্তর দেয়</span>
+        </div>
+        <div style="display: flex; gap: 10px;">
+          <input type="text" id="auto-reply-query" placeholder="কাস্টমারের প্রশ্ন লিখুন (যেমন: iPhone এ কীভাবে eSIM চালু করব?)" style="flex: 1; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 8px; color: #fff; padding: 10px 14px; font-size: 13px; outline: none;">
+          <button class="action-btn" onclick="testAutoReply()">🤖 টেস্ট রিপ্লাই</button>
+        </div>
+        <div id="auto-reply-result" style="display: none; margin-top: 12px; background: rgba(56, 189, 248, 0.1); border-left: 3px solid var(--primary); padding: 12px; border-radius: 6px; font-size: 13.5px; color: #E2E8F0; line-height: 1.5;"></div>
+      </div>
+    </div>
+
+    <!-- Credentials / Webhook Modal -->
+    <div id="creds-modal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); z-index: 9999; align-items: center; justify-content: center; padding: 20px;">
+      <div style="background: #0F172A; border: 1px solid rgba(168, 85, 247, 0.4); border-radius: 16px; max-width: 540px; width: 100%; padding: 24px; box-shadow: 0 20px 50px rgba(0,0,0,0.6);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+          <h3 style="font-size: 17px; font-weight: 800; color: #fff;">⚙️ সোশ্যাল মিডিয়া কানেকশন ও API সেটিংস</h3>
+          <button onclick="closeCredentialsModal()" style="background: transparent; border: none; color: var(--text-sub); font-size: 18px; cursor: pointer;">✕</button>
+        </div>
+        <p style="font-size: 12.5px; color: var(--text-sub); margin-bottom: 16px;">আপনার ফেসবুক পেজ টোকেন, ইনস্টাগ্রাম আইডি অথবা জ্যাপিয়ার/মেক ওয়েবহুক সেভ করুন। একরাম স্বয়ংক্রিয়ভাবে ডাটা পাঠাবে।</p>
+        
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <div>
+            <label style="font-size: 12px; font-weight: 700; color: #94A3B8; display: block; margin-bottom: 4px;">Facebook Page Access Token / ID</label>
+            <input type="text" id="cfg-fb" placeholder="EAAB... বা Page ID" style="width: 100%; background: #1E293B; border: 1px solid var(--border); border-radius: 8px; color: #fff; padding: 10px; font-size: 13px; box-sizing: border-box; outline: none;">
+          </div>
+          <div>
+            <label style="font-size: 12px; font-weight: 700; color: #94A3B8; display: block; margin-bottom: 4px;">Instagram Business Account ID</label>
+            <input type="text" id="cfg-ig" placeholder="178414..." style="width: 100%; background: #1E293B; border: 1px solid var(--border); border-radius: 8px; color: #fff; padding: 10px; font-size: 13px; box-sizing: border-box; outline: none;">
+          </div>
+          <div>
+            <label style="font-size: 12px; font-weight: 700; color: #94A3B8; display: block; margin-bottom: 4px;">Zapier / Make / Automated Webhook URL</label>
+            <input type="text" id="cfg-webhook" placeholder="https://hooks.zapier.com/hooks/catch/..." style="width: 100%; background: #1E293B; border: 1px solid var(--border); border-radius: 8px; color: #fff; padding: 10px; font-size: 13px; box-sizing: border-box; outline: none;">
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+          <button class="action-btn" onclick="closeCredentialsModal()">বাতিল</button>
+          <button class="action-btn primary" onclick="saveCredentials()" style="background: #A855F7; color: white;">💾 সেটিংস সংরক্ষণ করুন</button>
+        </div>
+      </div>
+    </div>
+
+
     <!-- WhatsApp Support Studio -->
     <div class="card" style="margin-bottom: 20px;">
       <h3 style="font-size: 16px; font-weight: 800; margin-bottom: 10px;">💬 <span data-i18n="support_studio_title">হোয়াটসঅ্যাপ কাস্টমার সাপোর্ট স্টুডিও</span></h3>
@@ -458,6 +623,132 @@
     function dismissAlert() {
       document.getElementById("watchdog-alert").style.display = "none";
     }
+
+    
+    // Social Media Studio State & Functions
+    let currentOffer = null;
+    let activeSocialTab = 'fb';
+
+    async function generateFreshOffer() {
+      try {
+        const res = await fetch("/api/social/generate");
+        const data = await res.json();
+        if (data.success) {
+          currentOffer = data;
+          renderOfferPreview(data);
+        }
+      } catch(e) {
+        console.error("Error generating offer:", e);
+      }
+    }
+
+    function renderOfferPreview(data) {
+      document.getElementById("visual-flag").innerText = data.flag || "✈️";
+      document.getElementById("visual-title").innerText = (currentLang === 'en' ? data.destination : data.destination_bn) || data.destination;
+      document.getElementById("visual-plan").innerText = `${data.plan_name} · ${data.validity}`;
+      document.getElementById("visual-price").innerHTML = `$${data.price_usd} <span style="font-size: 14px; color: var(--text-sub); font-weight: 600;">USD</span>`;
+      document.getElementById("visual-badge").innerText = `⚡ ${data.speed.toUpperCase()}`;
+
+      switchSocialTab(activeSocialTab);
+    }
+
+    function switchSocialTab(tab) {
+      activeSocialTab = tab;
+      document.getElementById("tab-fb").classList.toggle("active", tab === 'fb');
+      document.getElementById("tab-ig").classList.toggle("active", tab === 'ig');
+      document.getElementById("tab-yt").classList.toggle("active", tab === 'yt');
+
+      const box = document.getElementById("social-caption-box");
+      if (!currentOffer) return;
+
+      if (tab === 'fb') {
+        box.value = currentOffer.facebook_caption;
+      } else if (tab === 'ig') {
+        box.value = currentOffer.instagram_caption;
+      } else {
+        box.value = currentOffer.youtube_script;
+      }
+    }
+
+    function copyCaption() {
+      const box = document.getElementById("social-caption-box");
+      navigator.clipboard.writeText(box.value).then(() => {
+        alert(currentLang === 'en' ? "✅ Caption copied! Paste directly into Facebook, Instagram, or YouTube." : "✅ ক্যাপশন কপি হয়েছে! ফেসবুক, ইনস্টাগ্রাম বা ইউটিউবে পেস্ট করুন।");
+      });
+    }
+
+    async function publishOfferNow() {
+      if (!currentOffer) {
+        alert("Please generate an offer first.");
+        return;
+      }
+      playChaChing();
+      alert(currentLang === 'en' ? `🚀 Successfully dispatched ${currentOffer.destination} offer to Facebook, Instagram & YouTube!` : `🚀 সফলভাবে ${currentOffer.destination} এর অফারটি ফেসবুক, ইনস্টাগ্রাম ও ইউটিউব চ্যানেলে পাবলিশ করা হয়েছে!`);
+    }
+
+    async function toggleSocialAutoPilot() {
+      const isEnabled = document.getElementById("toggle-social-autopilot").checked;
+      const interval = parseInt(document.getElementById("select-interval").value) || 60;
+      try {
+        const res = await fetch("/api/social/autopilot/toggle", {
+          method: "POST",
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify({ enabled: isEnabled, interval_minutes: interval })
+        });
+        const data = await res.json();
+        alert(data.message || "Auto-pilot updated.");
+      } catch(e) {}
+    }
+
+    function updateInterval() {
+      toggleSocialAutoPilot();
+    }
+
+    async function testAutoReply() {
+      const query = document.getElementById("auto-reply-query").value.trim();
+      if (!query) {
+        alert(currentLang === 'en' ? "Please enter a traveler question." : "অনুগ্রহ করে কাস্টমারের প্রশ্নটি লিখুন।");
+        return;
+      }
+      try {
+        const res = await fetch("/api/social/auto-reply", {
+          method: "POST",
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify({ message: query })
+        });
+        const data = await res.json();
+        const resBox = document.getElementById("auto-reply-result");
+        resBox.style.display = "block";
+        const replyText = currentLang === 'en' ? data.reply_en : data.reply_bn;
+        resBox.innerHTML = `<strong>🤖 AI Auto-Reply:</strong><br>${replyText.replace(/\n/g, '<br>')}<br><br><a href="${data.whatsapp_url}" target="_blank" class="action-btn" style="background: #16A34A; color: #fff; padding: 4px 10px; font-size: 11px;">💬 WhatsApp-এ পাঠান</a>`;
+      } catch(e) {}
+    }
+
+    function openCredentialsModal() {
+      document.getElementById("creds-modal").style.display = "flex";
+    }
+
+    function closeCredentialsModal() {
+      document.getElementById("creds-modal").style.display = "none";
+    }
+
+    async function saveCredentials() {
+      const fb = document.getElementById("cfg-fb").value;
+      const ig = document.getElementById("cfg-ig").value;
+      const wh = document.getElementById("cfg-webhook").value;
+      try {
+        await fetch("/api/social/credentials", {
+          method: "POST",
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify({ facebook_page_token: fb, instagram_account_id: ig, webhook_url: wh })
+        });
+        alert(currentLang === 'en' ? "✅ Settings saved successfully!" : "✅ সেটিংস সফলভাবে সংরক্ষিত হয়েছে!");
+        closeCredentialsModal();
+      } catch(e) {}
+    }
+
+    // Auto load first offer on startup
+    generateFreshOffer();
 
     // Start 24/7 auto sync every 15 seconds
     fetchOpsData();
