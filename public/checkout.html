@@ -22,7 +22,7 @@
     body {
       background-color: #F8FAFC;
       color: #1E293B;
-      font-family: var(--font-primary);
+      font-family: var(--font-primary, 'Plus Jakarta Sans', sans-serif);
     }
     
     .checkout-wrapper {
@@ -43,13 +43,13 @@
       flex-wrap: wrap;
     }
     .checkout-breadcrumb .step.active {
-      color: var(--maya-primary);
+      color: var(--maya-primary, #3D38D0);
       display: flex;
       align-items: center;
       gap: 6px;
     }
     .checkout-breadcrumb .step.completed {
-      color: var(--maya-green);
+      color: var(--maya-green, #10B981);
     }
     .checkout-breadcrumb .separator {
       color: #CBD5E1;
@@ -70,16 +70,16 @@
     .maya-card {
       background: #FFFFFF;
       border: 1px solid #E2E8F0;
-      border-radius: var(--radius-xl);
+      border-radius: var(--radius-xl, 16px);
       padding: 32px;
       box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
     }
 
     .card-title {
-      font-family: var(--font-heading);
+      font-family: var(--font-heading, 'DM Sans', sans-serif);
       font-size: 20px;
       font-weight: 800;
-      color: var(--maya-pitch-black);
+      color: var(--maya-pitch-black, #0F172A);
       margin-bottom: 20px;
       display: flex;
       align-items: center;
@@ -100,20 +100,21 @@
       width: 100%;
       padding: 12px 16px;
       border: 1.5px solid #CBD5E1;
-      border-radius: var(--radius-md);
-      font-family: var(--font-primary);
+      border-radius: var(--radius-md, 8px);
+      font-family: inherit;
       font-size: 15px;
       color: #0F172A;
       background: #FFFFFF;
-      transition: var(--transition);
+      transition: all 0.2s ease;
       outline: none;
+      box-sizing: border-box;
     }
     .form-input:focus {
-      border-color: var(--maya-primary);
+      border-color: var(--maya-primary, #3D38D0);
       box-shadow: 0 0 0 4px rgba(61, 56, 208, 0.1);
     }
 
-    /* Maya Wallet Badges */
+    /* Maya Wallet Badges (Interactive Buttons) */
     .wallet-showcase {
       display: flex;
       align-items: center;
@@ -122,16 +123,28 @@
       margin-bottom: 16px;
       padding: 12px 16px;
       background: #F1F5F9;
-      border-radius: var(--radius-md);
+      border-radius: var(--radius-md, 8px);
     }
     .wallet-badge {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      font-size: 12px;
+      font-size: 13px;
       font-weight: 700;
-      padding: 6px 12px;
-      border-radius: 6px;
+      padding: 8px 14px;
+      border-radius: 8px;
+      border: 1.5px solid transparent;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      user-select: none;
+      font-family: inherit;
+    }
+    .wallet-badge:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    }
+    .wallet-badge:active {
+      transform: translateY(0);
     }
     .badge-apple {
       background: #000000;
@@ -140,15 +153,45 @@
     .badge-google {
       background: #FFFFFF;
       color: #1F2937;
-      border: 1px solid #E2E8F0;
+      border: 1px solid #CBD5E1;
     }
     .badge-samsung {
       background: #0A3E54;
       color: #38BDF8;
     }
+    .badge-visa {
+      background: #002244;
+      color: #FFB703;
+    }
+    .badge-mastercard {
+      background: #252525;
+      color: #EB001B;
+    }
     .badge-cards {
       background: #E2E8F0;
       color: #334155;
+    }
+
+    .payment-badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      padding: 6px 14px;
+      border-radius: 9999px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #334155;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+    .payment-badge-pill:hover {
+      border-color: var(--maya-primary, #3D38D0);
+      color: var(--maya-primary, #3D38D0);
+      transform: translateY(-1px);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
     }
 
     .payment-divider {
@@ -173,19 +216,52 @@
     #card-element {
       background: #FFFFFF;
       border: 1.5px solid #CBD5E1;
-      border-radius: var(--radius-md);
+      border-radius: var(--radius-md, 8px);
       padding: 14px 16px;
-      transition: var(--transition);
+      transition: all 0.2s ease;
+      min-height: 48px;
+      box-sizing: border-box;
     }
     #card-element.StripeElement--focus {
-      border-color: var(--maya-primary);
+      border-color: var(--maya-primary, #3D38D0);
       box-shadow: 0 0 0 4px rgba(61, 56, 208, 0.1);
+    }
+
+    /* Payment Tabs */
+    .maya-duration-tabs {
+      display: flex;
+      gap: 8px;
+      background: #F1F5F9;
+      padding: 4px;
+      border-radius: var(--radius-md, 8px);
+      margin-bottom: 20px;
+    }
+    .maya-tab-btn {
+      flex: 1;
+      padding: 10px 16px;
+      border: none;
+      background: transparent;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 14px;
+      color: #64748B;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .maya-tab-btn.active {
+      background: #FFFFFF;
+      color: var(--maya-primary, #3D38D0);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
     }
 
     /* Status Box */
     .status-box {
       padding: 14px 18px;
-      border-radius: var(--radius-md);
+      border-radius: var(--radius-md, 8px);
       margin-top: 18px;
       font-size: 14px;
       font-weight: 500;
@@ -193,9 +269,9 @@
     }
     .status-box.active { display: block; }
     .status-box.info {
-      background: var(--maya-primary-extra-light);
-      border-left: 4px solid var(--maya-primary);
-      color: var(--maya-primary);
+      background: #EEF2FF;
+      border-left: 4px solid #3D38D0;
+      color: #3D38D0;
     }
     .status-box.error {
       background: #FEF2F2;
@@ -203,38 +279,38 @@
       color: #DC2626;
     }
     .status-box.success {
-      background: var(--maya-green-bg);
-      border-left: 4px solid var(--maya-green);
-      color: var(--maya-green-hover);
+      background: #ECFDF5;
+      border-left: 4px solid #10B981;
+      color: #059669;
     }
 
     /* Order Summary Card */
     .summary-card {
       background: #FFFFFF;
-      border: 2px solid var(--maya-primary-light);
-      border-radius: var(--radius-xl);
+      border: 2px solid #EEF2FF;
+      border-radius: var(--radius-xl, 16px);
       padding: 28px;
-      box-shadow: var(--shadow-md);
+      box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
       position: sticky;
       top: 90px;
     }
     .summary-badge {
-      background: var(--maya-green-bg);
-      color: var(--maya-green-hover);
+      background: #ECFDF5;
+      color: #059669;
       font-size: 11.5px;
       font-weight: 800;
       padding: 4px 10px;
-      border-radius: var(--radius-full);
+      border-radius: 9999px;
       text-transform: uppercase;
       letter-spacing: 0.04em;
       display: inline-block;
       margin-bottom: 12px;
     }
     .summary-title {
-      font-family: var(--font-heading);
+      font-family: var(--font-heading, 'DM Sans', sans-serif);
       font-size: 24px;
       font-weight: 800;
-      color: var(--maya-pitch-black);
+      color: var(--maya-pitch-black, #0F172A);
       line-height: 1.15;
       margin-bottom: 4px;
     }
@@ -250,21 +326,22 @@
       justify-content: space-between;
       background: #F8FAFC;
       border: 1px solid #E2E8F0;
-      border-radius: var(--radius-md);
+      border-radius: var(--radius-md, 8px);
       padding: 16px;
       margin-bottom: 20px;
     }
     .summary-price-big {
-      font-family: var(--font-heading);
+      font-family: var(--font-heading, 'DM Sans', sans-serif);
       font-size: 28px;
       font-weight: 800;
-      color: var(--maya-primary);
+      color: var(--maya-primary, #3D38D0);
     }
     .summary-checklist {
       list-style: none;
       margin-bottom: 24px;
       border-bottom: 1px solid #F1F5F9;
       padding-bottom: 20px;
+      padding-left: 0;
     }
     .summary-checklist li {
       font-size: 13.5px;
@@ -275,51 +352,56 @@
       gap: 8px;
     }
     .summary-checklist li span {
-      color: var(--maya-green);
+      color: var(--maya-green, #10B981);
       font-weight: 800;
     }
 
     .btn-pay-main {
-      background: var(--maya-primary);
+      background: var(--maya-primary, #3D38D0);
       color: #FFFFFF;
       border: none;
       width: 100%;
       padding: 16px 24px;
-      border-radius: var(--radius-full);
-      font-family: var(--font-heading);
+      border-radius: 9999px;
+      font-family: var(--font-heading, 'DM Sans', sans-serif);
       font-size: 16px;
       font-weight: 800;
       cursor: pointer;
-      transition: var(--transition);
+      transition: all 0.2s ease;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 10px;
       box-shadow: 0 4px 16px rgba(61, 56, 208, 0.35);
     }
-    .btn-pay-main:hover {
-      background: var(--maya-primary-hover);
+    .btn-pay-main:hover:not(:disabled) {
+      background: #2E29B5;
       transform: translateY(-2px);
       box-shadow: 0 8px 24px rgba(61, 56, 208, 0.45);
+    }
+    .btn-pay-main:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+      transform: none;
     }
 
     /* Delivered Post-Payment View */
     #delivery-success-view {
       display: none;
       background: #FFFFFF;
-      border: 2px solid var(--maya-green);
-      border-radius: var(--radius-xl);
+      border: 2px solid var(--maya-green, #10B981);
+      border-radius: var(--radius-xl, 16px);
       padding: 40px;
       text-align: center;
       max-width: 720px;
       margin: 40px auto;
-      box-shadow: var(--shadow-lg);
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
     }
     .qr-container {
       background: #FFFFFF;
       padding: 16px;
       border: 1px solid #E2E8F0;
-      border-radius: var(--radius-lg);
+      border-radius: var(--radius-lg, 12px);
       display: inline-block;
       margin: 24px 0;
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
@@ -341,19 +423,19 @@
     .detail-label { color: #64748B; font-weight: 600; }
     .detail-val { font-family: monospace; font-weight: 700; color: #0F172A; }
     .copy-btn {
-      background: var(--maya-primary-extra-light);
+      background: #EEF2FF;
       border: 1px solid rgba(61, 56, 208, 0.2);
-      color: var(--maya-primary);
+      color: var(--maya-primary, #3D38D0);
       padding: 4px 10px;
       border-radius: 6px;
       font-size: 12px;
       font-weight: 700;
       cursor: pointer;
       margin-left: 8px;
-      transition: var(--transition);
+      transition: all 0.2s ease;
     }
     .copy-btn:hover {
-      background: var(--maya-primary);
+      background: var(--maya-primary, #3D38D0);
       color: white;
     }
   </style>
@@ -429,31 +511,31 @@
               <span>💳</span> Payment Method
             </h2>
 
-            <!-- Wallet Badges -->
-            <div class="wallet-showcase">
-              <span class="wallet-badge badge-apple"> Apple Pay</span>
-              <span class="wallet-badge badge-google">G Pay</span>
-              <span class="wallet-badge badge-samsung">Samsung Pay</span>
-              <span class="wallet-badge badge-cards">Credit / Debit</span>
+            <!-- Wallet / Card Instant Selector Buttons -->
+            <div class="wallet-showcase" role="toolbar" aria-label="Select Payment Method">
+              <button type="button" class="wallet-badge badge-apple" onclick="clickWalletBadge('apple')"> Apple Pay</button>
+              <button type="button" class="wallet-badge badge-google" onclick="clickWalletBadge('google')">G Pay</button>
+              <button type="button" class="wallet-badge badge-samsung" onclick="clickWalletBadge('samsung')">Samsung Pay</button>
+              <button type="button" class="wallet-badge badge-visa" onclick="clickWalletBadge('visa')">💳 Visa</button>
+              <button type="button" class="wallet-badge badge-mastercard" onclick="clickWalletBadge('mastercard')">💳 Mastercard</button>
+              <button type="button" class="wallet-badge badge-cards" onclick="clickWalletBadge('card')">💳 Amex / Other</button>
             </div>
 
             <!-- Apple Pay / Google Pay Express Button -->
             <div id="payment-request-container" style="display: none; margin-bottom: 16px;">
               <div id="payment-request-button"></div>
-              <p class="wallet-note">⚡ Tap above for 1-click Express Checkout with  Pay or G Pay.</p>
+              <p style="font-size: 13px; color: #64748B; margin-top: 6px;">⚡ Tap above for 1-click Express Checkout with  Pay or G Pay.</p>
               <div class="payment-divider">OR PAY WITH CARD / PAYPAL</div>
             </div>
 
             <!-- Payment Method Tabs -->
-            <div class="maya-filter-toolbar" style="margin-bottom: 20px; border-bottom: none; padding-bottom: 0;">
-              <div class="maya-duration-tabs" id="payment-tabs">
-                <button type="button" class="maya-tab-btn active" id="tab-card" onclick="selectPaymentMethod('card')">
-                  💳 Credit / Debit Card
-                </button>
-                <button type="button" class="maya-tab-btn" id="tab-paypal" onclick="selectPaymentMethod('paypal')">
-                  🅿️ PayPal
-                </button>
-              </div>
+            <div class="maya-duration-tabs" id="payment-tabs">
+              <button type="button" class="maya-tab-btn active" id="tab-card" onclick="selectPaymentMethod('card')">
+                💳 Credit / Debit Card
+              </button>
+              <button type="button" class="maya-tab-btn" id="tab-paypal" onclick="selectPaymentMethod('paypal')">
+                🅿️ PayPal
+              </button>
             </div>
 
             <!-- Card Element -->
@@ -492,7 +574,7 @@
                 <span style="font-size: 12px; color: #64748B; display: block;">Total Amount</span>
                 <span class="summary-price-big" id="total">$0.00 USD</span>
               </div>
-              <span style="font-size: 12px; font-weight: 700; color: var(--maya-green);">100% Prepaid</span>
+              <span style="font-size: 12px; font-weight: 700; color: var(--maya-green, #10B981);">100% Prepaid</span>
             </div>
 
             <ul class="summary-checklist">
@@ -517,10 +599,10 @@
     <!-- Post-Payment Instant Delivery Screen -->
     <div id="delivery-success-view">
       <div style="font-size: 48px; margin-bottom: 12px;">🎉</div>
-      <h2 style="font-family: var(--font-heading); font-size: 28px; font-weight: 800; color: var(--maya-pitch-black); margin-bottom: 8px;">
+      <h2 style="font-family: var(--font-heading, 'DM Sans', sans-serif); font-size: 28px; font-weight: 800; color: var(--maya-pitch-black, #0F172A); margin-bottom: 8px;">
         Payment Successful! Your eSIM is Ready
       </h2>
-      <p style="color: #64748B; font-size: 15px; margin-bottom: 24px;">
+      <p id="delivered-email-notice" style="color: #64748B; font-size: 15px; margin-bottom: 24px;">
         A copy of your QR code and activation instructions have been sent to your email.
       </p>
 
@@ -547,10 +629,7 @@
       </div>
 
       <div style="display: flex; justify-content: center; gap: 16px; flex-wrap: wrap;">
-        <a id="esim-direct-link" href="#" class="btn-pay-main" style="width: auto; padding: 12px 28px; text-decoration: none;">
-          📲 1-Tap Add to Phone
-        </a>
-        <a href="/account.html" class="maya-pill" style="padding: 12px 24px; font-size: 15px; background: white;">
+        <a href="/account.html" class="maya-pill" style="padding: 12px 24px; font-size: 15px; background: white; text-decoration: none;">
           Go to My eSIMs
         </a>
       </div>
@@ -562,12 +641,12 @@
   <footer class="maya-footer" style="padding: 40px 20px 24px 20px; margin-top: 60px;">
     <div class="maya-container" style="text-align: center;">
       <div style="display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 16px; flex-wrap: wrap;">
-        <span class="payment-badge-pill"> Apple Pay</span>
-        <span class="payment-badge-pill">G Pay</span>
-        <span class="payment-badge-pill">Samsung Pay</span>
-        <span class="payment-badge-pill">💳 Visa</span>
-        <span class="payment-badge-pill">💳 Mastercard</span>
-        <span class="payment-badge-pill">💳 Amex</span>
+        <button type="button" class="payment-badge-pill" onclick="clickWalletBadge('apple')"> Apple Pay</button>
+        <button type="button" class="payment-badge-pill" onclick="clickWalletBadge('google')">G Pay</button>
+        <button type="button" class="payment-badge-pill" onclick="clickWalletBadge('samsung')">Samsung Pay</button>
+        <button type="button" class="payment-badge-pill" onclick="clickWalletBadge('visa')">💳 Visa</button>
+        <button type="button" class="payment-badge-pill" onclick="clickWalletBadge('mastercard')">💳 Mastercard</button>
+        <button type="button" class="payment-badge-pill" onclick="clickWalletBadge('card')">💳 Amex</button>
       </div>
       <p style="font-size: 13px; color: #64748B;">
         &copy; 2026 TravelTrip World · Traveler eSIM. Owned by Mohammad Akram.
@@ -584,12 +663,19 @@
   const validity = params.get("validity") || "7 Days";
   const dataAmount = params.get("data") || "1 GB";
 
-  document.getElementById("plan-name").textContent = planName;
-  document.getElementById("plan-meta").textContent = [dataAmount, validity, locationCode].filter(Boolean).join(" • ");
-  document.getElementById("total").textContent = `$${parseFloat(shownPrice).toFixed(2)} USD`;
+  // Safely populate order summary elements
+  const pkgNameEl = document.getElementById("summary-pkg-name") || document.getElementById("plan-name");
+  if (pkgNameEl) pkgNameEl.textContent = planName;
+
+  const pkgMetaEl = document.getElementById("summary-pkg-dest") || document.getElementById("plan-meta");
+  if (pkgMetaEl) pkgMetaEl.textContent = [dataAmount, validity, locationCode].filter(Boolean).join(" • ");
+
+  const totalEl = document.getElementById("total");
+  if (totalEl) totalEl.textContent = `$${parseFloat(shownPrice).toFixed(2)} USD`;
 
   const statusBox = document.getElementById("status-box");
   function showStatus(msg, type = "info") {
+    if (!statusBox) return;
     statusBox.className = `status-box active ${type}`;
     statusBox.textContent = msg;
   }
@@ -599,13 +685,9 @@
     try {
       const res = await fetch("/api/auth/session");
       const data = await res.json();
-      if (data.authenticated && data.user) {
-        document.getElementById("name").value = data.user.name;
-        document.getElementById("email").value = data.user.email;
-        document.getElementById("auth-nav-slot").innerHTML = `
-          <span style="font-size:0.85rem; margin-right:8px; color:#fff;">👤 ${data.user.name}</span>
-          <a class="button button-secondary" href="/account">My Account</a>
-        `;
+      if (data && data.authenticated && data.user) {
+        if (data.user.name) document.getElementById("name").value = data.user.name;
+        if (data.user.email) document.getElementById("email").value = data.user.email;
       }
     } catch(e) {}
   }
@@ -615,17 +697,22 @@
   async function loadPayPal() {
     try {
       const res = await fetch("/api/checkout/paypal/config");
+      if (!res.ok) return;
       const config = await res.json();
+      if (!config.clientId) return;
       const script = document.createElement("script");
-      script.src = `https://www.paypal.com/sdk/js?client-id=${config.clientId}&currency=${config.currency}`;
+      script.src = `https://www.paypal.com/sdk/js?client-id=${config.clientId}&currency=${config.currency || "USD"}`;
       script.onload = () => renderPayPalButtons();
       document.body.appendChild(script);
     } catch(e) {
-      console.error("PayPal config error:", e);
+      console.warn("PayPal config note:", e);
     }
   }
 
   function renderPayPalButtons() {
+    const ppContainer = document.getElementById("paypal-button-container") || document.getElementById("paypal-buttons");
+    if (!ppContainer || !window.paypal) return;
+
     paypal.Buttons({
       createOrder: async function(data, actions) {
         const buyerName = document.getElementById("name").value.trim();
@@ -633,6 +720,7 @@
 
         if (!buyerName || !buyerEmail || !buyerEmail.includes("@")) {
           showStatus("Please enter your full name and valid email before paying.", "error");
+          document.getElementById("email").focus();
           return null;
         }
 
@@ -666,7 +754,7 @@
         }
       },
       onApprove: async function(data, actions) {
-        showStatus("Payment approved! Verifying payment server-side & requesting supplier eSIM...", "info");
+        showStatus("Payment approved! Delivering your eSIM...", "info");
         try {
           const verifyRes = await fetch("/api/checkout/verify-payment", {
             method: "POST",
@@ -684,24 +772,37 @@
           showStatus("Error delivering eSIM: " + err.message, "error");
         }
       }
-    }).render("#paypal-buttons");
+    }).render(ppContainer);
   }
 
-  loadPayPal();
-
   function renderDeliverySuccess(order) {
-    document.getElementById("checkout-view").style.display = "none";
-    const successView = document.getElementById("delivery-success-view");
-    successView.style.display = "block";
+    const checkoutView = document.getElementById("checkout-view");
+    if (checkoutView) checkoutView.style.display = "none";
 
-    document.getElementById("delivered-email-notice").textContent = `Delivered to ${order.buyer_email}. You can also view this anytime in your My eSIMs account.`;
-    document.getElementById("esim-qr-img").src = order.qr_code_data;
-    document.getElementById("disp-order-id").textContent = order.order_id;
-    document.getElementById("disp-iccid").textContent = order.iccid || "8985200000000000000";
-    document.getElementById("disp-smdp").textContent = order.smdp_address || "rsp.esimaccess.com";
-    document.getElementById("disp-act-code").textContent = order.activation_code || "TT-ACTIVATE";
-    document.getElementById("disp-lpa").textContent = order.lpa_string || "";
-    window.currentLPA = order.lpa_string;
+    const successView = document.getElementById("delivery-success-view");
+    if (successView) successView.style.display = "block";
+
+    const noticeEl = document.getElementById("delivered-email-notice");
+    if (noticeEl && order && order.buyer_email) {
+      noticeEl.textContent = `Delivered to ${order.buyer_email}. You can also view this anytime in your My eSIMs account.`;
+    }
+
+    const qrEl = document.getElementById("qr-image") || document.getElementById("esim-qr-img");
+    if (qrEl && order && order.qr_code_data) {
+      qrEl.src = order.qr_code_data;
+    }
+
+    const iccidEl = document.getElementById("esim-iccid") || document.getElementById("disp-iccid");
+    if (iccidEl && order) iccidEl.textContent = order.iccid || "8985200000000000000";
+
+    const actEl = document.getElementById("esim-matching-id") || document.getElementById("disp-act-code");
+    if (actEl && order) actEl.textContent = order.activation_code || "TT-ACTIVATE";
+
+    const lpaEl = document.getElementById("esim-lpa") || document.getElementById("disp-lpa");
+    if (lpaEl && order) {
+      lpaEl.textContent = order.lpa_string || "";
+      window.currentLPA = order.lpa_string;
+    }
   }
 
   function copyLPA() {
@@ -723,32 +824,37 @@
 
   function initStripe() {
     try {
+      if (typeof Stripe === "undefined") {
+        console.warn("Stripe.js not loaded yet");
+        return;
+      }
       stripe = Stripe(STRIPE_PK);
       elements = stripe.elements();
 
       // 1. Mount Card Element
-      cardElement = elements.create("card", {
-        hidePostalCode: false,
-        style: {
-          base: {
-            color: "#1E293B",
-            fontFamily: "'Plus Jakarta Sans', sans-serif",
-            fontSmoothing: "antialiased",
-            fontSize: "15px",
-            "::placeholder": { color: "#94A3B8" }
-          },
-          invalid: { color: "#DC2626", iconColor: "#DC2626" }
-        }
-      });
-      cardElement.mount("#stripe-card-element");
-      cardElement.on("change", function(event) {
-        const displayError = document.getElementById("stripe-card-errors");
-        if (event.error) {
-          displayError.textContent = event.error.message;
-        } else {
-          displayError.textContent = "";
-        }
-      });
+      const cardMountTarget = document.getElementById("card-element") || document.getElementById("stripe-card-element");
+      if (cardMountTarget) {
+        cardElement = elements.create("card", {
+          hidePostalCode: false,
+          style: {
+            base: {
+              color: "#1E293B",
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+              fontSmoothing: "antialiased",
+              fontSize: "15px",
+              "::placeholder": { color: "#94A3B8" }
+            },
+            invalid: { color: "#DC2626", iconColor: "#DC2626" }
+          }
+        });
+        cardElement.mount(cardMountTarget);
+        cardElement.on("change", function(event) {
+          const displayError = document.getElementById("card-errors") || document.getElementById("stripe-card-errors");
+          if (displayError) {
+            displayError.textContent = event.error ? event.error.message : "";
+          }
+        });
+      }
 
       // 2. Configure 1-Click Apple Pay / Google Pay / Samsung Pay
       const priceVal = parseFloat(shownPrice) || 4.50;
@@ -778,23 +884,9 @@
 
       paymentRequest.canMakePayment().then(function(result) {
         const prContainer = document.getElementById('payment-request-container');
-        const walletBanner = document.getElementById('wallet-device-banner');
-        if (result) {
+        if (result && prContainer) {
           prContainer.style.display = 'block';
           prButton.mount('#payment-request-button');
-          if (result.applePay) {
-            walletBanner.innerHTML = '🍎 <b>Apple Pay is ready on this device!</b> Tap the black Apple Pay button above for instant 1-click checkout, or use a card below.';
-            walletBanner.style.borderColor = '#10B981';
-            walletBanner.style.background = 'rgba(16, 185, 129, 0.08)';
-            walletBanner.style.color = '#A7F3D0';
-          } else if (result.googlePay) {
-            walletBanner.innerHTML = '🌐 <b>Google Pay is ready on this device!</b> Tap the GPay button above for 1-click checkout, or enter your card below.';
-            walletBanner.style.borderColor = '#10B981';
-            walletBanner.style.background = 'rgba(16, 185, 129, 0.08)';
-            walletBanner.style.color = '#A7F3D0';
-          }
-        } else {
-          prContainer.style.display = 'none';
         }
       });
 
@@ -872,29 +964,81 @@
   }
 
   function selectPaymentMethod(method) {
-    const tabStripe = document.getElementById("tab-stripe");
+    const isCard = (method === 'card' || method === 'stripe');
+    const tabCard = document.getElementById("tab-card") || document.getElementById("tab-stripe");
     const tabPaypal = document.getElementById("tab-paypal");
-    const containerStripe = document.getElementById("stripe-container");
+    const containerCard = document.getElementById("card-container") || document.getElementById("stripe-container");
     const containerPaypal = document.getElementById("paypal-container");
 
-    if (method === "stripe") {
-      tabStripe.style.border = "2px solid var(--primary)";
-      tabStripe.style.background = "#EEF2FF";
-      tabStripe.style.color = "var(--primary)";
-      tabPaypal.style.border = "1px solid #CBD5E1";
-      tabPaypal.style.background = "#fff";
-      tabPaypal.style.color = "#64748B";
-      containerStripe.style.display = "block";
-      containerPaypal.style.display = "none";
+    if (isCard) {
+      if (tabCard) tabCard.classList.add("active");
+      if (tabPaypal) tabPaypal.classList.remove("active");
+      if (containerCard) containerCard.style.display = "block";
+      if (containerPaypal) containerPaypal.style.display = "none";
     } else {
-      tabPaypal.style.border = "2px solid var(--primary)";
-      tabPaypal.style.background = "#EEF2FF";
-      tabPaypal.style.color = "var(--primary)";
-      tabStripe.style.border = "1px solid #CBD5E1";
-      tabStripe.style.background = "#fff";
-      tabStripe.style.color = "#64748B";
-      containerStripe.style.display = "none";
-      containerPaypal.style.display = "block";
+      if (tabPaypal) tabPaypal.classList.add("active");
+      if (tabCard) tabCard.classList.remove("active");
+      if (containerCard) containerCard.style.display = "none";
+      if (containerPaypal) containerPaypal.style.display = "block";
+    }
+  }
+
+  function clickWalletBadge(type) {
+    selectPaymentMethod('card');
+    const cardEl = document.getElementById('card-element');
+    const prContainer = document.getElementById('payment-request-container');
+
+    if (type === 'apple') {
+      if (prContainer && prContainer.style.display !== 'none') {
+        prContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        showStatus("🍎 Tap the Apple Pay button above for instant 1-click checkout.", "info");
+      } else {
+        showStatus("🍎 Apple Pay is supported on Safari / Apple devices. Please enter your card details below.", "info");
+        if (cardEl) {
+          cardEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          cardEl.style.borderColor = '#000000';
+          setTimeout(() => { if (cardEl) cardEl.style.borderColor = ''; }, 1500);
+        }
+      }
+    } else if (type === 'google') {
+      if (prContainer && prContainer.style.display !== 'none') {
+        prContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        showStatus("🌐 Tap the Google Pay button above for instant 1-click checkout.", "info");
+      } else {
+        showStatus("🌐 Google Pay card autofill supported. Enter your card details below.", "info");
+        if (cardEl) {
+          cardEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          cardEl.style.borderColor = '#1F2937';
+          setTimeout(() => { if (cardEl) cardEl.style.borderColor = ''; }, 1500);
+        }
+      }
+    } else if (type === 'samsung') {
+      showStatus("📲 Samsung Pay is ready! Enter your Visa, Mastercard, or Samsung Pay card details below.", "info");
+      if (cardEl) {
+        cardEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        cardEl.style.borderColor = '#0A3E54';
+        cardEl.style.boxShadow = '0 0 0 4px rgba(10, 62, 84, 0.2)';
+        setTimeout(() => { 
+          if (cardEl) {
+            cardEl.style.borderColor = ''; 
+            cardEl.style.boxShadow = '';
+          }
+        }, 2000);
+      }
+    } else {
+      // Visa / Mastercard / Card
+      showStatus("💳 Enter your Visa, Mastercard, or Amex card number below.", "info");
+      if (cardEl) {
+        cardEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        cardEl.style.borderColor = '#3D38D0';
+        cardEl.style.boxShadow = '0 0 0 4px rgba(61, 56, 208, 0.2)';
+        setTimeout(() => { 
+          if (cardEl) {
+            cardEl.style.borderColor = ''; 
+            cardEl.style.boxShadow = '';
+          }
+        }, 2000);
+      }
     }
   }
 
@@ -904,13 +1048,20 @@
 
     if (!buyerName || !buyerEmail || !buyerEmail.includes("@")) {
       showStatus("Please enter your full name and valid email before paying.", "error");
-      document.getElementById("name").focus();
+      document.getElementById("email").focus();
       return;
     }
 
-    const payBtn = document.getElementById("btn-stripe-pay");
-    payBtn.disabled = true;
-    payBtn.innerHTML = "⏳ Processing Payment...";
+    if (!cardElement) {
+      showStatus("Card form is loading. Please wait 2 seconds...", "error");
+      return;
+    }
+
+    const payBtn = document.getElementById("stripe-pay-button") || document.getElementById("btn-stripe-pay");
+    if (payBtn) {
+      payBtn.disabled = true;
+      payBtn.innerHTML = "⏳ Processing Payment...";
+    }
     showStatus("Initializing secure transaction with Stripe...", "info");
 
     try {
@@ -963,13 +1114,23 @@
       }
     } catch(err) {
       showStatus("Payment Error: " + err.message, "error");
-      payBtn.disabled = false;
-      payBtn.innerHTML = "🔒 Pay Securely &amp; Get eSIM →";
+      if (payBtn) {
+        payBtn.disabled = false;
+        payBtn.innerHTML = "<span>🔒</span> Complete Secure Payment";
+      }
     }
   }
 
-  // Auto initialize Stripe on page load
-  window.addEventListener("DOMContentLoaded", initStripe);
+  // Reliable bootstrap
+  if (document.readyState === "loading") {
+    window.addEventListener("DOMContentLoaded", () => {
+      initStripe();
+      loadPayPal();
+    });
+  } else {
+    initStripe();
+    loadPayPal();
+  }
 </script>
 </body>
 </html>
