@@ -1253,6 +1253,49 @@ def get_customer_troubleshooting():
     })
 
 
+
+@app.route('/api/email/webhook', methods=['POST'])
+def receive_email_webhook():
+    import time
+    data = request.get_json(silent=True) or request.form.to_dict() or {}
+    sender_name = data.get("sender_name") or data.get("from_name") or data.get("from") or "Traveler"
+    sender_email = data.get("sender_email") or data.get("from_email") or "client@example.com"
+    subject = data.get("subject") or "eSIM Inquiry"
+    body = data.get("body") or data.get("message") or data.get("snippet") or ""
+    inbox = data.get("inbox") or data.get("to") or "traveltripworld8@gmail.com"
+    
+    # AI-style concise briefing for Mohammad Akram
+    briefing_bn = f"{sender_name} মেইল পাঠিয়েছেন। বিষয়: {subject}। তিনি ট্রাভেল ই-সিম সহায়তা চাচ্ছেন।"
+    briefing_en = f"{sender_name} emailed regarding: {subject}. Requesting assistance."
+    
+    body_low = (subject + " " + body).lower()
+    if any(w in body_low for w in ["dxb", "airport", "no net", "roaming", "জরুরি", "urgent"]):
+        urgency = "High"
+        briefing_bn = f"{sender_name} জরুরি সহায়তা চেয়েছেন ({subject})। দ্রুত রোমিং বা কানেকশন সমাধান প্রয়োজন।"
+    else:
+        urgency = "Normal"
+
+    new_mail = {
+        "id": f"mail_{int(time.time())}",
+        "inbox": inbox,
+        "sender_name": sender_name,
+        "sender_email": sender_email,
+        "subject": subject,
+        "received_at": "Just now",
+        "urgency": urgency,
+        "boss_briefing_bn": briefing_bn,
+        "boss_briefing_en": briefing_en,
+        "solution_guide_bn": "১. ফোনের Settings > Cellular > TravelTrip eSIM-এর Data Roaming অন করুন।\n২. ফোনটি ১০ সেকেন্ড Airplane Mode অন করে অফ করুন।\n৩. নেটওয়ার্ক চালু হয়ে যাবে!",
+        "solution_guide_en": "1. Turn ON Data Roaming in Settings > Cellular.\n2. Toggle Airplane Mode for 10 seconds.\n3. 5G data connects immediately."
+    }
+    _OFFICIAL_EMAILS.insert(0, new_mail)
+    return jsonify({
+        "success": True,
+        "message": "Email ingested successfully into Ekram 0.2 Inbox",
+        "email_id": new_mail["id"]
+    })
+
+
 if __name__ == "__main__":
     init_db()
     port = int(os.environ.get("PORT", 8000))
