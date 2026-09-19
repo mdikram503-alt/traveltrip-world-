@@ -1,7 +1,7 @@
 {
-  "name": "Ekram 0.2 \u00b7 TravelTrip Bot",
-  "short_name": "Ekram Bot",
-  "description": "24/7 Autonomous Operations, Social Marketing & Support Bot for TravelTrip World",
+  "name": "Ekram0.2",
+  "short_name": "Ekram0.2",
+  "description": "Ekram0.2 Autonomous Operations",
   "start_url": "/ops.html?source=android_bot",
   "scope": "/",
   "display": "standalone",
