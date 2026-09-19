@@ -388,13 +388,15 @@
     <!-- TAB 1: OVERVIEW & SALES -->
     <section id="tab-overview" class="tab-panel active">
       
-      <!-- Audio Voice Strip -->
-      <div class="voice-banner">
-        <div style="flex: 1;">
-          <div style="font-size: 11px; font-weight: 800; color: var(--primary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px;" data-i18n="voice_title">🤖 একরাম এক্সিকিউটিভ ব্রিফিং:</div>
-          <div id="voice-text" style="font-size: 14.5px; font-weight: 600; color: #1E293B;">লাইভ ডাটা লোড হচ্ছে...</div>
+      <!-- Smart Compact Executive Bar -->
+      <div style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 10px 16px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; gap: 12px; box-shadow: var(--shadow-sm); flex-wrap: wrap;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; background: var(--primary-light); color: var(--primary); border-radius: 8px; font-size: 14px; font-weight: 800;">⚡</span>
+          <div id="voice-text" style="font-size: 13.5px; font-weight: 700; color: var(--text-dark);">সব সিস্টেম সক্রিয় · স্ট্রাইপ: د.إ 66.12 AED</div>
         </div>
-        <button class="btn btn-primary" onclick="speakBriefing()">🔊 <span data-i18n="btn_listen">শুনুন</span></button>
+        <button class="btn" onclick="speakBriefing()" style="padding: 6px 12px; font-size: 12px; display: inline-flex; align-items: center; gap: 6px;">
+          <span>🔊</span> <span data-i18n="btn_listen">শুনুন</span>
+        </button>
       </div>
 
       <!-- Stats Grid -->
@@ -786,8 +788,8 @@
         const res = await fetch("/api/ops/overview");
         const data = await res.json();
 
-        voiceSummaryBn = data.voice_summary_bn || data.voice_summary || "ট্রাভেলট্রিপ সম্পূর্ণ সক্রিয় রয়েছে।";
-        voiceSummaryEn = data.voice_summary_en || "TravelTrip World is running smoothly.";
+        voiceSummaryBn = data.voice_summary_bn || data.voice_summary || "সব সিস্টেম সক্রিয় · স্ট্রাইপ: د.إ 66.12 AED";
+        voiceSummaryEn = data.voice_summary_en || "All systems active · Stripe: 66.12 AED";
         document.getElementById("voice-text").innerText = (currentLang === 'en') ? voiceSummaryEn : voiceSummaryBn;
 
         document.getElementById("stripe-bal").innerText = `د.إ ${data.balance_aed || '66.12'}`;

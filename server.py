@@ -841,16 +841,13 @@ def ops_overview():
     except Exception:
         pass
 
-    voice_summary_bn = (
-        f"বস, একরাম ০.২ ক্লাউড থেকে ট্রাভেলট্রিপ ২৪ ঘণ্টা স্বয়ংক্রিয়ভাবে মনিটরিং করছে। "
-        f"ওয়েবসাইট ১০০% লাইভ, মোট সফল অর্ডার {delivered_count}টি। "
-        f"স্ট্রাইপ পেমেন্ট গেটওয়ে ও ডাটাবেস সম্পূর্ণ স্বাস্থ্যবান।"
-    )
-    voice_summary_en = (
-        f"Boss, Ekram 0.2 Cloud is autonomously monitoring TravelTrip World 24/7. "
-        f"Website and checkout are 100% online. Total delivered eSIM orders: {delivered_count}. "
-        f"Stripe live payments and supplier pipeline are completely healthy."
-    )
+    unread_cnt = len(_OFFICIAL_EMAILS) if '_OFFICIAL_EMAILS' in globals() else 0
+    if unread_cnt > 0:
+        voice_summary_bn = f"সব সিস্টেম সক্রিয় · স্ট্রাইপ: د.إ {balance_aed} AED · {unread_cnt}টি সাপোর্ট বার্তা অপেক্ষমাণ"
+        voice_summary_en = f"All systems active · Stripe: {balance_aed} AED · {unread_cnt} support emails pending"
+    else:
+        voice_summary_bn = f"সব সিস্টেম সক্রিয় · স্ট্রাইপ: د.إ {balance_aed} AED · চেকআউট প্রস্তুত"
+        voice_summary_en = f"All systems active · Stripe: {balance_aed} AED · Checkout ready"
 
     return jsonify({
         "status": "healthy",
