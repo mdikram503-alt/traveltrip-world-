@@ -963,7 +963,7 @@ _social_state = {
     "next_post_time": "2026-09-19 09:00 AM",
     "post_counter": 12,
     "credentials": {
-        "facebook_page_id": "1232943889911644",
+        "facebook_page_id": "61594435043497",
         "facebook_page_name": "traveltrip.world Page",
         "meta_business_asset_id": "1333860239808615",
         "meta_ad_account": "570759352948058",
@@ -990,7 +990,7 @@ def get_social_autopilot_status():
         "next_post_time": _social_state["next_post_time"],
         "total_published": _social_state["post_counter"],
         "channels": {
-            "facebook": {"name": "Facebook (traveltrip.world)", "status": "active", "id": "1232943889911644"},
+            "facebook": {"name": "Facebook (traveltrip.world)", "status": "active", "id": "61594435043497"},
             "instagram": {"name": "Instagram (@trave_ltripworld)", "status": "active"},
             "tiktok": {"name": "TikTok (@traveltrip.world8)", "status": "active"},
             "x_twitter": {"name": "X Twitter (@traveltripakm)", "status": "active"},
@@ -1233,14 +1233,14 @@ def get_customer_troubleshooting():
             "🌟 প্রিয় ট্রাভেলার, আশা করি আমাদের TravelTrip eSIM আপনার ভ্রমণের প্রতিটি মুহূর্তকে আরও আনন্দদায়ক করেছে!\n\n"
             "আমাদের সেবায় সন্তুষ্ট হলে ফেসবুকে একটি ৫-স্টার রিভিউ দিয়ে আমাদের পাশে থাকার বিনীত অনুরোধ জানাচ্ছি। "
             "আপনার একটি পজিটিভ রিভিউ অন্য সহযাত্রীদের নির্ভয়ে সেরা নেটওয়ার্ক বেছে নিতে সাহায্য করবে।\n\n"
-            "👉 ফেসবুক রিভিউ লিংক: https://www.facebook.com/traveltrip.world\n"
+            "👉 ফেসবুক রিভিউ লিংক: https://www.facebook.com/profile.php?id=61594435043497\n"
             "ধন্যবাদ Abdullah Trading & TravelTrip পরিবারের সাথে থাকার জন্য! ❤️"
         )
         guide_en = (
             "🌟 Dear Traveler, we hope TravelTrip eSIM kept your journey seamlessly connected!\n\n"
             "If you loved our instant service, please take 30 seconds to drop us a 5-Star review on Facebook. "
             "Your kind words empower fellow travelers worldwide!\n\n"
-            "👉 Review Page: https://www.facebook.com/traveltrip.world\n"
+            "👉 Review Page: https://www.facebook.com/profile.php?id=61594435043497\n"
             "Thank you for choosing TravelTrip World! ❤️"
         )
     else:
