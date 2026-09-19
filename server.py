@@ -964,13 +964,16 @@ _social_state = {
     "post_counter": 12,
     "credentials": {
         "facebook_page_id": "1232943889911644",
-        "meta_business_asset_id": "1333860239808615",
         "facebook_page_name": "traveltrip.world Page",
-        "instagram_main": "@trave_ltripworld",
-        "instagram_owner": "@mohammad_ekram5",
-        "instagram_secondary": "@alharam_phone_shop",
+        "meta_business_asset_id": "1333860239808615",
         "meta_ad_account": "570759352948058",
-        "threads_account": "@mohammad_ekram5",
+        "instagram_brand": "@trave_ltripworld",
+        "instagram_owner": "@mohammad_ekram5",
+        "tiktok": "@traveltrip.world8",
+        "x_twitter": "@traveltripakm",
+        "snapchat": "traveltripworld",
+        "threads": "@trave_ltripworld",
+        "whatsapp": "+8801836089766",
         "primary_email": "traveltripworld8@gmail.com",
         "facebook_page_token": "",
         "webhook_url": ""
@@ -987,10 +990,14 @@ def get_social_autopilot_status():
         "next_post_time": _social_state["next_post_time"],
         "total_published": _social_state["post_counter"],
         "channels": {
-            "facebook": {"name": "Facebook Page", "status": "active" if _social_state["enabled"] else "paused"},
-            "instagram": {"name": "Instagram Business", "status": "active" if _social_state["enabled"] else "paused"},
-            "youtube": {"name": "YouTube Shorts / Community", "status": "active" if _social_state["enabled"] else "paused"},
-            "webhook": {"name": "Automated Webhook", "status": "connected" if _social_state["credentials"]["webhook_url"] else "ready"}
+            "facebook": {"name": "Facebook (traveltrip.world)", "status": "active", "id": "1232943889911644"},
+            "instagram": {"name": "Instagram (@trave_ltripworld)", "status": "active"},
+            "tiktok": {"name": "TikTok (@traveltrip.world8)", "status": "active"},
+            "x_twitter": {"name": "X Twitter (@traveltripakm)", "status": "active"},
+            "snapchat": {"name": "Snapchat (traveltripworld)", "status": "active"},
+            "threads": {"name": "Threads (@trave_ltripworld)", "status": "active"},
+            "whatsapp": {"name": "WhatsApp (+8801836089766)", "status": "active"},
+            "email": {"name": "Gmail (traveltripworld8@gmail.com)", "status": "active"}
         }
     })
 
