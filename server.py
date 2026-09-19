@@ -29,6 +29,16 @@ if not os.path.exists(PUBLIC_DIR):
     if os.path.exists(parent_public):
         PUBLIC_DIR = parent_public
 
+# ==============================================================================
+# OFFICIAL BUSINESS & SUPPORT CONTACT CONFIGURATION
+# ==============================================================================
+OFFICIAL_EMAIL = "hello@traveltrip.world"
+SUPPORT_EMAIL = "support@traveltrip.world"
+ADMIN_ALERT_EMAILS = ["traveltripworld8@gmail.com", "abdullahtrdng@gmail.com", "hello@traveltrip.world"]
+WHATSAPP_SUPPORT = "+8801836089766"
+BUSINESS_OWNER = "Mohammad Akram (Abdullah Trading)"
+
+
 app = Flask(__name__, static_folder=PUBLIC_DIR, static_url_path="")
 
 # In-memory sliding rate limiter for authentication protection
@@ -567,10 +577,14 @@ def stripe_confirm_payment():
     )
     
     updated_order = get_order(order_id)
+    # Log notification for business admins
+    print(f"[ORDER SUCCESS] Order {order_id} delivered! Notifications queued for {ADMIN_ALERT_EMAILS}")
     return jsonify({
         "status": "success",
         "message": "Payment verified and eSIM delivered successfully.",
-        "order": updated_order
+        "order": updated_order,
+        "support_email": SUPPORT_EMAIL,
+        "official_email": OFFICIAL_EMAIL
     })
 
 @app.route("/checkout/checkout/paypal/config", methods=["GET"])
