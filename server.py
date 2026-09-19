@@ -964,6 +964,7 @@ _social_state = {
     "post_counter": 12,
     "credentials": {
         "facebook_page_id": "1232943889911644",
+        "meta_business_asset_id": "1333860239808615",
         "facebook_page_name": "traveltrip.world Page",
         "instagram_main": "@mohammad_ekram5",
         "instagram_secondary": "@alharam_phone_shop",
