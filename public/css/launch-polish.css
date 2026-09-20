@@ -1,0 +1,38 @@
+/* TravelTrip launch polish: one visual language for storefront and catalog. */
+:root { --tt-ink:#071426; --tt-panel:#0d213d; --tt-blue:#258dff; --tt-cyan:#32d6ff; --tt-mist:#f3f8ff; --tt-line:#d8e5f6; }
+body { background:var(--tt-mist); color:var(--tt-ink); }
+.maya-top-bar { background:linear-gradient(90deg,#071426,#102e57); border:0; }
+.maya-top-bar .top-badge { color:#b9efff; background:rgba(50,214,255,.14); }
+.maya-navbar { background:rgba(255,255,255,.94); border-color:rgba(37,141,255,.14); }
+.maya-logo-icon { background:linear-gradient(135deg,var(--tt-cyan),var(--tt-blue)); box-shadow:0 10px 24px rgba(37,141,255,.25); }
+.maya-nav-link.active,.maya-nav-link:hover { color:var(--tt-blue); }
+.maya-search-btn { background:linear-gradient(135deg,#1685ff,#3457e8); box-shadow:0 8px 20px rgba(37,141,255,.2); }
+.maya-search-btn:hover { background:linear-gradient(135deg,#0874eb,#2448d0); }
+.maya-hero { background:radial-gradient(circle at 20% 10%,rgba(50,214,255,.22),transparent 33%),radial-gradient(circle at 80% 25%,rgba(37,141,255,.17),transparent 35%),linear-gradient(135deg,#f9fcff,#e9f4ff); }
+.maya-hero-eyebrow { border-color:rgba(37,141,255,.25); background:rgba(255,255,255,.72); }
+.title-gradient { background:linear-gradient(100deg,#0875dd,#2bccea); -webkit-background-clip:text; background-clip:text; }
+.maya-search-box { border-color:rgba(37,141,255,.23); box-shadow:0 18px 46px rgba(13,50,95,.12); }
+.maya-search-box:focus-within { border-color:var(--tt-cyan); box-shadow:0 18px 46px rgba(37,141,255,.2); }
+.maya-pill.active,.maya-pill:hover { background:#e4f4ff; color:#096bc8; border-color:#a7d9ff; }
+.maya-section { padding-top:76px; padding-bottom:76px; }
+.maya-section-badge { background:#e2f5ff; color:#0570d1; }
+.maya-section-title { letter-spacing:-.045em; }
+.maya-dest-card,.maya-plan-card,.maya-pastel-card { border-color:var(--tt-line); box-shadow:0 10px 30px rgba(13,50,95,.07); }
+.maya-dest-card:hover,.maya-plan-card:hover,.maya-pastel-card:hover { border-color:#8ccfff; box-shadow:0 18px 40px rgba(13,50,95,.14); }
+/* Catalog page: a restrained shell, search and cards. */
+.site-watermark-bg { display:none; }
+header.top { background:var(--tt-ink); box-shadow:0 8px 22px rgba(7,20,38,.16); }
+header.top .brand-title,header.top .brand-sub,header.top .nav a { color:#fff; }
+header.top .gold-accent { color:var(--tt-cyan); }
+header.top .nav a:hover { color:var(--tt-cyan); }
+.shell { max-width:1180px; }
+.section-tag { background:#dff4ff !important; color:#0570d1 !important; }
+.section-heading-dark { color:var(--tt-ink); letter-spacing:-.04em; }
+.muted { color:#52677f; }
+.search-box input { width:100%; min-height:52px; border:1px solid var(--tt-line); border-radius:14px; padding:0 18px; font:inherit; box-shadow:0 8px 22px rgba(13,50,95,.06); }
+.search-box input:focus { outline:3px solid rgba(50,214,255,.23); border-color:#45b8ff; }
+.dest-card { background:#fff !important; border:1px solid var(--tt-line) !important; border-radius:16px; box-shadow:0 8px 20px rgba(13,50,95,.06); transition:transform .2s ease,box-shadow .2s ease; }
+.dest-card:hover { transform:translateY(-3px); box-shadow:0 16px 32px rgba(13,50,95,.13); }
+.dest-code { background:linear-gradient(135deg,#1685ff,#3457e8) !important; }
+.plans-comparison-table { border-color:var(--tt-line) !important; box-shadow:0 12px 30px rgba(13,50,95,.08) !important; }
+@media (max-width:768px) { .maya-top-bar span:last-child { display:none; } .maya-section { padding-top:52px; padding-bottom:52px; } header.top .nav { display:none; } }
