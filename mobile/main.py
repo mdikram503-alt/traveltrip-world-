@@ -6,7 +6,7 @@ from kivy.app import App
 from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.properties import ListProperty, StringProperty
-from kivy.uix.screenmanager import ScreenManager
+from kivy.uix.screenmanager import ScreenManager, Screen
 from api import TravelerAPI
 
 KV = '''
@@ -67,11 +67,11 @@ KV = '''
         Button: text: 'Back'; size_hint_y: None; height: dp(46); on_release: app.root.current='home'
 '''
 
-class Home(ScreenManager): pass
-class Checkout(ScreenManager): pass
-class Orders(ScreenManager): pass
-class Account(ScreenManager): pass
-class Support(ScreenManager): pass
+class Home(Screen): pass
+class Checkout(Screen): pass
+class Orders(Screen): pass
+class Account(Screen): pass
+class Support(Screen): pass
 
 class TravelerApp(App):
     plans = ListProperty([]); checkout_title = StringProperty(''); checkout_price = StringProperty(''); orders_text = StringProperty('Sign in to see your eSIMs.'); account_message = StringProperty('')
@@ -80,10 +80,10 @@ class TravelerApp(App):
         for name, cls in [('home',Home),('checkout',Checkout),('orders',Orders),('account',Account),('support',Support)]: sm.add_widget(cls(name=name))
         Clock.schedule_once(lambda *_: self.search_plans(''), .2); return sm
     def search_plans(self, term):
-        def done(rows): self.plans = [{'plan_id':str(x.get('id',x.get('package_code',''))),'title':x.get('name','Travel data plan'),'data':x.get('data','Flexible data'),'validity':x.get('validity','See details'),'price':x.get('price_display',x.get('price','View price'))} for x in rows]
+        def done(rows): self.plans = [{'plan_id':str(x.get('packageCode',x.get('package_code',''))),'title':x.get('name','Travel data plan'),'data':x.get('data','Flexible data'),'validity':x.get('validity','See details'),'price':'$'+str(x.get('priceUsd',x.get('price','View price')))} for x in rows]
         self.api.catalog(term, done)
     def open_checkout(self, pid, title, price): self.selected_plan=pid; self.checkout_title=title; self.checkout_price=str(price); self.root.current='checkout'
-    def start_checkout(self): self.api.checkout(self.selected_plan, self.open_link)
+    def start_checkout(self): self.open_link(self.api.checkout_url(self.selected_plan))
     def sign_in(self,email,password): self.api.login(email,password,lambda ok,msg: setattr(self,'account_message',msg))
     def load_orders(self): self.api.orders(lambda text: (setattr(self,'orders_text',text), setattr(self.root,'current','orders')))
     def open_link(self,url): __import__('webbrowser').open(url)
