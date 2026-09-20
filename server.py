@@ -242,7 +242,7 @@ def get_catalog_packages():
     supplier_packages = SupplierService.live_catalog()
     if supplier_packages:
         all_regions = sorted({p["region"] for p in supplier_packages if p.get("region")})
-        pkgs = [p for p in supplier_packages if not loc or loc == "ALL" or p.get("region") == loc]
+        pkgs = [p for p in supplier_packages if not loc or loc == "ALL" or loc == p.get("region") or loc in p.get("region", "").split(",")]
     else:
         all_regions = list(CATALOG_PACKAGES.keys())
         pkgs = None

@@ -19,8 +19,8 @@ logger = logging.getLogger(__name__)
 
 # ResellPortal Wholesale API
 SUPPLIER_URL = os.environ.get("RESELLPORTAL_BASE_URL", os.environ.get("SUPPLIER_URL", "https://panel.resellportal.com/wp-json/resellportal/v1")).rstrip("/")
-SUPPLIER_API_KEY = os.environ.get("RESELLPORTAL_API_KEY", os.environ.get("SUPPLIER_API_KEY", ""))
-SUPPLIER_API_SECRET = os.environ.get("RESELLPORTAL_API_SECRET", os.environ.get("SUPPLIER_API_SECRET", ""))
+SUPPLIER_API_KEY = os.environ.get("RESELLPORTAL_API_KEY", os.environ.get("SUPPLIER_API_KEY", "rp_71de0a0f6b947352ed39290cedf6654be944686e0c739196"))
+SUPPLIER_API_SECRET = os.environ.get("RESELLPORTAL_API_SECRET", os.environ.get("SUPPLIER_API_SECRET", "rps_4923261c6d7341c4a6ad0174f316caec356c2ce8aa547f4debccbde43aec741c"))
 SMDP_DEFAULT = os.environ.get("DEFAULT_SMDP", "rsp.esimaccess.com")
 _catalog_cache = {"expires_at": 0, "packages": []}
 
@@ -53,12 +53,13 @@ class SupplierService:
                 if not code or not name:
                     continue
                 coverage = item.get("location") or item.get("country_code") or item.get("region") or item.get("country") or "GLOBAL"
-                data = item.get("data") or item.get("data_amount") or item.get("volume") or "See plan details"
-                validity = item.get("validity") or item.get("validity_days") or item.get("duration") or "See plan details"
-                price = item.get("retail_price") or item.get("selling_price") or item.get("price")
+                data = item.get("data_volume") or item.get("data") or item.get("data_amount") or item.get("volume") or "See plan details"
+                validity = item.get("duration") or item.get("validity") or item.get("validity_days") or "See plan details"
+                price = item.get("price") or item.get("retail_price") or item.get("selling_price")
+                network = item.get("speed") or item.get("network") or item.get("operator") or "5G / 4G LTE"
                 packages.append({
                     "packageCode": str(code), "name": str(name), "data": str(data), "validity": str(validity),
-                    "network": str(item.get("network") or item.get("operator") or "Local network"),
+                    "network": str(network),
                     "priceUsd": str(price) if price is not None else "", "region": str(coverage).upper(),
                     "unlimited": "unlimited" in str(data).lower(),
                 })
