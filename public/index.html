@@ -761,6 +761,101 @@
         });
       });
     })();
+
+    // Auto-render homepage country cards from live supplier catalog
+    async function syncHomepageDestinations() {
+      try {
+        const res = await fetch('/catalog/esim/packages?location=ALL');
+        if (!res.ok) return;
+        const data = await res.json();
+        const pkgs = data.packages || [];
+        if (!pkgs.length) return;
+
+        const byRegion = {};
+        pkgs.forEach(p => {
+          const r = (p.region || 'GLOBAL').toUpperCase();
+          if (!byRegion[r]) byRegion[r] = [];
+          byRegion[r].push(p);
+        });
+
+        const regionCodes = Object.keys(byRegion);
+        if (regionCodes.length > 0) {
+          const grid = document.getElementById('popular-destinations-grid');
+          if (!grid) return;
+
+          const regionMap = {
+            'AE': 'middle-east', 'UAE': 'middle-east', 'SA': 'middle-east', 'QA': 'middle-east', 'OM': 'middle-east',
+            'EU': 'europe', 'GB': 'europe', 'FR': 'europe', 'DE': 'europe', 'IT': 'europe', 'ES': 'europe',
+            'US': 'north-america', 'CA': 'north-america', 'MX': 'north-america',
+            'JP': 'asia', 'TH': 'asia', 'SG': 'asia', 'IN': 'asia', 'BD': 'asia', 'PK': 'asia', 'MY': 'asia'
+          };
+
+          const dn = (typeof Intl !== 'undefined' && Intl.DisplayNames) ? new Intl.DisplayNames(['en'], { type: 'region' }) : null;
+          const customNames = {
+            'EU': 'Europe Regional', 'UAE': 'United Arab Emirates', 'ASIA': 'Asia Regional', 'GLOBAL': 'Global Worldwide'
+          };
+          const customFlags = {
+            'EU': '🇪🇺', 'UAE': '🇦🇪', 'ASIA': '🌏', 'GLOBAL': '🌐'
+          };
+
+          function getFlag(code) {
+            if (customFlags[code]) return customFlags[code];
+            if (code.length === 2) {
+              try {
+                return String.fromCodePoint(...[...code.toUpperCase()].map(c => 127397 + c.charCodeAt(0)));
+              } catch(e) {}
+            }
+            return '🌍';
+          }
+
+          function getCountryName(code) {
+            if (customNames[code]) return customNames[code];
+            if (code.length === 2 && dn) {
+              try {
+                return dn.of(code) || code;
+              } catch(e) {}
+            }
+            return code;
+          }
+
+          grid.innerHTML = regionCodes.map(code => {
+            const list = byRegion[code];
+            let lowestPrice = 0;
+            list.forEach(p => {
+              const val = parseFloat(p.priceUsd || p.price_usd || 0);
+              if (val > 0 && (lowestPrice === 0 || val < lowestPrice)) lowestPrice = val;
+            });
+
+            const displayPrice = lowestPrice > 0 ? `USD ${lowestPrice.toFixed(2)}` : 'Available';
+            const flag = getFlag(code);
+            const name = getCountryName(code);
+            const regionGroup = regionMap[code] || 'global';
+            const network = list[0]?.network || '5G / 4G LTE';
+
+            return `
+              <a href="/destinations.html?country=${encodeURIComponent(code)}" class="tt-dest-card" data-region="${regionGroup}">
+                <div class="tt-dest-card-header">
+                  <span class="tt-dest-flag">${flag}</span>
+                  <span class="tt-dest-network">5G Ultra</span>
+                </div>
+                <h3 class="tt-dest-name">${name}</h3>
+                <p class="tt-dest-carriers">${network}</p>
+                <div class="tt-dest-card-footer">
+                  <div>
+                    <span class="tt-dest-price-label">Plans from</span>
+                    <div class="tt-dest-price">${displayPrice} <span>/plan</span></div>
+                  </div>
+                  <span class="tt-dest-btn">View Plans ➔</span>
+                </div>
+              </a>
+            `;
+          }).join('');
+        }
+      } catch(err) {
+        console.warn('Auto render live destinations note:', err);
+      }
+    }
+    document.addEventListener('DOMContentLoaded', syncHomepageDestinations);
   </script>
 </body>
 </html>
