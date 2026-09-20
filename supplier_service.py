@@ -11,6 +11,7 @@ import urllib.parse
 import urllib.request
 import urllib.error
 import json
+import gzip
 import logging
 import uuid
 import ssl
@@ -22,33 +23,44 @@ SUPPLIER_URL = os.environ.get("RESELLPORTAL_BASE_URL", os.environ.get("SUPPLIER_
 SUPPLIER_API_KEY = os.environ.get("RESELLPORTAL_API_KEY", os.environ.get("SUPPLIER_API_KEY", "rp_71de0a0f6b947352ed39290cedf6654be944686e0c739196"))
 SUPPLIER_API_SECRET = os.environ.get("RESELLPORTAL_API_SECRET", os.environ.get("SUPPLIER_API_SECRET", "rps_4923261c6d7341c4a6ad0174f316caec356c2ce8aa547f4debccbde43aec741c"))
 SMDP_DEFAULT = os.environ.get("DEFAULT_SMDP", "rsp.esimaccess.com")
-_catalog_cache = {"expires_at": 0, "packages": []}
+_catalog_cache = {}
 
 class SupplierService:
     @staticmethod
-    def live_catalog():
+    def live_catalog(location_filter: str = ""):
         """Return a normalized, customer-safe supplier catalog with a short cache.
 
         The supplier endpoint is rate limited, so all storefront/app requests
-        share a five-minute cache.  Wholesale-only fields are deliberately not
+        share a five-minute cache. Wholesale-only fields are deliberately not
         returned to the website.
         """
         now = time.time()
-        if _catalog_cache["packages"] and now < _catalog_cache["expires_at"]:
-            return list(_catalog_cache["packages"])
+        cache_key = location_filter.strip().upper() if location_filter else "ALL"
+        if cache_key in _catalog_cache and now < _catalog_cache[cache_key].get("expires_at", 0):
+            return list(_catalog_cache[cache_key]["packages"])
         if not SUPPLIER_API_KEY or not SUPPLIER_API_SECRET:
             return []
         try:
+            query = f"?location={urllib.parse.quote(cache_key)}" if cache_key != "ALL" else ""
             req = urllib.request.Request(
-                f"{SUPPLIER_URL}/esim-packages",
-                headers={"X-API-Key": SUPPLIER_API_KEY, "X-API-Secret": SUPPLIER_API_SECRET, "Accept": "application/json", "User-Agent": "TravelTripCatalog/1.0"},
+                f"{SUPPLIER_URL}/esim-packages{query}",
+                headers={
+                    "X-API-Key": SUPPLIER_API_KEY,
+                    "X-API-Secret": SUPPLIER_API_SECRET,
+                    "Accept": "application/json",
+                    "Accept-Encoding": "gzip, deflate",
+                    "User-Agent": "TravelTripCatalog/2.0"
+                },
             )
-            with urllib.request.urlopen(req, timeout=15) as response:
-                payload = json.loads(response.read().decode("utf-8"))
+            with urllib.request.urlopen(req, timeout=14) as response:
+                raw_bytes = response.read()
+                if response.headers.get("Content-Encoding") == "gzip" or raw_bytes[:2] == b"\x1f\x8b":
+                    raw_bytes = gzip.decompress(raw_bytes)
+                payload = json.loads(raw_bytes.decode("utf-8"))
             source = (payload.get("packages") or payload.get("data") or []) if isinstance(payload, dict) else payload if isinstance(payload, list) else []
             packages = []
             for item in source:
-                code = item.get("packageCode") or item.get("package_code") or item.get("code") or item.get("id")
+                code = item.get("package_code") or item.get("packageCode") or item.get("code") or item.get("id")
                 name = item.get("name") or item.get("title")
                 if not code or not name:
                     continue
@@ -63,7 +75,7 @@ class SupplierService:
                     "priceUsd": str(price) if price is not None else "", "region": str(coverage).upper(),
                     "unlimited": "unlimited" in str(data).lower(),
                 })
-            _catalog_cache.update({"expires_at": now + 300, "packages": packages})
+            _catalog_cache[cache_key] = {"expires_at": now + 300, "packages": packages}
             return list(packages)
         except Exception as exc:
             logger.warning("Supplier catalog request failed: %s", exc)

@@ -237,11 +237,13 @@ def get_catalog_packages():
     duration = request.args.get("duration", "").strip()
     plan_type = request.args.get("type", "").strip().lower()
 
-    # Prefer the verified supplier catalog when production credentials are
-    # active. Keep the local list only as a temporary read-only fallback.
-    supplier_packages = SupplierService.live_catalog()
+        # Prefer the verified supplier catalog with blazing-fast gzip and query caching
+    supplier_packages = SupplierService.live_catalog(location_filter=loc if loc not in ["ALL", ""] else "")
+    if not supplier_packages and (not loc or loc == "ALL"):
+        supplier_packages = SupplierService.live_catalog()
+
     if supplier_packages:
-        all_regions = sorted({p["region"] for p in supplier_packages if p.get("region")})
+        all_regions = sorted({r.strip() for p in supplier_packages for r in p.get("region", "").split(",") if r.strip()})
         pkgs = [p for p in supplier_packages if not loc or loc == "ALL" or loc == p.get("region") or loc in p.get("region", "").split(",")]
     else:
         all_regions = list(CATALOG_PACKAGES.keys())
