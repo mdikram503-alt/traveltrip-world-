@@ -683,12 +683,18 @@
 
 <script>
   const params = new URLSearchParams(location.search);
-  const packageCode = params.get("code") || "EU-1GB-7D";
-  const planName = params.get("name") || "Europe 1GB (7 Days)";
-  const shownPrice = params.get("price") || "4.50";
-  const locationCode = params.get("location") || params.get("cc") || "EU";
+  const rawCode = params.get("code") || params.get("package");
+  // Prevent incorrect EU default fallback: route directly to live Global catalog page if no valid code is present
+  if (!rawCode || (rawCode === "EU-1GB-7D" && !params.get("code"))) {
+    window.location.replace("/destinations?country=GLOBAL");
+  }
+
+  const packageCode = rawCode || "GLOBAL-7D-UNLIMITED";
+  const planName = params.get("name") || "Global Travel eSIM (7 Days)";
+  const shownPrice = params.get("price") || "11.69";
+  const locationCode = params.get("location") || params.get("cc") || "GLOBAL";
   const validity = params.get("validity") || "7 Days";
-  const dataAmount = params.get("data") || "1 GB";
+  const dataAmount = params.get("data") || "Unlimited";
 
   // Safely populate order summary elements
   const pkgNameEl = document.getElementById("summary-pkg-name") || document.getElementById("plan-name");

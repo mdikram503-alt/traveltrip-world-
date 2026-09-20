@@ -245,7 +245,7 @@
         <div class="tt-plans-grid" id="packages-container">
           
           <!-- Best Value 7-Day Plan -->
-          <div class="tt-plan-card featured">
+          <div class="tt-plan-card featured" data-duration="7" data-type="unlimited">
             <div class="tt-ribbon green">BEST VALUE</div>
             <div class="tt-plan-badge-row">
               <span class="tt-plan-duration-badge">7 Days Validity</span>
@@ -270,13 +270,13 @@
               <li><span class="check-icon">✓</span> 100% Prepaid · Zero roaming fees</li>
             </ul>
 
-            <a href="/checkout.html?package=global-7d-unlimited&price=11.69" class="tt-plan-btn">
+            <a href="/destinations?country=GLOBAL" class="tt-plan-btn">
               Buy eSIM Plan ➔
             </a>
           </div>
 
           <!-- 3-Day Transit Plan -->
-          <div class="tt-plan-card">
+          <div class="tt-plan-card" data-duration="3" data-type="fixed">
             <div class="tt-plan-badge-row">
               <span class="tt-plan-duration-badge">3 Days Validity</span>
               <span class="tt-plan-type-badge">Fixed High-Speed</span>
@@ -299,13 +299,13 @@
               <li><span class="check-icon">✓</span> Automated instant activation</li>
             </ul>
 
-            <a href="/checkout.html?package=global-3d-3gb&price=4.20" class="tt-plan-btn">
+            <a href="/destinations?country=GLOBAL" class="tt-plan-btn">
               Buy eSIM Plan ➔
             </a>
           </div>
 
           <!-- 15-Day Extended Vacation -->
-          <div class="tt-plan-card">
+          <div class="tt-plan-card" data-duration="15" data-type="fixed">
             <div class="tt-ribbon">POPULAR</div>
             <div class="tt-plan-badge-row">
               <span class="tt-plan-duration-badge">15 Days Validity</span>
@@ -329,13 +329,13 @@
               <li><span class="check-icon">✓</span> Instant email delivery upon payment</li>
             </ul>
 
-            <a href="/checkout.html?package=global-15d-10gb&price=16.95" class="tt-plan-btn">
+            <a href="/destinations?country=GLOBAL" class="tt-plan-btn">
               Buy eSIM Plan ➔
             </a>
           </div>
 
           <!-- 30-Day Long Stay Plan -->
-          <div class="tt-plan-card">
+          <div class="tt-plan-card" data-duration="30" data-type="unlimited">
             <div class="tt-ribbon green">BEST VALUE</div>
             <div class="tt-plan-badge-row">
               <span class="tt-plan-duration-badge">30 Days Validity</span>
@@ -359,7 +359,7 @@
               <li><span class="check-icon">✓</span> 24/7 dedicated support via WhatsApp</li>
             </ul>
 
-            <a href="/checkout.html?package=global-30d-unlimited&price=36.99" class="tt-plan-btn">
+            <a href="/destinations?country=GLOBAL" class="tt-plan-btn">
               Buy eSIM Plan ➔
             </a>
           </div>
@@ -673,6 +673,94 @@
         step3.innerText = 'Turn on Mobile Data and Data Roaming on your TravelTrip eSIM slot upon arrival for instant 5G connection.';
       }
     }
+
+    // Filter Buttons Implementation: Region Pills, Duration Tabs, and Type Tabs
+    (() => {
+      // 1. Quick Region Filter Pills
+      const regionPills = document.querySelectorAll('.tt-region-pills .tt-pill');
+      const destCards = document.querySelectorAll('#popular-destinations-grid .tt-dest-card');
+      regionPills.forEach(pill => {
+        pill.addEventListener('click', function(e) {
+          e.preventDefault();
+          regionPills.forEach(p => p.classList.remove('active'));
+          this.classList.add('active');
+          const region = this.getAttribute('data-region');
+          if (region === 'global') {
+            window.location.href = '/destinations?country=GLOBAL';
+            return;
+          }
+          destCards.forEach(card => {
+            const cardRegion = card.getAttribute('data-region');
+            card.style.display = (region === 'all' || cardRegion === region) ? 'flex' : 'none';
+          });
+          const destSec = document.getElementById('destinations');
+          if (destSec) {
+            destSec.scrollIntoView({ behavior: 'smooth' });
+          }
+        });
+      });
+
+      // 2. Duration & Type Selector Tabs for eSIM Plans
+      const durationBtns = document.querySelectorAll('#duration-selector .tt-tab-btn');
+      const typeBtns = document.querySelectorAll('#type-selector .tt-type-btn');
+      const planCards = document.querySelectorAll('#packages-container .tt-plan-card');
+      let currentDuration = 'all';
+      let currentType = 'all';
+
+      function filterPlans() {
+        let visible = 0;
+        planCards.forEach(card => {
+          const d = card.getAttribute('data-duration') || '';
+          const t = card.getAttribute('data-type') || '';
+          let matchDur = (currentDuration === 'all');
+          if (currentDuration === 'unlimited') {
+            matchDur = (t === 'unlimited');
+          } else if (currentDuration !== 'all') {
+            matchDur = (d === currentDuration);
+          }
+          let matchType = (currentType === 'all') || (t === currentType);
+          if (matchDur && matchType) {
+            card.style.display = 'flex';
+            visible++;
+          } else {
+            card.style.display = 'none';
+          }
+        });
+
+        let emptyEl = document.getElementById('packages-empty-message');
+        if (visible === 0) {
+          if (!emptyEl) {
+            emptyEl = document.createElement('div');
+            emptyEl.id = 'packages-empty-message';
+            emptyEl.style.cssText = 'grid-column: 1 / -1; text-align: center; padding: 32px 20px; background: #FFFFFF; border-radius: 16px; border: 1px dashed #CBD5E1;';
+            emptyEl.innerHTML = '<p style="color:#64748B; margin-bottom:12px; font-weight:600;">Custom plan durations & bundles available in the live catalog.</p><a href="/destinations?country=GLOBAL" class="tt-plan-btn" style="display:inline-block; max-width:260px; text-decoration:none;">View Live Global Catalog ➔</a>';
+            const container = document.getElementById('packages-container');
+            if (container) container.appendChild(emptyEl);
+          }
+          emptyEl.style.display = 'block';
+        } else if (emptyEl) {
+          emptyEl.style.display = 'none';
+        }
+      }
+
+      durationBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+          durationBtns.forEach(b => b.classList.remove('active'));
+          this.classList.add('active');
+          currentDuration = this.getAttribute('data-duration') || 'all';
+          filterPlans();
+        });
+      });
+
+      typeBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+          typeBtns.forEach(b => b.classList.remove('active'));
+          this.classList.add('active');
+          currentType = this.getAttribute('data-type') || 'all';
+          filterPlans();
+        });
+      });
+    })();
   </script>
 </body>
 </html>
