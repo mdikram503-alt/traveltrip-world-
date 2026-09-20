@@ -22,8 +22,52 @@ SUPPLIER_URL = os.environ.get("RESELLPORTAL_BASE_URL", os.environ.get("SUPPLIER_
 SUPPLIER_API_KEY = os.environ.get("RESELLPORTAL_API_KEY", os.environ.get("SUPPLIER_API_KEY", ""))
 SUPPLIER_API_SECRET = os.environ.get("RESELLPORTAL_API_SECRET", os.environ.get("SUPPLIER_API_SECRET", ""))
 SMDP_DEFAULT = os.environ.get("DEFAULT_SMDP", "rsp.esimaccess.com")
+_catalog_cache = {"expires_at": 0, "packages": []}
 
 class SupplierService:
+    @staticmethod
+    def live_catalog():
+        """Return a normalized, customer-safe supplier catalog with a short cache.
+
+        The supplier endpoint is rate limited, so all storefront/app requests
+        share a five-minute cache.  Wholesale-only fields are deliberately not
+        returned to the website.
+        """
+        now = time.time()
+        if _catalog_cache["packages"] and now < _catalog_cache["expires_at"]:
+            return list(_catalog_cache["packages"])
+        if not SUPPLIER_API_KEY or not SUPPLIER_API_SECRET:
+            return []
+        try:
+            req = urllib.request.Request(
+                f"{SUPPLIER_URL}/esim-packages",
+                headers={"X-API-Key": SUPPLIER_API_KEY, "X-API-Secret": SUPPLIER_API_SECRET, "Accept": "application/json", "User-Agent": "TravelTripCatalog/1.0"},
+            )
+            with urllib.request.urlopen(req, timeout=15) as response:
+                payload = json.loads(response.read().decode("utf-8"))
+            source = (payload.get("packages") or payload.get("data") or []) if isinstance(payload, dict) else payload if isinstance(payload, list) else []
+            packages = []
+            for item in source:
+                code = item.get("packageCode") or item.get("package_code") or item.get("code") or item.get("id")
+                name = item.get("name") or item.get("title")
+                if not code or not name:
+                    continue
+                coverage = item.get("location") or item.get("country_code") or item.get("region") or item.get("country") or "GLOBAL"
+                data = item.get("data") or item.get("data_amount") or item.get("volume") or "See plan details"
+                validity = item.get("validity") or item.get("validity_days") or item.get("duration") or "See plan details"
+                price = item.get("retail_price") or item.get("selling_price") or item.get("price")
+                packages.append({
+                    "packageCode": str(code), "name": str(name), "data": str(data), "validity": str(validity),
+                    "network": str(item.get("network") or item.get("operator") or "Local network"),
+                    "priceUsd": str(price) if price is not None else "", "region": str(coverage).upper(),
+                    "unlimited": "unlimited" in str(data).lower(),
+                })
+            _catalog_cache.update({"expires_at": now + 300, "packages": packages})
+            return list(packages)
+        except Exception as exc:
+            logger.warning("Supplier catalog request failed: %s", exc)
+            return []
+
     @staticmethod
     def provision_esim(package_code: str, buyer_email: str, order_id: str, location_code: str = "GLOBAL"):
         """

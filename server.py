@@ -237,7 +237,19 @@ def get_catalog_packages():
     duration = request.args.get("duration", "").strip()
     plan_type = request.args.get("type", "").strip().lower()
 
-    if loc and loc in CATALOG_PACKAGES:
+    # Prefer the verified supplier catalog when production credentials are
+    # active. Keep the local list only as a temporary read-only fallback.
+    supplier_packages = SupplierService.live_catalog()
+    if supplier_packages:
+        all_regions = sorted({p["region"] for p in supplier_packages if p.get("region")})
+        pkgs = [p for p in supplier_packages if not loc or loc == "ALL" or p.get("region") == loc]
+    else:
+        all_regions = list(CATALOG_PACKAGES.keys())
+        pkgs = None
+
+    if pkgs is not None:
+        pass
+    elif loc and loc in CATALOG_PACKAGES:
         pkgs = [{**p, "region": loc} for p in CATALOG_PACKAGES[loc]]
     elif loc and loc not in ["ALL", ""]:
         # Do not silently return Europe for an unknown destination.
@@ -265,7 +277,7 @@ def get_catalog_packages():
         "location": loc or "ALL",
         "requestedLocation": requested_location or "ALL",
         "count": len(pkgs),
-        "destinations": list(CATALOG_PACKAGES.keys()),
+        "destinations": all_regions,
         "packages": pkgs
     })
 
