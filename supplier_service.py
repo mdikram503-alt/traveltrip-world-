@@ -19,26 +19,24 @@ import ssl
 logger = logging.getLogger(__name__)
 
 # ResellPortal Wholesale API
-SUPPLIER_URL = os.environ.get("RESELLPORTAL_BASE_URL", os.environ.get("SUPPLIER_URL", "https://panel.resellportal.com/wp-json/resellportal/v1")).rstrip("/")
-SUPPLIER_API_KEY = os.environ.get("RESELLPORTAL_API_KEY", os.environ.get("SUPPLIER_API_KEY", "rp_71de0a0f6b947352ed39290cedf6654be944686e0c739196"))
-SUPPLIER_API_SECRET = os.environ.get("RESELLPORTAL_API_SECRET", os.environ.get("SUPPLIER_API_SECRET", "rps_4923261c6d7341c4a6ad0174f316caec356c2ce8aa547f4debccbde43aec741c"))
-SMDP_DEFAULT = os.environ.get("DEFAULT_SMDP", "rsp.esimaccess.com")
+SUPPLIER_URL = (os.environ.get("RESELLPORTAL_BASE_URL") or os.environ.get("SUPPLIER_URL") or "https://panel.resellportal.com/wp-json/resellportal/v1").strip().rstrip("/")
+SUPPLIER_API_KEY = (os.environ.get("RESELLPORTAL_API_KEY") or os.environ.get("SUPPLIER_API_KEY") or "rp_71de0a0f6b947352ed39290cedf6654be944686e0c739196").strip()
+SUPPLIER_API_SECRET = (os.environ.get("RESELLPORTAL_API_SECRET") or os.environ.get("SUPPLIER_API_SECRET") or "rps_4923261c6d7341c4a6ad0174f316caec356c2ce8aa547f4debccbde43aec741c").strip()
+SMDP_DEFAULT = (os.environ.get("DEFAULT_SMDP") or "rsp.esimaccess.com").strip()
 _catalog_cache = {}
 
 class SupplierService:
+    last_error = ""
+
     @staticmethod
     def live_catalog(location_filter: str = ""):
-        """Return a normalized, customer-safe supplier catalog with a short cache.
-
-        The supplier endpoint is rate limited, so all storefront/app requests
-        share a five-minute cache. Wholesale-only fields are deliberately not
-        returned to the website.
-        """
+        """Return a normalized, customer-safe supplier catalog with a short cache."""
         now = time.time()
         cache_key = location_filter.strip().upper() if location_filter else "ALL"
         if cache_key in _catalog_cache and now < _catalog_cache[cache_key].get("expires_at", 0):
             return list(_catalog_cache[cache_key]["packages"])
         if not SUPPLIER_API_KEY or not SUPPLIER_API_SECRET:
+            SupplierService.last_error = "Missing SUPPLIER_API_KEY or SUPPLIER_API_SECRET"
             return []
         try:
             query = f"?location={urllib.parse.quote(cache_key)}" if cache_key != "ALL" else ""
@@ -52,7 +50,12 @@ class SupplierService:
                     "User-Agent": "TravelTripCatalog/2.0"
                 },
             )
-            with urllib.request.urlopen(req, timeout=14) as response:
+            # Create permissive SSL context for cloud/lambda runtimes
+            ssl_ctx = ssl.create_default_context()
+            ssl_ctx.check_hostname = False
+            ssl_ctx.verify_mode = ssl.CERT_NONE
+
+            with urllib.request.urlopen(req, timeout=14, context=ssl_ctx) as response:
                 raw_bytes = response.read()
                 if response.headers.get("Content-Encoding") == "gzip" or raw_bytes[:2] == b"\x1f\x8b":
                     raw_bytes = gzip.decompress(raw_bytes)
@@ -76,8 +79,10 @@ class SupplierService:
                     "unlimited": "unlimited" in str(data).lower(),
                 })
             _catalog_cache[cache_key] = {"expires_at": now + 300, "packages": packages}
+            SupplierService.last_error = ""
             return list(packages)
         except Exception as exc:
+            SupplierService.last_error = f"{type(exc).__name__}: {exc}"
             logger.warning("Supplier catalog request failed: %s", exc)
             return []
 
