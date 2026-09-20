@@ -640,7 +640,7 @@
       };
       const show = () => {
         const items = matches();
-        dropdown.innerHTML = items.length ? items.map(d => `<button type="button" class="maya-search-result" data-code="${d.code}">${d.flag} <strong>${d.name}</strong><span>${d.code}</span></button>`).join('') : '<div class="maya-search-empty">No live plan found for that destination yet.</div>';
+        dropdown.innerHTML = items.length ? items.map(d => `<button type="button" class="tt-search-result" data-code="${d.code}">${d.flag} <strong>${d.name}</strong><span>${d.code}</span></button>`).join('') : '<div class="tt-search-empty">No live plan found for that destination yet.</div>';
         dropdown.classList.add('show');
       };
       const go = code => { window.location.href = `/destinations?country=${encodeURIComponent(code)}`; };
@@ -649,7 +649,7 @@
       input.addEventListener('keydown', e => { if (e.key === 'Enter') { const first = matches()[0]; if (first) go(first.code); } });
       submit.addEventListener('click', () => { const first = matches()[0]; if (first) go(first.code); else show(); });
       dropdown.addEventListener('click', e => { const button = e.target.closest('[data-code]'); if (button) go(button.dataset.code); });
-      document.addEventListener('click', e => { if (!document.getElementById('maya-search-container').contains(e.target)) dropdown.classList.remove('show'); });
+      document.addEventListener('click', e => { if (!document.getElementById('tt-search-container').contains(e.target)) dropdown.classList.remove('show'); });
     })();
 
     function switchSetupPlatform(platform) {

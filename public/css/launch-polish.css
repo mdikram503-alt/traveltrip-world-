@@ -36,3 +36,22 @@ header.top .nav a:hover { color:var(--tt-cyan); }
 .dest-code { background:linear-gradient(135deg,#1685ff,#3457e8) !important; }
 .plans-comparison-table { border-color:var(--tt-line) !important; box-shadow:0 12px 30px rgba(13,50,95,.08) !important; }
 @media (max-width:768px) { .maya-top-bar span:last-child { display:none; } .maya-section { padding-top:52px; padding-bottom:52px; } header.top .nav { display:none; } }
+
+/* Current TravelTrip components (the names below replace the older Maya set). */
+.tt-top-bar { background:linear-gradient(90deg,#071426,#102e57); border:0; }
+.tt-top-bar .top-badge { color:#b9efff; background:rgba(50,214,255,.14); }
+.tt-navbar { background:rgba(255,255,255,.94); border-color:rgba(37,141,255,.14); }
+.tt-logo-icon { background:linear-gradient(135deg,var(--tt-cyan),var(--tt-blue)); box-shadow:0 10px 24px rgba(37,141,255,.25); }
+.tt-nav-link.active,.tt-nav-link:hover { color:var(--tt-blue); }
+.tt-search-btn { background:linear-gradient(135deg,#1685ff,#3457e8); box-shadow:0 8px 20px rgba(37,141,255,.2); }
+.tt-search-btn:hover { background:linear-gradient(135deg,#0874eb,#2448d0); }
+.tt-hero { background:radial-gradient(circle at 20% 10%,rgba(50,214,255,.22),transparent 33%),radial-gradient(circle at 80% 25%,rgba(37,141,255,.17),transparent 35%),linear-gradient(135deg,#f9fcff,#e9f4ff); }
+.tt-search-box { border-color:rgba(37,141,255,.23); box-shadow:0 18px 46px rgba(13,50,95,.12); }
+.tt-search-box:focus-within { border-color:var(--tt-cyan); box-shadow:0 18px 46px rgba(37,141,255,.2); }
+.tt-pill.active,.tt-pill:hover { background:#e4f4ff; color:#096bc8; border-color:#a7d9ff; }
+.tt-dest-card,.tt-plan-card,.tt-pastel-card { border-color:var(--tt-line); box-shadow:0 10px 30px rgba(13,50,95,.07); }
+.tt-dest-card:hover,.tt-plan-card:hover,.tt-pastel-card:hover { border-color:#8ccfff; box-shadow:0 18px 40px rgba(13,50,95,.14); }
+.tt-search-result { width:100%; display:flex; align-items:center; gap:10px; padding:13px 18px; border:0; border-bottom:1px solid var(--tt-border-light); background:var(--tt-white); color:var(--tt-pitch-black); font:inherit; text-align:left; cursor:pointer; }
+.tt-search-result:hover,.tt-search-result:focus-visible { background:var(--tt-bg-secondary); color:var(--tt-blue); }
+.tt-search-result span { margin-left:auto; color:var(--tt-gray); font-size:12px; font-weight:700; }
+.tt-search-empty { padding:16px 18px; color:var(--tt-gray); font-size:14px; }
