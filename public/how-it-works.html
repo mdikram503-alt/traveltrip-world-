@@ -2,200 +2,154 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>How eSIM Works · iPhone & Android Step-by-Step Guide · TravelTrip World</title>
-  <meta name="description" content="Simple 3-step guide to installing and activating your TravelTrip eSIM profile on iPhone and Android devices. No physical SIM needed.">
-  <link rel="canonical" href="https://traveltrip.world/how-it-works">
-  <link rel="stylesheet" href="/css/site.css">
-  <style>
-    .guide-tabs {
-      display: flex;
-      gap: 12px;
-      margin: 28px 0 24px;
-    }
-    .guide-tab-btn {
-      padding: 10px 24px;
-      border-radius: var(--radius-pill);
-      background: #FFFFFF;
-      border: 1px solid var(--border);
-      font-weight: 700;
-      font-size: 0.95rem;
-      color: var(--text-muted);
-      cursor: pointer;
-    }
-    .guide-tab-btn.active {
-      background: var(--primary);
-      color: #FFFFFF;
-      border-color: var(--primary);
-    }
-    .guide-step-card {
-      background: #FFFFFF;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 24px;
-      margin-bottom: 18px;
-      display: flex;
-      gap: 20px;
-      align-items: flex-start;
-      box-shadow: var(--shadow-card);
-    }
-    .step-num {
-      width: 44px;
-      height: 44px;
-      background: var(--primary);
-      color: #FFFFFF;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.2rem;
-      font-weight: 800;
-      flex-shrink: 0;
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How eSIM Works · Instant 3-Step Setup | TravelTrip.world</title>
+  <meta name="description" content="Learn how TravelTrip eSIM works. Instant setup in 3 simple steps. No physical SIM card needed. Stay connected globally.">
+  <link rel="canonical" href="https://traveltrip.world/how-it-works.html">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" type="image/png" href="/images/logo-transparent.png">
+  <link rel="apple-touch-icon" href="/images/logo-transparent.png">
+  <meta name="theme-color" content="#3D38D0">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/maya-theme.css?v=2.2">
+  <script src="/js/i18n.js?v=2.0"></script>
 </head>
 <body>
-<div class="site-watermark-bg"></div>
-<header class="top">
-  <div class="shell top">
-    <a class="brand" href="/">
-      <img src="/images/logo-transparent.png" alt="Traveler traveltrip.world" class="brand-logo-img">
-      <div class="brand-text-wrap">
-        <span class="brand-title">traveltrip<span class="gold-accent">.world</span></span>
-        <span class="brand-sub">Traveler eSIM</span>
-      </div>
-    </a>
-    <nav class="nav">
-      <a href="/">Home</a>
-      <a href="/destinations">Destinations</a>
-      <a href="/how-it-works">How It Works</a>
-      <a href="/compatible-devices">Devices</a>
-      <a href="/faq">FAQ</a>
-      <a href="/account">My eSIMs</a>
-    </nav>
-    <div class="nav-right" id="nav-auth-slot">
-      <span class="currency-badge">USD ▾</span>
-      <a class="button button-secondary" href="/login">Sign In</a>
-    </div>
-  </div>
-</header>
 
+  <!-- Top Trust Bar -->
+  <aside class="maya-top-bar">
+    <div class="trust-stars">★ ★ ★ ★ ★ 4.8 / 5 on Trustpilot</div>
+    <span class="top-badge">SIMPLE &amp; FAST</span>
+    <span>Get online in less than 2 minutes</span>
+  </aside>
 
-<main class="shell" style="padding-top:32px; padding-bottom:60px; max-width:860px;">
-  <h1 class="section-heading-dark" style="font-size:2.4rem;">How TravelTrip eSIM Works</h1>
-  <p class="muted" style="font-size:1.05rem; margin-top:8px;">
-    An eSIM is a digital SIM card built into your phone. Follow this step-by-step guide to get connected in under 2 minutes.
-  </p>
+  <!-- Navbar -->
+  <header class="maya-navbar">
+    <div class="maya-nav-container">
+      <a href="/" class="maya-logo">
+        <div class="maya-logo-icon">📶</div>
+        <div class="maya-logo-text">
+          <span class="brand-name">TRAVELTRIP<span style="color: var(--maya-primary);">.WORLD</span></span>
+          <span class="brand-sub">TRAVELER eSIM</span>
+        </div>
+      </a>
 
-  <div class="guide-tabs">
-    <button id="btn-ios" class="guide-tab-btn active" onclick="switchGuide('ios')">🍎 Apple iPhone Setup</button>
-    <button id="btn-android" class="guide-tab-btn" onclick="switchGuide('android')">🤖 Android & Samsung Setup</button>
-  </div>
+      <nav>
+        <ul class="maya-nav-links">
+          <li><a href="/" class="maya-nav-link">Home</a></li>
+          <li><a href="/destinations.html" class="maya-nav-link">Destinations</a></li>
+          <li><a href="/#plans" class="maya-nav-link">eSIM Plans</a></li>
+          <li><a href="/how-it-works.html" class="maya-nav-link active">How it Works</a></li>
+          <li><a href="/compatibility.html" class="maya-nav-link">Compatibility</a></li>
+          <li><a href="/faq.html" class="maya-nav-link">FAQ</a></li>
+        </ul>
+      </nav>
 
-  <!-- iOS Guide -->
-  <div id="guide-ios">
-    <div class="guide-step-card watermark-shade">
-      <div class="step-num">1</div>
-      <div>
-        <h3 style="font-size:1.15rem; margin-bottom:6px;">Connect to Wi-Fi</h3>
-        <p class="muted">Make sure your iPhone is connected to an active Wi-Fi network (at home, airport, or hotel) before scanning.</p>
+      <div class="maya-nav-actions">
+        <div id="i18n-language-selector"></div>
+        <a href="/#plans" class="maya-search-btn" style="padding: 8px 18px; font-size: 14px; text-decoration: none;">
+          Buy eSIM ➔
+        </a>
       </div>
     </div>
-    <div class="guide-step-card watermark-shade">
-      <div class="step-num">2</div>
-      <div>
-        <h3 style="font-size:1.15rem; margin-bottom:6px;">Open Camera & Scan QR Code</h3>
-        <p class="muted">
-          Go to <strong>Settings → Cellular (or Mobile Data) → Add eSIM</strong>.<br>
-          Select <strong>Use QR Code</strong> and point your camera at the QR code shown on your TravelTrip account screen or order confirmation.
-        </p>
-      </div>
-    </div>
-    <div class="guide-step-card watermark-shade">
-      <div class="step-num">3</div>
-      <div>
-        <h3 style="font-size:1.15rem; margin-bottom:6px;">Turn On Data Roaming at Destination</h3>
-        <p class="muted">
-          Label your new plan as <em>Travel</em>. When you land at your destination airport, set <strong>Cellular Data</strong> to your TravelTrip eSIM and switch <strong>Data Roaming: ON</strong>. You're online!
-        </p>
-      </div>
-    </div>
-  </div>
+  </header>
 
-  <!-- Android Guide -->
-  <div id="guide-android" style="display:none;">
-    <div class="guide-step-card watermark-shade">
-      <div class="step-num">1</div>
-      <div>
-        <h3 style="font-size:1.15rem; margin-bottom:6px;">Connect to Wi-Fi</h3>
-        <p class="muted">Ensure your phone has Wi-Fi connectivity to download the carrier eSIM profile.</p>
+  <!-- Hero -->
+  <section class="maya-hero" style="padding: 56px 20px 48px 20px;">
+    <div class="maya-hero-container">
+      <div class="maya-hero-eyebrow">
+        <span>⚡ 100% Digital · Instant Activation</span>
       </div>
-    </div>
-    <div class="guide-step-card watermark-shade">
-      <div class="step-num">2</div>
-      <div>
-        <h3 style="font-size:1.15rem; margin-bottom:6px;">Go to SIM Manager & Add eSIM</h3>
-        <p class="muted">
-          Open <strong>Settings → Connections / Network & Internet → SIM Manager → Add eSIM</strong>.<br>
-          Tap <strong>Scan QR code from service provider</strong> and scan your TravelTrip QR.
-        </p>
-      </div>
-    </div>
-    <div class="guide-step-card watermark-shade">
-      <div class="step-num">3</div>
-      <div>
-        <h3 style="font-size:1.15rem; margin-bottom:6px;">Enable Mobile Data & Roaming</h3>
-        <p class="muted">
-          Choose TravelTrip as your primary Mobile Data SIM and ensure <strong>Roaming</strong> is enabled under Mobile Network settings.
-        </p>
-      </div>
-    </div>
-  </div>
-
-  <div style="margin-top:36px; text-align:center;">
-    <a href="/destinations" class="button button-lg">Find Your Plan & Get Started &rarr;</a>
-  </div>
-</main>
-<footer>
-  <div class="shell footer-inner">
-    <div class="footer-left">
-      <div class="footer-brand">TravelTrip World</div>
-      <p class="footer-text">
-        Traveler eSIM is owned by <strong>Mohammad Akram</strong>.<br>
-        <strong>ABDULLAH TRADING - F.Z.C.</strong> Office C1-1F-SF0218, Ajman Free Zone C1 Building,<br>
-        Ajman Free Zone, UAE. License: 51845.<br>
-        Official WhatsApp Support: <a href="https://wa.me/8801836089766" style="color:var(--primary); font-weight:700;">+880 1836-089766</a>
+      <h1 class="maya-hero-title">
+        HOW TRAVELTRIP <span class="title-gradient">WORKS</span>
+      </h1>
+      <p class="maya-hero-subhead">
+        No waiting in airport queues. No expensive international roaming bills.<br>
+        Download once, install in 2 minutes, and stay connected on every trip.
       </p>
     </div>
-    <div class="footer-links">
-      <a href="/destinations">Destinations</a>
-      <a href="/how-it-works">How It Works</a>
-      <a href="/compatible-devices">Compatibility</a>
-      <a href="/faq">FAQ</a>
-      <a href="/terms">Terms</a>
-      <a href="/privacy">Privacy</a>
-      <a href="/refund-policy">Refund Policy</a>
-    </div>
-  </div>
-</footer>
-<a href="https://wa.me/8801836089766" class="floating-whatsapp" target="_blank" rel="noopener">
-  <span>💬 WhatsApp: +880 1836-089766</span>
-</a>
+  </section>
 
-<script>
-  function switchGuide(type) {
-    if (type === 'ios') {
-      document.getElementById('btn-ios').classList.add('active');
-      document.getElementById('btn-android').classList.remove('active');
-      document.getElementById('guide-ios').style.display = 'block';
-      document.getElementById('guide-android').style.display = 'none';
-    } else {
-      document.getElementById('btn-android').classList.add('active');
-      document.getElementById('btn-ios').classList.remove('active');
-      document.getElementById('guide-ios').style.display = 'none';
-      document.getElementById('guide-android').style.display = 'block';
-    }
-  }
-</script>
+  <!-- 3 Steps Detailed -->
+  <section class="maya-section" style="padding: 56px 20px;">
+    <div class="maya-container">
+      <div class="maya-setup-steps-grid" style="gap: 32px;">
+        
+        <div class="maya-setup-step-card">
+          <div class="maya-step-giant-number">01</div>
+          <h3 class="maya-setup-step-title">Choose Destination &amp; Plan</h3>
+          <p class="maya-setup-step-desc" style="margin-bottom: 16px;">
+            Pick your travel destination from 200+ countries. Select fixed or unlimited data with flexible duration (3, 7, 15, or 30 days).
+          </p>
+          <div style="background: var(--maya-primary-extra-light); padding: 12px; border-radius: 12px; font-size: 13px; color: var(--maya-primary); font-weight: 700;">
+            ✓ Instant Stripe / Apple Pay checkout
+          </div>
+        </div>
+
+        <div class="maya-setup-step-card">
+          <div class="maya-step-giant-number">02</div>
+          <h3 class="maya-setup-step-title">Scan QR Code or Tap Install</h3>
+          <p class="maya-setup-step-desc" style="margin-bottom: 16px;">
+            Your official QR code arrives in your email inbox within 2 minutes. Open your phone camera or settings to scan and download the profile.
+          </p>
+          <div style="background: var(--maya-green-bg); padding: 12px; border-radius: 12px; font-size: 13px; color: var(--maya-green); font-weight: 700;">
+            ✓ Works on iPhone, Samsung &amp; Pixel
+          </div>
+        </div>
+
+        <div class="maya-setup-step-card">
+          <div class="maya-step-giant-number">03</div>
+          <h3 class="maya-setup-step-title">Land &amp; Connect to 5G</h3>
+          <p class="maya-setup-step-desc" style="margin-bottom: 16px;">
+            When you land at your destination airport, simply toggle on <strong>Data Roaming</strong> on your TravelTrip eSIM line. You're online instantly!
+          </p>
+          <div style="background: #FEF3C7; padding: 12px; border-radius: 12px; font-size: 13px; color: #B45309; font-weight: 700;">
+            ✓ Keep original WhatsApp number active
+          </div>
+        </div>
+
+      </div>
+
+      <div style="text-align: center; margin-top: 48px;">
+        <a href="/#plans" class="maya-search-btn" style="display: inline-flex; padding: 16px 40px; font-size: 16px; text-decoration: none;">
+          Get Your TravelTrip eSIM Now ➔
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Clean Footer -->
+  <footer class="maya-footer">
+    <div class="maya-footer-container">
+      <div class="maya-footer-brand">
+        <div class="brand-title">TRAVELTRIP<span style="color: var(--maya-primary-light);">.WORLD</span></div>
+        <p class="brand-desc">Truly unlimited global eSIM data in 200+ countries.</p>
+        <div class="brand-copyright">&copy; 2026 <strong>TravelTrip World</strong>. All rights reserved.</div>
+      </div>
+      <div class="maya-footer-col">
+        <h4>Popular Destinations</h4>
+        <ul class="maya-footer-links">
+          <li><a href="/esim/uae.html">UAE eSIM</a></li>
+          <li><a href="/destinations.html?country=SA">Saudi Arabia eSIM</a></li>
+          <li><a href="/destinations.html?country=EU">Europe 33 Countries</a></li>
+        </ul>
+      </div>
+      <div class="maya-footer-col">
+        <h4>Support</h4>
+        <ul class="maya-footer-links">
+          <li><a href="https://www.facebook.com/profile.php?id=61594435043497" target="_blank">Facebook Page</a></li>
+          <li><a href="https://wa.me/971567406263" target="_blank">WhatsApp Support</a></li>
+          <li><a href="/faq.html">FAQ</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+  <div class="maya-floating-actions">
+    <a href="https://wa.me/971567406263" target="_blank" class="maya-btn-float-wa" title="WhatsApp">💬</a>
+  </div>
 </body>
 </html>
