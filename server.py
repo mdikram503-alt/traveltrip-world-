@@ -280,7 +280,10 @@ def get_catalog_packages():
         "requestedLocation": requested_location or "ALL",
         "count": len(pkgs),
         "destinations": all_regions,
-        "packages": pkgs
+        "packages": pkgs,
+        "supplier_live": bool(supplier_packages),
+        "supplier_error": getattr(SupplierService, "last_error", ""),
+        "key_prefix": (getattr(SupplierService, "SUPPLIER_API_KEY", "") or "")[:6]
     })
 
 # ==============================================================================
