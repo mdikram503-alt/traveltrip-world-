@@ -14,43 +14,43 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/css/maya-theme.css?v=2.3">
+  <link rel="stylesheet" href="/css/traveltrip.css?v=3.0">
   <script src="/js/i18n.js?v=2.0"></script>
 </head>
 <body>
 
   <!-- Top Trust Announcement Bar -->
-  <aside class="maya-top-bar">
+  <aside class="tt-top-bar">
     <div class="trust-stars">★ ★ ★ ★ ★ 4.8 / 5 on Trustpilot</div>
     <span class="top-badge">2026 - 2027 UPDATED</span>
     <span>eSIM Compatible Phones &amp; Tablets Directory</span>
   </aside>
 
   <!-- Clean Navbar -->
-  <header class="maya-navbar">
-    <div class="maya-nav-container">
-      <a href="/" class="maya-logo">
-        <div class="maya-logo-icon">📶</div>
-        <div class="maya-logo-text">
-          <span class="brand-name">TRAVELTRIP<span style="color: var(--maya-primary);">.WORLD</span></span>
+  <header class="tt-navbar">
+    <div class="tt-nav-container">
+      <a href="/" class="tt-logo">
+        <div class="tt-logo-icon">📶</div>
+        <div class="tt-logo-text">
+          <span class="brand-name">TRAVELTRIP<span style="color: var(--tt-primary);">.WORLD</span></span>
           <span class="brand-sub">TRAVELER eSIM</span>
         </div>
       </a>
 
       <nav>
-        <ul class="maya-nav-links">
-          <li><a href="/" class="maya-nav-link">Home</a></li>
-          <li><a href="/destinations.html" class="maya-nav-link">Destinations</a></li>
-          <li><a href="/#plans" class="maya-nav-link">eSIM Plans</a></li>
-          <li><a href="/compatibility.html" class="maya-nav-link active">Compatible Devices (2026-2027)</a></li>
-          <li><a href="/how-it-works.html" class="maya-nav-link">How it Works</a></li>
-          <li><a href="/faq.html" class="maya-nav-link">FAQ</a></li>
+        <ul class="tt-nav-links">
+          <li><a href="/" class="tt-nav-link">Home</a></li>
+          <li><a href="/destinations.html" class="tt-nav-link">Destinations</a></li>
+          <li><a href="/#plans" class="tt-nav-link">eSIM Plans</a></li>
+          <li><a href="/compatibility.html" class="tt-nav-link active">Compatible Devices (2026-2027)</a></li>
+          <li><a href="/how-it-works.html" class="tt-nav-link">How it Works</a></li>
+          <li><a href="/faq.html" class="tt-nav-link">FAQ</a></li>
         </ul>
       </nav>
 
-      <div class="maya-nav-actions">
+      <div class="tt-nav-actions">
         <div id="i18n-language-selector"></div>
-        <a href="/#plans" class="maya-search-btn" style="padding: 8px 18px; font-size: 14px; text-decoration: none;">
+        <a href="/#plans" class="tt-search-btn" style="padding: 8px 18px; font-size: 14px; text-decoration: none;">
           Buy eSIM ➔
         </a>
       </div>
@@ -58,26 +58,26 @@
   </header>
 
   <!-- Hero Section -->
-  <section class="maya-hero" style="padding: 56px 20px 48px 20px;">
-    <div class="maya-hero-container">
-      <div class="maya-hero-eyebrow">
+  <section class="tt-hero" style="padding: 56px 20px 48px 20px;">
+    <div class="tt-hero-container">
+      <div class="tt-hero-eyebrow">
         <span>⚡ 2026 &amp; 2027 Official Smartphone Compatibility Directory</span>
       </div>
-      <h1 class="maya-hero-title">
+      <h1 class="tt-hero-title">
         eSIM COMPATIBLE <span class="title-gradient">DEVICES LIST</span>
       </h1>
-      <p class="maya-hero-subhead">
+      <p class="tt-hero-subhead">
         Over 250+ smartphones, tablets, and smartwatches are 100% compatible with TravelTrip eSIMs.<br>
         Search your exact phone model below.
       </p>
 
       <!-- Instant Device Search Box -->
-      <div class="maya-search-box" style="max-width: 680px; margin: 28px auto 0 auto;">
-        <div class="maya-search-icon">🔍</div>
+      <div class="tt-search-box" style="max-width: 680px; margin: 28px auto 0 auto;">
+        <div class="tt-search-icon">🔍</div>
         <input 
           type="text" 
           id="device-search-input" 
-          class="maya-search-input" 
+          class="tt-search-input" 
           placeholder="Search your device model (e.g. iPhone 17, Galaxy S25, Pixel 10, Xiaomi 15, Fold...)"
           autocomplete="off"
           oninput="filterDevices()"
@@ -87,15 +87,15 @@
   </section>
 
   <!-- Quick Universal EID Check Method -->
-  <section class="maya-section" style="padding: 32px 20px; background: #FFFFFF;">
-    <div class="maya-container" style="max-width: 900px;">
+  <section class="tt-section" style="padding: 32px 20px; background: #FFFFFF;">
+    <div class="tt-container" style="max-width: 900px;">
       <div style="background: linear-gradient(135deg, #EEF2FF 0%, #E0E7FF 100%); border: 1px solid #C7D2FE; border-radius: 20px; padding: 24px 28px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap;">
         <div>
-          <div style="font-size: 12px; font-weight: 800; color: var(--maya-primary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px;">⚡ 5-Second Instant Dial Test:</div>
+          <div style="font-size: 12px; font-weight: 800; color: var(--tt-primary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px;">⚡ 5-Second Instant Dial Test:</div>
           <h3 style="font-size: 18px; font-weight: 800; color: #1E1B4B; margin-bottom: 4px;">Dial *#06# on your phone keypad</h3>
           <p style="font-size: 14px; color: #4338CA;">If a 32-digit <strong>EID barcode number</strong> appears on your screen, your device 100% supports eSIM!</p>
         </div>
-        <div style="background: #FFFFFF; border-radius: 12px; padding: 10px 18px; font-family: monospace; font-size: 20px; font-weight: 800; color: var(--maya-primary); border: 2px dashed var(--maya-primary); box-shadow: 0 4px 12px rgba(61, 56, 208, 0.1);">
+        <div style="background: #FFFFFF; border-radius: 12px; padding: 10px 18px; font-family: monospace; font-size: 20px; font-weight: 800; color: var(--tt-primary); border: 2px dashed var(--tt-primary); box-shadow: 0 4px 12px rgba(61, 56, 208, 0.1);">
           *#06#
         </div>
       </div>
@@ -103,27 +103,27 @@
   </section>
 
   <!-- Category Brand Tabs -->
-  <section class="maya-section maya-section-alt" style="padding: 48px 20px;">
-    <div class="maya-container">
+  <section class="tt-section maya-section-alt" style="padding: 48px 20px;">
+    <div class="tt-container">
       
       <!-- Brand Filter Buttons -->
       <div style="display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-bottom: 36px;" id="brand-tabs">
-        <button class="maya-tab-btn active" onclick="switchBrandTab('all', this)">🌍 All Brands</button>
-        <button class="maya-tab-btn" onclick="switchBrandTab('apple', this)">🍎 Apple iPhone (Up to 2027)</button>
-        <button class="maya-tab-btn" onclick="switchBrandTab('samsung', this)">🤖 Samsung Galaxy (S26/S25/Fold)</button>
-        <button class="maya-tab-btn" onclick="switchBrandTab('google', this)">📱 Google Pixel (Pixel 10/9)</button>
-        <button class="maya-tab-btn" onclick="switchBrandTab('xiaomi', this)">⚡ Xiaomi &amp; Redmi</button>
-        <button class="maya-tab-btn" onclick="switchBrandTab('oneplus', this)">🔥 OnePlus &amp; Oppo</button>
-        <button class="maya-tab-btn" onclick="switchBrandTab('others', this)">🌐 Motorola, Honor &amp; Others</button>
+        <button class="tt-tab-btn active" onclick="switchBrandTab('all', this)">🌍 All Brands</button>
+        <button class="tt-tab-btn" onclick="switchBrandTab('apple', this)">🍎 Apple iPhone (Up to 2027)</button>
+        <button class="tt-tab-btn" onclick="switchBrandTab('samsung', this)">🤖 Samsung Galaxy (S26/S25/Fold)</button>
+        <button class="tt-tab-btn" onclick="switchBrandTab('google', this)">📱 Google Pixel (Pixel 10/9)</button>
+        <button class="tt-tab-btn" onclick="switchBrandTab('xiaomi', this)">⚡ Xiaomi &amp; Redmi</button>
+        <button class="tt-tab-btn" onclick="switchBrandTab('oneplus', this)">🔥 OnePlus &amp; Oppo</button>
+        <button class="tt-tab-btn" onclick="switchBrandTab('others', this)">🌐 Motorola, Honor &amp; Others</button>
       </div>
 
       <!-- Device Cards Grid -->
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px;" id="devices-grid">
 
         <!-- APPLE IPHONES (2026-2027 & Modern) -->
-        <div class="device-card" data-brand="apple" style="background: #FFFFFF; border: 1px solid var(--maya-border); border-radius: 20px; padding: 28px; box-shadow: var(--shadow-card);">
+        <div class="device-card" data-brand="apple" style="background: #FFFFFF; border: 1px solid var(--tt-border); border-radius: 20px; padding: 28px; box-shadow: var(--shadow-card);">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 2px solid #F1F5F9; padding-bottom: 12px;">
-            <h3 style="font-size: 19px; font-weight: 800; color: var(--maya-pitch-black); display: flex; align-items: center; gap: 8px;">
+            <h3 style="font-size: 19px; font-weight: 800; color: var(--tt-pitch-black); display: flex; align-items: center; gap: 8px;">
               <span>🍎</span> Apple iPhone &amp; iPad
             </h3>
             <span style="background: #EFF6FF; color: #1D4ED8; font-size: 11px; font-weight: 800; padding: 4px 10px; border-radius: 99px;">2026-2027 READY</span>
@@ -142,9 +142,9 @@
         </div>
 
         <!-- SAMSUNG GALAXY (2026-2027 & Flagships) -->
-        <div class="device-card" data-brand="samsung" style="background: #FFFFFF; border: 1px solid var(--maya-border); border-radius: 20px; padding: 28px; box-shadow: var(--shadow-card);">
+        <div class="device-card" data-brand="samsung" style="background: #FFFFFF; border: 1px solid var(--tt-border); border-radius: 20px; padding: 28px; box-shadow: var(--shadow-card);">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 2px solid #F1F5F9; padding-bottom: 12px;">
-            <h3 style="font-size: 19px; font-weight: 800; color: var(--maya-pitch-black); display: flex; align-items: center; gap: 8px;">
+            <h3 style="font-size: 19px; font-weight: 800; color: var(--tt-pitch-black); display: flex; align-items: center; gap: 8px;">
               <span>🤖</span> Samsung Galaxy
             </h3>
             <span style="background: #ECFDF5; color: #047857; font-size: 11px; font-weight: 800; padding: 4px 10px; border-radius: 99px;">S26 / S25 VERIFIED</span>
@@ -164,9 +164,9 @@
         </div>
 
         <!-- GOOGLE PIXEL (Pixel 10, 9 & Fold) -->
-        <div class="device-card" data-brand="google" style="background: #FFFFFF; border: 1px solid var(--maya-border); border-radius: 20px; padding: 28px; box-shadow: var(--shadow-card);">
+        <div class="device-card" data-brand="google" style="background: #FFFFFF; border: 1px solid var(--tt-border); border-radius: 20px; padding: 28px; box-shadow: var(--shadow-card);">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 2px solid #F1F5F9; padding-bottom: 12px;">
-            <h3 style="font-size: 19px; font-weight: 800; color: var(--maya-pitch-black); display: flex; align-items: center; gap: 8px;">
+            <h3 style="font-size: 19px; font-weight: 800; color: var(--tt-pitch-black); display: flex; align-items: center; gap: 8px;">
               <span>📱</span> Google Pixel
             </h3>
             <span style="background: #FEF3C7; color: #B45309; font-size: 11px; font-weight: 800; padding: 4px 10px; border-radius: 99px;">PIXEL 10 / 9</span>
@@ -183,9 +183,9 @@
         </div>
 
         <!-- XIAOMI & REDMI -->
-        <div class="device-card" data-brand="xiaomi" style="background: #FFFFFF; border: 1px solid var(--maya-border); border-radius: 20px; padding: 28px; box-shadow: var(--shadow-card);">
+        <div class="device-card" data-brand="xiaomi" style="background: #FFFFFF; border: 1px solid var(--tt-border); border-radius: 20px; padding: 28px; box-shadow: var(--shadow-card);">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 2px solid #F1F5F9; padding-bottom: 12px;">
-            <h3 style="font-size: 19px; font-weight: 800; color: var(--maya-pitch-black); display: flex; align-items: center; gap: 8px;">
+            <h3 style="font-size: 19px; font-weight: 800; color: var(--tt-pitch-black); display: flex; align-items: center; gap: 8px;">
               <span>⚡</span> Xiaomi &amp; Redmi
             </h3>
             <span style="background: #FDF2F8; color: #BE185D; font-size: 11px; font-weight: 800; padding: 4px 10px; border-radius: 99px;">15 &amp; 14 SERIES</span>
@@ -201,9 +201,9 @@
         </div>
 
         <!-- ONEPLUS & OPPO -->
-        <div class="device-card" data-brand="oneplus" style="background: #FFFFFF; border: 1px solid var(--maya-border); border-radius: 20px; padding: 28px; box-shadow: var(--shadow-card);">
+        <div class="device-card" data-brand="oneplus" style="background: #FFFFFF; border: 1px solid var(--tt-border); border-radius: 20px; padding: 28px; box-shadow: var(--shadow-card);">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 2px solid #F1F5F9; padding-bottom: 12px;">
-            <h3 style="font-size: 19px; font-weight: 800; color: var(--maya-pitch-black); display: flex; align-items: center; gap: 8px;">
+            <h3 style="font-size: 19px; font-weight: 800; color: var(--tt-pitch-black); display: flex; align-items: center; gap: 8px;">
               <span>🔥</span> OnePlus &amp; Oppo
             </h3>
             <span style="background: #EEF2FF; color: #4338CA; font-size: 11px; font-weight: 800; padding: 4px 10px; border-radius: 99px;">13 &amp; FIND X8</span>
@@ -219,9 +219,9 @@
         </div>
 
         <!-- MOTOROLA, HONOR, VIVO & OTHERS -->
-        <div class="device-card" data-brand="others" style="background: #FFFFFF; border: 1px solid var(--maya-border); border-radius: 20px; padding: 28px; box-shadow: var(--shadow-card);">
+        <div class="device-card" data-brand="others" style="background: #FFFFFF; border: 1px solid var(--tt-border); border-radius: 20px; padding: 28px; box-shadow: var(--shadow-card);">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 2px solid #F1F5F9; padding-bottom: 12px;">
-            <h3 style="font-size: 19px; font-weight: 800; color: var(--maya-pitch-black); display: flex; align-items: center; gap: 8px;">
+            <h3 style="font-size: 19px; font-weight: 800; color: var(--tt-pitch-black); display: flex; align-items: center; gap: 8px;">
               <span>🌐</span> Motorola, Honor, Vivo &amp; Sony
             </h3>
             <span style="background: #F0FDF4; color: #15803D; font-size: 11px; font-weight: 800; padding: 4px 10px; border-radius: 99px;">UNIVERSAL</span>
@@ -239,14 +239,14 @@
       </div>
 
       <!-- CTA Box -->
-      <div style="background: var(--maya-pitch-black); border-radius: 24px; padding: 40px 24px; text-align: center; color: #FFFFFF; margin-top: 48px; box-shadow: var(--shadow-lg);">
+      <div style="background: var(--tt-pitch-black); border-radius: 24px; padding: 40px 24px; text-align: center; color: #FFFFFF; margin-top: 48px; box-shadow: var(--shadow-lg);">
         <h2 style="font-size: 26px; font-weight: 800; margin-bottom: 8px; font-family: var(--font-heading);">
           Ready to Travel with High-Speed Unlimited Data?
         </h2>
         <p style="font-size: 16px; color: #94A3B8; max-width: 600px; margin: 0 auto 24px auto;">
           Pick your destination, activate in 2 minutes, and enjoy 5G coverage worldwide.
         </p>
-        <a href="/#plans" class="maya-search-btn" style="display: inline-flex; padding: 14px 36px; font-size: 15px; text-decoration: none;">
+        <a href="/#plans" class="tt-search-btn" style="display: inline-flex; padding: 14px 36px; font-size: 15px; text-decoration: none;">
           Explore eSIM Packages ➔
         </a>
       </div>
@@ -255,24 +255,24 @@
   </section>
 
   <!-- Clean Footer -->
-  <footer class="maya-footer">
-    <div class="maya-footer-container">
-      <div class="maya-footer-brand">
-        <div class="brand-title">TRAVELTRIP<span style="color: var(--maya-primary-light);">.WORLD</span></div>
+  <footer class="tt-footer">
+    <div class="tt-footer-container">
+      <div class="tt-footer-brand">
+        <div class="brand-title">TRAVELTRIP<span style="color: var(--tt-primary-light);">.WORLD</span></div>
         <p class="brand-desc">Truly unlimited global eSIM data in 200+ countries.</p>
         <div class="brand-copyright">&copy; 2026-2027 <strong>TravelTrip World</strong>. All rights reserved.</div>
       </div>
-      <div class="maya-footer-col">
+      <div class="tt-footer-col">
         <h4>Popular Destinations</h4>
-        <ul class="maya-footer-links">
+        <ul class="tt-footer-links">
           <li><a href="/esim/uae.html">UAE eSIM</a></li>
           <li><a href="/destinations.html?country=SA">Saudi Arabia eSIM</a></li>
           <li><a href="/destinations.html?country=EU">Europe 33 Countries</a></li>
         </ul>
       </div>
-      <div class="maya-footer-col">
+      <div class="tt-footer-col">
         <h4>Support</h4>
-        <ul class="maya-footer-links">
+        <ul class="tt-footer-links">
           <li><a href="https://www.facebook.com/profile.php?id=61594435043497" target="_blank">Facebook Page</a></li>
           <li><a href="https://wa.me/971567406263" target="_blank">WhatsApp Support</a></li>
           <li><a href="/faq.html">FAQ</a></li>
@@ -281,8 +281,8 @@
     </div>
   </footer>
 
-  <div class="maya-floating-actions">
-    <a href="https://wa.me/971567406263" target="_blank" class="maya-btn-float-wa" title="WhatsApp">💬</a>
+  <div class="tt-floating-actions">
+    <a href="https://wa.me/971567406263" target="_blank" class="tt-btn-float-wa" title="WhatsApp">💬</a>
   </div>
 
   <!-- Interactive Device Filter Script -->

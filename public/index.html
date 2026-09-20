@@ -24,7 +24,7 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <!-- Stylesheets -->
-  <link rel="stylesheet" href="/css/maya-theme.css?v=2.2">
+  <link rel="stylesheet" href="/css/traveltrip.css?v=3.0">
   
   <!-- Multi-language i18n Engine -->
   <script src="/js/i18n.js?v=2.0"></script>
@@ -32,7 +32,7 @@
 <body>
 
   <!-- Top Trust Announcement Bar -->
-  <aside class="maya-top-bar" aria-label="Announcement">
+  <aside class="tt-top-bar" aria-label="Announcement">
     <div class="trust-stars">
       <span>★ ★ ★ ★ ★</span>
       <span>4.8 / 5 on Trustpilot</span>
@@ -42,30 +42,30 @@
   </aside>
 
   <!-- Clean Sticky Navbar -->
-  <header class="maya-navbar">
-    <div class="maya-nav-container">
-      <a href="/" class="maya-logo" aria-label="TravelTrip.world Home">
-        <div class="maya-logo-icon">📶</div>
-        <div class="maya-logo-text">
-          <span class="brand-name">TRAVELTRIP<span style="color: var(--maya-primary);">.WORLD</span></span>
+  <header class="tt-navbar">
+    <div class="tt-nav-container">
+      <a href="/" class="tt-logo" aria-label="TravelTrip.world Home">
+        <div class="tt-logo-icon">📶</div>
+        <div class="tt-logo-text">
+          <span class="brand-name">TRAVELTRIP<span style="color: var(--tt-primary);">.WORLD</span></span>
           <span class="brand-sub">TRAVELER eSIM</span>
         </div>
       </a>
 
       <nav aria-label="Main Navigation">
-        <ul class="maya-nav-links">
-          <li><a href="#destinations" class="maya-nav-link active">Destinations</a></li>
-          <li><a href="#plans" class="maya-nav-link">eSIM Plans</a></li>
-          <li><a href="#how-it-works" class="maya-nav-link">Get Connected</a></li>
-          <li><a href="#features" class="maya-nav-link">Why TravelTrip</a></li>
-          <li><a href="/compatibility.html" class="maya-nav-link">Compatibility</a></li>
-          <li><a href="#app-download" class="maya-nav-link">App</a></li>
+        <ul class="tt-nav-links">
+          <li><a href="#destinations" class="tt-nav-link active">Destinations</a></li>
+          <li><a href="#plans" class="tt-nav-link">eSIM Plans</a></li>
+          <li><a href="#how-it-works" class="tt-nav-link">Get Connected</a></li>
+          <li><a href="#features" class="tt-nav-link">Why TravelTrip</a></li>
+          <li><a href="/compatibility.html" class="tt-nav-link">Compatibility</a></li>
+          <li><a href="#app-download" class="tt-nav-link">App</a></li>
         </ul>
       </nav>
 
-      <div class="maya-nav-actions">
+      <div class="tt-nav-actions">
         <div id="i18n-language-selector" style="margin-right: 8px;"></div>
-        <a href="#plans" class="maya-search-btn" style="padding: 8px 18px; font-size: 14px; text-decoration: none;">
+        <a href="#plans" class="tt-search-btn" style="padding: 8px 18px; font-size: 14px; text-decoration: none;">
           Get Your eSIM ➔
         </a>
       </div>
@@ -73,51 +73,51 @@
   </header>
 
   <!-- HERO SECTION: ONE eSIM. THE WHOLE WORLD. -->
-  <section class="maya-hero">
-    <div class="maya-hero-container">
-      <div class="maya-hero-eyebrow">
+  <section class="tt-hero">
+    <div class="tt-hero-container">
+      <div class="tt-hero-eyebrow">
         <span>🌟 Simple · Easy · Always Connected</span>
       </div>
 
-      <h1 class="maya-hero-title">
+      <h1 class="tt-hero-title">
         ONE eSIM.
         <span class="title-gradient">THE WHOLE WORLD.</span>
       </h1>
 
-      <p class="maya-hero-subhead">
+      <p class="tt-hero-subhead">
         <strong>Unlimited data in 200+ countries.</strong><br>
         Stay connected wherever you travel.<br>
         <strong>One eSIM. Every trip.</strong>
       </p>
 
       <!-- Search Box -->
-      <div class="maya-search-box" id="maya-search-container">
-        <div class="maya-search-icon">🔍</div>
+      <div class="tt-search-box" id="tt-search-container">
+        <div class="tt-search-icon">🔍</div>
         <input 
           type="text" 
           id="destination-search-input" 
-          class="maya-search-input" 
+          class="tt-search-input" 
           placeholder="Where are you going? (e.g. Europe, UAE, USA, Japan, Saudi Arabia...)"
           autocomplete="off"
         >
-        <button type="button" id="search-submit-btn" class="maya-search-btn">
+        <button type="button" id="search-submit-btn" class="tt-search-btn">
           Search ➔
         </button>
-        <div id="search-dropdown" class="maya-search-dropdown"></div>
+        <div id="search-dropdown" class="tt-search-dropdown"></div>
       </div>
 
       <!-- Quick Region Filter Pills -->
-      <div class="maya-region-pills">
-        <button class="maya-pill active" data-region="all">🌍 All Regions</button>
-        <button class="maya-pill" data-region="europe">🇪🇺 Europe</button>
-        <button class="maya-pill" data-region="middle-east">🇦🇪 UAE &amp; Middle East</button>
-        <button class="maya-pill" data-region="north-america">🇺🇸 USA &amp; Americas</button>
-        <button class="maya-pill" data-region="asia">🌏 Asia &amp; Pacific</button>
-        <button class="maya-pill" data-region="global">🌐 Global 200+</button>
+      <div class="tt-region-pills">
+        <button class="tt-pill active" data-region="all">🌍 All Regions</button>
+        <button class="tt-pill" data-region="europe">🇪🇺 Europe</button>
+        <button class="tt-pill" data-region="middle-east">🇦🇪 UAE &amp; Middle East</button>
+        <button class="tt-pill" data-region="north-america">🇺🇸 USA &amp; Americas</button>
+        <button class="tt-pill" data-region="asia">🌏 Asia &amp; Pacific</button>
+        <button class="tt-pill" data-region="global">🌐 Global 200+</button>
       </div>
 
       <div style="margin-top: 24px;">
-        <a href="#plans" class="maya-search-btn" style="display: inline-flex; padding: 14px 36px; font-size: 16px; text-decoration: none;">
+        <a href="#plans" class="tt-search-btn" style="display: inline-flex; padding: 14px 36px; font-size: 16px; text-decoration: none;">
           Get Your eSIM Now ➔
         </a>
       </div>
@@ -125,42 +125,42 @@
   </section>
 
   <!-- 3 PASTEL FEATURE CARDS WITH AUTHENTIC ARABIC DEMOGRAPHICS (MAYA STYLE) -->
-  <section class="maya-pastel-section" id="features">
-    <div class="maya-pastel-grid">
+  <section class="tt-pastel-section" id="features">
+    <div class="tt-pastel-grid">
       
       <!-- Card 1: Pastel Blue -->
-      <div class="maya-pastel-card maya-pastel-blue">
+      <div class="tt-pastel-card maya-pastel-blue">
         <div>
-          <span class="maya-pastel-tag">📱 Lifetime eSIM</span>
-          <h3 class="maya-pastel-title">Download once, use on every trip</h3>
-          <p class="maya-pastel-desc">Keep your TravelTrip eSIM installed on your phone forever. No physical SIM swapping or airport queues.</p>
+          <span class="tt-pastel-tag">📱 Lifetime eSIM</span>
+          <h3 class="tt-pastel-title">Download once, use on every trip</h3>
+          <p class="tt-pastel-desc">Keep your TravelTrip eSIM installed on your phone forever. No physical SIM swapping or airport queues.</p>
         </div>
-        <div class="maya-pastel-img-wrap">
-          <img src="/images/arabic_family_travel.jpg" alt="Arabic Family Traveling with TravelTrip eSIM" class="maya-pastel-img" loading="lazy">
+        <div class="tt-pastel-img-wrap">
+          <img src="/images/arabic_family_travel.jpg" alt="Arabic Family Traveling with TravelTrip eSIM" class="tt-pastel-img" loading="lazy">
         </div>
       </div>
 
       <!-- Card 2: Pastel Pink -->
-      <div class="maya-pastel-card maya-pastel-pink">
+      <div class="tt-pastel-card maya-pastel-pink">
         <div>
-          <span class="maya-pastel-tag">⚡ Instant 5G Handoff</span>
-          <h3 class="maya-pastel-title">Land anywhere, get online instantly</h3>
-          <p class="maya-pastel-desc">As soon as your flight touches down, switch on your eSIM data roaming and connect to top tier-1 networks in seconds.</p>
+          <span class="tt-pastel-tag">⚡ Instant 5G Handoff</span>
+          <h3 class="tt-pastel-title">Land anywhere, get online instantly</h3>
+          <p class="tt-pastel-desc">As soon as your flight touches down, switch on your eSIM data roaming and connect to top tier-1 networks in seconds.</p>
         </div>
-        <div class="maya-pastel-img-wrap">
-          <img src="/images/arabic_couple_airport.jpg" alt="Arabic Couple Arriving at Airport Connected via TravelTrip eSIM" class="maya-pastel-img" loading="lazy">
+        <div class="tt-pastel-img-wrap">
+          <img src="/images/arabic_couple_airport.jpg" alt="Arabic Couple Arriving at Airport Connected via TravelTrip eSIM" class="tt-pastel-img" loading="lazy">
         </div>
       </div>
 
       <!-- Card 3: Pastel Green -->
-      <div class="maya-pastel-card maya-pastel-green">
+      <div class="tt-pastel-card maya-pastel-green">
         <div>
-          <span class="maya-pastel-tag">🌐 Global Coverage</span>
-          <h3 class="maya-pastel-title">Connect in 200+ destinations</h3>
-          <p class="maya-pastel-desc">Enjoy crystal-clear WhatsApp calling, maps, and social streaming with truly unlimited data and free hotspot tethering.</p>
+          <span class="tt-pastel-tag">🌐 Global Coverage</span>
+          <h3 class="tt-pastel-title">Connect in 200+ destinations</h3>
+          <p class="tt-pastel-desc">Enjoy crystal-clear WhatsApp calling, maps, and social streaming with truly unlimited data and free hotspot tethering.</p>
         </div>
-        <div class="maya-pastel-img-wrap">
-          <img src="/images/arabic_travel_lifestyle.jpg" alt="Arabic Traveler Experiencing Seamless Global Connectivity" class="maya-pastel-img" loading="lazy">
+        <div class="tt-pastel-img-wrap">
+          <img src="/images/arabic_travel_lifestyle.jpg" alt="Arabic Traveler Experiencing Seamless Global Connectivity" class="tt-pastel-img" loading="lazy">
         </div>
       </div>
 
@@ -168,100 +168,100 @@
   </section>
 
   <!-- MAYA 3-STEP SETUP WITH IPHONE & ANDROID TABS -->
-  <section class="maya-setup-section" id="how-it-works">
-    <div class="maya-container" style="text-align: center;">
-      <span class="maya-section-badge">FAST ACTIVATION</span>
-      <h2 class="maya-section-title">GET CONNECTED IN MINUTES.</h2>
-      <p class="maya-section-desc">No paperwork. No plastic SIMs. 100% automated.</p>
+  <section class="tt-setup-section" id="how-it-works">
+    <div class="tt-container" style="text-align: center;">
+      <span class="tt-section-badge">FAST ACTIVATION</span>
+      <h2 class="tt-section-title">GET CONNECTED IN MINUTES.</h2>
+      <p class="tt-section-desc">No paperwork. No plastic SIMs. 100% automated.</p>
 
       <!-- Platform Tabs -->
-      <div class="maya-setup-tabs">
-        <button class="maya-setup-tab-btn active" id="tab-btn-ios" onclick="switchSetupPlatform('ios')">
+      <div class="tt-setup-tabs">
+        <button class="tt-setup-tab-btn active" id="tab-btn-ios" onclick="switchSetupPlatform('ios')">
           <span>🍎</span> iPhone / iPad
         </button>
-        <button class="maya-setup-tab-btn" id="tab-btn-android" onclick="switchSetupPlatform('android')">
+        <button class="tt-setup-tab-btn" id="tab-btn-android" onclick="switchSetupPlatform('android')">
           <span>🤖</span> Android / Samsung
         </button>
       </div>
 
-      <div class="maya-setup-steps-grid">
+      <div class="tt-setup-steps-grid">
         <!-- Step 1 -->
-        <div class="maya-setup-step-card">
-          <div class="maya-step-giant-number">01</div>
-          <h3 class="maya-setup-step-title">Choose Destination &amp; Plan</h3>
-          <p class="maya-setup-step-desc" id="step-1-desc">Select your travel country from 200+ destinations and pick an unlimited or fixed data package that suits your trip.</p>
+        <div class="tt-setup-step-card">
+          <div class="tt-step-giant-number">01</div>
+          <h3 class="tt-setup-step-title">Choose Destination &amp; Plan</h3>
+          <p class="tt-setup-step-desc" id="step-1-desc">Select your travel country from 200+ destinations and pick an unlimited or fixed data package that suits your trip.</p>
         </div>
 
         <!-- Step 2 -->
-        <div class="maya-setup-step-card">
-          <div class="maya-step-giant-number">02</div>
-          <h3 class="maya-setup-step-title">Scan QR or 1-Tap Install</h3>
-          <p class="maya-setup-step-desc" id="step-2-desc">Receive your official eSIM QR code instantly via email within 2 minutes. Open Camera on your iPhone or tap Settings > Cellular > Add eSIM.</p>
+        <div class="tt-setup-step-card">
+          <div class="tt-step-giant-number">02</div>
+          <h3 class="tt-setup-step-title">Scan QR or 1-Tap Install</h3>
+          <p class="tt-setup-step-desc" id="step-2-desc">Receive your official eSIM QR code instantly via email within 2 minutes. Open Camera on your iPhone or tap Settings > Cellular > Add eSIM.</p>
         </div>
 
         <!-- Step 3 -->
-        <div class="maya-setup-step-card">
-          <div class="maya-step-giant-number">03</div>
-          <h3 class="maya-setup-step-title">Turn on Roaming &amp; Enjoy</h3>
-          <p class="maya-setup-step-desc" id="step-3-desc">When you land at your destination, toggle on Data Roaming for your TravelTrip eSIM and enjoy immediate high-speed internet.</p>
+        <div class="tt-setup-step-card">
+          <div class="tt-step-giant-number">03</div>
+          <h3 class="tt-setup-step-title">Turn on Roaming &amp; Enjoy</h3>
+          <p class="tt-setup-step-desc" id="step-3-desc">When you land at your destination, toggle on Data Roaming for your TravelTrip eSIM and enjoy immediate high-speed internet.</p>
         </div>
       </div>
     </div>
   </section>
 
   <!-- SECTION 4: UNLIMITED DATA PLANS (2x2 GRID - MAYA STYLE) -->
-  <section class="maya-section maya-section-alt" id="plans">
-    <div class="maya-container">
-      <div class="maya-section-header">
-        <span class="maya-section-badge">TRANSPARENT PLANS</span>
-        <h2 class="maya-section-title">YOUR TRIP. YOUR CONNECTION.</h2>
-        <p class="maya-section-desc">
+  <section class="tt-section maya-section-alt" id="plans">
+    <div class="tt-container">
+      <div class="tt-section-header">
+        <span class="tt-section-badge">TRANSPARENT PLANS</span>
+        <h2 class="tt-section-title">YOUR TRIP. YOUR CONNECTION.</h2>
+        <p class="tt-section-desc">
           No SIM swapping. No searching for a SIM after landing. No complicated setup.<br>
           <strong>Just choose your destination, activate your eSIM, and travel.</strong>
         </p>
       </div>
 
-      <div class="maya-packages-container">
+      <div class="tt-packages-container">
         <!-- Duration Selector -->
-        <div class="maya-filter-toolbar">
-          <div class="maya-duration-tabs" id="duration-selector">
-            <button class="maya-tab-btn active" data-duration="all">All Durations</button>
-            <button class="maya-tab-btn" data-duration="3">⚡ 3 Days</button>
-            <button class="maya-tab-btn" data-duration="7">🔥 7 Days</button>
-            <button class="maya-tab-btn" data-duration="15">🚀 15 Days</button>
-            <button class="maya-tab-btn" data-duration="30">🗓️ 30 Days</button>
-            <button class="maya-tab-btn" data-duration="unlimited">♾️ Unlimited Only</button>
+        <div class="tt-filter-toolbar">
+          <div class="tt-duration-tabs" id="duration-selector">
+            <button class="tt-tab-btn active" data-duration="all">All Durations</button>
+            <button class="tt-tab-btn" data-duration="3">⚡ 3 Days</button>
+            <button class="tt-tab-btn" data-duration="7">🔥 7 Days</button>
+            <button class="tt-tab-btn" data-duration="15">🚀 15 Days</button>
+            <button class="tt-tab-btn" data-duration="30">🗓️ 30 Days</button>
+            <button class="tt-tab-btn" data-duration="unlimited">♾️ Unlimited Only</button>
           </div>
 
-          <div class="maya-type-tabs" id="type-selector">
-            <button class="maya-type-btn active" data-type="all">All Plans</button>
-            <button class="maya-type-btn" data-type="fixed">Fixed Data</button>
-            <button class="maya-type-btn" data-type="unlimited">Unlimited Data</button>
+          <div class="tt-type-tabs" id="type-selector">
+            <button class="tt-type-btn active" data-type="all">All Plans</button>
+            <button class="tt-type-btn" data-type="fixed">Fixed Data</button>
+            <button class="tt-type-btn" data-type="unlimited">Unlimited Data</button>
           </div>
         </div>
 
         <!-- Dynamic Plans Grid (2x2 Layout) -->
-        <div class="maya-plans-grid" id="packages-container">
+        <div class="tt-plans-grid" id="packages-container">
           
           <!-- Best Value 7-Day Plan -->
-          <div class="maya-plan-card featured">
-            <div class="maya-ribbon green">BEST VALUE</div>
-            <div class="maya-plan-badge-row">
-              <span class="maya-plan-duration-badge">7 Days Validity</span>
-              <span class="maya-plan-type-badge">♾️ Unlimited Data</span>
+          <div class="tt-plan-card featured">
+            <div class="tt-ribbon green">BEST VALUE</div>
+            <div class="tt-plan-badge-row">
+              <span class="tt-plan-duration-badge">7 Days Validity</span>
+              <span class="tt-plan-type-badge">♾️ Unlimited Data</span>
             </div>
-            <div class="maya-plan-data">Truly Unlimited</div>
-            <div class="maya-plan-destination">🌐 Global / Top Destinations</div>
+            <div class="tt-plan-data">Truly Unlimited</div>
+            <div class="tt-plan-destination">🌐 Global / Top Destinations</div>
             
-            <div class="maya-plan-pricing-box">
-              <div class="maya-price-per-day">
+            <div class="tt-plan-pricing-box">
+              <div class="tt-price-per-day">
                 <span class="amount">USD 1.67</span>
                 <span class="unit">/ day</span>
               </div>
-              <div class="maya-price-total">*7-day cycle · USD 11.69 total</div>
+              <div class="tt-price-total">*7-day cycle · USD 11.69 total</div>
             </div>
 
-            <ul class="maya-plan-features">
+            <ul class="tt-plan-features">
               <li><span class="check-icon">✓</span> High-speed 5G / 4G LTE data</li>
               <li><span class="check-icon">✓</span> Free mobile hotspot / tethering</li>
               <li><span class="check-icon">✓</span> Keep your original WhatsApp number</li>
@@ -269,96 +269,96 @@
               <li><span class="check-icon">✓</span> 100% Prepaid · Zero roaming fees</li>
             </ul>
 
-            <a href="/checkout.html?package=global-7d-unlimited&price=11.69" class="maya-plan-btn">
+            <a href="/checkout.html?package=global-7d-unlimited&price=11.69" class="tt-plan-btn">
               Buy eSIM Plan ➔
             </a>
           </div>
 
           <!-- 3-Day Transit Plan -->
-          <div class="maya-plan-card">
-            <div class="maya-plan-badge-row">
-              <span class="maya-plan-duration-badge">3 Days Validity</span>
-              <span class="maya-plan-type-badge">Fixed High-Speed</span>
+          <div class="tt-plan-card">
+            <div class="tt-plan-badge-row">
+              <span class="tt-plan-duration-badge">3 Days Validity</span>
+              <span class="tt-plan-type-badge">Fixed High-Speed</span>
             </div>
-            <div class="maya-plan-data">3 GB Fixed</div>
-            <div class="maya-plan-destination">⚡ Short Trip &amp; Layover</div>
+            <div class="tt-plan-data">3 GB Fixed</div>
+            <div class="tt-plan-destination">⚡ Short Trip &amp; Layover</div>
             
-            <div class="maya-plan-pricing-box">
-              <div class="maya-price-per-day">
+            <div class="tt-plan-pricing-box">
+              <div class="tt-price-per-day">
                 <span class="amount">USD 1.40</span>
                 <span class="unit">/ day</span>
               </div>
-              <div class="maya-price-total">*3-day cycle · USD 4.20 total</div>
+              <div class="tt-price-total">*3-day cycle · USD 4.20 total</div>
             </div>
 
-            <ul class="maya-plan-features">
+            <ul class="tt-plan-features">
               <li><span class="check-icon">✓</span> Instant 5G / 4G network access</li>
               <li><span class="check-icon">✓</span> Free personal hotspot sharing</li>
               <li><span class="check-icon">✓</span> Keep home SIM active for bank OTPs</li>
               <li><span class="check-icon">✓</span> Automated instant activation</li>
             </ul>
 
-            <a href="/checkout.html?package=global-3d-3gb&price=4.20" class="maya-plan-btn">
+            <a href="/checkout.html?package=global-3d-3gb&price=4.20" class="tt-plan-btn">
               Buy eSIM Plan ➔
             </a>
           </div>
 
           <!-- 15-Day Extended Vacation -->
-          <div class="maya-plan-card">
-            <div class="maya-ribbon">POPULAR</div>
-            <div class="maya-plan-badge-row">
-              <span class="maya-plan-duration-badge">15 Days Validity</span>
-              <span class="maya-plan-type-badge">High-Speed 5G</span>
+          <div class="tt-plan-card">
+            <div class="tt-ribbon">POPULAR</div>
+            <div class="tt-plan-badge-row">
+              <span class="tt-plan-duration-badge">15 Days Validity</span>
+              <span class="tt-plan-type-badge">High-Speed 5G</span>
             </div>
-            <div class="maya-plan-data">10 GB Fixed</div>
-            <div class="maya-plan-destination">🚀 Holiday &amp; Tour Plans</div>
+            <div class="tt-plan-data">10 GB Fixed</div>
+            <div class="tt-plan-destination">🚀 Holiday &amp; Tour Plans</div>
             
-            <div class="maya-plan-pricing-box">
-              <div class="maya-price-per-day">
+            <div class="tt-plan-pricing-box">
+              <div class="tt-price-per-day">
                 <span class="amount">USD 1.13</span>
                 <span class="unit">/ day</span>
               </div>
-              <div class="maya-price-total">*15-day cycle · USD 16.95 total</div>
+              <div class="tt-price-total">*15-day cycle · USD 16.95 total</div>
             </div>
 
-            <ul class="maya-plan-features">
+            <ul class="tt-plan-features">
               <li><span class="check-icon">✓</span> 10 GB ultra-fast 5G data allowance</li>
               <li><span class="check-icon">✓</span> Hotspot tethering for laptop &amp; family</li>
               <li><span class="check-icon">✓</span> Tier-1 premium carrier networks</li>
               <li><span class="check-icon">✓</span> Instant email delivery upon payment</li>
             </ul>
 
-            <a href="/checkout.html?package=global-15d-10gb&price=16.95" class="maya-plan-btn">
+            <a href="/checkout.html?package=global-15d-10gb&price=16.95" class="tt-plan-btn">
               Buy eSIM Plan ➔
             </a>
           </div>
 
           <!-- 30-Day Long Stay Plan -->
-          <div class="maya-plan-card">
-            <div class="maya-ribbon green">BEST VALUE</div>
-            <div class="maya-plan-badge-row">
-              <span class="maya-plan-duration-badge">30 Days Validity</span>
-              <span class="maya-plan-type-badge">♾️ Unlimited Data</span>
+          <div class="tt-plan-card">
+            <div class="tt-ribbon green">BEST VALUE</div>
+            <div class="tt-plan-badge-row">
+              <span class="tt-plan-duration-badge">30 Days Validity</span>
+              <span class="tt-plan-type-badge">♾️ Unlimited Data</span>
             </div>
-            <div class="maya-plan-data">30-Day Unlimited</div>
-            <div class="maya-plan-destination">🗓️ Remote Nomad &amp; Long Stay</div>
+            <div class="tt-plan-data">30-Day Unlimited</div>
+            <div class="tt-plan-destination">🗓️ Remote Nomad &amp; Long Stay</div>
             
-            <div class="maya-plan-pricing-box">
-              <div class="maya-price-per-day">
+            <div class="tt-plan-pricing-box">
+              <div class="tt-price-per-day">
                 <span class="amount">USD 1.23</span>
                 <span class="unit">/ day</span>
               </div>
-              <div class="maya-price-total">*30-day cycle · USD 36.99 total</div>
+              <div class="tt-price-total">*30-day cycle · USD 36.99 total</div>
             </div>
 
-            <ul class="maya-plan-features">
+            <ul class="tt-plan-features">
               <li><span class="check-icon">✓</span> Unlimited high-speed data for 30 days</li>
               <li><span class="check-icon">✓</span> Full personal hotspot supported</li>
               <li><span class="check-icon">✓</span> Zero contracts · No surprise bills</li>
               <li><span class="check-icon">✓</span> 24/7 dedicated support via WhatsApp</li>
             </ul>
 
-            <a href="/checkout.html?package=global-30d-unlimited&price=36.99" class="maya-plan-btn">
+            <a href="/checkout.html?package=global-30d-unlimited&price=36.99" class="tt-plan-btn">
               Buy eSIM Plan ➔
             </a>
           </div>
@@ -369,118 +369,118 @@
   </section>
 
   <!-- SECTION 5: POPULAR DESTINATIONS GRID -->
-  <section class="maya-section" id="destinations">
-    <div class="maya-container">
-      <div class="maya-section-header">
-        <span class="maya-section-badge">EXPLORE COVERAGE</span>
-        <h2 class="maya-section-title">WHERE ARE YOU GOING?</h2>
-        <p class="maya-section-desc">Find the right eSIM for your next destination.</p>
-        <p style="font-size: 14px; color: var(--maya-primary); font-weight: 700; margin-top: 8px;">
+  <section class="tt-section" id="destinations">
+    <div class="tt-container">
+      <div class="tt-section-header">
+        <span class="tt-section-badge">EXPLORE COVERAGE</span>
+        <h2 class="tt-section-title">WHERE ARE YOU GOING?</h2>
+        <p class="tt-section-desc">Find the right eSIM for your next destination.</p>
+        <p style="font-size: 14px; color: var(--tt-primary); font-weight: 700; margin-top: 8px;">
           Popular destinations: UAE · Saudi Arabia · Europe · USA · UK · Japan · Thailand · Singapore
         </p>
       </div>
 
-      <div class="maya-destinations-grid" id="popular-destinations-grid">
+      <div class="tt-destinations-grid" id="popular-destinations-grid">
         
         <!-- UAE -->
-        <a href="/esim/uae.html" class="maya-dest-card" data-region="middle-east">
-          <div class="maya-dest-card-header">
-            <span class="maya-dest-flag">🇦🇪</span>
-            <span class="maya-dest-network">5G Ultra</span>
+        <a href="/esim/uae.html" class="tt-dest-card" data-region="middle-east">
+          <div class="tt-dest-card-header">
+            <span class="tt-dest-flag">🇦🇪</span>
+            <span class="tt-dest-network">5G Ultra</span>
           </div>
-          <h3 class="maya-dest-name">United Arab Emirates</h3>
-          <p class="maya-dest-carriers">du · Etisalat 5G</p>
-          <div class="maya-dest-card-footer">
+          <h3 class="tt-dest-name">United Arab Emirates</h3>
+          <p class="tt-dest-carriers">du · Etisalat 5G</p>
+          <div class="tt-dest-card-footer">
             <div>
-              <span class="maya-dest-price-label">Plans from</span>
-              <div class="maya-dest-price">USD 2.10 <span>/day</span></div>
+              <span class="tt-dest-price-label">Plans from</span>
+              <div class="tt-dest-price">USD 2.10 <span>/day</span></div>
             </div>
-            <span class="maya-dest-btn">View Plans ➔</span>
+            <span class="tt-dest-btn">View Plans ➔</span>
           </div>
         </a>
 
         <!-- Saudi Arabia -->
-        <a href="/destinations.html?country=SA" class="maya-dest-card" data-region="middle-east">
-          <div class="maya-dest-card-header">
-            <span class="maya-dest-flag">🇸🇦</span>
-            <span class="maya-dest-network">5G Ultra</span>
+        <a href="/destinations.html?country=SA" class="tt-dest-card" data-region="middle-east">
+          <div class="tt-dest-card-header">
+            <span class="tt-dest-flag">🇸🇦</span>
+            <span class="tt-dest-network">5G Ultra</span>
           </div>
-          <h3 class="maya-dest-name">Saudi Arabia</h3>
-          <p class="maya-dest-carriers">STC · Mobily · Zain 5G</p>
-          <div class="maya-dest-card-footer">
+          <h3 class="tt-dest-name">Saudi Arabia</h3>
+          <p class="tt-dest-carriers">STC · Mobily · Zain 5G</p>
+          <div class="tt-dest-card-footer">
             <div>
-              <span class="maya-dest-price-label">Plans from</span>
-              <div class="maya-dest-price">USD 2.20 <span>/day</span></div>
+              <span class="tt-dest-price-label">Plans from</span>
+              <div class="tt-dest-price">USD 2.20 <span>/day</span></div>
             </div>
-            <span class="maya-dest-btn">View Plans ➔</span>
+            <span class="tt-dest-btn">View Plans ➔</span>
           </div>
         </a>
 
         <!-- Europe -->
-        <a href="/destinations.html?country=EU" class="maya-dest-card" data-region="europe">
-          <div class="maya-dest-card-header">
-            <span class="maya-dest-flag">🇪🇺</span>
-            <span class="maya-dest-network">33 Countries</span>
+        <a href="/destinations.html?country=EU" class="tt-dest-card" data-region="europe">
+          <div class="tt-dest-card-header">
+            <span class="tt-dest-flag">🇪🇺</span>
+            <span class="tt-dest-network">33 Countries</span>
           </div>
-          <h3 class="maya-dest-name">Europe Regional</h3>
-          <p class="maya-dest-carriers">Vodafone · Orange · Telefónica 5G</p>
-          <div class="maya-dest-card-footer">
+          <h3 class="tt-dest-name">Europe Regional</h3>
+          <p class="tt-dest-carriers">Vodafone · Orange · Telefónica 5G</p>
+          <div class="tt-dest-card-footer">
             <div>
-              <span class="maya-dest-price-label">Unlimited from</span>
-              <div class="maya-dest-price">USD 1.90 <span>/day</span></div>
+              <span class="tt-dest-price-label">Unlimited from</span>
+              <div class="tt-dest-price">USD 1.90 <span>/day</span></div>
             </div>
-            <span class="maya-dest-btn">View Plans ➔</span>
+            <span class="tt-dest-btn">View Plans ➔</span>
           </div>
         </a>
 
         <!-- USA -->
-        <a href="/destinations.html?country=US" class="maya-dest-card" data-region="north-america">
-          <div class="maya-dest-card-header">
-            <span class="maya-dest-flag">🇺🇸</span>
-            <span class="maya-dest-network">5G Ultra</span>
+        <a href="/destinations.html?country=US" class="tt-dest-card" data-region="north-america">
+          <div class="tt-dest-card-header">
+            <span class="tt-dest-flag">🇺🇸</span>
+            <span class="tt-dest-network">5G Ultra</span>
           </div>
-          <h3 class="maya-dest-name">United States</h3>
-          <p class="maya-dest-carriers">AT&T · T-Mobile 5G</p>
-          <div class="maya-dest-card-footer">
+          <h3 class="tt-dest-name">United States</h3>
+          <p class="tt-dest-carriers">AT&T · T-Mobile 5G</p>
+          <div class="tt-dest-card-footer">
             <div>
-              <span class="maya-dest-price-label">Unlimited from</span>
-              <div class="maya-dest-price">USD 1.67 <span>/day</span></div>
+              <span class="tt-dest-price-label">Unlimited from</span>
+              <div class="tt-dest-price">USD 1.67 <span>/day</span></div>
             </div>
-            <span class="maya-dest-btn">View Plans ➔</span>
+            <span class="tt-dest-btn">View Plans ➔</span>
           </div>
         </a>
 
         <!-- United Kingdom -->
-        <a href="/destinations.html?country=GB" class="maya-dest-card" data-region="europe">
-          <div class="maya-dest-card-header">
-            <span class="maya-dest-flag">🇬🇧</span>
-            <span class="maya-dest-network">5G Fast</span>
+        <a href="/destinations.html?country=GB" class="tt-dest-card" data-region="europe">
+          <div class="tt-dest-card-header">
+            <span class="tt-dest-flag">🇬🇧</span>
+            <span class="tt-dest-network">5G Fast</span>
           </div>
-          <h3 class="maya-dest-name">United Kingdom</h3>
-          <p class="maya-dest-carriers">EE · O2 · Vodafone UK</p>
-          <div class="maya-dest-card-footer">
+          <h3 class="tt-dest-name">United Kingdom</h3>
+          <p class="tt-dest-carriers">EE · O2 · Vodafone UK</p>
+          <div class="tt-dest-card-footer">
             <div>
-              <span class="maya-dest-price-label">Unlimited from</span>
-              <div class="maya-dest-price">USD 1.80 <span>/day</span></div>
+              <span class="tt-dest-price-label">Unlimited from</span>
+              <div class="tt-dest-price">USD 1.80 <span>/day</span></div>
             </div>
-            <span class="maya-dest-btn">View Plans ➔</span>
+            <span class="tt-dest-btn">View Plans ➔</span>
           </div>
         </a>
 
         <!-- Japan -->
-        <a href="/destinations.html?country=JP" class="maya-dest-card" data-region="asia">
-          <div class="maya-dest-card-header">
-            <span class="maya-dest-flag">🇯🇵</span>
-            <span class="maya-dest-network">5G Ultra</span>
+        <a href="/destinations.html?country=JP" class="tt-dest-card" data-region="asia">
+          <div class="tt-dest-card-header">
+            <span class="tt-dest-flag">🇯🇵</span>
+            <span class="tt-dest-network">5G Ultra</span>
           </div>
-          <h3 class="maya-dest-name">Japan</h3>
-          <p class="maya-dest-carriers">NTT Docomo · SoftBank</p>
-          <div class="maya-dest-card-footer">
+          <h3 class="tt-dest-name">Japan</h3>
+          <p class="tt-dest-carriers">NTT Docomo · SoftBank</p>
+          <div class="tt-dest-card-footer">
             <div>
-              <span class="maya-dest-price-label">Unlimited from</span>
-              <div class="maya-dest-price">USD 2.00 <span>/day</span></div>
+              <span class="tt-dest-price-label">Unlimited from</span>
+              <div class="tt-dest-price">USD 2.00 <span>/day</span></div>
             </div>
-            <span class="maya-dest-btn">View Plans ➔</span>
+            <span class="tt-dest-btn">View Plans ➔</span>
           </div>
         </a>
 
@@ -489,28 +489,28 @@
   </section>
 
   <!-- SECTION 6: KEEP YOUR SIM. KEEP YOUR NUMBER. -->
-  <section class="maya-section" style="background: #FFFFFF;">
-    <div class="maya-container" style="max-width: 860px; text-align: center;">
-      <span class="maya-section-badge">DUAL SIM CONVENIENCE</span>
-      <h2 class="maya-section-title">KEEP YOUR SIM. KEEP YOUR NUMBER.</h2>
-      <p style="font-size: 18px; color: var(--maya-dark-gray); line-height: 1.6; margin-bottom: 24px;">
+  <section class="tt-section" style="background: #FFFFFF;">
+    <div class="tt-container" style="max-width: 860px; text-align: center;">
+      <span class="tt-section-badge">DUAL SIM CONVENIENCE</span>
+      <h2 class="tt-section-title">KEEP YOUR SIM. KEEP YOUR NUMBER.</h2>
+      <p style="font-size: 18px; color: var(--tt-dark-gray); line-height: 1.6; margin-bottom: 24px;">
         Use TravelTrip for your travel data while keeping your regular SIM and number active on your phone.<br>
         Receive calls, SMS, WhatsApp messages, and banking OTP codes seamlessly.
       </p>
-      <div style="display: inline-block; background: var(--maya-primary-extra-light); border: 1px solid rgba(61, 56, 208, 0.2); padding: 12px 28px; border-radius: var(--radius-full); font-weight: 700; color: var(--maya-primary); font-size: 15px;">
+      <div style="display: inline-block; background: var(--tt-primary-extra-light); border: 1px solid rgba(61, 56, 208, 0.2); padding: 12px 28px; border-radius: var(--radius-full); font-weight: 700; color: var(--tt-primary); font-size: 15px;">
         Simple travel. Simple connection.
       </div>
     </div>
   </section>
 
   <!-- SECTION 7: READY FOR YOUR NEXT TRIP? & APP SHOWCASE -->
-  <section class="maya-section maya-section-alt" id="app-download">
-    <div class="maya-container">
-      <div class="maya-app-banner">
+  <section class="tt-section maya-section-alt" id="app-download">
+    <div class="tt-container">
+      <div class="tt-app-banner">
         <div>
-          <span class="maya-app-badge">GET STARTED</span>
-          <h2 class="maya-app-title">READY FOR YOUR NEXT TRIP?</h2>
-          <p class="maya-app-desc" style="font-size: 18px; color: #E2E8F0; margin-bottom: 12px;">
+          <span class="tt-app-badge">GET STARTED</span>
+          <h2 class="tt-app-title">READY FOR YOUR NEXT TRIP?</h2>
+          <p class="tt-app-desc" style="font-size: 18px; color: #E2E8F0; margin-bottom: 12px;">
             Your journey starts here.<br>
             <strong>One eSIM. Every trip. Everywhere.</strong>
           </p>
@@ -518,19 +518,19 @@
             Manage data balance in real-time, top up with 1 tap, and access offline installation codes anywhere.
           </p>
 
-          <div class="maya-app-buttons">
-            <a href="#plans" class="maya-search-btn" style="padding: 14px 28px; text-decoration: none;">
+          <div class="tt-app-buttons">
+            <a href="#plans" class="tt-search-btn" style="padding: 14px 28px; text-decoration: none;">
               Get Your TravelTrip eSIM
             </a>
-            <a href="/downloads/TravelTrip_Android.apk" class="maya-btn-download-apk" download="TravelTrip_Android.apk">
+            <a href="/downloads/TravelTrip_Android.apk" class="tt-btn-download-apk" download="TravelTrip_Android.apk">
               <span>🤖</span> Download Android App
             </a>
           </div>
         </div>
 
-        <div class="maya-app-mockup">
-          <div class="maya-phone-frame">
-            <div class="maya-phone-screen">
+        <div class="tt-app-mockup">
+          <div class="tt-phone-frame">
+            <div class="tt-phone-screen">
               <div style="font-size: 11px; color: #94A3B8; margin-bottom: 8px;">TRAVELTRIP.WORLD</div>
               <div style="font-weight: 700; font-size: 16px; margin-bottom: 4px;">Active eSIM</div>
               <div style="background: rgba(61, 56, 208, 0.3); border: 1px solid #6366F1; border-radius: 12px; padding: 12px; margin-bottom: 16px;">
@@ -553,10 +553,10 @@
   </section>
 
   <!-- MAYA CLEAN FOOTER -->
-  <footer class="maya-footer">
-    <div class="maya-footer-container">
-      <div class="maya-footer-brand">
-        <div class="brand-title">TRAVELTRIP<span style="color: var(--maya-primary-light);">.WORLD</span></div>
+  <footer class="tt-footer">
+    <div class="tt-footer-container">
+      <div class="tt-footer-brand">
+        <div class="brand-title">TRAVELTRIP<span style="color: var(--tt-primary-light);">.WORLD</span></div>
         <p class="brand-desc">
           Truly unlimited global eSIM data in 200+ countries.<br>
           High-speed 5G connectivity for modern international travelers.
@@ -567,9 +567,9 @@
         </div>
       </div>
 
-      <div class="maya-footer-col">
+      <div class="tt-footer-col">
         <h4>Popular Destinations</h4>
-        <ul class="maya-footer-links">
+        <ul class="tt-footer-links">
           <li><a href="/esim/uae.html">UAE eSIM (Dubai/Abu Dhabi)</a></li>
           <li><a href="/destinations.html?country=SA">Saudi Arabia eSIM</a></li>
           <li><a href="/destinations.html?country=EU">Europe 33 Countries</a></li>
@@ -579,9 +579,9 @@
         </ul>
       </div>
 
-      <div class="maya-footer-col">
+      <div class="tt-footer-col">
         <h4>Quick Links</h4>
-        <ul class="maya-footer-links">
+        <ul class="tt-footer-links">
           <li><a href="/destinations.html">All 200+ Destinations</a></li>
           <li><a href="/compatibility.html">Compatible Devices</a></li>
           <li><a href="/how-it-works.html">Installation Guide</a></li>
@@ -591,9 +591,9 @@
         </ul>
       </div>
 
-      <div class="maya-footer-col">
+      <div class="tt-footer-col">
         <h4>Connect &amp; Support</h4>
-        <ul class="maya-footer-links">
+        <ul class="tt-footer-links">
           <li><a href="https://www.facebook.com/profile.php?id=61594435043497" target="_blank" rel="noopener">📘 Official Facebook Page</a></li>
           <li><a href="https://wa.me/971567406263" target="_blank" rel="noopener">💬 24/7 WhatsApp Support</a></li>
           <li><a href="mailto:traveltripworld8@gmail.com">✉️ traveltripworld8@gmail.com</a></li>
@@ -606,8 +606,8 @@
   </footer>
 
   <!-- FLOATING ACTION BUTTONS -->
-  <div class="maya-floating-actions">
-    <a href="https://wa.me/971567406263" target="_blank" rel="noopener" class="maya-btn-float-wa" title="Chat with WhatsApp Support" aria-label="WhatsApp Support">
+  <div class="tt-floating-actions">
+    <a href="https://wa.me/971567406263" target="_blank" rel="noopener" class="tt-btn-float-wa" title="Chat with WhatsApp Support" aria-label="WhatsApp Support">
       💬
     </a>
   </div>

@@ -12,8 +12,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-  <!-- Maya CSS Theme -->
-  <link rel="stylesheet" href="/css/maya-theme.css?v=2.0">
+  <!-- TravelTrip CSS Theme -->
+  <link rel="stylesheet" href="/css/traveltrip.css?v=3.0">
   
   <script src="https://js.stripe.com/v3/"></script>
   <script src="/js/i18n.js?v=2.0"></script>
@@ -43,13 +43,13 @@
       flex-wrap: wrap;
     }
     .checkout-breadcrumb .step.active {
-      color: var(--maya-primary);
+      color: var(--tt-primary);
       display: flex;
       align-items: center;
       gap: 6px;
     }
     .checkout-breadcrumb .step.completed {
-      color: var(--maya-green);
+      color: var(--tt-green);
     }
     .checkout-breadcrumb .separator {
       color: #CBD5E1;
@@ -79,7 +79,7 @@
       font-family: var(--font-heading);
       font-size: 20px;
       font-weight: 800;
-      color: var(--maya-pitch-black);
+      color: var(--tt-pitch-black);
       margin-bottom: 20px;
       display: flex;
       align-items: center;
@@ -109,11 +109,11 @@
       outline: none;
     }
     .form-input:focus {
-      border-color: var(--maya-primary);
+      border-color: var(--tt-primary);
       box-shadow: 0 0 0 4px rgba(61, 56, 208, 0.1);
     }
 
-    /* Maya Wallet Badges */
+    /* TravelTrip Wallet Badges */
     .wallet-showcase {
       display: flex;
       align-items: center;
@@ -178,7 +178,7 @@
       transition: var(--transition);
     }
     #card-element.StripeElement--focus {
-      border-color: var(--maya-primary);
+      border-color: var(--tt-primary);
       box-shadow: 0 0 0 4px rgba(61, 56, 208, 0.1);
     }
 
@@ -193,9 +193,9 @@
     }
     .status-box.active { display: block; }
     .status-box.info {
-      background: var(--maya-primary-extra-light);
-      border-left: 4px solid var(--maya-primary);
-      color: var(--maya-primary);
+      background: var(--tt-primary-extra-light);
+      border-left: 4px solid var(--tt-primary);
+      color: var(--tt-primary);
     }
     .status-box.error {
       background: #FEF2F2;
@@ -203,15 +203,15 @@
       color: #DC2626;
     }
     .status-box.success {
-      background: var(--maya-green-bg);
-      border-left: 4px solid var(--maya-green);
-      color: var(--maya-green-hover);
+      background: var(--tt-green-bg);
+      border-left: 4px solid var(--tt-green);
+      color: var(--tt-green-hover);
     }
 
     /* Order Summary Card */
     .summary-card {
       background: #FFFFFF;
-      border: 2px solid var(--maya-primary-light);
+      border: 2px solid var(--tt-primary-light);
       border-radius: var(--radius-xl);
       padding: 28px;
       box-shadow: var(--shadow-md);
@@ -219,8 +219,8 @@
       top: 90px;
     }
     .summary-badge {
-      background: var(--maya-green-bg);
-      color: var(--maya-green-hover);
+      background: var(--tt-green-bg);
+      color: var(--tt-green-hover);
       font-size: 11.5px;
       font-weight: 800;
       padding: 4px 10px;
@@ -234,7 +234,7 @@
       font-family: var(--font-heading);
       font-size: 24px;
       font-weight: 800;
-      color: var(--maya-pitch-black);
+      color: var(--tt-pitch-black);
       line-height: 1.15;
       margin-bottom: 4px;
     }
@@ -258,7 +258,7 @@
       font-family: var(--font-heading);
       font-size: 28px;
       font-weight: 800;
-      color: var(--maya-primary);
+      color: var(--tt-primary);
     }
     .summary-checklist {
       list-style: none;
@@ -275,12 +275,12 @@
       gap: 8px;
     }
     .summary-checklist li span {
-      color: var(--maya-green);
+      color: var(--tt-green);
       font-weight: 800;
     }
 
     .btn-pay-main {
-      background: var(--maya-primary);
+      background: var(--tt-primary);
       color: #FFFFFF;
       border: none;
       width: 100%;
@@ -298,7 +298,7 @@
       box-shadow: 0 4px 16px rgba(61, 56, 208, 0.35);
     }
     .btn-pay-main:hover {
-      background: var(--maya-primary-hover);
+      background: var(--tt-primary-hover);
       transform: translateY(-2px);
       box-shadow: 0 8px 24px rgba(61, 56, 208, 0.45);
     }
@@ -307,7 +307,7 @@
     #delivery-success-view {
       display: none;
       background: #FFFFFF;
-      border: 2px solid var(--maya-green);
+      border: 2px solid var(--tt-green);
       border-radius: var(--radius-xl);
       padding: 40px;
       text-align: center;
@@ -341,9 +341,9 @@
     .detail-label { color: #64748B; font-weight: 600; }
     .detail-val { font-family: monospace; font-weight: 700; color: #0F172A; }
     .copy-btn {
-      background: var(--maya-primary-extra-light);
+      background: var(--tt-primary-extra-light);
       border: 1px solid rgba(61, 56, 208, 0.2);
-      color: var(--maya-primary);
+      color: var(--tt-primary);
       padding: 4px 10px;
       border-radius: 6px;
       font-size: 12px;
@@ -353,7 +353,7 @@
       transition: var(--transition);
     }
     .copy-btn:hover {
-      background: var(--maya-primary);
+      background: var(--tt-primary);
       color: white;
     }
   </style>
@@ -361,7 +361,7 @@
 <body>
 
   <!-- Top Announcement Bar -->
-  <aside class="maya-top-bar" aria-label="Security Notice">
+  <aside class="tt-top-bar" aria-label="Security Notice">
     <div class="trust-stars">
       <span>★ ★ ★ ★ ★</span>
       <span>4.8 / 5 Trustpilot</span>
@@ -371,19 +371,19 @@
   </aside>
 
   <!-- Navbar -->
-  <header class="maya-navbar">
-    <div class="maya-nav-container">
-      <a href="/" class="maya-logo" aria-label="TravelTrip World">
-        <div class="maya-logo-icon">📶</div>
-        <div class="maya-logo-text">
+  <header class="tt-navbar">
+    <div class="tt-nav-container">
+      <a href="/" class="tt-logo" aria-label="TravelTrip World">
+        <div class="tt-logo-icon">📶</div>
+        <div class="tt-logo-text">
           <span class="brand-name">TRAVELTRIP</span>
           <span class="brand-sub">TRAVELER eSIM</span>
         </div>
       </a>
 
-      <div class="maya-nav-actions">
+      <div class="tt-nav-actions">
         <div id="i18n-language-selector"></div>
-        <a href="https://wa.me/8801836089766" target="_blank" class="maya-pill" style="color: #25D366; border-color: rgba(37, 211, 102, 0.3);">
+        <a href="https://wa.me/8801836089766" target="_blank" class="tt-pill" style="color: #25D366; border-color: rgba(37, 211, 102, 0.3);">
           💬 24/7 Live Support
         </a>
       </div>
@@ -406,7 +406,7 @@
       <div class="checkout-layout">
         
         <!-- Left: Traveler Info & Payment Methods -->
-        <div class="maya-card">
+        <div class="tt-card">
           <h2 class="card-title">
             <span>👤</span> Traveler &amp; Delivery Information
           </h2>
@@ -445,12 +445,12 @@
             </div>
 
             <!-- Payment Method Tabs -->
-            <div class="maya-filter-toolbar" style="margin-bottom: 20px; border-bottom: none; padding-bottom: 0;">
-              <div class="maya-duration-tabs" id="payment-tabs">
-                <button type="button" class="maya-tab-btn active" id="tab-card" onclick="selectPaymentMethod('card')">
+            <div class="tt-filter-toolbar" style="margin-bottom: 20px; border-bottom: none; padding-bottom: 0;">
+              <div class="tt-duration-tabs" id="payment-tabs">
+                <button type="button" class="tt-tab-btn active" id="tab-card" onclick="selectPaymentMethod('card')">
                   💳 Credit / Debit Card
                 </button>
-                <button type="button" class="maya-tab-btn" id="tab-paypal" onclick="selectPaymentMethod('paypal')">
+                <button type="button" class="tt-tab-btn" id="tab-paypal" onclick="selectPaymentMethod('paypal')">
                   🅿️ PayPal
                 </button>
               </div>
@@ -478,7 +478,7 @@
           </div>
         </div>
 
-        <!-- Right: Maya Order Summary -->
+        <!-- Right: TravelTrip Order Summary -->
         <div>
           <div class="summary-card">
             <span class="summary-badge">ORDER SUMMARY</span>
@@ -492,7 +492,7 @@
                 <span style="font-size: 12px; color: #64748B; display: block;">Total Amount</span>
                 <span class="summary-price-big" id="total">$0.00 USD</span>
               </div>
-              <span style="font-size: 12px; font-weight: 700; color: var(--maya-green);">100% Prepaid</span>
+              <span style="font-size: 12px; font-weight: 700; color: var(--tt-green);">100% Prepaid</span>
             </div>
 
             <ul class="summary-checklist">
@@ -517,7 +517,7 @@
     <!-- Post-Payment Instant Delivery Screen -->
     <div id="delivery-success-view">
       <div style="font-size: 48px; margin-bottom: 12px;">🎉</div>
-      <h2 style="font-family: var(--font-heading); font-size: 28px; font-weight: 800; color: var(--maya-pitch-black); margin-bottom: 8px;">
+      <h2 style="font-family: var(--font-heading); font-size: 28px; font-weight: 800; color: var(--tt-pitch-black); margin-bottom: 8px;">
         Payment Successful! Your eSIM is Ready
       </h2>
       <p style="color: #64748B; font-size: 15px; margin-bottom: 24px;">
@@ -550,7 +550,7 @@
         <a id="esim-direct-link" href="#" class="btn-pay-main" style="width: auto; padding: 12px 28px; text-decoration: none;">
           📲 1-Tap Add to Phone
         </a>
-        <a href="/account.html" class="maya-pill" style="padding: 12px 24px; font-size: 15px; background: white;">
+        <a href="/account.html" class="tt-pill" style="padding: 12px 24px; font-size: 15px; background: white;">
           Go to My eSIMs
         </a>
       </div>
@@ -559,8 +559,8 @@
   </main>
 
   <!-- Footer -->
-  <footer class="maya-footer" style="padding: 40px 20px 24px 20px; margin-top: 60px;">
-    <div class="maya-container" style="text-align: center;">
+  <footer class="tt-footer" style="padding: 40px 20px 24px 20px; margin-top: 60px;">
+    <div class="tt-container" style="text-align: center;">
       <div style="display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 16px; flex-wrap: wrap;">
         <span class="payment-badge-pill"> Apple Pay</span>
         <span class="payment-badge-pill">G Pay</span>

@@ -12,8 +12,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-  <!-- Maya CSS Theme -->
-  <link rel="stylesheet" href="/css/maya-theme.css?v=2.0">
+  <!-- TravelTrip CSS Theme -->
+  <link rel="stylesheet" href="/css/traveltrip.css?v=3.0">
   
   <script src="https://js.stripe.com/v3/"></script>
   <script src="/js/i18n.js?v=2.0"></script>
@@ -43,13 +43,13 @@
       flex-wrap: wrap;
     }
     .checkout-breadcrumb .step.active {
-      color: var(--maya-primary, #3D38D0);
+      color: var(--tt-primary, #3D38D0);
       display: flex;
       align-items: center;
       gap: 6px;
     }
     .checkout-breadcrumb .step.completed {
-      color: var(--maya-green, #10B981);
+      color: var(--tt-green, #10B981);
     }
     .checkout-breadcrumb .separator {
       color: #CBD5E1;
@@ -79,7 +79,7 @@
       font-family: var(--font-heading, 'DM Sans', sans-serif);
       font-size: 20px;
       font-weight: 800;
-      color: var(--maya-pitch-black, #0F172A);
+      color: var(--tt-pitch-black, #0F172A);
       margin-bottom: 20px;
       display: flex;
       align-items: center;
@@ -110,11 +110,11 @@
       box-sizing: border-box;
     }
     .form-input:focus {
-      border-color: var(--maya-primary, #3D38D0);
+      border-color: var(--tt-primary, #3D38D0);
       box-shadow: 0 0 0 4px rgba(61, 56, 208, 0.1);
     }
 
-    /* Maya Wallet Badges (Interactive Buttons) */
+    /* TravelTrip Wallet Badges (Interactive Buttons) */
     .wallet-showcase {
       display: flex;
       align-items: center;
@@ -188,8 +188,8 @@
       font-family: inherit;
     }
     .payment-badge-pill:hover {
-      border-color: var(--maya-primary, #3D38D0);
-      color: var(--maya-primary, #3D38D0);
+      border-color: var(--tt-primary, #3D38D0);
+      color: var(--tt-primary, #3D38D0);
       transform: translateY(-1px);
       box-shadow: 0 2px 8px rgba(0,0,0,0.06);
     }
@@ -223,7 +223,7 @@
       box-sizing: border-box;
     }
     #card-element.StripeElement--focus {
-      border-color: var(--maya-primary, #3D38D0);
+      border-color: var(--tt-primary, #3D38D0);
       box-shadow: 0 0 0 4px rgba(61, 56, 208, 0.1);
     }
 
@@ -254,7 +254,7 @@
     }
     .maya-tab-btn.active {
       background: #FFFFFF;
-      color: var(--maya-primary, #3D38D0);
+      color: var(--tt-primary, #3D38D0);
       box-shadow: 0 2px 8px rgba(0,0,0,0.06);
     }
 
@@ -310,7 +310,7 @@
       font-family: var(--font-heading, 'DM Sans', sans-serif);
       font-size: 24px;
       font-weight: 800;
-      color: var(--maya-pitch-black, #0F172A);
+      color: var(--tt-pitch-black, #0F172A);
       line-height: 1.15;
       margin-bottom: 4px;
     }
@@ -334,7 +334,7 @@
       font-family: var(--font-heading, 'DM Sans', sans-serif);
       font-size: 28px;
       font-weight: 800;
-      color: var(--maya-primary, #3D38D0);
+      color: var(--tt-primary, #3D38D0);
     }
     .summary-checklist {
       list-style: none;
@@ -352,12 +352,12 @@
       gap: 8px;
     }
     .summary-checklist li span {
-      color: var(--maya-green, #10B981);
+      color: var(--tt-green, #10B981);
       font-weight: 800;
     }
 
     .btn-pay-main {
-      background: var(--maya-primary, #3D38D0);
+      background: var(--tt-primary, #3D38D0);
       color: #FFFFFF;
       border: none;
       width: 100%;
@@ -389,7 +389,7 @@
     #delivery-success-view {
       display: none;
       background: #FFFFFF;
-      border: 2px solid var(--maya-green, #10B981);
+      border: 2px solid var(--tt-green, #10B981);
       border-radius: var(--radius-xl, 16px);
       padding: 40px;
       text-align: center;
@@ -425,7 +425,7 @@
     .copy-btn {
       background: #EEF2FF;
       border: 1px solid rgba(61, 56, 208, 0.2);
-      color: var(--maya-primary, #3D38D0);
+      color: var(--tt-primary, #3D38D0);
       padding: 4px 10px;
       border-radius: 6px;
       font-size: 12px;
@@ -435,7 +435,7 @@
       transition: all 0.2s ease;
     }
     .copy-btn:hover {
-      background: var(--maya-primary, #3D38D0);
+      background: var(--tt-primary, #3D38D0);
       color: white;
     }
   </style>
@@ -443,7 +443,7 @@
 <body>
 
   <!-- Top Announcement Bar -->
-  <aside class="maya-top-bar" aria-label="Security Notice">
+  <aside class="tt-top-bar" aria-label="Security Notice">
     <div class="trust-stars">
       <span>★ ★ ★ ★ ★</span>
       <span>4.8 / 5 Trustpilot</span>
@@ -453,22 +453,22 @@
   </aside>
 
   <!-- Navbar -->
-  <header class="maya-navbar">
-    <div class="maya-nav-container">
-      <a href="/" class="maya-logo" aria-label="TravelTrip World">
-        <div class="maya-logo-icon">📶</div>
-        <div class="maya-logo-text">
+  <header class="tt-navbar">
+    <div class="tt-nav-container">
+      <a href="/" class="tt-logo" aria-label="TravelTrip World">
+        <div class="tt-logo-icon">📶</div>
+        <div class="tt-logo-text">
           <span class="brand-name">TRAVELTRIP</span>
           <span class="brand-sub">TRAVELER eSIM</span>
         </div>
       </a>
 
-      <div class="maya-nav-actions">
+      <div class="tt-nav-actions">
         <div id="i18n-language-selector"></div>
-        <a href="mailto:support@traveltrip.world" class="maya-pill" style="color: var(--maya-primary, #3D38D0); border-color: rgba(61, 56, 208, 0.25); text-decoration: none; font-size: 13px;">
+        <a href="mailto:support@traveltrip.world" class="tt-pill" style="color: var(--tt-primary, #3D38D0); border-color: rgba(61, 56, 208, 0.25); text-decoration: none; font-size: 13px;">
           ✉️ support@traveltrip.world
         </a>
-        <a href="https://wa.me/8801836089766" target="_blank" class="maya-pill" style="color: #25D366; border-color: rgba(37, 211, 102, 0.3); text-decoration: none; font-size: 13px;">
+        <a href="https://wa.me/8801836089766" target="_blank" class="tt-pill" style="color: #25D366; border-color: rgba(37, 211, 102, 0.3); text-decoration: none; font-size: 13px;">
           💬 WhatsApp 24/7
         </a>
       </div>
@@ -491,7 +491,7 @@
       <div class="checkout-layout">
         
         <!-- Left: Traveler Info & Payment Methods -->
-        <div class="maya-card">
+        <div class="tt-card">
           <h2 class="card-title">
             <span>👤</span> Traveler &amp; Delivery Information
           </h2>
@@ -532,11 +532,11 @@
             </div>
 
             <!-- Payment Method Tabs -->
-            <div class="maya-duration-tabs" id="payment-tabs">
-              <button type="button" class="maya-tab-btn active" id="tab-card" onclick="selectPaymentMethod('card')">
+            <div class="tt-duration-tabs" id="payment-tabs">
+              <button type="button" class="tt-tab-btn active" id="tab-card" onclick="selectPaymentMethod('card')">
                 💳 Credit / Debit Card
               </button>
-              <button type="button" class="maya-tab-btn" id="tab-paypal" onclick="selectPaymentMethod('paypal')">
+              <button type="button" class="tt-tab-btn" id="tab-paypal" onclick="selectPaymentMethod('paypal')">
                 🅿️ PayPal
               </button>
             </div>
@@ -563,7 +563,7 @@
           </div>
         </div>
 
-        <!-- Right: Maya Order Summary -->
+        <!-- Right: TravelTrip Order Summary -->
         <div>
           <div class="summary-card">
             <span class="summary-badge">ORDER SUMMARY</span>
@@ -577,7 +577,7 @@
                 <span style="font-size: 12px; color: #64748B; display: block;">Total Amount</span>
                 <span class="summary-price-big" id="total">$0.00 USD</span>
               </div>
-              <span style="font-size: 12px; font-weight: 700; color: var(--maya-green, #10B981);">100% Prepaid</span>
+              <span style="font-size: 12px; font-weight: 700; color: var(--tt-green, #10B981);">100% Prepaid</span>
             </div>
 
             <ul class="summary-checklist">
@@ -602,7 +602,7 @@
     <!-- Post-Payment Instant Delivery Screen -->
     <div id="delivery-success-view">
       <div style="font-size: 48px; margin-bottom: 12px;">🎉</div>
-      <h2 style="font-family: var(--font-heading, 'DM Sans', sans-serif); font-size: 28px; font-weight: 800; color: var(--maya-pitch-black, #0F172A); margin-bottom: 8px;">
+      <h2 style="font-family: var(--font-heading, 'DM Sans', sans-serif); font-size: 28px; font-weight: 800; color: var(--tt-pitch-black, #0F172A); margin-bottom: 8px;">
         Payment Successful! Your eSIM is Ready
       </h2>
       <p id="delivered-email-notice" style="color: #64748B; font-size: 15px; margin-bottom: 24px;">
@@ -632,14 +632,14 @@
       </div>
 
       <div style="display: flex; justify-content: center; gap: 16px; flex-wrap: wrap;">
-        <a href="/account.html" class="maya-pill" style="padding: 12px 24px; font-size: 15px; background: white; text-decoration: none;">
+        <a href="/account.html" class="tt-pill" style="padding: 12px 24px; font-size: 15px; background: white; text-decoration: none;">
           Go to My eSIMs
         </a>
       </div>
     
       <div style="margin-top: 24px; padding: 16px; background: #F8FAFC; border-radius: 12px; border: 1px solid #E2E8F0; font-size: 13.5px; color: #475569;">
         💬 <strong>Need assistance with your eSIM?</strong> Our team is available 24/7 at 
-        <a href="mailto:support@traveltrip.world" style="color: var(--maya-primary, #3D38D0); font-weight: 700; text-decoration: none;">support@traveltrip.world</a> 
+        <a href="mailto:support@traveltrip.world" style="color: var(--tt-primary, #3D38D0); font-weight: 700; text-decoration: none;">support@traveltrip.world</a> 
         or via WhatsApp at <a href="https://wa.me/8801836089766" target="_blank" style="color: #16A34A; font-weight: 700; text-decoration: none;">+880 1836-089766</a>.
       </div>
     
@@ -648,8 +648,8 @@
   </main>
 
   <!-- Footer -->
-  <footer class="maya-footer" style="padding: 44px 20px 28px 20px; margin-top: 60px; background: #FFFFFF; border-top: 1px solid #E2E8F0;">
-    <div class="maya-container" style="text-align: center; max-width: 960px; margin: 0 auto;">
+  <footer class="tt-footer" style="padding: 44px 20px 28px 20px; margin-top: 60px; background: #FFFFFF; border-top: 1px solid #E2E8F0;">
+    <div class="tt-container" style="text-align: center; max-width: 960px; margin: 0 auto;">
       <div style="display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 22px; flex-wrap: wrap;">
         <button type="button" class="payment-badge-pill" onclick="clickWalletBadge('apple')"> Apple Pay</button>
         <button type="button" class="payment-badge-pill" onclick="clickWalletBadge('google')">G Pay</button>
@@ -662,11 +662,11 @@
       <!-- Trust & Official Contact Box -->
       <div style="display: flex; align-items: center; justify-content: center; gap: 20px; flex-wrap: wrap; margin-bottom: 16px; font-size: 13.5px;">
         <a href="mailto:hello@traveltrip.world" style="color: #1E293B; text-decoration: none; font-weight: 700; display: inline-flex; align-items: center; gap: 6px;">
-          🌐 Official: <span style="color: var(--maya-primary, #3D38D0);">hello@traveltrip.world</span>
+          🌐 Official: <span style="color: var(--tt-primary, #3D38D0);">hello@traveltrip.world</span>
         </a>
         <span style="color: #CBD5E1;">•</span>
         <a href="mailto:support@traveltrip.world" style="color: #1E293B; text-decoration: none; font-weight: 700; display: inline-flex; align-items: center; gap: 6px;">
-          💬 Support: <span style="color: var(--maya-primary, #3D38D0);">support@traveltrip.world</span>
+          💬 Support: <span style="color: var(--tt-primary, #3D38D0);">support@traveltrip.world</span>
         </a>
         <span style="color: #CBD5E1;">•</span>
         <a href="https://wa.me/8801836089766" target="_blank" style="color: #16A34A; text-decoration: none; font-weight: 700; display: inline-flex; align-items: center; gap: 6px;">
