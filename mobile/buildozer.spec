@@ -12,6 +12,7 @@ android.permissions = INTERNET
 android.api = 34
 android.minapi = 24
 android.archs = arm64-v8a,armeabi-v7a
+android.accept_sdk_license = True
 ios.kivy_ios_url = https://github.com/kivy/kivy-ios
 
 [buildozer]
