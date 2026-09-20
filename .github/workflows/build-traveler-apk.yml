@@ -1,0 +1,29 @@
+name: Build Traveler APK
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [feature/traveler-kivy-mobile]
+    paths: [mobile/**]
+
+jobs:
+  android:
+    runs-on: ubuntu-22.04
+    defaults:
+      run:
+        working-directory: mobile
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Android build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y git zip unzip openjdk-17-jdk python3-pip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev cmake libffi-dev libssl-dev
+          python3 -m pip install --upgrade pip
+          python3 -m pip install buildozer Cython==0.29.36
+      - name: Build debug APK
+        run: buildozer android debug
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: Traveler-debug-apk
+          path: mobile/bin/*.apk
