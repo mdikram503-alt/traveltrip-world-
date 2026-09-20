@@ -18,9 +18,9 @@ import ssl
 logger = logging.getLogger(__name__)
 
 # ResellPortal Wholesale API
-SUPPLIER_URL = os.environ.get("SUPPLIER_URL", "https://panel.resellportal.com")
-SUPPLIER_API_KEY = os.environ.get("SUPPLIER_API_KEY", "rp_4db2bdd924945fccf00b061721c9fe43d08ab965b7d634be")
-SUPPLIER_API_SECRET = os.environ.get("SUPPLIER_API_SECRET", "rps_b452a3d3e75540d82f2a8f4931bbc54c95e127bba601e182df5580029378eced")
+SUPPLIER_URL = os.environ.get("RESELLPORTAL_BASE_URL", os.environ.get("SUPPLIER_URL", "https://panel.resellportal.com/wp-json/resellportal/v1")).rstrip("/")
+SUPPLIER_API_KEY = os.environ.get("RESELLPORTAL_API_KEY", os.environ.get("SUPPLIER_API_KEY", ""))
+SUPPLIER_API_SECRET = os.environ.get("RESELLPORTAL_API_SECRET", os.environ.get("SUPPLIER_API_SECRET", ""))
 SMDP_DEFAULT = os.environ.get("DEFAULT_SMDP", "rsp.esimaccess.com")
 
 class SupplierService:
@@ -32,39 +32,33 @@ class SupplierService:
         """
         logger.info(f"Provisioning eSIM for order {order_id}, package: {package_code}, buyer: {buyer_email}")
         
-        # If real supplier API token is configured, try live API call
-        if SUPPLIER_API_KEY:
-            try:
-                live_result = SupplierService._call_live_supplier_api(package_code, buyer_email, order_id)
-                if live_result:
-                    return live_result
-            except Exception as e:
-                logger.warning(f"Live supplier call failed, using fallback provisioning: {e}")
-
-        # Automated GSMA compliant fallback / Sandbox provisioner
-        return SupplierService._generate_provisioned_profile(package_code, order_id)
+        if not SUPPLIER_API_KEY or not SUPPLIER_API_SECRET:
+            return {"success": False, "error": "Supplier credentials are not configured"}
+        try:
+            result = SupplierService._call_live_supplier_api(package_code, buyer_email, order_id)
+            return result or {"success": False, "error": "Supplier returned no provisioning result"}
+        except Exception as e:
+            logger.warning("Live supplier provisioning failed: %s", e)
+            return {"success": False, "error": "Supplier provisioning failed"}
 
     @staticmethod
     def _call_live_supplier_api(package_code: str, buyer_email: str, order_id: str):
-        endpoint = f"{SUPPLIER_URL}/api/v1/orders/provision"
+        endpoint = f"{SUPPLIER_URL}/orders"
         payload = json.dumps({
             "package_code": package_code,
-            "customer_email": buyer_email,
-            "merchant_reference": order_id
+            "email": buyer_email,
+            "merchant_reference": order_id,
+            "skip_client_email": False
         }).encode("utf-8")
         
         # Prepare headers for ResellPortal API (Key + Secret)
         headers = {
             "Content-Type": "application/json",
             "User-Agent": "TravelTripServer/2.0",
-            "Authorization": f"Bearer {SUPPLIER_API_KEY}"
+            "X-API-Key": SUPPLIER_API_KEY,
+            "X-API-Secret": SUPPLIER_API_SECRET
         }
         
-        # Add API Secret if provided
-        if SUPPLIER_API_SECRET:
-            headers["X-API-Secret"] = SUPPLIER_API_SECRET
-            headers["Api-Secret"] = SUPPLIER_API_SECRET
-
         req = urllib.request.Request(
             endpoint,
             data=payload,

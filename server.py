@@ -578,6 +578,9 @@ def stripe_confirm_payment():
         order_id=order_id,
         location_code=order.get("location_code", "GLOBAL")
     )
+    if not provision_result.get("success"):
+        update_order_esim(order_id=order_id, esim_status="failed", failure_reason=provision_result.get("error", "Supplier provisioning failed"))
+        return jsonify({"error": "Payment received, but eSIM delivery could not be completed. Support has been notified.", "orderId": order_id}), 502
     
     update_order_esim(
         order_id=order_id,
