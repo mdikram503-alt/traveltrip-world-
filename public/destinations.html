@@ -434,7 +434,8 @@ document.addEventListener('DOMContentLoaded', syncLiveCatalog);
 
   async function loadComparisonTable() {
     try {
-      const res = await fetch('/api/catalog/packages');
+      const selectedCountry = new URLSearchParams(window.location.search).get('country') || '';
+      const res = await fetch(`/catalog/esim/packages?location=${encodeURIComponent(selectedCountry || 'ALL')}`);
       const data = await res.json();
       let pkgs = data.packages || [];
 

@@ -369,6 +369,26 @@ body {
   display: block;
 }
 
+.maya-search-result {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 18px;
+  border: 0;
+  border-bottom: 1px solid var(--maya-border-light);
+  background: var(--maya-white);
+  color: var(--maya-pitch-black);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.maya-search-result:hover,
+.maya-search-result:focus-visible { background: var(--maya-bg-light); color: var(--maya-primary); }
+.maya-search-result span { margin-left: auto; color: var(--maya-gray); font-size: 12px; font-weight: 700; }
+.maya-search-empty { padding: 16px 18px; color: var(--maya-gray); font-size: 14px; }
+
 .maya-dropdown-item {
   display: flex;
   align-items: center;

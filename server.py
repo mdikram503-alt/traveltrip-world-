@@ -218,18 +218,30 @@ CATALOG_PACKAGES = {
     ]
 }
 
+# Search terms accepted by the website. Keeping these aliases server-side means
+# the web site, mobile client and checkout API resolve destinations identically.
+CATALOG_ALIASES = {
+    "BANGLADESH": "BD", "DHAKA": "BD", "INDIA": "IN", "PAKISTAN": "PK",
+    "UNITED ARAB EMIRATES": "UAE", "EMIRATES": "UAE", "DUBAI": "UAE",
+    "OMAN": "OM", "QATAR": "QA", "DOHA": "QA", "EUROPE": "EU",
+    "ASIA": "ASIA", "THAILAND": "TH", "USA": "US", "UNITED STATES": "US",
+    "AMERICA": "US", "WORLDWIDE": "GLOBAL", "WORLD": "GLOBAL",
+}
+
 @app.route("/catalog/esim/packages", methods=["GET"])
 @app.route("/api/packages", methods=["GET"])
 @app.route("/api/catalog/packages", methods=["GET"])
 def get_catalog_packages():
-    loc = request.args.get("location", "").strip().upper()
+    requested_location = request.args.get("location", "").strip().upper()
+    loc = CATALOG_ALIASES.get(requested_location, requested_location)
     duration = request.args.get("duration", "").strip()
     plan_type = request.args.get("type", "").strip().lower()
 
     if loc and loc in CATALOG_PACKAGES:
-        pkgs = [dict(p) for p in CATALOG_PACKAGES[loc]]
+        pkgs = [{**p, "region": loc} for p in CATALOG_PACKAGES[loc]]
     elif loc and loc not in ["ALL", ""]:
-        pkgs = [dict(p) for p in CATALOG_PACKAGES.get("EU", [])]
+        # Do not silently return Europe for an unknown destination.
+        pkgs = []
     else:
         pkgs = []
         for region, pkg_list in CATALOG_PACKAGES.items():
@@ -251,6 +263,7 @@ def get_catalog_packages():
     return jsonify({
         "status": "success",
         "location": loc or "ALL",
+        "requestedLocation": requested_location or "ALL",
         "count": len(pkgs),
         "destinations": list(CATALOG_PACKAGES.keys()),
         "packages": pkgs
@@ -1313,4 +1326,3 @@ if __name__ == "__main__":
     
     
     app.run(host="0.0.0.0", port=port, debug=False)
-

@@ -37,7 +37,7 @@
       <span>★ ★ ★ ★ ★</span>
       <span>4.8 / 5 on Trustpilot</span>
     </div>
-    <span class="top-badge">200+ DESTINATIONS</span>
+    <span class="top-badge">LIVE DESTINATION CATALOG</span>
     <span>One eSIM. Every trip. Simple. Easy. Always connected.</span>
   </aside>
 
@@ -85,7 +85,7 @@
       </h1>
 
       <p class="tt-hero-subhead">
-        <strong>Unlimited data in 200+ countries.</strong><br>
+        <strong>Travel data plans for your next destination.</strong><br>
         Stay connected wherever you travel.<br>
         <strong>One eSIM. Every trip.</strong>
       </p>
@@ -97,7 +97,7 @@
           type="text" 
           id="destination-search-input" 
           class="tt-search-input" 
-          placeholder="Where are you going? (e.g. Europe, UAE, USA, Japan, Saudi Arabia...)"
+          placeholder="Search a destination (e.g. Qatar, UAE, Europe, USA)"
           autocomplete="off"
         >
         <button type="button" id="search-submit-btn" class="tt-search-btn">
@@ -113,7 +113,7 @@
         <button class="tt-pill" data-region="middle-east">🇦🇪 UAE &amp; Middle East</button>
         <button class="tt-pill" data-region="north-america">🇺🇸 USA &amp; Americas</button>
         <button class="tt-pill" data-region="asia">🌏 Asia &amp; Pacific</button>
-        <button class="tt-pill" data-region="global">🌐 Global 200+</button>
+        <button class="tt-pill" data-region="global">🌐 Global plans</button>
       </div>
 
       <div style="margin-top: 24px;">
@@ -614,6 +614,43 @@
 
   <!-- Interactive Platform Switcher Script -->
   <script>
+    // Uses the same live catalog as checkout. This avoids presenting countries
+    // that do not currently have a purchasable plan.
+    (() => {
+      const input = document.getElementById('destination-search-input');
+      const submit = document.getElementById('search-submit-btn');
+      const dropdown = document.getElementById('search-dropdown');
+      if (!input || !submit || !dropdown) return;
+      const labels = {
+        BD: ['Bangladesh', '🇧🇩'], IN: ['India', '🇮🇳'], PK: ['Pakistan', '🇵🇰'],
+        UAE: ['United Arab Emirates', '🇦🇪'], OM: ['Oman', '🇴🇲'], QA: ['Qatar', '🇶🇦'],
+        EU: ['Europe', '🇪🇺'], ASIA: ['Asia', '🌏'], GLOBAL: ['Global', '🌐'],
+        TH: ['Thailand', '🇹🇭'], US: ['United States', '🇺🇸']
+      };
+      let destinations = [];
+      fetch('/catalog/esim/packages?location=ALL')
+        .then(r => r.ok ? r.json() : Promise.reject())
+        .then(data => { destinations = (data.destinations || []).map(code => ({
+          code, name: (labels[code] || [code])[0], flag: (labels[code] || ['', '🌍'])[1]
+        })); }).catch(() => { dropdown.innerHTML = ''; });
+      const matches = () => {
+        const q = input.value.trim().toLowerCase();
+        return q ? destinations.filter(d => `${d.name} ${d.code}`.toLowerCase().includes(q)).slice(0, 8) : destinations.slice(0, 8);
+      };
+      const show = () => {
+        const items = matches();
+        dropdown.innerHTML = items.length ? items.map(d => `<button type="button" class="maya-search-result" data-code="${d.code}">${d.flag} <strong>${d.name}</strong><span>${d.code}</span></button>`).join('') : '<div class="maya-search-empty">No live plan found for that destination yet.</div>';
+        dropdown.classList.add('show');
+      };
+      const go = code => { window.location.href = `/destinations?country=${encodeURIComponent(code)}`; };
+      input.addEventListener('focus', show);
+      input.addEventListener('input', show);
+      input.addEventListener('keydown', e => { if (e.key === 'Enter') { const first = matches()[0]; if (first) go(first.code); } });
+      submit.addEventListener('click', () => { const first = matches()[0]; if (first) go(first.code); else show(); });
+      dropdown.addEventListener('click', e => { const button = e.target.closest('[data-code]'); if (button) go(button.dataset.code); });
+      document.addEventListener('click', e => { if (!document.getElementById('maya-search-container').contains(e.target)) dropdown.classList.remove('show'); });
+    })();
+
     function switchSetupPlatform(platform) {
       const btnIos = document.getElementById('tab-btn-ios');
       const btnAndroid = document.getElementById('tab-btn-android');
