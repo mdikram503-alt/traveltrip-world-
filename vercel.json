@@ -410,5 +410,11 @@
       "destination": "/faq",
       "permanent": true
     }
+  ],
+  "crons": [
+    {
+      "path": "/api/social/generate",
+      "schedule": "0 */2 * * *"
+    }
   ]
 }
