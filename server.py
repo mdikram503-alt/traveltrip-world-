@@ -39,6 +39,41 @@ ADMIN_ALERT_EMAILS = ["traveltripworld8@gmail.com", "abdullahtrdng@gmail.com", "
 WHATSAPP_SUPPORT = "+971524413931"
 BUSINESS_OWNER = "Mohammad Akram (Abdullah Trading)"
 
+# Telegram 24/7 Cloud Alert Bot Configuration
+TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "8681657549:AAF69PT6bE_GNs6StEU_gfAtRATx0ACseGI")
+TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID", "8921431972")
+
+def send_telegram_alert(message_text, photo_url=None):
+    """Sends immediate cloud-driven Telegram notification directly to boss/admin phone."""
+    if not TELEGRAM_BOT_TOKEN or not TELEGRAM_CHAT_ID:
+        return False
+    try:
+        import ssl
+        ctx = ssl.create_default_context()
+        ctx.check_hostname = False
+        ctx.verify_mode = ssl.CERT_NONE
+
+        if photo_url:
+            url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendPhoto"
+            post_data = urllib.parse.urlencode({
+                "chat_id": TELEGRAM_CHAT_ID,
+                "photo": photo_url,
+                "caption": message_text[:1024]
+            }).encode("utf-8")
+        else:
+            url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
+            post_data = urllib.parse.urlencode({
+                "chat_id": TELEGRAM_CHAT_ID,
+                "text": message_text[:4096]
+            }).encode("utf-8")
+
+        req = urllib.request.Request(url, data=post_data, headers={"User-Agent": "TravelTripCloudAlert/2.0"}, method="POST")
+        with urllib.request.urlopen(req, timeout=10, context=ctx) as resp:
+            return resp.status == 200
+    except Exception as ex:
+        print(f"[TELEGRAM ALERT ERROR] {ex}")
+        return False
+
 
 app = Flask(__name__, static_folder=PUBLIC_DIR, static_url_path="")
 
@@ -695,7 +730,18 @@ def stripe_confirm_payment():
     )
     
     updated_order = get_order(order_id)
-    # Log notification for business admins
+    # 24/7 Cloud Alert: Trigger immediate Telegram notification to Boss/Admin
+    tg_alert_msg = (
+        f"🚨 <b>NEW eSIM ORDER PAID & DELIVERED!</b>\n\n"
+        f"💳 <b>Order ID:</b> {order_id}\n"
+        f"👤 <b>Customer:</b> {order.get('buyer_name', 'Traveler')} ({order.get('buyer_email')})\n"
+        f"📦 <b>Package:</b> {order.get('package_name', order.get('package_code'))}\n"
+        f"💰 <b>Amount:</b> ${float(order.get('price_usd', 0)):.2f} USD\n"
+        f"📶 <b>Gateway:</b> Stripe (Credit/Debit/Apple Pay)\n"
+        f"📲 <b>ICCID:</b> {provision_result.get('iccid', 'Auto-Provisioned')}\n\n"
+        f"✅ <i>eSIM QR code profile delivered directly to customer.</i>"
+    )
+    send_telegram_alert(tg_alert_msg)
     print(f"[ORDER SUCCESS] Order {order_id} delivered! Notifications queued for {ADMIN_ALERT_EMAILS}")
     return jsonify({
         "status": "success",
@@ -827,6 +873,18 @@ def capture_order_and_deliver():
         )
         
         updated_order = get_order(order_id)
+        # 24/7 Cloud Alert: Trigger immediate Telegram notification to Boss/Admin
+        tg_alert_msg = (
+            f"🚨 <b>NEW eSIM ORDER PAID & DELIVERED!</b>\n\n"
+            f"💳 <b>Order ID:</b> {order_id}\n"
+            f"👤 <b>Customer:</b> {order.get('buyer_name', 'Traveler')} ({order.get('buyer_email')})\n"
+            f"📦 <b>Package:</b> {order.get('package_name', order.get('package_code'))}\n"
+            f"💰 <b>Amount:</b> ${float(order.get('price_usd', 0)):.2f} USD\n"
+            f"📶 <b>Gateway:</b> PayPal\n"
+            f"📲 <b>ICCID:</b> {provision_result.get('iccid', 'Auto-Provisioned')}\n\n"
+            f"✅ <i>eSIM QR code profile delivered directly to customer.</i>"
+        )
+        send_telegram_alert(tg_alert_msg)
         return jsonify({
             "status": "success",
             "message": "Payment verified and eSIM delivered successfully!",
@@ -1213,8 +1271,30 @@ def generate_social_post():
         f"📝 Pinned Comment: Get instant {c_en} 5G eSIM here: {checkout_url}"
     )
 
+    # 24/7 Cloud Autopilot: Broadcast generated offer directly to Telegram Bot/Channel
+    tg_post_text = (
+        f"✈️ <b>{flag} {c_en} High-Speed 5G Travel eSIM</b>\n\n"
+        f"🔥 <b>Special Fare:</b> ${price} USD\n"
+        f"📌 <b>Plan:</b> {plan} ({val})\n"
+        f"⚡ <b>Network:</b> {speed}\n"
+        f"📍 <b>Spots:</b> {spots}\n\n"
+        f"✓ Instant QR email delivery in &lt; 2 mins\n"
+        f"✓ Zero roaming charges\n"
+        f"✓ Keep your WhatsApp & original number\n\n"
+        f"👉 <b>Order Plan:</b> {checkout_url}\n"
+        f"💬 <b>24/7 WhatsApp Support:</b> https://wa.me/971524413931\n\n"
+        f"#TravelTrip #{c_en.split()[0]} #TravelESIM #5G"
+    )
+    img_map = {
+        "UAE": "https://traveltrip.world/images/arabic_couple_airport.jpg",
+        "Europe": "https://traveltrip.world/images/arabic_travel_lifestyle.jpg"
+    }
+    img_to_send = img_map.get(c_en.split()[0], "https://traveltrip.world/images/arabic_family_travel.jpg")
+    tg_sent = send_telegram_alert(tg_post_text, photo_url=img_to_send)
+
     return jsonify({
         "success": True,
+        "telegram_published": tg_sent,
         "destination": c_en,
         "destination_bn": c_bn,
         "flag": flag,
