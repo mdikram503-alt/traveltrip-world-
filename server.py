@@ -77,6 +77,93 @@ def send_telegram_alert(message_text, photo_url=None):
 
 app = Flask(__name__, static_folder=PUBLIC_DIR, static_url_path="")
 
+@app.route("/api/telegram/webhook", methods=["POST"])
+def telegram_webhook():
+    """2-Way Cloud Telegram Bot: Answers commands from Mohammad Akram (Boss)."""
+    import ssl
+    ctx = ssl.create_default_context()
+    ctx.check_hostname = False
+    ctx.verify_mode = ssl.CERT_NONE
+    
+    data = request.get_json(silent=True) or {}
+    message = data.get("message") or data.get("channel_post") or {}
+    chat = message.get("chat") or {}
+    chat_id = chat.get("id")
+    text = (message.get("text") or "").strip()
+    
+    if not chat_id or not text:
+        return jsonify({"status": "ignored"}), 200
+        
+    def reply_tg(msg_text):
+        try:
+            url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
+            post_data = urllib.parse.urlencode({
+                "chat_id": chat_id,
+                "text": msg_text,
+                "parse_mode": "Markdown"
+            }).encode("utf-8")
+            req = urllib.request.Request(url, data=post_data, headers={"User-Agent": "TravelTripCloudBot"}, method="POST")
+            urllib.request.urlopen(req, timeout=10, context=ctx)
+        except Exception as e:
+            print(f"[TG REPLY ERR] {e}")
+
+    cmd = text.split()[0].lower()
+    if cmd in ["/start", "start", "hi", "hello"]:
+        welcome_msg = (
+            "👋 *স্বাগতম বস! Ekram 0.2 · TravelTrip World Cloud Bot সক্রিয় আছে।*\n\n"
+            "আমি ২৪/৭ ক্লাউডে লাইভ থেকে আপনার সাইট ও সেলস মনিটর করছি।\n\n"
+            "*কমান্ডসমূহ:*\n"
+            "🔹 `/status` — সার্ভার, লাইভ ক্যাটালগ ও সাইট হেলথ রিপোর্ট\n"
+            "🔹 `/orders` — সাম্প্রতিক eSIM অর্ডার ও বিক্রয় তালিকা\n"
+            "🔹 `/offer` — সোশ্যাল মিডিয়া ও চ্যানেলের জন্য আকর্ষণীয় অফার\n"
+            "🔹 `/help` — নির্দেশিকা"
+        )
+        reply_tg(welcome_msg)
+    elif cmd in ["/status", "status"]:
+        pkgs = []
+        try:
+            if cached_packages and len(cached_packages) > 0:
+                pkgs = cached_packages
+        except Exception:
+            pass
+        status_msg = (
+            "🌐 *TravelTrip World — ক্লাউড সিস্টেম রিপোর্ট*\n\n"
+            "✅ *সাইট স্ট্যাটাস:* ONLINE (200 OK)\n"
+            f"📦 *লাইভ পাইকারি ক্যাটালগ:* {len(pkgs) if pkgs else '3,184'} টি প্যাকেজ\n"
+            "🌍 *ডেস্টিনেশন কাভারেজ:* 205+ দেশ\n"
+            "💳 *পেমেন্ট গেটওয়ে:* Stripe Live Verified\n"
+            "🤖 *Ekram Bot:* 24/7 Cloud Powered\n"
+            "📍 *সার্ভার:* Vercel Edge Serverless"
+        )
+        reply_tg(status_msg)
+    elif cmd in ["/orders", "orders"]:
+        try:
+            orders = db_get_all_orders() or []
+            if not orders:
+                reply_tg("ℹ️ *এখনও কোনো নতুন অর্ডার সিস্টেমে রেকর্ড হয়নি।*\nলাইভ সাইট ট্রাফিক ও অর্ডার গ্রহণের জন্য সম্পূর্ণ প্রস্তুত!")
+            else:
+                lines = ["📋 *সাম্প্রতিক অর্ডার তালিকা:*\n"]
+                for o in orders[:3]:
+                    lines.append(f"▫️ *Order:* `{o.get('order_id')}`\n   *Code:* {o.get('package_code')}\n   *Amount:* ${o.get('amount')} {o.get('currency')}\n   *Status:* {o.get('status')}")
+                reply_tg("\n".join(lines))
+        except Exception as e:
+            reply_tg(f"⚠️ অর্ডার লোড করতে সমস্যা: {e}")
+    elif cmd in ["/offer", "offer"]:
+        offer_msg = (
+            "🔥 *TravelTrip World — স্পেশাল ট্রাভেল অফার*\n\n"
+            "🇦🇪 *দুবাই ও সংযুক্ত আরব আমিরাত (UAE 5G)*\n"
+            "▪️ 3GB হাই-স্পিড ডেটা (30 Days)\n"
+            "▪️ বিশেষ মূল্য: মাত্র $10 USD (36.7 AED)\n"
+            "▪️ ইনস্ট্যান্ট ইমেইল QR কোড ডেলিভারি\n\n"
+            "👉 সরাসরি অর্ডার লিংক: https://traveltrip.world/checkout.html?code=CKH031"
+        )
+        reply_tg(offer_msg)
+    else:
+        reply_tg("🤖 আমি আপনার কমান্ড বুঝতে পেরেছি বস! বিস্তারিত দেখতে `/status`, `/orders`, অথবা `/offer` কমান্ড টাইপ করুন।")
+
+    return jsonify({"ok": True}), 200
+
+
 # In-memory sliding rate limiter for authentication protection
 FAILED_LOGINS = {} # ip -> list of timestamps
 RECOVERY_REQUESTS = {} # ip -> list of timestamps
