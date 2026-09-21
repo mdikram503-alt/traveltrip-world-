@@ -439,6 +439,24 @@
       color: white;
     }
   </style>
+
+<style>
+/* Permanently hide and disable Vercel Toolbar & Feedback overlay */
+vercel-live-feedback,
+#vercel-toolbar,
+[data-vercel-toolbar],
+div[class*="vercel-toolbar"],
+iframe[src*="vercel.live"],
+div[id*="vercel"] {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    opacity: 0 !important;
+    height: 0 !important;
+    width: 0 !important;
+}
+</style>
+
 </head>
 <body>
 
