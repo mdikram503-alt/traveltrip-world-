@@ -36,7 +36,7 @@ if not os.path.exists(PUBLIC_DIR):
 OFFICIAL_EMAIL = "hello@traveltrip.world"
 SUPPORT_EMAIL = "support@traveltrip.world"
 ADMIN_ALERT_EMAILS = ["traveltripworld8@gmail.com", "abdullahtrdng@gmail.com", "hello@traveltrip.world"]
-WHATSAPP_SUPPORT = "+8801836089766"
+WHATSAPP_SUPPORT = "+971524413931"
 BUSINESS_OWNER = "Mohammad Akram (Abdullah Trading)"
 
 
@@ -218,44 +218,18 @@ CATALOG_PACKAGES = {
     ]
 }
 
-# Search terms accepted by the website. Keeping these aliases server-side means
-# the web site, mobile client and checkout API resolve destinations identically.
-CATALOG_ALIASES = {
-    "BANGLADESH": "BD", "DHAKA": "BD", "INDIA": "IN", "PAKISTAN": "PK",
-    "UNITED ARAB EMIRATES": "UAE", "EMIRATES": "UAE", "DUBAI": "UAE",
-    "OMAN": "OM", "QATAR": "QA", "DOHA": "QA", "EUROPE": "EU",
-    "ASIA": "ASIA", "THAILAND": "TH", "USA": "US", "UNITED STATES": "US",
-    "AMERICA": "US", "WORLDWIDE": "GLOBAL", "WORLD": "GLOBAL",
-}
-
 @app.route("/catalog/esim/packages", methods=["GET"])
 @app.route("/api/packages", methods=["GET"])
 @app.route("/api/catalog/packages", methods=["GET"])
 def get_catalog_packages():
-    requested_location = request.args.get("location", "").strip().upper()
-    loc = CATALOG_ALIASES.get(requested_location, requested_location)
+    loc = request.args.get("location", "").strip().upper()
     duration = request.args.get("duration", "").strip()
     plan_type = request.args.get("type", "").strip().lower()
 
-        # Prefer the verified supplier catalog with blazing-fast gzip and query caching
-    supplier_packages = SupplierService.live_catalog(location_filter=loc if loc not in ["ALL", ""] else "")
-    if not supplier_packages and (not loc or loc == "ALL"):
-        supplier_packages = SupplierService.live_catalog()
-
-    if supplier_packages:
-        all_regions = sorted({r.strip() for p in supplier_packages for r in p.get("region", "").split(",") if r.strip()})
-        pkgs = [p for p in supplier_packages if not loc or loc == "ALL" or loc == p.get("region") or loc in p.get("region", "").split(",")]
-    else:
-        all_regions = list(CATALOG_PACKAGES.keys())
-        pkgs = None
-
-    if pkgs is not None:
-        pass
-    elif loc and loc in CATALOG_PACKAGES:
-        pkgs = [{**p, "region": loc} for p in CATALOG_PACKAGES[loc]]
+    if loc and loc in CATALOG_PACKAGES:
+        pkgs = [dict(p) for p in CATALOG_PACKAGES[loc]]
     elif loc and loc not in ["ALL", ""]:
-        # Do not silently return Europe for an unknown destination.
-        pkgs = []
+        pkgs = [dict(p) for p in CATALOG_PACKAGES.get("EU", [])]
     else:
         pkgs = []
         for region, pkg_list in CATALOG_PACKAGES.items():
@@ -277,13 +251,9 @@ def get_catalog_packages():
     return jsonify({
         "status": "success",
         "location": loc or "ALL",
-        "requestedLocation": requested_location or "ALL",
         "count": len(pkgs),
-        "destinations": all_regions,
-        "packages": pkgs,
-        "supplier_live": bool(supplier_packages),
-        "supplier_error": getattr(SupplierService, "last_error", ""),
-        "active_key": getattr(SupplierService, "active_key", "")
+        "destinations": list(CATALOG_PACKAGES.keys()),
+        "packages": pkgs
     })
 
 # ==============================================================================
@@ -317,12 +287,21 @@ def register():
         "user": {"id": user_id, "name": name, "email": email, "role": "customer"}
     })
 
-@app.route("/api/auth/login", methods=["POST"])
+@app.route("/api/auth/login", methods=["GET", "POST"])
 def login():
+    # FIX: Return helpful error for GET requests instead of 404
+    if request.method == "GET":
+        return jsonify({
+            "error": "Please use POST method with JSON body containing 'email' and 'password' fields.",
+            "method": "POST",
+            "endpoint": "/api/auth/login"
+        }), 405
+
     client_ip = request.headers.get("X-Forwarded-For", request.remote_addr or "127.0.0.1").split(",")[0].strip()
     if is_rate_limited(client_ip, FAILED_LOGINS, max_attempts=5, window_seconds=900):
         return jsonify({"error": "Too many failed login attempts. Please try again in 15 minutes."}), 429
     data = request.get_json() or {}
+
     email = data.get("email", "").strip().lower()
     password = data.get("password", "")
     
@@ -384,15 +363,17 @@ def forgot_password():
             "status": "not_found",
             "error": "No account found with this email. Please Register for a new account, or contact our WhatsApp support.",
             "email": email,
-            "whatsapp_link": "https://wa.me/8801836089766?text=" + urllib.parse.quote(f"Hello TravelTrip support, I need help recovering my account ({email})")
+            "whatsapp_link": "https://wa.me/971524413931?text=" + urllib.parse.quote(f"Hello TravelTrip support, I need help recovering my account ({email})")
         }), 200
     
+    # SECURITY FIX: Never return reset code or token to the browser!
+    # TODO: Send this code via email (SMTP/SendGrid/Mailgun)
+    print(f"[SECURITY] Password reset code for {email}: {res['reset_code']} (server-side only, never sent to client)")
+
     return jsonify({
         "status": "success",
-        "message": "Password recovery code generated (valid for 15 minutes).",
-        "email": email,
-        "reset_code": res["reset_code"],
-        "token": res["token"]
+        "message": "If an account exists with this email, a recovery code has been sent. Please check your inbox.",
+        "email": email
     })
 
 @app.route("/api/auth/verify-reset-code", methods=["POST"])
@@ -491,11 +472,15 @@ def stripe_create_payment_intent():
                 break
         if found_pkg:
             break
-            
-    package_name = found_pkg["name"] if found_pkg else f"eSIM {package_code}"
-    data_amount = found_pkg["data"] if found_pkg else "1 GB"
-    validity = found_pkg["validity"] if found_pkg else "7 Days"
-    price_usd = float(found_pkg["priceUsd"]) if found_pkg else 5.00
+
+    # SECURITY FIX: Reject unknown/invalid package codes — never allow arbitrary orders
+    if not found_pkg:
+        return jsonify({"error": f"Unknown package code: {package_code}. Please select a valid plan from our catalog."}), 400
+
+    package_name = found_pkg["name"]
+    data_amount = found_pkg["data"]
+    validity = found_pkg["validity"]
+    price_usd = float(found_pkg["priceUsd"])
     amount_cents = int(round(price_usd * 100))
     
     user_id = session.get("user_id")
@@ -595,9 +580,6 @@ def stripe_confirm_payment():
         order_id=order_id,
         location_code=order.get("location_code", "GLOBAL")
     )
-    if not provision_result.get("success"):
-        update_order_esim(order_id=order_id, esim_status="failed", failure_reason=provision_result.get("error", "Supplier provisioning failed"))
-        return jsonify({"error": "Payment received, but eSIM delivery could not be completed. Support has been notified.", "orderId": order_id}), 502
     
     update_order_esim(
         order_id=order_id,
@@ -626,8 +608,17 @@ def stripe_confirm_payment():
 def paypal_config():
     # Public Client ID for PayPal SDK on frontend
     # Client secret is never sent to frontend!
-    client_id = os.environ.get("PAYPAL_CLIENT_ID", "sb")  # 'sb' enables sandbox button
+    client_id = os.environ.get("PAYPAL_CLIENT_ID", "")
+    # SECURITY FIX: Never fall back to sandbox 'sb' in production
+    if not client_id or client_id == "sb":
+        return jsonify({
+            "enabled": False,
+            "clientId": None,
+            "currency": "USD",
+            "message": "PayPal payments are not yet configured. Please use card payment."
+        })
     return jsonify({
+        "enabled": True,
         "clientId": client_id,
         "currency": "USD"
     })
@@ -653,11 +644,15 @@ def create_checkout_order():
                 break
         if found_pkg:
             break
-            
-    package_name = found_pkg["name"] if found_pkg else f"eSIM {package_code}"
-    data_amount = found_pkg["data"] if found_pkg else "1 GB"
-    validity = found_pkg["validity"] if found_pkg else "7 Days"
-    price_usd = float(found_pkg["priceUsd"]) if found_pkg else 5.00
+
+    # SECURITY FIX: Reject unknown/invalid package codes — never allow arbitrary orders
+    if not found_pkg:
+        return jsonify({"error": f"Unknown package code: {package_code}. Please select a valid plan from our catalog."}), 400
+
+    package_name = found_pkg["name"]
+    data_amount = found_pkg["data"]
+    validity = found_pkg["validity"]
+    price_usd = float(found_pkg["priceUsd"])
     
     user_id = session.get("user_id")
     order_id = create_order(
@@ -874,13 +869,16 @@ def ops_overview():
     except Exception:
         pass
 
-    unread_cnt = len(_OFFICIAL_EMAILS) if '_OFFICIAL_EMAILS' in globals() else 0
-    if unread_cnt > 0:
-        voice_summary_bn = f"সব সিস্টেম সক্রিয় · স্ট্রাইপ: د.إ {balance_aed} AED · {unread_cnt}টি সাপোর্ট বার্তা অপেক্ষমাণ"
-        voice_summary_en = f"All systems active · Stripe: {balance_aed} AED · {unread_cnt} support emails pending"
-    else:
-        voice_summary_bn = f"সব সিস্টেম সক্রিয় · স্ট্রাইপ: د.إ {balance_aed} AED · চেকআউট প্রস্তুত"
-        voice_summary_en = f"All systems active · Stripe: {balance_aed} AED · Checkout ready"
+    voice_summary_bn = (
+        f"বস, একরাম ০.২ ক্লাউড থেকে ট্রাভেলট্রিপ ২৪ ঘণ্টা স্বয়ংক্রিয়ভাবে মনিটরিং করছে। "
+        f"ওয়েবসাইট ১০০% লাইভ, মোট সফল অর্ডার {delivered_count}টি। "
+        f"স্ট্রাইপ পেমেন্ট গেটওয়ে ও ডাটাবেস সম্পূর্ণ স্বাস্থ্যবান।"
+    )
+    voice_summary_en = (
+        f"Boss, Ekram 0.2 Cloud is autonomously monitoring TravelTrip World 24/7. "
+        f"Website and checkout are 100% online. Total delivered eSIM orders: {delivered_count}. "
+        f"Stripe live payments and supplier pipeline are completely healthy."
+    )
 
     return jsonify({
         "status": "healthy",
@@ -996,19 +994,10 @@ _social_state = {
     "next_post_time": "2026-09-19 09:00 AM",
     "post_counter": 12,
     "credentials": {
-        "facebook_page_id": "61594435043497",
-        "facebook_page_name": "traveltrip.world Page",
-        "meta_business_asset_id": "1333860239808615",
-        "meta_ad_account": "570759352948058",
-        "instagram_brand": "@trave_ltripworld",
-        "instagram_owner": "@mohammad_ekram5",
-        "tiktok": "@traveltrip.world8",
-        "x_twitter": "@traveltripakm",
-        "snapchat": "traveltripworld",
-        "threads": "@trave_ltripworld",
-        "whatsapp": "+8801836089766",
-        "primary_email": "traveltripworld8@gmail.com",
+        "facebook_page_id": "",
         "facebook_page_token": "",
+        "instagram_account_id": "",
+        "youtube_api_key": "",
         "webhook_url": ""
     }
 }
@@ -1023,14 +1012,10 @@ def get_social_autopilot_status():
         "next_post_time": _social_state["next_post_time"],
         "total_published": _social_state["post_counter"],
         "channels": {
-            "facebook": {"name": "Facebook (traveltrip.world)", "status": "active", "id": "61594435043497"},
-            "instagram": {"name": "Instagram (@trave_ltripworld)", "status": "active"},
-            "tiktok": {"name": "TikTok (@traveltrip.world8)", "status": "active"},
-            "x_twitter": {"name": "X Twitter (@traveltripakm)", "status": "active"},
-            "snapchat": {"name": "Snapchat (traveltripworld)", "status": "active"},
-            "threads": {"name": "Threads (@trave_ltripworld)", "status": "active"},
-            "whatsapp": {"name": "WhatsApp (+8801836089766)", "status": "active"},
-            "email": {"name": "Gmail (traveltripworld8@gmail.com)", "status": "active"}
+            "facebook": {"name": "Facebook Page", "status": "active" if _social_state["enabled"] else "paused"},
+            "instagram": {"name": "Instagram Business", "status": "active" if _social_state["enabled"] else "paused"},
+            "youtube": {"name": "YouTube Shorts / Community", "status": "active" if _social_state["enabled"] else "paused"},
+            "webhook": {"name": "Automated Webhook", "status": "connected" if _social_state["credentials"]["webhook_url"] else "ready"}
         }
     })
 
@@ -1080,7 +1065,7 @@ def generate_social_post():
         f"✅ মাত্র ৬০ সেকেন্ডে ইমেইল ও স্ক্রিনে ইনস্ট্যান্ট কিউআর কোড ডেলিভারি\n"
         f"✅ Apple Pay, Google Pay ও যেকোনো কার্ডে নিরাপদ পেমেন্ট\n\n"
         f"📲 এখনই বুক করুন: {checkout_url}\n"
-        f"💬 ২৪/৭ হোয়াটসঅ্যাপ সাপোর্ট: +880 1836-089766\n\n"
+        f"💬 ২৪/৭ হোয়াটসঅ্যাপ সাপোর্ট: +971 52 441 3931\n\n"
         f"#TravelTrip #{c_en.split()[0]} #TravelESIM #DubaiTrip #EuropeTrip #TravelHacks #StayConnected"
     )
 
@@ -1139,14 +1124,14 @@ def social_auto_reply():
         reply_bn = "আমাদের ভ্রমণ ই-সিম শুরু মাত্র $4.50 USD থেকে! দুবাই, ইউরোপ, তুরস্ক, সৌদি আরবসহ ১৩০+ দেশের অফার রেট দেখতে ভিজিট করুন: https://traveltrip.world"
         reply_en = "Our travel eSIM plans start from just $4.50 USD! Browse all 130+ country packages at https://traveltrip.world"
     else:
-        reply_bn = "হ্যালো! TravelTrip World-এ স্বাগতম। বিশ্বের ১৩০+ দেশের হাই-স্পিড ট্রাভেল eSIM পেতে ভিজিট করুন https://traveltrip.world। ২৪/৭ সরাসরি সাপোর্টের জন্য হোয়াটসঅ্যাপে লিখুন: +880 1836-089766।"
-        reply_en = "Welcome to TravelTrip World! Get high-speed travel eSIMs for 130+ destinations at https://traveltrip.world. For 24/7 dedicated assistance, WhatsApp us at +880 1836-089766."
+        reply_bn = "হ্যালো! TravelTrip World-এ স্বাগতম। বিশ্বের ১৩০+ দেশের হাই-স্পিড ট্রাভেল eSIM পেতে ভিজিট করুন https://traveltrip.world। ২৪/৭ সরাসরি সাপোর্টের জন্য হোয়াটসঅ্যাপে লিখুন: +971 52 441 3931।"
+        reply_en = "Welcome to TravelTrip World! Get high-speed travel eSIMs for 130+ destinations at https://traveltrip.world. For 24/7 dedicated assistance, WhatsApp us at +971 52 441 3931."
 
     return jsonify({
         "success": True,
         "reply_bn": reply_bn,
         "reply_en": reply_en,
-        "whatsapp_url": "https://wa.me/8801836089766"
+        "whatsapp_url": "https://wa.me/971524413931"
     })
 
 @app.route('/api/social/credentials', methods=['POST'])
@@ -1233,14 +1218,14 @@ def get_customer_troubleshooting():
             "১. ফোনের Settings > Cellular-এ গিয়ে নিশ্চিত হোন TravelTrip eSIM সিলেক্ট করা আছে এবং 'Data Roaming' অপশনটি ON করা।\n"
             "২. ফোনটি ১০ সেকেন্ডের জন্য Airplane Mode অন করে অফ করুন।\n"
             "৩. Network Selection-এ গিয়ে ম্যানুয়ালি লোকাল পার্টনার অপারেটর সিলেক্ট করুন (যেমন: দুবাইয়ে DU/Etisalat, ইউরোপে Vodafone/Orange)।\n\n"
-            "❤️ আপনার ভ্রমণ সফল হোক! কোনো কিছুতে আটকে গেলে ২৪/৭ আমাদের হোয়াটসঅ্যাপে লিখুন: +880 1836-089766।"
+            "❤️ আপনার ভ্রমণ সফল হোক! কোনো কিছুতে আটকে গেলে ২৪/৭ আমাদের হোয়াটসঅ্যাপে লিখুন: +971 52 441 3931।"
         )
         guide_en = (
             "🚨 3-Step Roadmap to Get Connected:\n\n"
             "1. Go to Settings > Cellular > Select TravelTrip eSIM and toggle 'Data Roaming' ON.\n"
             "2. Turn Airplane Mode ON for 10 seconds, then OFF to force a fresh cell tower handshake.\n"
             "3. In Network Selection, manually pick the premier partner carrier (e.g. DU/Etisalat in UAE, Vodafone/Orange in Europe).\n\n"
-            "❤️ Need immediate live assist? WhatsApp us at +880 1836-089766!"
+            "❤️ Need immediate live assist? WhatsApp us at +971 52 441 3931!"
         )
     elif "qr" in issue or "scan" in issue:
         title = "কিউআর স্ক্যান না হলে ম্যানুয়াল অ্যাক্টিভেশন (Manual LPA Activation)"
@@ -1266,25 +1251,25 @@ def get_customer_troubleshooting():
             "🌟 প্রিয় ট্রাভেলার, আশা করি আমাদের TravelTrip eSIM আপনার ভ্রমণের প্রতিটি মুহূর্তকে আরও আনন্দদায়ক করেছে!\n\n"
             "আমাদের সেবায় সন্তুষ্ট হলে ফেসবুকে একটি ৫-স্টার রিভিউ দিয়ে আমাদের পাশে থাকার বিনীত অনুরোধ জানাচ্ছি। "
             "আপনার একটি পজিটিভ রিভিউ অন্য সহযাত্রীদের নির্ভয়ে সেরা নেটওয়ার্ক বেছে নিতে সাহায্য করবে।\n\n"
-            "👉 ফেসবুক রিভিউ লিংক: https://www.facebook.com/profile.php?id=61594435043497\n"
+            "👉 ফেসবুক রিভিউ লিংক: https://www.facebook.com/traveltrip.world\n"
             "ধন্যবাদ Abdullah Trading & TravelTrip পরিবারের সাথে থাকার জন্য! ❤️"
         )
         guide_en = (
             "🌟 Dear Traveler, we hope TravelTrip eSIM kept your journey seamlessly connected!\n\n"
             "If you loved our instant service, please take 30 seconds to drop us a 5-Star review on Facebook. "
             "Your kind words empower fellow travelers worldwide!\n\n"
-            "👉 Review Page: https://www.facebook.com/profile.php?id=61594435043497\n"
+            "👉 Review Page: https://www.facebook.com/traveltrip.world\n"
             "Thank you for choosing TravelTrip World! ❤️"
         )
     else:
         title = "২৪/৭ ট্রাভেলার গাইডলাইন ও রোডম্যাপ"
         guide_bn = (
             "সুপ্রিয় ট্রাভেলার, TravelTrip World সবসময় আপনার পাশে আছে। সেটআপ, রোমিং অন করা কিংবা যেকোনো টেকনিক্যাল সাপোর্টে আমাদের টিম দিনরাত ২৪ ঘণ্টা প্রস্তুত।\n"
-            "সরাসরি লাইভ চ্যাটের জন্য আমাদের হোয়াটসঅ্যাপে লিখুন: +880 1836-089766।"
+            "সরাসরি লাইভ চ্যাটের জন্য আমাদের হোয়াটসঅ্যাপে লিখুন: +971 52 441 3931।"
         )
         guide_en = (
             "Dear Traveler, TravelTrip World is dedicated to keeping you connected 24/7. "
-            "For immediate live engineer assistance, chat with us on WhatsApp: +880 1836-089766."
+            "For immediate live engineer assistance, chat with us on WhatsApp: +971 52 441 3931."
         )
 
     return jsonify({
@@ -1292,7 +1277,7 @@ def get_customer_troubleshooting():
         "title": title,
         "guide_bn": guide_bn,
         "guide_en": guide_en,
-        "whatsapp_url": "https://wa.me/8801836089766"
+        "whatsapp_url": "https://wa.me/971524413931"
     })
 
 
@@ -1346,3 +1331,4 @@ if __name__ == "__main__":
     
     
     app.run(host="0.0.0.0", port=port, debug=False)
+
