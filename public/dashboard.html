@@ -83,6 +83,27 @@
       text-align: center;
     }
   </style>
+
+<style>
+body {
+    position: relative;
+}
+body::before {
+    content: "";
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 550px;
+    height: 550px;
+    background: url('/images/logo-official.png') no-repeat center center;
+    background-size: contain;
+    opacity: 0.04;
+    pointer-events: none;
+    z-index: 0;
+}
+</style>
+
 </head>
 <body>
 <div class="site-watermark-bg"></div>
