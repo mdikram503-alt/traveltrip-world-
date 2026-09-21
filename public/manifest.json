@@ -1,17 +1,17 @@
 {
-  "name": "Ekram0.2",
-  "short_name": "Ekram0.2",
-  "description": "Ekram0.2 Autonomous Operations",
-  "start_url": "/ops.html?source=android_bot",
+  "name": "TravelTrip World",
+  "short_name": "TravelTrip",
+  "description": "TravelTrip World - Instant 5G eSIM in 200+ Countries",
+  "start_url": "/?source=pwa",
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#F8FAFC",
+  "background_color": "#0B0F19",
   "theme_color": "#3D38D0",
   "categories": [
-    "business",
     "travel",
-    "productivity"
+    "business",
+    "connectivity"
   ],
   "icons": [
     {
