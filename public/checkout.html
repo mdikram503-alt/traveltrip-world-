@@ -536,7 +536,7 @@
               <button type="button" class="tt-tab-btn active" id="tab-card" onclick="selectPaymentMethod('card')">
                 💳 Credit / Debit Card
               </button>
-              <button type="button" class="tt-tab-btn" id="tab-paypal" onclick="selectPaymentMethod('paypal')">
+              <button type="button" class="tt-tab-btn" id="tab-paypal" style="display: none;" onclick="selectPaymentMethod('paypal')">
                 🅿️ PayPal
               </button>
             </div>
@@ -706,12 +706,12 @@
     statusBox.textContent = msg;
   }
 
-  // FIX #2 + #4: Server-side package validation — fetch real price from catalog
+  // FIX: Verify live inventory integrity and real price from catalog
   async function loadPackageFromCatalog() {
     try {
       const res = await fetch("/api/catalog/packages?location=ALL");
       const data = await res.json();
-      if (data && data.packages) {
+      if (data && data.packages && data.packages.length > 0) {
         const found = data.packages.find(p => p.packageCode === packageCode);
         if (found) {
           planName = found.name;
@@ -720,19 +720,25 @@
           dataAmount = found.data;
           locationCode = found.region || locationCode;
         } else {
-          // Package code not in catalog — show error and redirect
-          showStatus(`Package "${packageCode}" not found in our catalog. Redirecting to plans...`, "error");
-          setTimeout(() => window.location.replace("/destinations.html?country=GLOBAL"), 3000);
+          // Package code not in catalog — lock checkout to prevent invalid order
+          showStatus(`⚠️ Package "${packageCode}" is temporarily unavailable in live inventory. Redirecting to destinations...`, "error");
+          const payBtn = document.getElementById("stripe-pay-button");
+          if (payBtn) { payBtn.disabled = true; payBtn.style.opacity = "0.5"; }
+          setTimeout(() => window.location.replace("/destinations.html?country=GLOBAL"), 3500);
           return;
         }
+      } else {
+        showStatus("⚠️ Inventory temporarily unavailable. Please try again in a few moments.", "error");
+        const payBtn = document.getElementById("stripe-pay-button");
+        if (payBtn) { payBtn.disabled = true; payBtn.style.opacity = "0.5"; }
+        return;
       }
     } catch(e) {
-      console.warn("Catalog fetch failed, using URL params as fallback:", e);
-      // Fallback to URL params only if server is unreachable
-      planName = params.get("name") || packageCode;
-      shownPrice = params.get("price") || "0.00";
-      validity = params.get("validity") || "";
-      dataAmount = params.get("data") || "";
+      console.warn("Catalog fetch failed:", e);
+      showStatus("⚠️ Inventory connection failed. Please refresh or contact 24/7 WhatsApp support.", "error");
+      const payBtn = document.getElementById("stripe-pay-button");
+      if (payBtn) { payBtn.disabled = true; payBtn.style.opacity = "0.5"; }
+      return;
     }
 
     // Populate order summary with verified data
@@ -767,12 +773,12 @@
       if (!res.ok) return;
       const config = await res.json();
       // FIX #3: Don't load PayPal SDK if not configured (sandbox removed)
+      const ppTab = document.getElementById("tab-paypal");
       if (!config.enabled || !config.clientId) {
-        // Hide PayPal tab when not configured
-        const ppTab = document.getElementById("tab-paypal");
         if (ppTab) ppTab.style.display = "none";
         return;
       }
+      if (ppTab) ppTab.style.display = "inline-flex";
       const script = document.createElement("script");
       script.src = `https://www.paypal.com/sdk/js?client-id=${config.clientId}&currency=${config.currency || "USD"}`;
       script.onload = () => renderPayPalButtons();

@@ -218,18 +218,76 @@ CATALOG_PACKAGES = {
     ]
 }
 
+# Search terms accepted by the website. Keeping these aliases server-side means
+# the web site, mobile client and checkout API resolve destinations identically.
+CATALOG_ALIASES = {
+    "BANGLADESH": "BD", "DHAKA": "BD", "INDIA": "IN", "PAKISTAN": "PK",
+    "UNITED ARAB EMIRATES": "AE", "EMIRATES": "AE", "DUBAI": "AE", "UAE": "AE", "AE": "AE",
+    "OMAN": "OM", "QATAR": "QA", "DOHA": "QA", "EUROPE": "EU",
+    "ASIA": "ASIA", "THAILAND": "TH", "USA": "US", "UNITED STATES": "US",
+    "AMERICA": "US", "WORLDWIDE": "GLOBAL", "WORLD": "GLOBAL",
+}
+
+def find_catalog_package(package_code):
+    """Find package across live supplier inventory or local fallback catalog."""
+    if not package_code:
+        return None
+    # 1. Search in local catalog first
+    for pkgs in CATALOG_PACKAGES.values():
+        for p in pkgs:
+            if p.get("packageCode") == package_code:
+                return p
+    # 2. Search in live supplier catalog (supports 3,184 live packages like CKH002, CKH031)
+    try:
+        sup_pkgs = SupplierService.live_catalog()
+        for p in sup_pkgs:
+            if p.get("packageCode") == package_code:
+                return p
+    except Exception:
+        pass
+    return None
+
 @app.route("/catalog/esim/packages", methods=["GET"])
 @app.route("/api/packages", methods=["GET"])
 @app.route("/api/catalog/packages", methods=["GET"])
 def get_catalog_packages():
-    loc = (request.args.get("country") or request.args.get("location") or "").strip().upper()
+    requested_location = (request.args.get("country") or request.args.get("location") or "").strip().upper()
+    loc = CATALOG_ALIASES.get(requested_location, requested_location)
     duration = request.args.get("duration", "").strip()
     plan_type = request.args.get("type", "").strip().lower()
 
-    if loc and loc in CATALOG_PACKAGES:
-        pkgs = [dict(p) for p in CATALOG_PACKAGES[loc]]
+    # Prefer the verified supplier catalog with blazing-fast gzip and query caching
+    supplier_packages = []
+    try:
+        supplier_packages = SupplierService.live_catalog(location_filter=loc if loc not in ["ALL", ""] else "")
+        if not supplier_packages and (not loc or loc == "ALL"):
+            supplier_packages = SupplierService.live_catalog()
+    except Exception as ex:
+        supplier_packages = []
+
+    if supplier_packages:
+        all_regions = sorted({r.strip() for p in supplier_packages for r in p.get("region", "").split(",") if r.strip()})
+        if not loc or loc == "ALL":
+            pkgs = list(supplier_packages)
+        else:
+            # Clean and precise region matching
+            pkgs = [
+                p for p in supplier_packages 
+                if loc == p.get("region") or loc in p.get("region", "").split(",")
+                or (loc == "AE" and any(w in p.get("name", "").upper() for w in ["UNITED ARAB EMIRATES", "DUBAI", "UAE"]))
+            ]
+    else:
+        all_regions = list(CATALOG_PACKAGES.keys())
+        pkgs = None
+
+    if pkgs is not None:
+        pass
+    elif loc and (loc in CATALOG_PACKAGES or loc == "AE"):
+        fallback_key = "UAE" if loc == "AE" else loc
+        pkgs = [{**p, "region": loc} for p in CATALOG_PACKAGES.get(fallback_key, [])]
     elif loc and loc not in ["ALL", ""]:
-        pkgs = [dict(p) for p in CATALOG_PACKAGES.get("EU", [])]
+        # Do not silently return Europe for an unknown destination.
+        pkgs = []
     else:
         pkgs = []
         for region, pkg_list in CATALOG_PACKAGES.items():
@@ -240,7 +298,7 @@ def get_catalog_packages():
 
     # Filter by duration (3, 7, 15, 30)
     if duration:
-        pkgs = [p for p in pkgs if f"{duration} Day" in p.get("validity", "")]
+        pkgs = [p for p in pkgs if f"{duration} Day" in p.get("validity", "") or f"{duration}DAY" in p.get("validity", "").upper()]
 
     # Filter by plan type ('unlimited' vs 'limited')
     if plan_type == "unlimited":
@@ -251,9 +309,13 @@ def get_catalog_packages():
     return jsonify({
         "status": "success",
         "location": loc or "ALL",
+        "requestedLocation": requested_location or "ALL",
         "count": len(pkgs),
-        "destinations": list(CATALOG_PACKAGES.keys()),
-        "packages": pkgs
+        "destinations": all_regions,
+        "packages": pkgs,
+        "supplier_live": bool(supplier_packages),
+        "supplier_error": getattr(SupplierService, "last_error", ""),
+        "active_key": getattr(SupplierService, "active_key", "")
     })
 
 @app.route("/api/catalog/destinations", methods=["GET"])
@@ -511,14 +573,7 @@ def stripe_create_payment_intent():
     if not buyer_email or not package_code:
         return jsonify({"error": "Missing packageCode or buyerEmail"}), 400
         
-    found_pkg = None
-    for pkgs in CATALOG_PACKAGES.values():
-        for p in pkgs:
-            if p["packageCode"] == package_code:
-                found_pkg = p
-                break
-        if found_pkg:
-            break
+    found_pkg = find_catalog_package(package_code)
 
     # SECURITY FIX: Reject unknown/invalid package codes — never allow arbitrary orders
     if not found_pkg:
@@ -683,14 +738,7 @@ def create_checkout_order():
         return jsonify({"error": "Missing packageCode or buyerEmail"}), 400
         
     # Match price from catalog
-    found_pkg = None
-    for pkgs in CATALOG_PACKAGES.values():
-        for p in pkgs:
-            if p["packageCode"] == package_code:
-                found_pkg = p
-                break
-        if found_pkg:
-            break
+    found_pkg = find_catalog_package(package_code)
 
     # SECURITY FIX: Reject unknown/invalid package codes — never allow arbitrary orders
     if not found_pkg:
