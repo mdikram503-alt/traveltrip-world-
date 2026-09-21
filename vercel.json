@@ -76,6 +76,22 @@
       "destination": "/checkout.html"
     },
     {
+      "source": "/register",
+      "destination": "/login.html"
+    },
+    {
+      "source": "/register.html",
+      "destination": "/login.html"
+    },
+    {
+      "source": "/dashboard",
+      "destination": "/account.html"
+    },
+    {
+      "source": "/dashboard.html",
+      "destination": "/account.html"
+    },
+    {
       "source": "/api/(.*)",
       "destination": "/api"
     },

@@ -222,7 +222,7 @@ CATALOG_PACKAGES = {
 @app.route("/api/packages", methods=["GET"])
 @app.route("/api/catalog/packages", methods=["GET"])
 def get_catalog_packages():
-    loc = request.args.get("location", "").strip().upper()
+    loc = (request.args.get("country") or request.args.get("location") or "").strip().upper()
     duration = request.args.get("duration", "").strip()
     plan_type = request.args.get("type", "").strip().lower()
 
@@ -254,6 +254,52 @@ def get_catalog_packages():
         "count": len(pkgs),
         "destinations": list(CATALOG_PACKAGES.keys()),
         "packages": pkgs
+    })
+
+@app.route("/api/catalog/destinations", methods=["GET"])
+def get_catalog_destinations():
+    dest_list = []
+    dest_metadata = {
+        "BD": {"name": "Bangladesh", "flag": "🇧🇩", "currency": "BDT"},
+        "IN": {"name": "India", "flag": "🇮🇳", "currency": "INR"},
+        "PK": {"name": "Pakistan", "flag": "🇵🇰", "currency": "PKR"},
+        "UAE": {"name": "United Arab Emirates", "flag": "🇦🇪", "currency": "AED"},
+        "OM": {"name": "Oman", "flag": "🇴🇲", "currency": "OMR"},
+        "QA": {"name": "Qatar", "flag": "🇶🇦", "currency": "QAR"},
+        "EU": {"name": "Europe (33 Countries)", "flag": "🇪🇺", "currency": "EUR"},
+        "ASIA": {"name": "Asia+ Multi-Country", "flag": "🌏", "currency": "USD"},
+        "GLOBAL": {"name": "Global 130+ Countries", "flag": "🌐", "currency": "USD"},
+        "TH": {"name": "Thailand", "flag": "🇹🇭", "currency": "THB"},
+        "US": {"name": "United States", "flag": "🇺🇸", "currency": "USD"}
+    }
+    for code, pkgs in CATALOG_PACKAGES.items():
+        meta = dest_metadata.get(code, {"name": code, "flag": "🌍", "currency": "USD"})
+        dest_list.append({
+            "code": code,
+            "name": meta["name"],
+            "flag": meta["flag"],
+            "package_count": len(pkgs),
+            "starting_price_usd": min(float(p["priceUsd"]) for p in pkgs) if pkgs else 0.0
+        })
+    return jsonify({
+        "status": "success",
+        "count": len(dest_list),
+        "destinations": dest_list
+    })
+
+@app.route("/api/currency/rates", methods=["GET"])
+def get_currency_rates():
+    return jsonify({
+        "status": "success",
+        "base": "USD",
+        "currencies": {
+            "USD": {"code": "USD", "symbol": "$", "rate": 1.0, "flag": "🇺🇸"},
+            "AED": {"code": "AED", "symbol": "د.إ ", "rate": 3.6725, "flag": "🇦🇪"},
+            "SAR": {"code": "SAR", "symbol": "﷼ ", "rate": 3.75, "flag": "🇸🇦"},
+            "EUR": {"code": "EUR", "symbol": "€", "rate": 0.925, "flag": "🇪🇺"},
+            "GBP": {"code": "GBP", "symbol": "£", "rate": 0.79, "flag": "🇬🇧"},
+            "BDT": {"code": "BDT", "symbol": "৳", "rate": 121.5, "flag": "🇧🇩"}
+        }
     })
 
 # ==============================================================================
@@ -328,6 +374,7 @@ def login():
 
 @app.route("/api/auth/session", methods=["GET"])
 @app.route("/api/auth/me", methods=["GET"])
+@app.route("/api/auth/status", methods=["GET"])
 def get_current_session():
     user_id = session.get("user_id")
     if not user_id:
@@ -785,6 +832,34 @@ def get_customer_orders():
         return jsonify({"error": "Order not found matching this email and ID", "orders": []}), 404
         
     return jsonify({"error": "Authentication required to view orders", "authenticated": False, "orders": []}), 401
+
+@app.route("/api/orders/lookup", methods=["GET", "POST"])
+def lookup_guest_order():
+    if request.method == "POST":
+        data = request.get_json(silent=True) or request.form.to_dict() or {}
+        order_id = (data.get("orderId") or data.get("order_id") or "").strip()
+        email = (data.get("email") or data.get("buyerEmail") or "").strip().lower()
+    else:
+        order_id = request.args.get("orderId", "").strip()
+        email = request.args.get("email", "").strip().lower()
+
+    if not order_id or not email:
+        return jsonify({
+            "status": "error",
+            "error": "Both Order ID (e.g. TT-XXXXXXXX) and buyer Email are required to look up an order."
+        }), 400
+
+    order = get_order(order_id)
+    if not order or order.get("buyer_email", "").lower() != email:
+        return jsonify({
+            "status": "error",
+            "error": "No order found matching the provided Order ID and email address."
+        }), 404
+
+    return jsonify({
+        "status": "success",
+        "order": order
+    })
 
 # Health check endpoints
 @app.route("/api/health/live", methods=["GET"])
