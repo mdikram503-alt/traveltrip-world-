@@ -40,7 +40,7 @@ WHATSAPP_SUPPORT = "+971524413931"
 BUSINESS_OWNER = "Mohammad Akram (Abdullah Trading)"
 
 # Telegram 24/7 Cloud Alert Bot Configuration
-TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "8681657549:AAF69PT6bE_GNs6StEU_gfAtRATx0ACseGI")
+TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "8852199959:AAG7Bwly_690aE9yOTyyh1WfxhWSEB1gr1A")
 TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID", "8921431972")
 
 def send_telegram_alert(message_text, photo_url=None):

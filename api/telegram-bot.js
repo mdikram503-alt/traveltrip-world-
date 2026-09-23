@@ -2,7 +2,7 @@
 // Just copy-paste this file, no extra setup needed!
 
 export default async function handler(req, res) {
-  const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
+  const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '8852199959:AAG7Bwly_690aE9yOTyyh1WfxhWSEB1gr1A';
   const CHANNEL = '@tTraveltrip_World';
   
   if (!BOT_TOKEN) {
@@ -11,7 +11,7 @@ export default async function handler(req, res) {
 
   // GET request - to check bot is live
   if (req.method === 'GET') {
-    return res.status(200).send('Traveltrip.world Bot is LIVE! 🌍 Bot: @Traveltrip_world8');
+    return res.status(200).send('Traveltrip.world Bot is LIVE! 🌍 Bot: @travel_trip_world_bot');
   }
 
   // POST request - from Telegram
