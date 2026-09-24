@@ -11,3 +11,4 @@ write_clean.py
 
 .env.admin.secret
 *.secret
+.venv/
