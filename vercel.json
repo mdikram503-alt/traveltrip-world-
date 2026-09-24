@@ -90,12 +90,24 @@
       "destination": "/api/telegram-bot.js"
     },
     {
+      "source": "/api/auto-post-all",
+      "destination": "/api/auto-post-all.js"
+    },
+    {
       "source": "/api/auth/google",
       "destination": "/api/auth/google.js"
     },
     {
       "source": "/api/auth/callback/google",
       "destination": "/api/auth/callback/google.js"
+    },
+    {
+      "source": "/post",
+      "destination": "/post.html"
+    },
+    {
+      "source": "/auto-post",
+      "destination": "/post.html"
     },
     {
       "source": "/social",

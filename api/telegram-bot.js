@@ -84,20 +84,25 @@ export default async function handler(req, res) {
     const text = (message.text || message.caption || '').trim();
     const isPhoto = !!message.photo;
 
-    // A. Photo with caption (Optional Channel forwarder)
-    if (isPhoto && message.caption && message.caption.length > 3) {
+    // A. Photo auto-forwarder to Channel (@tTraveltrip_World)
+    if (isPhoto) {
       try {
         const photo = message.photo[message.photo.length - 1].file_id;
+        const cap = message.caption 
+          ? `${message.caption}\n\n🌍 ${WEBSITE_URL} | 📲 WhatsApp: +971524413931 | ${OFFICIAL_CHANNEL}`
+          : `🌍 <b>TravelTrip.World</b> - ONE eSIM. THE WHOLE WORLD.\n\n📲 Website: ${WEBSITE_URL}\n✈️ Channel: ${OFFICIAL_CHANNEL}`;
+        
         await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             chat_id: OFFICIAL_CHANNEL,
             photo: photo,
-            caption: `${message.caption}\n\n🌍 ${WEBSITE_URL} | 📲 WhatsApp: +971524413931 | ${OFFICIAL_CHANNEL}`
+            caption: cap,
+            parse_mode: 'HTML'
           })
         });
-        await sendMessage(chatId, `✅ <b>Posted to Channel ${OFFICIAL_CHANNEL}!</b>\n\n📝 ${message.caption}`);
+        await sendMessage(chatId, `✅ <b>Photo Auto-Posted to Channel ${OFFICIAL_CHANNEL}!</b>\n\n${message.caption ? '📝 Caption: ' + message.caption : ''}`);
       } catch (err) {
         console.error('Channel post error:', err);
       }
