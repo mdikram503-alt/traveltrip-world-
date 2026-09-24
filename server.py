@@ -863,6 +863,91 @@ def stripe_confirm_payment():
         "official_email": OFFICIAL_EMAIL
     })
 
+@app.route("/api/order/instant-buy", methods=["POST"])
+def instant_buy_order():
+    data = request.get_json() or {}
+    buyer_email = (data.get("email") or data.get("buyerEmail") or "").strip().lower()
+    buyer_name = (data.get("name") or data.get("buyerName") or "Traveler Customer").strip()
+    country = data.get("country") or data.get("countryKey") or data.get("title") or ""
+    data_amount = data.get("data") or ""
+    validity = data.get("validity") or ""
+    package_code = (data.get("packageCode") or data.get("package_code") or "").strip()
+
+    if not buyer_email or "@" not in buyer_email:
+        return jsonify({"success": False, "error": "Valid email address is required"}), 400
+
+    # Match package from supplier catalog if not directly passed
+    if not package_code:
+        pkgs = SupplierService.live_catalog()
+        c_lower = country.lower().strip()
+        candidates = []
+        for p in pkgs:
+            if c_lower and (c_lower in p['name'].lower() or c_lower == p.get('region', '').lower()):
+                candidates.append(p)
+        if not candidates and c_lower:
+            aliases = {"uae": "united arab emirates", "uk": "united kingdom", "usa": "united states"}
+            if c_lower in aliases:
+                alt = aliases[c_lower]
+                candidates = [p for p in pkgs if alt in p['name'].lower()]
+        
+        if data_amount and candidates:
+            d_clean = data_amount.lower().replace(" ", "")
+            d_filter = [p for p in candidates if d_clean in p['data'].lower().replace(" ", "")]
+            if d_filter:
+                candidates = d_filter
+                
+        if candidates:
+            candidates.sort(key=lambda x: float(x.get('priceUsd', 999) or 999))
+            package_code = candidates[0]['packageCode']
+        else:
+            package_code = "JC063"
+    
+    order_id = f"TT-{int(time.time())}-{secrets.token_hex(3).upper()}"
+    
+    # Call ResellPortal live fulfillment
+    provision_result = SupplierService.provision_esim(
+        package_code=package_code,
+        buyer_email=buyer_email,
+        order_id=order_id,
+        location_code="GLOBAL",
+        buyer_name=buyer_name
+    )
+    
+    if not provision_result or not provision_result.get("success"):
+        err_msg = (provision_result or {}).get("error", "eSIM provisioning failed with wholesale supplier.")
+        return jsonify({"success": False, "error": err_msg}), 502
+        
+    try:
+        tg_alert = (
+            f"🚨 <b>NEW LIVE eSIM FULFILLED!</b>\n\n"
+            f"💳 <b>Order ID:</b> {order_id}\n"
+            f"👤 <b>Customer:</b> {buyer_name} ({buyer_email})\n"
+            f"📦 <b>Package:</b> {package_code}\n"
+            f"📱 <b>ICCID:</b> {provision_result.get('iccid')}\n"
+            f"🌐 <b>SMDP:</b> {provision_result.get('smdp_address')}\n"
+            f"⚡ <b>Supplier Ref:</b> {provision_result.get('supplier_order_id')}"
+        )
+        send_telegram_alert(tg_alert, photo_url=provision_result.get("qr_code_url"))
+    except Exception as ex:
+        pass
+        
+    return jsonify({
+        "success": True,
+        "order_id": order_id,
+        "package_code": package_code,
+        "iccid": provision_result.get("iccid"),
+        "lpa_string": provision_result.get("lpa_string"),
+        "qr_code_url": provision_result.get("qr_code_url"),
+        "smdp_address": provision_result.get("smdp_address"),
+        "activation_code": provision_result.get("activation_code"),
+        "pin": provision_result.get("pin"),
+        "puk": provision_result.get("puk"),
+        "apn": provision_result.get("apn"),
+        "supplier_order_id": provision_result.get("supplier_order_id")
+    })
+
+
+
 @app.route("/checkout/checkout/paypal/config", methods=["GET"])
 @app.route("/api/checkout/paypal/config", methods=["GET"])
 def paypal_config():

@@ -17,16 +17,15 @@ import uuid
 import ssl
 
 logger = logging.getLogger(__name__)
-
 # ResellPortal Wholesale API
 SUPPLIER_URL = (os.environ.get("RESELLPORTAL_BASE_URL") or os.environ.get("SUPPLIER_URL") or "https://panel.resellportal.com/wp-json/resellportal/v1").strip().rstrip("/")
-SUPPLIER_API_KEY = (os.environ.get("RESELLPORTAL_API_KEY") or os.environ.get("SUPPLIER_API_KEY") or "rp_71de0a0f6b947352ed39290cedf6654be944686e0c739196").strip()
-SUPPLIER_API_SECRET = (os.environ.get("RESELLPORTAL_API_SECRET") or os.environ.get("SUPPLIER_API_SECRET") or "rps_4923261c6d7341c4a6ad0174f316caec356c2ce8aa547f4debccbde43aec741c").strip()
+SUPPLIER_API_KEY = (os.environ.get("RESELLPORTAL_API_KEY") or os.environ.get("SUPPLIER_API_KEY") or "rp_0990c036bc1783a17f7a58d7e53faf32c52b1af898c0861a").strip()
+SUPPLIER_API_SECRET = (os.environ.get("RESELLPORTAL_API_SECRET") or os.environ.get("SUPPLIER_API_SECRET") or "rps_90173d4c2aeaba71d06652a309c619c1cb1ad28cefe4f16b0f39f12031a7b6bb").strip()
 SMDP_DEFAULT = (os.environ.get("DEFAULT_SMDP") or "rsp.esimaccess.com").strip()
 _catalog_cache = {}
 
-VERIFIED_KEY = "rp_71de0a0f6b947352ed39290cedf6654be944686e0c739196"
-VERIFIED_SECRET = "rps_4923261c6d7341c4a6ad0174f316caec356c2ce8aa547f4debccbde43aec741c"
+VERIFIED_KEY = "rp_0990c036bc1783a17f7a58d7e53faf32c52b1af898c0861a"
+VERIFIED_SECRET = "rps_90173d4c2aeaba71d06652a309c619c1cb1ad28cefe4f16b0f39f12031a7b6bb"
 
 class SupplierService:
     last_error = ""
@@ -80,12 +79,12 @@ class SupplierService:
                 break
             except urllib.error.HTTPError as e:
                 SupplierService.last_error = f"HTTPError {e.code} with {label} ({key[:6]}...)"
-                logger.warning("ResellPortal call failed with %%s: %%s", label, e)
+                logger.warning("ResellPortal call failed with %s: %s", label, e)
                 if e.code == 401:
                     continue  # Try next credentials
             except Exception as exc:
                 SupplierService.last_error = f"{type(exc).__name__}: {exc}"
-                logger.warning("ResellPortal call exception: %%s", exc)
+                logger.warning("ResellPortal call exception: %s", exc)
 
         if not payload:
             return []
@@ -112,9 +111,49 @@ class SupplierService:
         return list(packages)
 
     @staticmethod
-    def provision_esim(package_code: str, buyer_email: str, order_id: str, location_code: str = "GLOBAL"):
+    def _get_or_create_client(name: str, email: str):
+        """Lookup existing client by email or register new client in ResellPortal"""
+        headers = {
+            "X-API-Key": SUPPLIER_API_KEY,
+            "X-API-Secret": SUPPLIER_API_SECRET,
+            "User-Agent": "TravelTripServer/2.0"
+        }
+        # 1. Search existing clients
+        try:
+            req = urllib.request.Request(f"{SUPPLIER_URL}/clients", headers=headers)
+            with urllib.request.urlopen(req, timeout=12) as res:
+                data = json.loads(res.read().decode("utf-8"))
+                for c in data.get("clients", []):
+                    if c.get("email", "").lower() == email.lower():
+                        logger.info(f"Found existing ResellPortal client ID: {c.get('id')} for {email}")
+                        return c.get("id")
+        except Exception as e:
+            logger.warning("Error fetching clients list: %s", e)
+
+        # 2. Create client if not found
+        try:
+            payload = json.dumps({"name": name or "Traveler Customer", "email": email}).encode("utf-8")
+            req = urllib.request.Request(
+                f"{SUPPLIER_URL}/clients",
+                data=payload,
+                headers={"Content-Type": "application/json", **headers}
+            )
+            with urllib.request.urlopen(req, timeout=12) as res:
+                data = json.loads(res.read().decode("utf-8"))
+                client_id = data.get("client_id") or data.get("id")
+                logger.info(f"Created new ResellPortal client ID: {client_id} for {email}")
+                return client_id
+        except urllib.error.HTTPError as e:
+            err_data = json.loads(e.read().decode("utf-8"))
+            logger.warning("Client creation notice: %s", err_data)
+        except Exception as e:
+            logger.error("Failed to create ResellPortal client: %s", e)
+        return None
+
+    @staticmethod
+    def provision_esim(package_code: str, buyer_email: str, order_id: str, location_code: str = "GLOBAL", buyer_name: str = "Traveler Customer"):
         """
-        Orders an eSIM package from wholesale supplier.
+        Orders an eSIM package from wholesale supplier (ResellPortal).
         Returns dict with iccid, lpa_string, qr_code_url, smdp_address, activation_code, supplier_order_id.
         """
         logger.info(f"Provisioning eSIM for order {order_id}, package: {package_code}, buyer: {buyer_email}")
@@ -122,23 +161,25 @@ class SupplierService:
         if not SUPPLIER_API_KEY or not SUPPLIER_API_SECRET:
             return {"success": False, "error": "Supplier credentials are not configured"}
         try:
-            result = SupplierService._call_live_supplier_api(package_code, buyer_email, order_id)
+            result = SupplierService._call_live_supplier_api(package_code, buyer_email, order_id, buyer_name=buyer_name)
             return result or {"success": False, "error": "Supplier returned no provisioning result"}
         except Exception as e:
-            logger.warning("Live supplier provisioning failed: %s", e)
-            return {"success": False, "error": "Supplier provisioning failed"}
+            logger.error("Live supplier provisioning failed: %s", e)
+            return {"success": False, "error": f"Supplier provisioning failed: {str(e)}"}
 
     @staticmethod
-    def _call_live_supplier_api(package_code: str, buyer_email: str, order_id: str):
+    def _call_live_supplier_api(package_code: str, buyer_email: str, order_id: str, buyer_name: str = "Traveler Customer"):
+        client_id = SupplierService._get_or_create_client(buyer_name, buyer_email)
+        if not client_id:
+            raise Exception(f"Unable to register client on ResellPortal for email {buyer_email}")
+
         endpoint = f"{SUPPLIER_URL}/orders"
         payload = json.dumps({
-            "package_code": package_code,
-            "email": buyer_email,
-            "merchant_reference": order_id,
-            "skip_client_email": False
+            "client_id": client_id,
+            "product_key": "esim",
+            "package_code": package_code
         }).encode("utf-8")
         
-        # Prepare headers for ResellPortal API (Key + Secret)
         headers = {
             "Content-Type": "application/json",
             "User-Agent": "TravelTripServer/2.0",
@@ -146,26 +187,43 @@ class SupplierService:
             "X-API-Secret": SUPPLIER_API_SECRET
         }
         
-        req = urllib.request.Request(
-            endpoint,
-            data=payload,
-            headers=headers
-        )
+        req = urllib.request.Request(endpoint, data=payload, headers=headers)
         
-        with urllib.request.urlopen(req, timeout=12) as res:
+        with urllib.request.urlopen(req, timeout=25) as res:
             if res.status in (200, 201):
                 data = json.loads(res.read().decode("utf-8"))
-                iccid = data.get("iccid")
-                lpa = data.get("lpa_string") or f"LPA:1${data.get('smdp')}${data.get('code')}"
-                qr_url = f"https://api.qrserver.com/v1/create-qr-code/?size=320x320&data={urllib.parse.quote(lpa)}"
+                service = data.get("service") or data.get("service_data") or {}
+                service_id = data.get("service_id") or data.get("order_id") or (service.get("id") if isinstance(service, dict) else None)
+                
+                # If service details need to be fetched:
+                if service_id and (not service or not isinstance(service, dict) or not service.get("service_data")):
+                    try:
+                        s_req = urllib.request.Request(f"{SUPPLIER_URL}/services/{service_id}", headers=headers)
+                        with urllib.request.urlopen(s_req, timeout=12) as s_res:
+                            s_full = json.loads(s_res.read().decode("utf-8"))
+                            if s_full.get("service"):
+                                service = s_full["service"]
+                    except Exception as ex:
+                        logger.warning("Could not fetch detailed service: %s", ex)
+
+                sdata = service.get("service_data", {}) if isinstance(service, dict) else {}
+                iccid = sdata.get("iccid") or data.get("iccid")
+                lpa = sdata.get("ac") or sdata.get("lpa_string") or data.get("lpa_string")
+                qr_url = sdata.get("qrCodeUrl") or data.get("qr_code_url")
+                if lpa and not qr_url:
+                    qr_url = f"https://api.qrserver.com/v1/create-qr-code/?size=320x320&data={urllib.parse.quote(lpa)}"
+
                 return {
                     "success": True,
-                    "supplier_order_id": data.get("order_id", f"SUP-{secrets.token_hex(6).upper()}"),
+                    "supplier_order_id": str(service_id or f"SUP-{secrets.token_hex(6).upper()}"),
                     "iccid": iccid,
-                    "smdp_address": data.get("smdp", SMDP_DEFAULT),
-                    "activation_code": data.get("code", secrets.token_hex(12).upper()),
+                    "smdp_address": sdata.get("smdp") or "rsp-eu.simlessly.com",
+                    "activation_code": sdata.get("ac") or lpa,
                     "lpa_string": lpa,
                     "qr_code_url": qr_url,
+                    "pin": sdata.get("pin"),
+                    "puk": sdata.get("puk"),
+                    "apn": sdata.get("apn"),
                     "created_at": time.strftime("%Y-%m-%dT%H:%M:%SZ")
                 }
         return None
