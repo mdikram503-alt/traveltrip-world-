@@ -2,98 +2,104 @@
   "version": 2,
   "cleanUrls": true,
   "trailingSlash": false,
-  "rewrites": [
+  "redirects": [
     {
-      "source": "/esim/bangladesh",
-      "destination": "/esim/bangladesh.html"
-    },
-    {
-      "source": "/esim/india",
-      "destination": "/esim/india.html"
-    },
-    {
-      "source": "/esim/pakistan",
-      "destination": "/esim/pakistan.html"
-    },
-    {
-      "source": "/esim/united-arab-emirates",
-      "destination": "/esim/united-arab-emirates.html"
-    },
-    {
-      "source": "/esim/uae",
-      "destination": "/esim/uae.html"
-    },
-    {
-      "source": "/esim/oman",
-      "destination": "/esim/oman.html"
-    },
-    {
-      "source": "/esim/qatar",
-      "destination": "/esim/qatar.html"
+      "source": "/esim/:path*",
+      "destination": "/",
+      "permanent": false
     },
     {
       "source": "/destinations",
-      "destination": "/destinations.html"
+      "destination": "/",
+      "permanent": false
     },
     {
       "source": "/how-it-works",
-      "destination": "/how-it-works.html"
+      "destination": "/",
+      "permanent": false
     },
     {
       "source": "/compatible-devices",
-      "destination": "/compatible-devices.html"
+      "destination": "/",
+      "permanent": false
     },
     {
       "source": "/compatibility",
-      "destination": "/compatibility.html"
+      "destination": "/",
+      "permanent": false
     },
     {
       "source": "/faq",
-      "destination": "/faq.html"
+      "destination": "/",
+      "permanent": false
     },
     {
       "source": "/terms",
-      "destination": "/terms.html"
+      "destination": "/",
+      "permanent": false
     },
     {
       "source": "/privacy",
-      "destination": "/privacy.html"
+      "destination": "/",
+      "permanent": false
     },
     {
       "source": "/refund-policy",
-      "destination": "/refund-policy.html"
+      "destination": "/",
+      "permanent": false
     },
     {
       "source": "/login",
-      "destination": "/login.html"
+      "destination": "/",
+      "permanent": false
     },
     {
       "source": "/account",
-      "destination": "/account.html"
+      "destination": "/",
+      "permanent": false
     },
     {
       "source": "/checkout",
-      "destination": "/checkout.html"
-    },
-    {
-      "source": "/register",
-      "destination": "/login.html"
-    },
-    {
-      "source": "/register.html",
-      "destination": "/login.html"
+      "destination": "/",
+      "permanent": false
     },
     {
       "source": "/dashboard",
-      "destination": "/account.html"
+      "destination": "/",
+      "permanent": false
     },
     {
-      "source": "/dashboard.html",
-      "destination": "/account.html"
+      "source": "/register",
+      "destination": "/",
+      "permanent": false
     },
+    {
+      "source": "/pages/:path*",
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/social.html",
+      "destination": "/social",
+      "permanent": true
+    }
+  ],
+  "rewrites": [
     {
       "source": "/api/telegram-bot",
       "destination": "/api/telegram-bot.js"
+    },
+    {
+      "source": "/api/auth/google",
+      "destination": "/api/auth/google.js"
+    },
+    {
+      "source": "/api/auth/callback/google",
+      "destination": "/api/auth/callback/google.js"
+    },
+    {
+      "source": "/social",
+      "destination": "/social.html"
     },
     {
       "source": "/api/(.*)",
@@ -127,210 +133,6 @@
       ]
     },
     {
-      "source": "/account",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "no-cache, no-store, must-revalidate, max-age=0"
-        },
-        {
-          "key": "Pragma",
-          "value": "no-cache"
-        },
-        {
-          "key": "Expires",
-          "value": "0"
-        }
-      ]
-    },
-    {
-      "source": "/destinations",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "no-cache, no-store, must-revalidate, max-age=0"
-        },
-        {
-          "key": "Pragma",
-          "value": "no-cache"
-        },
-        {
-          "key": "Expires",
-          "value": "0"
-        }
-      ]
-    },
-    {
-      "source": "/compatible-devices",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "no-cache, no-store, must-revalidate, max-age=0"
-        },
-        {
-          "key": "Pragma",
-          "value": "no-cache"
-        },
-        {
-          "key": "Expires",
-          "value": "0"
-        }
-      ]
-    },
-    {
-      "source": "/compatibility",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "no-cache, no-store, must-revalidate, max-age=0"
-        },
-        {
-          "key": "Pragma",
-          "value": "no-cache"
-        },
-        {
-          "key": "Expires",
-          "value": "0"
-        }
-      ]
-    },
-    {
-      "source": "/how-it-works",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "no-cache, no-store, must-revalidate, max-age=0"
-        },
-        {
-          "key": "Pragma",
-          "value": "no-cache"
-        },
-        {
-          "key": "Expires",
-          "value": "0"
-        }
-      ]
-    },
-    {
-      "source": "/login",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "no-cache, no-store, must-revalidate, max-age=0"
-        },
-        {
-          "key": "Pragma",
-          "value": "no-cache"
-        },
-        {
-          "key": "Expires",
-          "value": "0"
-        }
-      ]
-    },
-    {
-      "source": "/checkout",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "no-cache, no-store, must-revalidate, max-age=0"
-        },
-        {
-          "key": "Pragma",
-          "value": "no-cache"
-        },
-        {
-          "key": "Expires",
-          "value": "0"
-        }
-      ]
-    },
-    {
-      "source": "/faq",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "no-cache, no-store, must-revalidate, max-age=0"
-        },
-        {
-          "key": "Pragma",
-          "value": "no-cache"
-        },
-        {
-          "key": "Expires",
-          "value": "0"
-        }
-      ]
-    },
-    {
-      "source": "/terms",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "no-cache, no-store, must-revalidate, max-age=0"
-        },
-        {
-          "key": "Pragma",
-          "value": "no-cache"
-        },
-        {
-          "key": "Expires",
-          "value": "0"
-        }
-      ]
-    },
-    {
-      "source": "/privacy",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "no-cache, no-store, must-revalidate, max-age=0"
-        },
-        {
-          "key": "Pragma",
-          "value": "no-cache"
-        },
-        {
-          "key": "Expires",
-          "value": "0"
-        }
-      ]
-    },
-    {
-      "source": "/refund-policy",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "no-cache, no-store, must-revalidate, max-age=0"
-        },
-        {
-          "key": "Pragma",
-          "value": "no-cache"
-        },
-        {
-          "key": "Expires",
-          "value": "0"
-        }
-      ]
-    },
-    {
-      "source": "/(.*).html",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "no-cache, no-store, must-revalidate, max-age=0"
-        },
-        {
-          "key": "Pragma",
-          "value": "no-cache"
-        },
-        {
-          "key": "Expires",
-          "value": "0"
-        }
-      ]
-    },
-    {
       "source": "/(.*)",
       "headers": [
         {
@@ -348,7 +150,7 @@
       ]
     },
     {
-      "source": "/(css|js|images|downloads)/(.*)",
+      "source": "/(css|js|images|downloads|gallery)/(.*)",
       "headers": [
         {
           "key": "Cache-Control",
@@ -381,38 +183,6 @@
           "value": "public, max-age=86400"
         }
       ]
-    }
-  ],
-  "redirects": [
-    {
-      "source": "/pages/login.html",
-      "destination": "/login",
-      "permanent": true
-    },
-    {
-      "source": "/pages/login",
-      "destination": "/login",
-      "permanent": true
-    },
-    {
-      "source": "/pages/destinations.html",
-      "destination": "/destinations",
-      "permanent": true
-    },
-    {
-      "source": "/pages/how-it-works.html",
-      "destination": "/how-it-works",
-      "permanent": true
-    },
-    {
-      "source": "/pages/compatibility.html",
-      "destination": "/compatible-devices",
-      "permanent": true
-    },
-    {
-      "source": "/pages/faq.html",
-      "destination": "/faq",
-      "permanent": true
     }
   ]
 }
