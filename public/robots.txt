@@ -1,3 +1,21 @@
 User-agent: *
 Allow: /
+Disallow: /api/
+Disallow: /admin/
+Disallow: /server/
+
+# Sitemap location
 Sitemap: https://traveltrip.world/sitemap.xml
+
+# Social Media - Allow all crawlers to find social hub
+User-agent: Googlebot
+Allow: /pages/social.html
+
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+# Host
+Host: https://traveltrip.world

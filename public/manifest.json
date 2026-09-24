@@ -1,30 +1,10 @@
 {
-  "name": "TravelTrip World",
+  "name": "TravelTrip.World - Global eSIM in 30 Seconds - English USD Apple Gmail",
   "short_name": "TravelTrip",
-  "description": "TravelTrip World - Instant 5G eSIM in 200+ Countries",
-  "start_url": "/?source=pwa",
-  "scope": "/",
+  "start_url": "/",
   "display": "standalone",
-  "orientation": "portrait",
-  "background_color": "#0B0F19",
-  "theme_color": "#3D38D0",
-  "categories": [
-    "travel",
-    "business",
-    "connectivity"
-  ],
-  "icons": [
-    {
-      "src": "/images/logo-transparent.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "/images/logo.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
-    }
-  ]
+  "background_color": "#ffffff",
+  "theme_color": "#4F46E5",
+  "lang": "en",
+  "description": "Global eSIM - No Age Limit, No Passport, No ID - Anyone Can Buy - English Only USD Only - Apple & Gmail Login - Instant QR"
 }
