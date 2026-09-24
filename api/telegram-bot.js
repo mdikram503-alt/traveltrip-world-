@@ -109,9 +109,33 @@ export default async function handler(req, res) {
       return res.status(200).send('OK');
     }
 
-    const lower = text.toLowerCase();
+    // B. /post or /broadcast command to post text directly to channel
+    if (lower.startsWith('/post') || lower.startsWith('/broadcast') || lower.startsWith('post:')) {
+      const postText = text.replace(/^\/(post|broadcast)\s*/i, '').replace(/^post:\s*/i, '').trim();
+      if (postText) {
+        try {
+          await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              chat_id: OFFICIAL_CHANNEL,
+              text: `${postText}\n\n🌍 <a href="${WEBSITE_URL}">traveltrip.world</a> | 📲 WhatsApp: +971524413931 | ${OFFICIAL_CHANNEL}`,
+              parse_mode: 'HTML'
+            })
+          });
+          await sendMessage(chatId, `✅ <b>Text Auto-Posted to Channel ${OFFICIAL_CHANNEL}!</b>\n\n📝 ${postText}`);
+        } catch (err) {
+          console.error('Channel post error:', err);
+          await sendMessage(chatId, `❌ Failed to post to channel: ${err.message}`);
+        }
+        return res.status(200).send('OK');
+      } else {
+        await sendMessage(chatId, `✍️ <b>How to post text:</b>\n\nType <code>/post Your Message Here</code> and send, it will automatically publish to <b>${OFFICIAL_CHANNEL}</b>!`);
+        return res.status(200).send('OK');
+      }
+    }
 
-    // B. /start or Hello greetings
+    // C. /start or Hello greetings
     if (lower.startsWith('/start') || lower === 'hi' || lower === 'hello' || lower === 'salam') {
       await sendMainMenu(chatId);
       return res.status(200).send('OK');
