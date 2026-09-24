@@ -92,6 +92,10 @@
       "destination": "/account.html"
     },
     {
+      "source": "/api/telegram-bot",
+      "destination": "/api/telegram-bot.js"
+    },
+    {
       "source": "/api/(.*)",
       "destination": "/api"
     },
