@@ -4,87 +4,28 @@
   "trailingSlash": false,
   "redirects": [
     {
-      "source": "/esim/:path*",
-      "destination": "/",
-      "permanent": false
-    },
-    {
-      "source": "/destinations",
-      "destination": "/",
-      "permanent": false
-    },
-    {
-      "source": "/how-it-works",
-      "destination": "/",
-      "permanent": false
-    },
-    {
-      "source": "/compatible-devices",
-      "destination": "/",
-      "permanent": false
-    },
-    {
-      "source": "/compatibility",
-      "destination": "/",
-      "permanent": false
-    },
-    {
-      "source": "/faq",
-      "destination": "/",
-      "permanent": false
-    },
-    {
-      "source": "/terms",
-      "destination": "/",
-      "permanent": false
-    },
-    {
-      "source": "/privacy",
-      "destination": "/",
-      "permanent": false
-    },
-    {
-      "source": "/refund-policy",
-      "destination": "/",
-      "permanent": false
-    },
-    {
-      "source": "/login",
-      "destination": "/",
-      "permanent": false
-    },
-    {
-      "source": "/account",
-      "destination": "/",
-      "permanent": false
-    },
-    {
-      "source": "/checkout",
-      "destination": "/",
-      "permanent": false
-    },
-    {
-      "source": "/dashboard",
-      "destination": "/",
-      "permanent": false
-    },
-    {
-      "source": "/register",
-      "destination": "/",
-      "permanent": false
-    },
-    {
-      "source": "/pages/:path*",
-      "destination": "/",
-      "permanent": false
-    },
-    {
       "source": "/social.html",
       "destination": "/social",
       "permanent": true
     }
   ],
   "rewrites": [
+    {
+      "source": "/orders",
+      "destination": "/account.html"
+    },
+    {
+      "source": "/esims",
+      "destination": "/account.html"
+    },
+    {
+      "source": "/my-esims",
+      "destination": "/account.html"
+    },
+    {
+      "source": "/esim/:slug",
+      "destination": "/esim/:slug.html"
+    },
     {
       "source": "/api/telegram-bot",
       "destination": "/api/telegram-bot.js"
