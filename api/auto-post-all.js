@@ -2,7 +2,7 @@
 // TravelTrip.world - ONE POST = ALL SOCIAL
 // Broadcasts to Telegram Channel, Meta (Facebook + Instagram), and Buffer
 
-const TELEGRAM_BOT_TOKEN = process.env.TG_BOT_TOKEN || '8852199959:AAG7Bwly_690aE9yOTyyh1WfxhWSEB1gr1A';
+const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || process.env.TG_BOT_TOKEN || '';
 const TELEGRAM_CHANNEL = '@tTraveltrip_World';
 const WEBSITE_URL = 'https://traveltrip.world';
 
@@ -14,7 +14,7 @@ export default async function handler(req, res) {
       service: 'TravelTrip.world One Post All Social API',
       platforms: {
         telegram: {
-          connected: true,
+          connected: !!TELEGRAM_BOT_TOKEN,
           channel: TELEGRAM_CHANNEL,
           bot: '@travel_trip_world_bot'
         },
@@ -48,6 +48,7 @@ export default async function handler(req, res) {
     try {
       if (imageUrl && imageUrl.startsWith('http')) {
         // Direct URL photo
+        if (!TELEGRAM_BOT_TOKEN) throw new Error('Telegram bot token is not configured');
         const tgRes = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -76,6 +77,7 @@ export default async function handler(req, res) {
           body.push(Buffer.from(`\r\n--${boundary}--\r\n`));
 
           const multipartBuffer = Buffer.concat(body);
+          if (!TELEGRAM_BOT_TOKEN) throw new Error('Telegram bot token is not configured');
           const tgRes = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`, {
             method: 'POST',
             headers: {
@@ -88,6 +90,7 @@ export default async function handler(req, res) {
         }
       } else {
         // Text-only message
+        if (!TELEGRAM_BOT_TOKEN) throw new Error('Telegram bot token is not configured');
         const tgRes = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
