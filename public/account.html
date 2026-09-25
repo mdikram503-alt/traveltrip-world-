@@ -123,9 +123,13 @@
   <div id="signed-out-card" class="card watermark-shade" style="display:none; text-align:center; padding: 40px 20px;">
     <div style="font-size: 2.5rem; margin-bottom: 12px;">🔐</div>
     <h2>Sign In to view your eSIMs</h2>
-    <p class="muted" style="margin: 8px 0 20px;">Log in to access your purchased eSIMs, active data plans, and QR installation codes.</p>
-    <a class="button" href="/login">Sign In to Your Account</a>
-    <a class="button button-secondary" href="/login?tab=register" style="margin-left:8px;">Create New Account</a>
+    <div style="display:flex; justify-content:center; gap:8px; flex-wrap:wrap;">
+      <a class="button" href="/login">Sign In to Your Account</a>
+      <a class="button button-secondary" href="/login?tab=register">Create New Account</a>
+    </div>
+    <div style="margin-top: 14px;">
+      <a href="/reset-password.html" style="color:var(--primary); font-size:0.86rem; font-weight:600; text-decoration:none;">Forgot Password? / পাসওয়ার্ড ভুলে গেছেন?</a>
+    </div>
 
     <div style="margin-top: 36px; padding-top: 24px; border-top: 1px solid var(--border); max-width: 460px; margin-left: auto; margin-right: auto; text-align: left;">
       <h4 style="color:var(--text-card); margin-bottom: 6px;">Bought as a guest?</h4>
@@ -244,7 +248,12 @@
     document.getElementById("signed-in-content").style.display = "block";
     document.getElementById("account-actions").style.display = "block";
     document.getElementById("user-title").textContent = `Welcome, ${user.name}`;
-    document.getElementById("user-subtitle").textContent = `${user.email} · Customer Account`;
+    
+    const verifiedBadge = user.email_verified ? 
+      `<span style="color:#00875A; font-weight:700; font-size:0.75rem; background:#E6F9F1; padding:2px 8px; border-radius:12px; margin-left:6px;">✓ Verified</span>` : 
+      `<span style="color:#D97706; font-weight:700; font-size:0.75rem; background:#FEF3C7; padding:2px 8px; border-radius:12px; margin-left:6px;"><a href="/verify-email.html" style="color:inherit; text-decoration:underline;">⚠️ Unverified &middot; Click to Verify</a></span>`;
+      
+    document.getElementById("user-subtitle").innerHTML = `${user.email} &middot; Customer Account ${verifiedBadge}`;
     document.getElementById("auth-nav").innerHTML = `
       <span style="color:var(--text-card); font-size:0.9rem; margin-right:12px;">👤 ${user.name}</span>
       <button class="button button-secondary" onclick="logout()">Sign Out</button>

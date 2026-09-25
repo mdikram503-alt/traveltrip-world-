@@ -63,6 +63,10 @@ def init_db():
             email TEXT UNIQUE NOT NULL,
             password_hash TEXT NOT NULL,
             role TEXT DEFAULT 'customer',
+            reset_token TEXT,
+            reset_token_expires TIMESTAMP,
+            verification_token TEXT,
+            email_verified INTEGER DEFAULT 0,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
         """)
@@ -84,6 +88,7 @@ def init_db():
             payment_id TEXT,
             payment_details TEXT,
             esim_status TEXT DEFAULT 'pending',
+            email_status TEXT DEFAULT 'pending',
             supplier_order_id TEXT,
             qr_code_data TEXT,
             lpa_string TEXT,
@@ -94,6 +99,26 @@ def init_db():
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (user_id) REFERENCES users (id)
+        )
+        """)
+        cursor.execute("""
+        CREATE TABLE IF NOT EXISTS esims (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            order_id TEXT NOT NULL,
+            user_id INTEGER,
+            email TEXT NOT NULL,
+            country TEXT,
+            package_code TEXT,
+            package_name TEXT,
+            qr_code TEXT,
+            lpa_string TEXT,
+            iccid TEXT,
+            activation_code TEXT,
+            smdp_address TEXT,
+            status TEXT DEFAULT 'active',
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (order_id) REFERENCES orders (order_id)
         )
         """)
         cursor.execute("""
@@ -119,16 +144,40 @@ def init_db():
             error_details TEXT
         )
         """)
+
+        # --- Safe Auto-Migrations for Existing Database Columns ---
+        try:
+            user_cols = [c[1] for c in cursor.execute("PRAGMA table_info(users)").fetchall()]
+            if "reset_token" not in user_cols:
+                cursor.execute("ALTER TABLE users ADD COLUMN reset_token TEXT")
+            if "reset_token_expires" not in user_cols:
+                cursor.execute("ALTER TABLE users ADD COLUMN reset_token_expires TIMESTAMP")
+            if "verification_token" not in user_cols:
+                cursor.execute("ALTER TABLE users ADD COLUMN verification_token TEXT")
+            if "email_verified" not in user_cols:
+                cursor.execute("ALTER TABLE users ADD COLUMN email_verified INTEGER DEFAULT 0")
+
+            order_cols = [c[1] for c in cursor.execute("PRAGMA table_info(orders)").fetchall()]
+            if "payment_method" not in order_cols:
+                cursor.execute("ALTER TABLE orders ADD COLUMN payment_method TEXT DEFAULT 'paypal'")
+            if "payment_status" not in order_cols:
+                cursor.execute("ALTER TABLE orders ADD COLUMN payment_status TEXT DEFAULT 'pending'")
+            if "email_status" not in order_cols:
+                cursor.execute("ALTER TABLE orders ADD COLUMN email_status TEXT DEFAULT 'pending'")
+        except Exception as mig_err:
+            print(f"[DB MIGRATION LOG] {mig_err}")
+
         conn.commit()
 
-def create_user(name, email, password, role="customer"):
+def create_user(name, email, password, role="customer", verification_token=None, email_verified=0):
     try:
         with get_db() as conn:
             cursor = conn.cursor()
             pw_hash = hash_password(password)
             cursor.execute(
-                "INSERT INTO users (name, email, password_hash, role) VALUES (?, ?, ?, ?)",
-                (name, email.lower().strip(), pw_hash, role)
+                """INSERT INTO users (name, email, password_hash, role, verification_token, email_verified)
+                   VALUES (?, ?, ?, ?, ?, ?)""",
+                (name, email.lower().strip(), pw_hash, role, verification_token, int(email_verified))
             )
             conn.commit()
             return cursor.lastrowid
@@ -147,16 +196,24 @@ def authenticate_user(email, password):
 def get_user_by_id(user_id):
     with get_db() as conn:
         cursor = conn.cursor()
-        cursor.execute("SELECT id, name, email, role, created_at FROM users WHERE id = ?", (user_id,))
+        cursor.execute("SELECT * FROM users WHERE id = ?", (user_id,))
         user = cursor.fetchone()
-        return dict(user) if user else None
+        if user:
+            u_dict = dict(user)
+            u_dict.pop("password_hash", None)
+            return u_dict
+        return None
 
 def get_user_by_email(email):
     with get_db() as conn:
         cursor = conn.cursor()
-        cursor.execute("SELECT id, name, email, role, created_at FROM users WHERE email = ?", (email.lower().strip(),))
+        cursor.execute("SELECT * FROM users WHERE email = ?", (email.lower().strip(),))
         user = cursor.fetchone()
-        return dict(user) if user else None
+        if user:
+            u_dict = dict(user)
+            u_dict.pop("password_hash", None)
+            return u_dict
+        return None
 
 def create_order(buyer_name, buyer_email, package_code, package_name, data_amount, validity, price_usd, location_code=None, user_id=None, payment_method="paypal"):
     order_id = f"TT-{secrets.token_hex(4).upper()}"
@@ -365,3 +422,181 @@ def reset_password_with_code(email: str, code_or_token: str, new_password: str):
             return True, "Password has been successfully updated"
     except Exception as e:
         return False, str(e)
+
+# ==============================================================================
+# ESIMS TABLE CRUD & LOOKUP HELPERS
+# ==============================================================================
+
+def create_esim(order_id, email, country=None, package_code=None, package_name=None,
+                qr_code=None, lpa_string=None, iccid=None, activation_code=None,
+                smdp_address=None, user_id=None, status="active"):
+    """Inserts a provisioned eSIM profile into the esims table."""
+    with get_db() as conn:
+        cursor = conn.cursor()
+        cursor.execute("""
+            INSERT INTO esims (
+                order_id, user_id, email, country, package_code, package_name,
+                qr_code, lpa_string, iccid, activation_code, smdp_address, status
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """, (
+            order_id, user_id, email.lower().strip() if email else "",
+            country, package_code, package_name, qr_code, lpa_string,
+            iccid, activation_code, smdp_address, status
+        ))
+        conn.commit()
+        return cursor.lastrowid
+
+def get_esims_by_order(order_id):
+    """Fetches all eSIM profiles associated with an order ID."""
+    with get_db() as conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM esims WHERE order_id = ? ORDER BY created_at DESC", (order_id,))
+        return [dict(r) for r in cursor.fetchall()]
+
+def get_esims_by_email(email):
+    """Fetches all eSIM profiles purchased by an email address."""
+    with get_db() as conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM esims WHERE email = ? ORDER BY created_at DESC", (email.lower().strip(),))
+        return [dict(r) for r in cursor.fetchall()]
+
+def get_user_esims(user_id):
+    """Fetches all eSIM profiles belonging to a registered user account."""
+    with get_db() as conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM esims WHERE user_id = ? ORDER BY created_at DESC", (user_id,))
+        return [dict(r) for r in cursor.fetchall()]
+
+def get_all_esims(limit=100):
+    """Returns all eSIM profiles across all orders."""
+    with get_db() as conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM esims ORDER BY created_at DESC LIMIT ?", (limit,))
+        return [dict(r) for r in cursor.fetchall()]
+
+# ==============================================================================
+# USER EMAIL VERIFICATION & RESET TOKEN HELPERS
+# ==============================================================================
+
+def set_user_verification_token(email: str, token: str):
+    """Assigns an email verification token to a user account."""
+    with get_db() as conn:
+        cursor = conn.cursor()
+        cursor.execute(
+            "UPDATE users SET verification_token = ?, email_verified = 0 WHERE email = ?",
+            (token, email.lower().strip())
+        )
+        conn.commit()
+        return cursor.rowcount > 0
+
+def verify_user_email(token: str):
+    """Validates verification token and marks user's email as verified."""
+    if not token:
+        return False, "Verification token is required"
+    with get_db() as conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM users WHERE verification_token = ?", (token.strip(),))
+        user = cursor.fetchone()
+        if not user:
+            return False, "Invalid or expired email verification link."
+        
+        cursor.execute(
+            "UPDATE users SET email_verified = 1, verification_token = NULL WHERE id = ?",
+            (user["id"],)
+        )
+        conn.commit()
+        u_dict = dict(user)
+        u_dict.pop("password_hash", None)
+        u_dict["email_verified"] = 1
+        return True, u_dict
+
+def set_user_reset_token(email: str, token: str, expires_at: datetime):
+    """Stores a secure password reset token and expiration on the users record."""
+    with get_db() as conn:
+        cursor = conn.cursor()
+        cursor.execute(
+            "UPDATE users SET reset_token = ?, reset_token_expires = ? WHERE email = ?",
+            (token, expires_at.strftime("%Y-%m-%d %H:%M:%S"), email.lower().strip())
+        )
+        conn.commit()
+        return cursor.rowcount > 0
+
+def get_user_by_reset_token(token: str):
+    """Finds user by reset token and verifies validity."""
+    if not token:
+        return None
+    with get_db() as conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM users WHERE reset_token = ?", (token.strip(),))
+        user = cursor.fetchone()
+        if not user:
+            return None
+        
+        # Check expiry
+        if user["reset_token_expires"]:
+            try:
+                exp = datetime.strptime(user["reset_token_expires"], "%Y-%m-%d %H:%M:%S")
+                if datetime.now() > exp:
+                    return None
+            except Exception:
+                pass
+        u_dict = dict(user)
+        u_dict.pop("password_hash", None)
+        return u_dict
+
+def reset_password_with_token(token: str, new_password: str):
+    """Resets user password using reset_token stored on the user record."""
+    user = get_user_by_reset_token(token)
+    if not user:
+        return False, "Invalid or expired password reset link"
+    with get_db() as conn:
+        cursor = conn.cursor()
+        new_hash = hash_password(new_password)
+        cursor.execute(
+            "UPDATE users SET password_hash = ?, reset_token = NULL, reset_token_expires = NULL WHERE id = ?",
+            (new_hash, user["id"])
+        )
+        conn.commit()
+        return True, "Password has been successfully updated"
+
+# ==============================================================================
+# OPERATIONS COCKPIT: FULFILLMENT_FAILED & FULFILLED_EMAIL_PENDING QUERIES
+# ==============================================================================
+
+def get_failed_fulfillment_orders():
+    """Returns paid orders where wholesale eSIM provisioning has failed or is stalled."""
+    with get_db() as conn:
+        cursor = conn.cursor()
+        cursor.execute("""
+            SELECT * FROM orders 
+            WHERE payment_status = 'paid' 
+              AND (esim_status IN ('failed', 'fulfillment_failed', 'pending') OR esim_status IS NULL)
+              AND esim_status != 'delivered'
+            ORDER BY created_at DESC
+        """)
+        return [dict(r) for r in cursor.fetchall()]
+
+def get_pending_email_orders():
+    """Returns orders where eSIM is delivered, but email confirmation is pending or failed."""
+    with get_db() as conn:
+        cursor = conn.cursor()
+        cursor.execute("""
+            SELECT * FROM orders 
+            WHERE payment_status = 'paid' 
+              AND esim_status = 'delivered' 
+              AND (email_status IN ('pending', 'failed') OR email_status IS NULL)
+            ORDER BY created_at DESC
+        """)
+        return [dict(r) for r in cursor.fetchall()]
+
+def update_order_email_status(order_id: str, email_status: str):
+    """Updates the customer delivery email status on an order."""
+    with get_db() as conn:
+        cursor = conn.cursor()
+        cursor.execute("""
+            UPDATE orders 
+            SET email_status = ?, updated_at = CURRENT_TIMESTAMP
+            WHERE order_id = ?
+        """, (email_status, order_id))
+        conn.commit()
+

@@ -317,6 +317,10 @@
       <button class="tab-btn active" onclick="switchTab('overview', this)">
         <span>📊</span> <span>Overview &amp; Sales</span>
       </button>
+      <button class="tab-btn" id="btn-tab-urgent" onclick="switchTab('urgent', this)">
+        <span>🚨</span> <span>Urgent Orders &amp; Auto-Heal</span>
+        <span id="urgent-badge-pill" style="display:none; background:#DC2626; color:#fff; font-size:10.5px; font-weight:800; padding:2px 7px; border-radius:12px; margin-left:6px;">0</span>
+      </button>
       <button class="tab-btn" onclick="switchTab('marketing', this)">
         <span>🚀</span> <span>Autonomous Social Marketing</span>
       </button>
@@ -324,7 +328,7 @@
         <span>✉️</span> <span>Email &amp; Support Copilot</span>
       </button>
       <button class="tab-btn" onclick="switchTab('settings', this)">
-        <span>⚙️</span> <span>System Settings</span>
+        <span>⚙️</span> <span>System &amp; Vercel Diagnostics</span>
       </button>
     </nav>
 
@@ -392,6 +396,101 @@
           </table>
         </div>
       </div>
+    </section>
+
+    <!-- TAB 1.5: URGENT ORDERS & AUTO-HEAL -->
+    <section id="tab-urgent" class="tab-panel">
+      
+      <!-- Action Banner -->
+      <div class="voice-banner" style="background: #FEF2F2; border-color: #FECACA;">
+        <div style="flex: 1;">
+          <div style="font-size: 11px; font-weight: 800; color: #DC2626; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px;">🚨 Critical Operations Watchdog:</div>
+          <div id="urgent-status-text" style="font-size: 14.5px; font-weight: 600; color: #7F1D1D;">Monitoring paid traveler orders. No customer money taken without QR code delivery.</div>
+        </div>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <button class="btn btn-primary" onclick="runAutoHealWorker()" style="background:#DC2626; border-color:#DC2626;">⚡ Run Auto-Heal Worker</button>
+          <button class="btn" onclick="fetchUrgentOrders()">🔄 Refresh Queue</button>
+          <button class="btn" onclick="promptTestEmail()">✉️ Test Email Delivery</button>
+        </div>
+      </div>
+
+      <!-- Urgent Metrics Grid -->
+      <div class="grid-metrics">
+        <div class="metric-box">
+          <div class="metric-label" style="color: #DC2626;">FULFILLMENT_FAILED</div>
+          <div class="metric-value" id="val-failed-cnt" style="color: #DC2626;">0</div>
+          <div class="metric-note">Paid orders requiring supplier eSIM</div>
+        </div>
+
+        <div class="metric-box">
+          <div class="metric-label" style="color: #D97706;">FULFILLED_EMAIL_PENDING</div>
+          <div class="metric-value" id="val-email-pending-cnt" style="color: #D97706;">0</div>
+          <div class="metric-note">eSIM active, awaiting email dispatch</div>
+        </div>
+
+        <div class="metric-box">
+          <div class="metric-label">Auto-Heal Recovery Status</div>
+          <div class="metric-value" style="color: var(--green); font-size:22px;">Operational</div>
+          <div class="metric-note">Self-healing worker active</div>
+        </div>
+      </div>
+
+      <!-- 1. Stalled Wholesale Fulfillments Table -->
+      <div class="card" style="border-left: 4px solid #DC2626;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+          <div>
+            <div class="card-title" style="color: #DC2626; margin-bottom: 2px;">🚨 Stalled Wholesale Provisioning (FULFILLMENT_FAILED)</div>
+            <div style="font-size: 12.5px; color: var(--text-muted);">Travelers who completed payment but supplier API has not returned the eSIM profile yet.</div>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>Traveler Contact</th>
+                <th>Package Plan</th>
+                <th>Paid Amount</th>
+                <th>Diagnostic Reason</th>
+                <th>Emergency Action</th>
+              </tr>
+            </thead>
+            <tbody id="failed-fulfillments-tbody">
+              <tr><td colspan="6" style="text-align: center; color: var(--text-muted); padding: 20px;">✅ All paid orders successfully fulfilled. No stalled orders!</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 2. Stalled Delivery Emails Table -->
+      <div class="card" style="border-left: 4px solid #D97706; margin-top: 20px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+          <div>
+            <div class="card-title" style="color: #D97706; margin-bottom: 2px;">✉️ eSIM Ready, Email Pending (FULFILLED_EMAIL_PENDING)</div>
+            <div style="font-size: 12.5px; color: var(--text-muted);">eSIM profile is active in our system, but customer delivery email needs dispatch or resend.</div>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>Traveler Email</th>
+                <th>ICCID / Credentials</th>
+                <th>Package Name</th>
+                <th>Created At</th>
+                <th>Dispatch Action</th>
+              </tr>
+            </thead>
+            <tbody id="pending-emails-tbody">
+              <tr><td colspan="6" style="text-align: center; color: var(--text-muted); padding: 20px;">✅ All customer QR delivery emails are confirmed sent.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
     </section>
 
     <!-- TAB 2: SOCIAL MARKETING -->
@@ -534,10 +633,78 @@
             <button class="btn" onclick="testSoundAlert()">🎵 Test Sound Chime</button>
             <button class="btn" onclick="exportOrdersCSV()">📥 Export Orders CSV</button>
             <button class="btn" onclick="openCredentialsModal()">⚙️ Social API &amp; Webhook Credentials</button>
+            <button class="btn btn-primary" onclick="fetchEnvCheck()">🔍 Refresh Vercel Env Diagnostics</button>
           </div>
         </div>
       </div>
+
+      <!-- Vercel & Production Environment Diagnostics -->
+      <div class="card" style="margin-top: 20px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
+          <div>
+            <div class="card-title" style="margin-bottom: 2px;">☁️ Vercel &amp; Production Environment Diagnostics</div>
+            <div style="font-size: 12.5px; color: var(--text-muted);">Live validation of production keys and serverless environment variables.</div>
+          </div>
+          <span id="env-overall-badge" class="badge-pill badge-green" style="font-size: 12px; padding: 6px 14px;">DIAGNOSTICS LOADING...</span>
+        </div>
+
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Environment Variable</th>
+                <th>Status</th>
+                <th>Requirement &amp; Purpose</th>
+              </tr>
+            </thead>
+            <tbody id="env-tbody">
+              <tr><td colspan="3" style="text-align: center; color: var(--text-muted); padding: 18px;">Checking Vercel environment status...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </section>
+
+    <!-- Manual Fulfill Modal -->
+    <div id="manual-fulfill-modal" style="display: none; position: fixed; inset: 0; background: rgba(14, 19, 31, 0.6); backdrop-filter: blur(4px); z-index: 9999; align-items: center; justify-content: center; padding: 20px;">
+      <div style="background: #FFFFFF; border: 1px solid var(--border); border-radius: var(--radius-lg); max-width: 520px; width: 100%; padding: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.15);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+          <h3 style="font-size: 16px; font-weight: 800; color: #DC2626;">✏️ Emergency Manual eSIM Fulfillment</h3>
+          <button onclick="closeManualFulfillModal()" style="background: transparent; border: none; color: var(--text-muted); font-size: 18px; cursor: pointer;">✕</button>
+        </div>
+        <p style="font-size: 12.5px; color: var(--text-muted); margin-bottom: 16px;">
+          Use this emergency override to fulfill an order if the wholesale supplier panel was used offline.
+        </p>
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <div>
+            <label style="font-size: 12px; font-weight: 700; display: block; margin-bottom: 4px;">Order ID</label>
+            <input type="text" id="manual-order-id" readonly style="width: 100%; background: #F1F5F9; border: 1px solid var(--border); border-radius: 8px; padding: 9px; font-weight: 700; color: var(--primary);">
+          </div>
+          <div>
+            <label style="font-size: 12px; font-weight: 700; display: block; margin-bottom: 4px;">QR Code Image URL or Data</label>
+            <input type="text" id="manual-qr-data" placeholder="https://api.qrserver.com/... or data:image/png;base64,..." style="width: 100%; background: #F8FAFC; border: 1px solid var(--border); border-radius: 8px; padding: 9px;">
+          </div>
+          <div>
+            <label style="font-size: 12px; font-weight: 700; display: block; margin-bottom: 4px;">Universal LPA String</label>
+            <input type="text" id="manual-lpa" placeholder="LPA:1$rsp.esimaccess.com$..." style="width: 100%; background: #F8FAFC; border: 1px solid var(--border); border-radius: 8px; padding: 9px;">
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <div>
+              <label style="font-size: 12px; font-weight: 700; display: block; margin-bottom: 4px;">ICCID</label>
+              <input type="text" id="manual-iccid" placeholder="89852..." style="width: 100%; background: #F8FAFC; border: 1px solid var(--border); border-radius: 8px; padding: 9px;">
+            </div>
+            <div>
+              <label style="font-size: 12px; font-weight: 700; display: block; margin-bottom: 4px;">Activation Code</label>
+              <input type="text" id="manual-activation-code" placeholder="TT-ACTIVATE" style="width: 100%; background: #F8FAFC; border: 1px solid var(--border); border-radius: 8px; padding: 9px;">
+            </div>
+          </div>
+        </div>
+        <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+          <button class="btn" onclick="closeManualFulfillModal()">Cancel</button>
+          <button class="btn btn-primary" onclick="submitManualFulfill()" style="background:#00BB77; border-color:#00BB77;">Deliver eSIM &amp; Send Email</button>
+        </div>
+      </div>
+    </div>
 
     <!-- Clean Brand Footer -->
     <footer class="footer">
@@ -768,11 +935,243 @@
       a.click();
     }
 
+    // =========================================================================
+    // URGENT ORDERS & AUTO-HEAL WORKER
+    // =========================================================================
+
+    async function fetchUrgentOrders() {
+      try {
+        const res = await fetch("/api/ops/urgent-orders");
+        const data = await res.json();
+        
+        const failedCount = data.fulfillment_failed_count || 0;
+        const emailPendingCount = data.email_pending_count || 0;
+        const totalUrgent = data.total_urgent_count || 0;
+
+        document.getElementById("val-failed-cnt").innerText = failedCount;
+        document.getElementById("val-email-pending-cnt").innerText = emailPendingCount;
+
+        const badgePill = document.getElementById("urgent-badge-pill");
+        if (totalUrgent > 0) {
+          badgePill.style.display = "inline-block";
+          badgePill.innerText = totalUrgent;
+          document.getElementById("urgent-status-text").innerText = `⚠️ ATTENTION: ${failedCount} order(s) awaiting eSIM fulfillment, ${emailPendingCount} order(s) awaiting delivery email.`;
+        } else {
+          badgePill.style.display = "none";
+          document.getElementById("urgent-status-text").innerText = "All traveler orders paid & fulfilled. System completely healthy.";
+        }
+
+        // Render Failed Fulfillments Table
+        const failedTbody = document.getElementById("failed-fulfillments-tbody");
+        const failedOrders = data.fulfillment_failed || [];
+        if (failedOrders.length > 0) {
+          failedTbody.innerHTML = failedOrders.map(o => `
+            <tr style="background: #FFF5F5;">
+              <td style="font-family: monospace; font-weight: 700; color: #DC2626;">${o.order_id}</td>
+              <td><strong>${o.buyer_name || 'Traveler'}</strong><br><span style="font-size: 11.5px; color: var(--text-muted);">${o.buyer_email}</span></td>
+              <td>${o.package_name || o.package_code}</td>
+              <td style="font-weight: 700; color: #00875A;">$${parseFloat(o.price_usd || 0).toFixed(2)}</td>
+              <td style="color: #DC2626; font-size: 12px;">${o.failure_reason || 'Supplier timeout / provisioning delayed'}</td>
+              <td>
+                <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                  <button class="btn btn-primary" onclick="retryFulfillment('${o.order_id}')" style="font-size:11px; padding:4px 8px; background:#DC2626; border-color:#DC2626;">🔄 Retry</button>
+                  <button class="btn" onclick="openManualFulfillModal('${o.order_id}')" style="font-size:11px; padding:4px 8px;">✏️ Manual</button>
+                </div>
+              </td>
+            </tr>
+          `).join('');
+        } else {
+          failedTbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--text-muted); padding: 20px;">✅ All paid orders successfully fulfilled. No stalled orders!</td></tr>`;
+        }
+
+        // Render Pending Emails Table
+        const pendingTbody = document.getElementById("pending-emails-tbody");
+        const pendingEmails = data.email_pending || [];
+        if (pendingEmails.length > 0) {
+          pendingTbody.innerHTML = pendingEmails.map(o => `
+            <tr style="background: #FFFBEB;">
+              <td style="font-family: monospace; font-weight: 700; color: #D97706;">${o.order_id}</td>
+              <td><strong>${o.buyer_email}</strong></td>
+              <td style="font-family: monospace; font-size: 12px;">${o.iccid || 'Delivered'}</td>
+              <td>${o.package_name || o.package_code}</td>
+              <td style="font-size: 12px; color: var(--text-muted);">${o.created_at || 'Recently'}</td>
+              <td>
+                <button class="btn" onclick="resendQREmail('${o.order_id}')" style="font-size:11px; padding:4px 8px; color:#D97706; border-color:#FCD34D;">✉️ Resend QR Email</button>
+              </td>
+            </tr>
+          `).join('');
+        } else {
+          pendingTbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--text-muted); padding: 20px;">✅ All customer QR delivery emails are confirmed sent.</td></tr>`;
+        }
+      } catch(e) {
+        console.error("Error loading urgent orders:", e);
+      }
+    }
+
+    async function runAutoHealWorker() {
+      const btn = event.target;
+      const orig = btn.innerText;
+      btn.disabled = true;
+      btn.innerText = "⚡ Healing Orders...";
+
+      try {
+        const res = await fetch("/api/ops/auto-heal", { method: "POST" });
+        const data = await res.json();
+        alert(`⚡ Auto-Heal Report: ${data.message}`);
+        fetchUrgentOrders();
+        fetchOpsData();
+      } catch(e) {
+        alert("Auto-heal encountered an error: " + e.message);
+      } finally {
+        btn.disabled = false;
+        btn.innerText = orig;
+      }
+    }
+
+    async function retryFulfillment(orderId) {
+      if (!confirm(`Attempt automatic eSIM supplier provisioning for order ${orderId}?`)) return;
+      try {
+        const res = await fetch("/api/ops/retry-fulfillment", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ order_id: orderId })
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "Retry failed");
+        alert("✅ " + data.message);
+        fetchUrgentOrders();
+        fetchOpsData();
+      } catch(e) {
+        alert("❌ Retry failed: " + e.message);
+      }
+    }
+
+    async function resendQREmail(orderId) {
+      try {
+        const res = await fetch("/api/ops/resend-qr-email", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ order_id: orderId })
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "Email dispatch failed");
+        alert("✅ " + data.message);
+        fetchUrgentOrders();
+      } catch(e) {
+        alert("❌ " + e.message);
+      }
+    }
+
+    function openManualFulfillModal(orderId) {
+      document.getElementById("manual-order-id").value = orderId;
+      document.getElementById("manual-qr-data").value = "";
+      document.getElementById("manual-lpa").value = "";
+      document.getElementById("manual-iccid").value = "";
+      document.getElementById("manual-activation-code").value = "TT-ACTIVATE";
+      document.getElementById("manual-fulfill-modal").style.display = "flex";
+    }
+
+    function closeManualFulfillModal() {
+      document.getElementById("manual-fulfill-modal").style.display = "none";
+    }
+
+    async function submitManualFulfill() {
+      const order_id = document.getElementById("manual-order-id").value;
+      const qr_code_data = document.getElementById("manual-qr-data").value.trim();
+      const lpa_string = document.getElementById("manual-lpa").value.trim();
+      const iccid = document.getElementById("manual-iccid").value.trim();
+      const activation_code = document.getElementById("manual-activation-code").value.trim();
+
+      if (!qr_code_data && !lpa_string) {
+        alert("Please supply either the QR Code Image URL/Data or LPA String.");
+        return;
+      }
+
+      try {
+        const res = await fetch("/api/ops/manual-fulfill", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ order_id, qr_code_data, lpa_string, iccid, activation_code })
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "Manual fulfillment failed");
+        alert("✅ " + data.message);
+        closeManualFulfillModal();
+        fetchUrgentOrders();
+        fetchOpsData();
+      } catch(e) {
+        alert("❌ " + e.message);
+      }
+    }
+
+    // =========================================================================
+    // VERCEL & PRODUCTION ENVIRONMENT DIAGNOSTICS
+    // =========================================================================
+
+    async function fetchEnvCheck() {
+      try {
+        const res = await fetch("/api/ops/env-check");
+        const data = await res.json();
+
+        const badge = document.getElementById("env-overall-badge");
+        badge.innerText = data.overall_status.toUpperCase();
+        if (data.live_ready) {
+          badge.className = "badge-pill badge-green";
+        } else {
+          badge.className = "badge-pill";
+          badge.style.background = "#FEF2F2";
+          badge.style.color = "#DC2626";
+        }
+
+        const tbody = document.getElementById("env-tbody");
+        const entries = Object.entries(data.checks || {});
+        tbody.innerHTML = entries.map(([key, info]) => {
+          const isOk = info.status === "OK" || info.configured;
+          const statusHtml = isOk ? 
+            `<span class="badge-pill badge-green">✓ OK</span>` : 
+            `<span class="badge-pill" style="background:#FEF2F2; color:#DC2626; font-weight:800;">⚠️ ${info.status}</span>`;
+          return `
+            <tr>
+              <td style="font-family: monospace; font-weight: 700;">${key}</td>
+              <td>${statusHtml}</td>
+              <td style="font-size: 12.5px; color: var(--text-muted);">${info.note || ''}</td>
+            </tr>
+          `;
+        }).join('');
+      } catch(e) {
+        console.error("Error fetching env check:", e);
+      }
+    }
+
+    async function promptTestEmail() {
+      const email = prompt("Enter email address to test live delivery:", "support@traveltrip.world");
+      if (!email) return;
+
+      try {
+        const res = await fetch("/api/ops/test-email", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email })
+        });
+        const data = await res.json();
+        if (data.success) {
+          alert(`✅ Email test succeeded! Mode: ${data.mode}. ${data.message || ''}`);
+        } else {
+          alert(`⚠️ Email delivery test result: ${JSON.stringify(data)}`);
+        }
+      } catch(e) {
+        alert("Test email error: " + e.message);
+      }
+    }
+
     // Auto load on start
     document.addEventListener("DOMContentLoaded", () => {
       fetchOpsData();
+      fetchUrgentOrders();
+      fetchEnvCheck();
       generateFreshOffer();
       setInterval(fetchOpsData, 30000);
+      setInterval(fetchUrgentOrders, 30000);
     });
   </script>
 </body>

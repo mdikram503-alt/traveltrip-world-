@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Email Verification | TravelTrip World &middot; Traveler eSIM</title>
+  <meta name="description" content="Verify your TravelTrip World customer account email address to protect your eSIM orders.">
+  <link rel="stylesheet" href="/css/site.css">
+  <style>
+    .auth-container {
+      max-width: 480px;
+      margin: 48px auto;
+    }
+    .auth-msg-box {
+      padding: 12px 16px;
+      border-radius: var(--radius-sm);
+      font-size: 0.88rem;
+      margin-bottom: 18px;
+      display: none;
+      line-height: 1.5;
+    }
+    .auth-msg-error {
+      background: #FEF2F2;
+      border: 1px solid #FECACA;
+      color: #DC2626;
+    }
+    .auth-msg-success {
+      background: #ECFDF5;
+      border: 1px solid #A7F3D0;
+      color: #059669;
+    }
+    .auth-msg-info {
+      background: #EFF6FF;
+      border: 1px solid #BFDBFE;
+      color: #1E40AF;
+    }
+    .status-icon {
+      font-size: 3rem;
+      margin-bottom: 12px;
+      display: inline-block;
+    }
+    .badge-pill-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 14px;
+      border-radius: 20px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+    .badge-verified {
+      background: #E6F9F1;
+      color: #00875A;
+    }
+    .badge-pending {
+      background: #FEF3C7;
+      color: #B45309;
+    }
+  </style>
+</head>
+<body>
+
+<div class="site-watermark-bg"></div>
+
+<!-- HEADER -->
+<header class="top">
+  <div class="shell top">
+    <a class="brand" href="/">
+      <img src="/images/logo-transparent.png" alt="TravelTrip World" class="brand-logo-img">
+      <div class="brand-text-wrap">
+        <span class="brand-title">traveltrip<span class="gold-accent">.world</span></span>
+        <span class="brand-sub">Traveler eSIM</span>
+      </div>
+    </a>
+    <nav class="nav">
+      <a href="/">Home</a>
+      <a href="/destinations">Destinations</a>
+      <a href="/account">My eSIMs</a>
+      <a href="/contact">Support</a>
+    </nav>
+    <div class="right">
+      <a class="button button-secondary" href="/account">My Account</a>
+    </div>
+  </div>
+</header>
+
+<main class="shell" style="min-height: 60vh;">
+  <div class="auth-container">
+    <div class="card watermark-shade" style="text-align: center; padding: 40px 28px;">
+      
+      <!-- Notification Alerts -->
+      <div id="auth-msg" class="auth-msg-box" style="text-align: left;"></div>
+
+      <!-- STATE 1: VERIFYING IN PROGRESS -->
+      <div id="state-loading">
+        <div class="status-icon">⏳</div>
+        <h1 style="font-size: 1.45rem; color: var(--text-card); margin-bottom: 8px;">Verifying Your Email...</h1>
+        <p class="muted" style="font-size: 0.88rem; margin-bottom: 20px;">
+          Please wait while we validate your security token with our servers.
+        </p>
+      </div>
+
+      <!-- STATE 2: SUCCESSFUL VERIFICATION -->
+      <div id="state-success" style="display:none;">
+        <div class="status-icon">✅</div>
+        <div class="badge-pill-status badge-verified">✓ EMAIL VERIFIED</div>
+        <h1 style="font-size: 1.45rem; color: var(--text-card); margin-bottom: 8px;">Account Successfully Activated!</h1>
+        <p class="muted" style="font-size: 0.9rem; line-height: 1.6; margin-bottom: 24px;">
+          Your email address has been confirmed. You now have full access to your purchased eSIM profiles, roaming data plans, and QR installation codes.
+        </p>
+
+        <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+          <a class="button" href="/account" style="min-width: 170px;">Go to My eSIMs</a>
+          <a class="button button-secondary" href="/#destinations" style="min-width: 170px;">Browse Data Plans</a>
+        </div>
+      </div>
+
+      <!-- STATE 3: PENDING OR EXPIRED TOKEN (Resend Form) -->
+      <div id="state-pending" style="display:none;">
+        <div class="status-icon">✉️</div>
+        <div class="badge-pill-status badge-pending">PENDING VERIFICATION</div>
+        <h1 style="font-size: 1.45rem; color: var(--text-card); margin-bottom: 8px;">Verify Your Email Address</h1>
+        <p class="muted" style="font-size: 0.88rem; line-height: 1.6; margin-bottom: 24px;">
+          We sent a verification link to your email address when you registered. Please click the link in that email to activate your account.
+        </p>
+
+        <div style="background: var(--bg-elevated); border: 1px solid var(--border); border-radius: 12px; padding: 20px; text-align: left;">
+          <h4 style="margin-bottom: 6px; font-size: 0.92rem; color: var(--text-card);">Didn't receive the email?</h4>
+          <p class="muted" style="font-size: 0.82rem; margin-bottom: 14px;">Check your spam/junk folder, or enter your email below to receive a new link:</p>
+          
+          <form onsubmit="handleResend(event)">
+            <label for="resend-email" style="font-size: 0.82rem;">Account Email</label>
+            <input id="resend-email" type="email" placeholder="name@example.com" required style="width: 100%; margin-bottom: 12px;">
+
+            <button id="btn-resend" type="submit" class="button button-secondary" style="width: 100%; height: 42px; font-size: 0.88rem;">
+              Resend Verification Link
+            </button>
+          </form>
+        </div>
+
+        <div style="margin-top: 24px;">
+          <a href="/login" style="font-size: 0.85rem; color: var(--primary); font-weight: 600;">Sign in with another account</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="shell footer-inner">
+    <div class="footer-left">
+      <div class="footer-brand">TravelTrip World</div>
+      <p class="footer-text">
+        High-speed travel eSIM profiles across 190+ countries.<br>
+        24/7 Global Support: <a href="mailto:support@traveltrip.world" style="color:var(--primary);">support@traveltrip.world</a> | WhatsApp: <a href="https://wa.me/971524413931" style="color:#25D366;">+971 52 441 3931</a>
+      </p>
+    </div>
+    <div class="footer-links">
+      <a href="/destinations">Destinations</a>
+      <a href="/account">My eSIMs</a>
+      <a href="/terms">Terms</a>
+      <a href="/privacy">Privacy</a>
+      <a href="/contact">Help & Contact</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  function showMsg(text, type = "error") {
+    const el = document.getElementById("auth-msg");
+    el.className = "auth-msg-box auth-msg-" + type;
+    el.innerHTML = text;
+    el.style.display = "block";
+  }
+
+  function hideMsg() {
+    document.getElementById("auth-msg").style.display = "none";
+  }
+
+  document.addEventListener("DOMContentLoaded", async () => {
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get("token");
+    const verified = params.get("verified");
+    const errorParam = params.get("error");
+    const emailParam = params.get("email");
+
+    if (emailParam) {
+      document.getElementById("resend-email").value = emailParam;
+    }
+
+    if (verified === "true") {
+      document.getElementById("state-loading").style.display = "none";
+      document.getElementById("state-success").style.display = "block";
+      return;
+    }
+
+    if (errorParam) {
+      document.getElementById("state-loading").style.display = "none";
+      document.getElementById("state-pending").style.display = "block";
+      showMsg("Verification link issue: " + decodeURIComponent(errorParam), "error");
+      return;
+    }
+
+    if (token) {
+      try {
+        const res = await fetch("/api/auth/verify-email", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ token })
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "Verification failed");
+
+        document.getElementById("state-loading").style.display = "none";
+        document.getElementById("state-success").style.display = "block";
+      } catch(err) {
+        document.getElementById("state-loading").style.display = "none";
+        document.getElementById("state-pending").style.display = "block";
+        showMsg("Could not verify email: " + err.message + ". Please request a fresh link below.", "error");
+      }
+    } else {
+      document.getElementById("state-loading").style.display = "none";
+      document.getElementById("state-pending").style.display = "block";
+    }
+  });
+
+  async function handleResend(e) {
+    e.preventDefault();
+    hideMsg();
+
+    const email = document.getElementById("resend-email").value.trim().toLowerCase();
+    const btn = document.getElementById("btn-resend");
+    btn.disabled = true;
+    btn.innerText = "Dispatching link...";
+
+    try {
+      const res = await fetch("/api/auth/resend-verification", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Failed to resend link");
+
+      showMsg("✅ A fresh verification link has been dispatched to " + email + ". Please check your inbox or spam.", "success");
+      btn.innerText = "Link Sent!";
+    } catch(err) {
+      showMsg(err.message, "error");
+      btn.disabled = false;
+      btn.innerText = "Resend Verification Link";
+    }
+  }
+</script>
+</body>
+</html>

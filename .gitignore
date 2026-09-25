@@ -11,4 +11,5 @@ write_clean.py
 
 .env.admin.secret
 *.secret
+telegram_bot_config.json
 .venv/
