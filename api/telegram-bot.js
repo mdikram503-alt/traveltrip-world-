@@ -1,7 +1,7 @@
 // File: api/telegram-bot.js - Production-Ready Vercel Serverless Telegram Bot
 // TravelTrip.world Official Telegram Bot (@travel_trip_world_bot)
 
-const BOT_TOKEN = '8852199959:AAG7Bwly_690aE9yOTyyh1WfxhWSEB1gr1A';
+const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || process.env.TG_BOT_TOKEN || '';
 const OFFICIAL_CHANNEL = '@tTraveltrip_World';
 const WEBSITE_URL = 'https://traveltrip.world';
 const WHATSAPP_URL = 'https://wa.me/971524413931?text=Assalamu%20Alaikum,%20ami%20traveltrip.world%20theke%20eSIM%20kitte%20chai';
@@ -21,6 +21,10 @@ export default async function handler(req, res) {
 
   if (req.method !== 'POST') {
     return res.status(200).send('Method Not Allowed');
+  }
+
+  if (!BOT_TOKEN) {
+    return res.status(503).json({ error: 'Telegram bot token is not configured' });
   }
 
   try {
