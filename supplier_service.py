@@ -14,6 +14,7 @@ import json
 import gzip
 import logging
 import ssl
+import base64
 
 logger = logging.getLogger(__name__)
 # ResellPortal Wholesale API
@@ -26,16 +27,39 @@ _catalog_cache = {}
 class SupplierService:
     last_error = ""
     active_key = ""
+    active_auth_mode = ""
+
+    @staticmethod
+    def _auth_headers(api_key, api_secret, mode="x-headers"):
+        headers = {
+            "X-API-Key": api_key,
+            "X-API-Secret": api_secret,
+        }
+        if mode == "basic":
+            token = base64.b64encode(f"{api_key}:{api_secret}".encode("utf-8")).decode("ascii")
+            headers["Authorization"] = f"Basic {token}"
+        elif mode == "bearer-secret":
+            headers["Authorization"] = f"Bearer {api_secret}"
+        elif mode == "bearer-key":
+            headers["Authorization"] = f"Bearer {api_key}"
+        return headers
+
+    @staticmethod
+    def _auth_modes():
+        raw = os.environ.get("RESELLPORTAL_AUTH_MODE", "").strip()
+        if raw:
+            return [m.strip() for m in raw.split(",") if m.strip()]
+        return ["x-headers", "basic", "bearer-secret", "bearer-key"]
 
     @staticmethod
     def _headers(user_agent="TravelTripServer/2.0", content_type=None):
+        mode = SupplierService.active_auth_mode or os.environ.get("RESELLPORTAL_AUTH_MODE", "").split(",")[0].strip() or "x-headers"
         headers = {
-            "X-API-Key": SUPPLIER_API_KEY,
-            "X-API-Secret": SUPPLIER_API_SECRET,
             "Accept": "application/json",
             "Accept-Encoding": "gzip, deflate",
             "User-Agent": user_agent
         }
+        headers.update(SupplierService._auth_headers(SUPPLIER_API_KEY, SUPPLIER_API_SECRET, mode))
         if content_type:
             headers["Content-Type"] = content_type
         return headers
@@ -76,16 +100,14 @@ class SupplierService:
         return str(value).strip().upper() or "GLOBAL"
 
     @staticmethod
-    def _execute_api_call(query_url, api_key, api_secret):
+    def _execute_api_call(query_url, api_key, api_secret, auth_mode="x-headers"):
         req = urllib.request.Request(
             query_url,
             headers={
-                "X-API-Key": api_key,
-                "X-API-Secret": api_secret,
                 "Accept": "application/json",
                 "Accept-Encoding": "gzip, deflate",
                 "User-Agent": "TravelTripCatalog/2.0"
-            },
+            } | SupplierService._auth_headers(api_key, api_secret, auth_mode),
         )
         ssl_ctx = ssl.create_default_context()
         ssl_ctx.check_hostname = False
@@ -110,16 +132,22 @@ class SupplierService:
             return []
 
         payload = None
-        try:
-            payload = SupplierService._execute_api_call(query_url, SUPPLIER_API_KEY, SUPPLIER_API_SECRET)
-            SupplierService.active_key = f"env:{SUPPLIER_API_KEY[:6]}"
-            SupplierService.last_error = ""
-        except urllib.error.HTTPError as e:
-            SupplierService.last_error = f"HTTPError {e.code} from supplier catalog"
-            logger.warning("ResellPortal catalog call failed: %s", e)
-        except Exception as exc:
-            SupplierService.last_error = f"{type(exc).__name__}: {exc}"
-            logger.warning("ResellPortal catalog call exception: %s", exc)
+        for auth_mode in SupplierService._auth_modes():
+            try:
+                payload = SupplierService._execute_api_call(query_url, SUPPLIER_API_KEY, SUPPLIER_API_SECRET, auth_mode)
+                SupplierService.active_key = f"env:{SUPPLIER_API_KEY[:6]}"
+                SupplierService.active_auth_mode = auth_mode
+                SupplierService.last_error = ""
+                break
+            except urllib.error.HTTPError as e:
+                SupplierService.last_error = f"HTTPError {e.code} from supplier catalog using {auth_mode}"
+                logger.warning("ResellPortal catalog call failed with %s auth: %s", auth_mode, e)
+                if e.code not in (401, 403):
+                    break
+            except Exception as exc:
+                SupplierService.last_error = f"{type(exc).__name__}: {exc}"
+                logger.warning("ResellPortal catalog call exception: %s", exc)
+                break
 
         if not payload:
             return []
@@ -193,17 +221,12 @@ class SupplierService:
         logger.info(f"Provisioning eSIM for order {order_id}, package: {package_code}, buyer: {buyer_email}")
         
         if not SUPPLIER_API_KEY or not SUPPLIER_API_SECRET:
-            if os.environ.get("SUPPLIER_FALLBACK_MOCK") == "1" or os.environ.get("TESTING") == "1":
-                return SupplierService._generate_provisioned_profile(package_code, order_id)
             return {"success": False, "error": "Supplier credentials are not configured"}
         try:
             result = SupplierService._call_live_supplier_api(package_code, buyer_email, order_id, buyer_name=buyer_name)
             return result or {"success": False, "error": "Supplier returned no provisioning result"}
         except Exception as e:
             logger.error("Live supplier provisioning failed: %s", e)
-            if os.environ.get("SUPPLIER_FALLBACK_MOCK") == "1" or os.environ.get("TESTING") == "1":
-                logger.info("Falling back to local GSMA profile generator for testing")
-                return SupplierService._generate_provisioned_profile(package_code, order_id)
             return {"success": False, "error": f"Supplier provisioning failed: {str(e)}"}
 
     @staticmethod
