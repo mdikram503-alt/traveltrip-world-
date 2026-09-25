@@ -1,8 +1,0 @@
-{
-  "telegram_bot_token": "8852199959:AAG7Bwly_690aE9yOTyyh1WfxhWSEB1gr1A",
-  "telegram_chat_id": "8921431972",
-  "enabled": true,
-  "interval_hours": 2,
-  "last_post_time": "",
-  "instructions": "Enter your Telegram Bot Token from @BotFather and your Channel/Group Chat ID or @username"
-}
