@@ -13,23 +13,67 @@ import urllib.error
 import json
 import gzip
 import logging
-import uuid
 import ssl
 
 logger = logging.getLogger(__name__)
 # ResellPortal Wholesale API
 SUPPLIER_URL = (os.environ.get("RESELLPORTAL_BASE_URL") or os.environ.get("SUPPLIER_URL") or "https://panel.resellportal.com/wp-json/resellportal/v1").strip().rstrip("/")
-SUPPLIER_API_KEY = (os.environ.get("RESELLPORTAL_API_KEY") or os.environ.get("SUPPLIER_API_KEY") or "rp_0990c036bc1783a17f7a58d7e53faf32c52b1af898c0861a").strip()
-SUPPLIER_API_SECRET = (os.environ.get("RESELLPORTAL_API_SECRET") or os.environ.get("SUPPLIER_API_SECRET") or "rps_90173d4c2aeaba71d06652a309c619c1cb1ad28cefe4f16b0f39f12031a7b6bb").strip()
+SUPPLIER_API_KEY = (os.environ.get("RESELLPORTAL_API_KEY") or os.environ.get("SUPPLIER_API_KEY") or "").strip()
+SUPPLIER_API_SECRET = (os.environ.get("RESELLPORTAL_API_SECRET") or os.environ.get("SUPPLIER_API_SECRET") or "").strip()
 SMDP_DEFAULT = (os.environ.get("DEFAULT_SMDP") or "rsp.esimaccess.com").strip()
 _catalog_cache = {}
-
-VERIFIED_KEY = "rp_0990c036bc1783a17f7a58d7e53faf32c52b1af898c0861a"
-VERIFIED_SECRET = "rps_90173d4c2aeaba71d06652a309c619c1cb1ad28cefe4f16b0f39f12031a7b6bb"
 
 class SupplierService:
     last_error = ""
     active_key = ""
+
+    @staticmethod
+    def _headers(user_agent="TravelTripServer/2.0", content_type=None):
+        headers = {
+            "X-API-Key": SUPPLIER_API_KEY,
+            "X-API-Secret": SUPPLIER_API_SECRET,
+            "Accept": "application/json",
+            "Accept-Encoding": "gzip, deflate",
+            "User-Agent": user_agent
+        }
+        if content_type:
+            headers["Content-Type"] = content_type
+        return headers
+
+    @staticmethod
+    def _read_json_response(response):
+        raw_bytes = response.read()
+        if response.headers.get("Content-Encoding") == "gzip" or raw_bytes[:2] == b"\x1f\x8b":
+            raw_bytes = gzip.decompress(raw_bytes)
+        return json.loads(raw_bytes.decode("utf-8"))
+
+    @staticmethod
+    def _first_value(source, *keys):
+        if not isinstance(source, dict):
+            return None
+        for key in keys:
+            value = source.get(key)
+            if value not in (None, ""):
+                return value
+        return None
+
+    @staticmethod
+    def _normalize_price(value):
+        if value is None:
+            return ""
+        cleaned = str(value).replace("$", "").replace("USD", "").strip()
+        try:
+            return f"{float(cleaned):.2f}"
+        except Exception:
+            return cleaned
+
+    @staticmethod
+    def _normalize_region(value):
+        if value is None:
+            return "GLOBAL"
+        if isinstance(value, list):
+            return ",".join(str(v).strip().upper() for v in value if str(v).strip()) or "GLOBAL"
+        return str(value).strip().upper() or "GLOBAL"
 
     @staticmethod
     def _execute_api_call(query_url, api_key, api_secret):
@@ -47,10 +91,7 @@ class SupplierService:
         ssl_ctx.check_hostname = False
         ssl_ctx.verify_mode = ssl.CERT_NONE
         with urllib.request.urlopen(req, timeout=14, context=ssl_ctx) as response:
-            raw_bytes = response.read()
-            if response.headers.get("Content-Encoding") == "gzip" or raw_bytes[:2] == b"\x1f\x8b":
-                raw_bytes = gzip.decompress(raw_bytes)
-            return json.loads(raw_bytes.decode("utf-8"))
+            return SupplierService._read_json_response(response)
 
     @staticmethod
     def live_catalog(location_filter: str = ""):
@@ -63,48 +104,45 @@ class SupplierService:
         query = f"?location={urllib.parse.quote(cache_key)}" if cache_key != "ALL" else ""
         query_url = f"{SUPPLIER_URL}/esim-packages{query}"
 
-        # Try configured environment credentials first, automatically fall back to verified keys if 401 or invalid
-        credentials_to_try = []
-        if SUPPLIER_API_KEY and SUPPLIER_API_SECRET:
-            credentials_to_try.append((SUPPLIER_API_KEY, SUPPLIER_API_SECRET, "env"))
-        if (VERIFIED_KEY, VERIFIED_SECRET, "verified") not in credentials_to_try:
-            credentials_to_try.append((VERIFIED_KEY, VERIFIED_SECRET, "verified"))
+        if not SUPPLIER_API_KEY or not SUPPLIER_API_SECRET:
+            SupplierService.active_key = ""
+            SupplierService.last_error = "Supplier credentials are not configured"
+            return []
 
         payload = None
-        for key, secret, label in credentials_to_try:
-            try:
-                payload = SupplierService._execute_api_call(query_url, key, secret)
-                SupplierService.active_key = f"{label}:{key[:6]}"
-                SupplierService.last_error = ""
-                break
-            except urllib.error.HTTPError as e:
-                SupplierService.last_error = f"HTTPError {e.code} with {label} ({key[:6]}...)"
-                logger.warning("ResellPortal call failed with %s: %s", label, e)
-                if e.code == 401:
-                    continue  # Try next credentials
-            except Exception as exc:
-                SupplierService.last_error = f"{type(exc).__name__}: {exc}"
-                logger.warning("ResellPortal call exception: %s", exc)
+        try:
+            payload = SupplierService._execute_api_call(query_url, SUPPLIER_API_KEY, SUPPLIER_API_SECRET)
+            SupplierService.active_key = f"env:{SUPPLIER_API_KEY[:6]}"
+            SupplierService.last_error = ""
+        except urllib.error.HTTPError as e:
+            SupplierService.last_error = f"HTTPError {e.code} from supplier catalog"
+            logger.warning("ResellPortal catalog call failed: %s", e)
+        except Exception as exc:
+            SupplierService.last_error = f"{type(exc).__name__}: {exc}"
+            logger.warning("ResellPortal catalog call exception: %s", exc)
 
         if not payload:
             return []
 
-        source = (payload.get("packages") or payload.get("data") or []) if isinstance(payload, dict) else payload if isinstance(payload, list) else []
+        source = (
+            payload.get("packages") or payload.get("data") or payload.get("items") or payload.get("products") or []
+        ) if isinstance(payload, dict) else payload if isinstance(payload, list) else []
         packages = []
         for item in source:
-            code = item.get("package_code") or item.get("packageCode") or item.get("code") or item.get("id")
-            name = item.get("name") or item.get("title")
+            code = SupplierService._first_value(item, "package_code", "packageCode", "code", "sku", "id")
+            name = SupplierService._first_value(item, "name", "title", "package_name", "product_name")
             if not code or not name:
                 continue
-            coverage = item.get("location") or item.get("country_code") or item.get("region") or item.get("country") or "GLOBAL"
-            data = item.get("data_volume") or item.get("data") or item.get("data_amount") or item.get("volume") or "See plan details"
-            validity = item.get("duration") or item.get("validity") or item.get("validity_days") or "See plan details"
-            price = item.get("price") or item.get("retail_price") or item.get("selling_price")
-            network = item.get("speed") or item.get("network") or item.get("operator") or "5G / 4G LTE"
+            coverage = SupplierService._first_value(item, "location", "locations", "country_code", "countryCode", "region", "country", "coverage")
+            data = SupplierService._first_value(item, "data_volume", "dataVolume", "data", "data_amount", "volume", "allowance") or "See plan details"
+            validity = SupplierService._first_value(item, "duration", "validity", "validity_days", "validityDays", "days") or "See plan details"
+            price = SupplierService._first_value(item, "price", "retail_price", "retailPrice", "selling_price", "sellingPrice", "usd_price")
+            network = SupplierService._first_value(item, "speed", "network", "operator", "carrier") or "5G / 4G LTE"
             packages.append({
                 "packageCode": str(code), "name": str(name), "data": str(data), "validity": str(validity),
                 "network": str(network),
-                "priceUsd": str(price) if price is not None else "", "region": str(coverage).upper(),
+                "priceUsd": SupplierService._normalize_price(price),
+                "region": SupplierService._normalize_region(coverage),
                 "unlimited": "unlimited" in str(data).lower(),
             })
         _catalog_cache[cache_key] = {"expires_at": now + 300, "packages": packages}
@@ -113,17 +151,14 @@ class SupplierService:
     @staticmethod
     def _get_or_create_client(name: str, email: str):
         """Lookup existing client by email or register new client in ResellPortal"""
-        headers = {
-            "X-API-Key": SUPPLIER_API_KEY,
-            "X-API-Secret": SUPPLIER_API_SECRET,
-            "User-Agent": "TravelTripServer/2.0"
-        }
+        headers = SupplierService._headers()
         # 1. Search existing clients
         try:
             req = urllib.request.Request(f"{SUPPLIER_URL}/clients", headers=headers)
             with urllib.request.urlopen(req, timeout=12) as res:
-                data = json.loads(res.read().decode("utf-8"))
-                for c in data.get("clients", []):
+                data = SupplierService._read_json_response(res)
+                clients = data.get("clients") or data.get("data") or []
+                for c in clients:
                     if c.get("email", "").lower() == email.lower():
                         logger.info(f"Found existing ResellPortal client ID: {c.get('id')} for {email}")
                         return c.get("id")
@@ -136,16 +171,15 @@ class SupplierService:
             req = urllib.request.Request(
                 f"{SUPPLIER_URL}/clients",
                 data=payload,
-                headers={"Content-Type": "application/json", **headers}
+                headers=SupplierService._headers(content_type="application/json")
             )
             with urllib.request.urlopen(req, timeout=12) as res:
-                data = json.loads(res.read().decode("utf-8"))
+                data = SupplierService._read_json_response(res)
                 client_id = data.get("client_id") or data.get("id")
                 logger.info(f"Created new ResellPortal client ID: {client_id} for {email}")
                 return client_id
         except urllib.error.HTTPError as e:
-            err_data = json.loads(e.read().decode("utf-8"))
-            logger.warning("Client creation notice: %s", err_data)
+            logger.warning("Client creation notice: %s", e.read().decode("utf-8", errors="ignore"))
         except Exception as e:
             logger.error("Failed to create ResellPortal client: %s", e)
         return None
@@ -180,38 +214,41 @@ class SupplierService:
             "package_code": package_code
         }).encode("utf-8")
         
-        headers = {
-            "Content-Type": "application/json",
-            "User-Agent": "TravelTripServer/2.0",
-            "X-API-Key": SUPPLIER_API_KEY,
-            "X-API-Secret": SUPPLIER_API_SECRET
-        }
+        headers = SupplierService._headers(content_type="application/json")
         
         req = urllib.request.Request(endpoint, data=payload, headers=headers)
         
         with urllib.request.urlopen(req, timeout=25) as res:
             if res.status in (200, 201):
-                data = json.loads(res.read().decode("utf-8"))
-                service = data.get("service") or data.get("service_data") or {}
-                service_id = data.get("service_id") or data.get("order_id") or (service.get("id") if isinstance(service, dict) else None)
+                data = SupplierService._read_json_response(res)
+                service = data.get("service") or data.get("service_data") or data.get("data") or {}
+                service_id = data.get("service_id") or data.get("order_id") or data.get("id") or (service.get("id") if isinstance(service, dict) else None)
                 
                 # If service details need to be fetched:
                 if service_id and (not service or not isinstance(service, dict) or not service.get("service_data")):
                     try:
                         s_req = urllib.request.Request(f"{SUPPLIER_URL}/services/{service_id}", headers=headers)
                         with urllib.request.urlopen(s_req, timeout=12) as s_res:
-                            s_full = json.loads(s_res.read().decode("utf-8"))
+                            s_full = SupplierService._read_json_response(s_res)
                             if s_full.get("service"):
                                 service = s_full["service"]
                     except Exception as ex:
                         logger.warning("Could not fetch detailed service: %s", ex)
 
                 sdata = service.get("service_data", {}) if isinstance(service, dict) else {}
-                iccid = sdata.get("iccid") or data.get("iccid")
-                lpa = sdata.get("ac") or sdata.get("lpa_string") or data.get("lpa_string")
-                qr_url = sdata.get("qrCodeUrl") or data.get("qr_code_url")
+                iccid = SupplierService._first_value(sdata, "iccid", "ICCID") or SupplierService._first_value(data, "iccid", "ICCID")
+                lpa = (
+                    SupplierService._first_value(sdata, "lpa", "lpa_string", "activation_code", "ac", "activationCode")
+                    or SupplierService._first_value(data, "lpa", "lpa_string", "activation_code", "ac", "activationCode")
+                )
+                qr_url = (
+                    SupplierService._first_value(sdata, "qrCodeUrl", "qr_code_url", "qrcode", "qr")
+                    or SupplierService._first_value(data, "qrCodeUrl", "qr_code_url", "qrcode", "qr")
+                )
                 if lpa and not qr_url:
                     qr_url = f"https://api.qrserver.com/v1/create-qr-code/?size=320x320&data={urllib.parse.quote(lpa)}"
+                if not (lpa or qr_url or iccid):
+                    raise Exception("Supplier order created but no eSIM activation data was returned")
 
                 return {
                     "success": True,
