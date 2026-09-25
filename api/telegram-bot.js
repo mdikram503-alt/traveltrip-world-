@@ -86,6 +86,7 @@ export default async function handler(req, res) {
 
     const chatId = message.chat.id;
     const text = (message.text || message.caption || '').trim();
+    const lower = text.toLowerCase();
     const isPhoto = !!message.photo;
 
     // A. Photo auto-forwarder to Channel (@tTraveltrip_World)
