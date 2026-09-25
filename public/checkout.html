@@ -733,16 +733,29 @@ div[id*="vercel"] {
   let packageCode = rawCode;
   let planName = "Loading...";
   let shownPrice = "0.00";
+  let checkoutReady = false;
   let locationCode = params.get("location") || params.get("cc") || "GLOBAL";
   let validity = "";
   let dataAmount = "";
 
   const statusBox = document.getElementById("status-box");
+  function setPayButtonsEnabled(enabled) {
+    checkoutReady = enabled;
+    const payBtn = document.getElementById("stripe-pay-button");
+    if (payBtn) {
+      payBtn.disabled = !enabled;
+      payBtn.style.opacity = enabled ? "1" : "0.5";
+      payBtn.style.cursor = enabled ? "pointer" : "not-allowed";
+    }
+  }
+
   function showStatus(msg, type = "info") {
     if (!statusBox) return;
     statusBox.className = `status-box active ${type}`;
     statusBox.textContent = msg;
   }
+
+  setPayButtonsEnabled(false);
 
   // FIX: Verify live inventory integrity and real price from catalog
   async function loadPackageFromCatalog() {
@@ -760,22 +773,19 @@ div[id*="vercel"] {
         } else {
           // Package code not in catalog — lock checkout to prevent invalid order
           showStatus(`⚠️ Package "${packageCode}" is temporarily unavailable in live inventory. Redirecting to destinations...`, "error");
-          const payBtn = document.getElementById("stripe-pay-button");
-          if (payBtn) { payBtn.disabled = true; payBtn.style.opacity = "0.5"; }
+          setPayButtonsEnabled(false);
           setTimeout(() => window.location.replace("/destinations.html?country=GLOBAL"), 3500);
           return;
         }
       } else {
         showStatus("⚠️ Inventory temporarily unavailable. Please try again in a few moments.", "error");
-        const payBtn = document.getElementById("stripe-pay-button");
-        if (payBtn) { payBtn.disabled = true; payBtn.style.opacity = "0.5"; }
+        setPayButtonsEnabled(false);
         return;
       }
     } catch(e) {
       console.warn("Catalog fetch failed:", e);
       showStatus("⚠️ Inventory connection failed. Please refresh or contact 24/7 WhatsApp support.", "error");
-      const payBtn = document.getElementById("stripe-pay-button");
-      if (payBtn) { payBtn.disabled = true; payBtn.style.opacity = "0.5"; }
+      setPayButtonsEnabled(false);
       return;
     }
 
@@ -788,6 +798,7 @@ div[id*="vercel"] {
 
     const totalEl = document.getElementById("total");
     if (totalEl) totalEl.textContent = `$${parseFloat(shownPrice).toFixed(2)} USD`;
+    setPayButtonsEnabled(Number.isFinite(parseFloat(shownPrice)) && parseFloat(shownPrice) > 0);
   }
   loadPackageFromCatalog();
 
@@ -1160,6 +1171,11 @@ div[id*="vercel"] {
   }
 
   async function handleStripePayment() {
+    if (!checkoutReady || !Number.isFinite(parseFloat(shownPrice)) || parseFloat(shownPrice) <= 0) {
+      showStatus("Please wait while we verify the selected eSIM plan and price.", "error");
+      return;
+    }
+
     const buyerName = document.getElementById("name").value.trim();
     const buyerEmail = document.getElementById("email").value.trim();
 
@@ -1359,5 +1375,4 @@ div[id*="vercel"] {
 
 </body>
 </html>
-
 
