@@ -138,7 +138,7 @@ def telegram_webhook():
         reply_tg(status_msg)
     elif cmd in ["/orders", "orders"]:
         try:
-            orders = db_get_all_orders() or []
+            orders = get_all_orders() or []
             if not orders:
                 reply_tg("ℹ️ *এখনও কোনো নতুন অর্ডার সিস্টেমে রেকর্ড হয়নি।*\nলাইভ সাইট ট্রাফিক ও অর্ডার গ্রহণের জন্য সম্পূর্ণ প্রস্তুত!")
             else:
