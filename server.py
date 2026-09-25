@@ -40,7 +40,7 @@ WHATSAPP_SUPPORT = "+971524413931"
 BUSINESS_OWNER = "Mohammad Akram (Abdullah Trading)"
 
 # Telegram 24/7 Cloud Alert Bot Configuration
-TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "8852199959:AAG7Bwly_690aE9yOTyyh1WfxhWSEB1gr1A")
+TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "")
 TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID", "8921431972")
 
 def send_telegram_alert(message_text, photo_url=None):
@@ -688,14 +688,8 @@ def reset_password():
 # ==============================================================================
 # STRIPE LIVE CREDIT/DEBIT CARD & APPLE PAY GATEWAY
 # ==============================================================================
-STRIPE_PUBLISHABLE_KEY = os.environ.get("STRIPE_PUBLISHABLE_KEY", "pk_live_51UE2VdAfxpe3IXqjiqPI78LCISbHs8VOu7QdYlqo1VUSooyxSHKLESAiIxYnZ6B985yF5UG50dVMUnfRyDsAisIZ0042l1QcTx")
-import base64
-_DEFAULT_SK_B64 = "c2tfbGl2ZV81MVVFMlZkQWZ4cGUzSVhxakZvYklDcnlqdG5zS0YyVUpaSjBVU3M0ZGNnMmNwOU82dno5bzZXRDVEb0daemdaMWxPSWZ2aVZZMENjZVNoUW1BdFFMaTRNaDAwS3NFbDRlelM="
-try:
-    _DEFAULT_SK = base64.b64decode(_DEFAULT_SK_B64.encode()).decode()
-except Exception:
-    _DEFAULT_SK = ""
-STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY", _DEFAULT_SK)
+STRIPE_PUBLISHABLE_KEY = os.environ.get("STRIPE_PUBLISHABLE_KEY", "")
+STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY", "")
 
 @app.route("/api/checkout/stripe/config", methods=["GET"])
 @app.route("/checkout/stripe/config", methods=["GET"])
@@ -719,6 +713,9 @@ def stripe_create_payment_intent():
     
     if not buyer_email or not package_code:
         return jsonify({"error": "Missing packageCode or buyerEmail"}), 400
+
+    if not STRIPE_SECRET_KEY:
+        return jsonify({"error": "Stripe is not configured. Please contact support."}), 503
         
     found_pkg = find_catalog_package(package_code)
 
@@ -1731,4 +1728,3 @@ if __name__ == "__main__":
     
     
     app.run(host="0.0.0.0", port=port, debug=False)
-
