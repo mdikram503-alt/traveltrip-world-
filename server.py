@@ -369,6 +369,13 @@ def find_catalog_package(package_code):
         pass
     return None
 
+def safe_price_usd(pkg):
+    try:
+        price = float(str(pkg.get("priceUsd", "")).replace("$", "").replace("USD", "").strip())
+        return price if price > 0 else None
+    except Exception:
+        return None
+
 @app.route("/catalog/esim/packages", methods=["GET"])
 @app.route("/api/packages", methods=["GET"])
 @app.route("/api/catalog/packages", methods=["GET"])
@@ -726,7 +733,9 @@ def stripe_create_payment_intent():
     package_name = found_pkg["name"]
     data_amount = found_pkg["data"]
     validity = found_pkg["validity"]
-    price_usd = float(found_pkg["priceUsd"])
+    price_usd = safe_price_usd(found_pkg)
+    if price_usd is None:
+        return jsonify({"error": f"Package {package_code} is missing a valid supplier price. Please select another plan."}), 400
     amount_cents = int(round(price_usd * 100))
     
     user_id = session.get("user_id")
@@ -796,6 +805,9 @@ def stripe_confirm_payment():
     order = get_order(order_id)
     if not order:
         return jsonify({"error": "Order not found"}), 404
+
+    if not STRIPE_SECRET_KEY:
+        return jsonify({"error": "Stripe is not configured. Please contact support."}), 503
         
     if order.get("esim_status") == "delivered":
         return jsonify({
@@ -826,6 +838,21 @@ def stripe_confirm_payment():
         order_id=order_id,
         location_code=order.get("location_code", "GLOBAL")
     )
+
+    if not provision_result or not provision_result.get("success"):
+        err_msg = (provision_result or {}).get("error", "Supplier provisioning failed.")
+        update_order_esim(order_id, esim_status="failed", failure_reason=err_msg)
+        send_telegram_alert(
+            f"⚠️ <b>eSIM SUPPLIER DELIVERY FAILED</b>\n\n"
+            f"<b>Order:</b> {order_id}\n"
+            f"<b>Package:</b> {order.get('package_code')}\n"
+            f"<b>Customer:</b> {order.get('buyer_email')}\n"
+            f"<b>Error:</b> {err_msg}"
+        )
+        return jsonify({
+            "error": "Payment confirmed, but eSIM delivery is temporarily delayed. Support has been notified.",
+            "orderId": order_id
+        }), 502
     
     update_order_esim(
         order_id=order_id,
@@ -894,10 +921,10 @@ def instant_buy_order():
                 candidates = d_filter
                 
         if candidates:
-            candidates.sort(key=lambda x: float(x.get('priceUsd', 999) or 999))
+            candidates.sort(key=lambda x: safe_price_usd(x) or 999)
             package_code = candidates[0]['packageCode']
         else:
-            package_code = "JC063"
+            return jsonify({"success": False, "error": "No matching live eSIM package found. Please select a plan from the catalog."}), 400
     
     order_id = f"TT-{int(time.time())}-{secrets.token_hex(3).upper()}"
     
@@ -987,7 +1014,9 @@ def create_checkout_order():
     package_name = found_pkg["name"]
     data_amount = found_pkg["data"]
     validity = found_pkg["validity"]
-    price_usd = float(found_pkg["priceUsd"])
+    price_usd = safe_price_usd(found_pkg)
+    if price_usd is None:
+        return jsonify({"error": f"Package {package_code} is missing a valid supplier price. Please select another plan."}), 400
     
     user_id = session.get("user_id")
     order_id = create_order(
