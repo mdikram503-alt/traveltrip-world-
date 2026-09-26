@@ -1,0 +1,32 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "TravelTrip World",
+  "alternateName": "Traveler eSIM",
+  "url": "https://traveltrip.world",
+  "logo": "https://traveltrip.world/logo.png",
+  "description": "Instant high-speed 5G/4G travel eSIMs for 190+ countries. No passport, no ID verification. Buy and activate in 30 seconds.",
+  "foundingDate": "2024",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Ajman",
+    "addressCountry": "AE"
+  },
+  "contactPoint": [
+    {
+      "@type": "ContactPoint",
+      "telephone": "+971-54-557-0187",
+      "contactType": "customer service",
+      "availableLanguage": ["English", "Bengali"],
+      "areaServed": "Worldwide"
+    }
+  ],
+  "sameAs": [
+    "https://www.facebook.com/TravelTripWorld",
+    "https://www.instagram.com/trave_ltripworld",
+    "https://www.youtube.com/@TravelTripWorld",
+    "https://x.com/TravelTripWorld",
+    "https://www.tiktok.com/@traveltrip.world8",
+    "https://t.me/travel_trip_world_bot"
+  ]
+}

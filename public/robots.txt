@@ -1,21 +1,49 @@
 User-agent: *
 Allow: /
+
+# Block private / system paths
 Disallow: /api/
 Disallow: /admin/
 Disallow: /server/
+Disallow: /ops
+Disallow: /dashboard
+Disallow: /account
+Disallow: /login
+Disallow: /register
+Disallow: /checkout
+Disallow: /verify-email
+Disallow: /reset-password
 
-# Sitemap location
+# Allow important public pages explicitly
+Allow: /destinations
+Allow: /compatible-devices
+Allow: /faq
+Allow: /how-it-works
+Allow: /contact
+Allow: /social
+Allow: /privacy
+Allow: /terms
+Allow: /refund-policy
+Allow: /esim/
+
+# Sitemaps
 Sitemap: https://traveltrip.world/sitemap.xml
 
-# Social Media - Allow all crawlers to find social hub
-User-agent: Googlebot
-Allow: /pages/social.html
+# Crawl-delay (optional, be polite)
+Crawl-delay: 1
 
-User-agent: facebookexternalhit
+# Specific bots
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
 Allow: /
 
 User-agent: Twitterbot
 Allow: /
 
-# Host
-Host: https://traveltrip.world
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: LinkedInBot
+Allow: /
