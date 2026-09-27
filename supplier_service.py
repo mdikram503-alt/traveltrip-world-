@@ -109,10 +109,7 @@ class SupplierService:
                 "User-Agent": "TravelTripCatalog/2.0"
             } | SupplierService._auth_headers(api_key, api_secret, auth_mode),
         )
-        ssl_ctx = ssl.create_default_context()
-        ssl_ctx.check_hostname = False
-        ssl_ctx.verify_mode = ssl.CERT_NONE
-        with urllib.request.urlopen(req, timeout=14, context=ssl_ctx) as response:
+        with urllib.request.urlopen(req, timeout=14, context=ssl.create_default_context()) as response:
             return SupplierService._read_json_response(response)
 
     @staticmethod
