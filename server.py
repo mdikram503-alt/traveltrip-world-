@@ -399,23 +399,14 @@ CATALOG_ALIASES = {
 }
 
 def find_catalog_package(package_code):
-    """Find package across live supplier inventory or local fallback catalog."""
+    """Only sell a package confirmed in the live supplier inventory."""
     if not package_code:
         return None
-    # 1. Search in local catalog first
-    for pkgs in CATALOG_PACKAGES.values():
-        for p in pkgs:
-            if p.get("packageCode") == package_code:
-                return p
-    # 2. Search in live supplier catalog (supports 3,184 live packages like CKH002, CKH031)
     try:
-        sup_pkgs = SupplierService.live_catalog()
-        for p in sup_pkgs:
-            if p.get("packageCode") == package_code:
-                return p
+        return next((p for p in SupplierService.live_catalog()
+                     if p.get("packageCode") == package_code), None)
     except Exception:
-        pass
-    return None
+        return None
 
 def safe_price_usd(pkg):
     try:
@@ -492,7 +483,6 @@ def get_catalog_packages():
         "packages": pkgs,
         "supplier_live": bool(supplier_packages),
         "supplier_error": getattr(SupplierService, "last_error", ""),
-        "active_key": getattr(SupplierService, "active_key", "")
     })
 
 @app.route("/api/catalog/destinations", methods=["GET"])
@@ -744,29 +734,71 @@ def reset_password():
     })
 @app.route("/api/auth/google", methods=["GET", "POST"])
 def auth_google():
-    client_id = os.getenv("GOOGLE_CLIENT_ID", "1048291823719-sampletraveltripgoogleclientid.apps.googleusercontent.com")
-    redirect_uri = "https://traveltrip.world/api/auth/callback/google"
-    scope = "openid%20email%20profile"
-    google_auth_url = f"https://accounts.google.com/o/oauth2/v2/auth?client_id={client_id}&redirect_uri={redirect_uri}&response_type=code&scope={scope}&prompt=select_account"
+    client_id = os.getenv("GOOGLE_CLIENT_ID")
+    if not client_id or not os.getenv("GOOGLE_CLIENT_SECRET") or not os.getenv("FLASK_SECRET_KEY"):
+        return jsonify({"error": "Google sign-in is not configured"}), 503
+    import urllib.parse
+    state, nonce = secrets.token_urlsafe(32), secrets.token_urlsafe(32)
+    session["google_oauth_state"] = state
+    session["google_oauth_nonce"] = nonce
+    google_auth_url = "https://accounts.google.com/o/oauth2/v2/auth?" + urllib.parse.urlencode({
+        "client_id": client_id,
+        "redirect_uri": "https://traveltrip.world/api/auth/callback/google",
+        "response_type": "code", "scope": "openid email profile",
+        "prompt": "select_account", "state": state, "nonce": nonce,
+    })
     if request.is_json or "application/json" in request.headers.get("Accept", "") or request.method == "POST":
         return jsonify({"success": True, "authUrl": google_auth_url, "provider": "google"}), 200
     return redirect(google_auth_url, code=302)
 
-@app.route("/api/auth/callback/google", methods=["GET", "POST"])
+@app.route("/api/auth/callback/google", methods=["GET"])
 def auth_callback_google():
-    code = request.args.get("code")
-    error = request.args.get("error")
-    if error:
-        return redirect(f"/?auth_error={error}", code=302)
-    resp = make_response(redirect("/?auth=success", code=302))
-    resp.set_cookie("tt_session", "google_authenticated", max_age=2592000, path="/", httponly=True, samesite="Lax")
-    if request.is_json or "application/json" in request.headers.get("Accept", ""):
-        return jsonify({
-            "success": True,
-            "user": {"email": "traveler@traveltrip.world", "name": "Verified Traveler", "auth_provider": "google"},
-            "message": "Google authentication successful"
-        }), 200
-    return resp
+    import requests
+    state = session.pop("google_oauth_state", None)
+    nonce = session.pop("google_oauth_nonce", None)
+    supplied_state = request.args.get("state", "")
+    code = request.args.get("code", "")
+    if (request.args.get("error") or not code or not state or not nonce
+            or not secrets.compare_digest(state, supplied_state)):
+        return jsonify({"error": "Invalid Google authorization response"}), 400
+    client_id, client_secret = os.getenv("GOOGLE_CLIENT_ID"), os.getenv("GOOGLE_CLIENT_SECRET")
+    if not client_id or not client_secret or not os.getenv("FLASK_SECRET_KEY"):
+        return jsonify({"error": "Google sign-in is not configured"}), 503
+    try:
+        token_response = requests.post("https://oauth2.googleapis.com/token", data={
+            "code": code, "client_id": client_id, "client_secret": client_secret,
+            "redirect_uri": "https://traveltrip.world/api/auth/callback/google",
+            "grant_type": "authorization_code",
+        }, timeout=10)
+        token_response.raise_for_status()
+        id_token = token_response.json()["id_token"]
+        # Google's tokeninfo endpoint validates the token signature and expiry.
+        verify_response = requests.get("https://oauth2.googleapis.com/tokeninfo",
+                                       params={"id_token": id_token}, timeout=10)
+        verify_response.raise_for_status()
+        claims = verify_response.json()
+        if (claims.get("aud") != client_id
+                or claims.get("iss") not in ("accounts.google.com", "https://accounts.google.com")
+                or claims.get("nonce") != nonce
+                or claims.get("email_verified") not in (True, "true")
+                or int(claims.get("exp", 0)) <= time.time()):
+            raise ValueError("Invalid Google identity token")
+        email = claims["email"].lower().strip()
+        user = get_user_by_email(email)
+        if not user:
+            user_id = create_user(claims.get("name") or email.split("@")[0], email,
+                                  secrets.token_urlsafe(48), email_verified=1)
+            user = get_user_by_id(user_id) if user_id else get_user_by_email(email)
+        if not user:
+            raise ValueError("Unable to create account")
+        session["user_id"] = user["id"]
+        session["role"] = user.get("role", "customer")
+        session["email"] = email
+        session["name"] = user.get("name", "")
+    except (requests.RequestException, KeyError, ValueError, TypeError) as exc:
+        app.logger.warning("Google OAuth callback failed: %s", type(exc).__name__)
+        return jsonify({"error": "Google sign-in failed"}), 400
+    return redirect("/account.html", code=302)
 
 @app.route("/api/auth/login", methods=["GET", "POST"])
 def login():
@@ -840,18 +872,14 @@ def logout():
 # ==============================================================================
 # STRIPE LIVE CREDIT/DEBIT CARD & APPLE PAY GATEWAY
 # ==============================================================================
-STRIPE_PUBLISHABLE_KEY = os.environ.get("STRIPE_PUBLISHABLE_KEY", "pk_live_51UE2VdAfxpe3IXqjiqPI78LCISbHs8VOu7QdYlqo1VUSooyxSHKLESAiIxYnZ6B985yF5UG50dVMUnfRyDsAisIZ0042l1QcTx")
-import base64
-_DEFAULT_SK_B64 = "c2tfbGl2ZV81MVVFMlZkQWZ4cGUzSVhxakZvYklDcnlqdG5zS0YyVUpaSjBVU3M0ZGNnMmNwOU82dno5bzZXRDVEb0daemdaMWxPSWZ2aVZZMENjZVNoUW1BdFFMaTRNaDAwS3NFbDRlelM="
-try:
-    _DEFAULT_SK = base64.b64decode(_DEFAULT_SK_B64.encode()).decode()
-except Exception:
-    _DEFAULT_SK = ""
-STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY") or os.environ.get("STRIPE_API_KEY") or _DEFAULT_SK
+STRIPE_PUBLISHABLE_KEY = os.environ.get("STRIPE_PUBLISHABLE_KEY", "")
+STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY") or os.environ.get("STRIPE_API_KEY") or ""
 
 @app.route("/api/checkout/stripe/config", methods=["GET"])
 @app.route("/checkout/stripe/config", methods=["GET"])
 def stripe_config():
+    if not STRIPE_PUBLISHABLE_KEY or not STRIPE_SECRET_KEY:
+        return jsonify({"error": "Stripe is not configured"}), 503
     return jsonify({
         "publishableKey": STRIPE_PUBLISHABLE_KEY,
         "currency": "USD"
@@ -874,6 +902,10 @@ def stripe_create_payment_intent():
 
     if not STRIPE_SECRET_KEY:
         return jsonify({"error": "Stripe is not configured. Please contact support."}), 503
+
+    # A fallback listing is not proof that the supplier can fulfill an order.
+    if not SupplierService.live_catalog():
+        return jsonify({"error": "Live eSIM inventory is unavailable. Please try again later."}), 503
         
     found_pkg = find_catalog_package(package_code)
 
@@ -1073,87 +1105,8 @@ def stripe_confirm_payment():
 
 @app.route("/api/order/instant-buy", methods=["POST"])
 def instant_buy_order():
-    data = request.get_json() or {}
-    buyer_email = (data.get("email") or data.get("buyerEmail") or "").strip().lower()
-    buyer_name = (data.get("name") or data.get("buyerName") or "Traveler Customer").strip()
-    country = data.get("country") or data.get("countryKey") or data.get("title") or ""
-    data_amount = data.get("data") or ""
-    validity = data.get("validity") or ""
-    package_code = (data.get("packageCode") or data.get("package_code") or "").strip()
-
-    if not buyer_email or "@" not in buyer_email:
-        return jsonify({"success": False, "error": "Valid email address is required"}), 400
-
-    # Match package from supplier catalog if not directly passed
-    if not package_code:
-        pkgs = SupplierService.live_catalog()
-        c_lower = country.lower().strip()
-        candidates = []
-        for p in pkgs:
-            if c_lower and (c_lower in p['name'].lower() or c_lower == p.get('region', '').lower()):
-                candidates.append(p)
-        if not candidates and c_lower:
-            aliases = {"uae": "united arab emirates", "uk": "united kingdom", "usa": "united states"}
-            if c_lower in aliases:
-                alt = aliases[c_lower]
-                candidates = [p for p in pkgs if alt in p['name'].lower()]
-        
-        if data_amount and candidates:
-            d_clean = data_amount.lower().replace(" ", "")
-            d_filter = [p for p in candidates if d_clean in p['data'].lower().replace(" ", "")]
-            if d_filter:
-                candidates = d_filter
-                
-        if candidates:
-            candidates.sort(key=lambda x: safe_price_usd(x) or 999)
-            package_code = candidates[0]['packageCode']
-        else:
-            return jsonify({"success": False, "error": "No matching live eSIM package found. Please select a plan from the catalog."}), 400
-    
-    order_id = f"TT-{int(time.time())}-{secrets.token_hex(3).upper()}"
-    
-    # Call ResellPortal live fulfillment
-    provision_result = SupplierService.provision_esim(
-        package_code=package_code,
-        buyer_email=buyer_email,
-        order_id=order_id,
-        location_code="GLOBAL",
-        buyer_name=buyer_name
-    )
-    
-    if not provision_result or not provision_result.get("success"):
-        err_msg = (provision_result or {}).get("error", "eSIM provisioning failed with wholesale supplier.")
-        return jsonify({"success": False, "error": err_msg}), 502
-        
-    try:
-        tg_alert = (
-            f"🚨 <b>NEW LIVE eSIM FULFILLED!</b>\n\n"
-            f"💳 <b>Order ID:</b> {order_id}\n"
-            f"👤 <b>Customer:</b> {buyer_name} ({buyer_email})\n"
-            f"📦 <b>Package:</b> {package_code}\n"
-            f"📱 <b>ICCID:</b> {provision_result.get('iccid')}\n"
-            f"🌐 <b>SMDP:</b> {provision_result.get('smdp_address')}\n"
-            f"⚡ <b>Supplier Ref:</b> {provision_result.get('supplier_order_id')}"
-        )
-        send_telegram_alert(tg_alert, photo_url=provision_result.get("qr_code_url"))
-    except Exception as ex:
-        pass
-        
-    return jsonify({
-        "success": True,
-        "order_id": order_id,
-        "package_code": package_code,
-        "iccid": provision_result.get("iccid"),
-        "lpa_string": provision_result.get("lpa_string"),
-        "qr_code_url": provision_result.get("qr_code_url"),
-        "smdp_address": provision_result.get("smdp_address"),
-        "activation_code": provision_result.get("activation_code"),
-        "pin": provision_result.get("pin"),
-        "puk": provision_result.get("puk"),
-        "apn": provision_result.get("apn"),
-        "supplier_order_id": provision_result.get("supplier_order_id")
-    })
-
+    # The old homepage form could provision an eSIM without payment verification.
+    return jsonify({"success": False, "error": "Use secure checkout to purchase an eSIM."}), 410
 
 
 @app.route("/checkout/checkout/paypal/config", methods=["GET"])

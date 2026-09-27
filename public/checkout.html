@@ -607,14 +607,14 @@ div[id*="vercel"] {
           <div class="summary-card">
             <span class="summary-badge">ORDER SUMMARY</span>
             <div id="package-info">
-              <div class="summary-title" id="summary-pkg-name">Global Travel eSIM</div>
+              <div class="summary-title" id="summary-pkg-name">Checking live inventory…</div>
               <div class="summary-dest" id="summary-pkg-dest">📍 200+ countries Supported</div>
             </div>
 
             <div class="summary-pricing-row">
               <div>
                 <span style="font-size: 12px; color: #64748B; display: block;">Total Amount</span>
-                <span class="summary-price-big" id="total">$0.00 USD</span>
+                <span class="summary-price-big" id="total">Checking price…</span>
               </div>
               <span style="font-size: 12px; font-weight: 700; color: var(--tt-green, #10B981);">100% Prepaid</span>
             </div>
@@ -759,9 +759,12 @@ div[id*="vercel"] {
 
   // FIX: Verify live inventory integrity and real price from catalog
   async function loadPackageFromCatalog() {
+    let supplierLive = false;
     try {
       const res = await fetch("/api/catalog/packages?location=ALL");
+      if (!res.ok) throw new Error("Catalog request failed");
       const data = await res.json();
+      supplierLive = Boolean(data.supplier_live);
       if (data && data.packages && data.packages.length > 0) {
         const found = data.packages.find(p => p.packageCode === packageCode);
         if (found) {
@@ -774,7 +777,6 @@ div[id*="vercel"] {
           // Package code not in catalog — lock checkout to prevent invalid order
           showStatus(`⚠️ Package "${packageCode}" is temporarily unavailable in live inventory. Redirecting to destinations...`, "error");
           setPayButtonsEnabled(false);
-          setTimeout(() => window.location.replace("/destinations.html?country=GLOBAL"), 3500);
           return;
         }
       } else {
@@ -798,7 +800,10 @@ div[id*="vercel"] {
 
     const totalEl = document.getElementById("total");
     if (totalEl) totalEl.textContent = `$${parseFloat(shownPrice).toFixed(2)} USD`;
-    setPayButtonsEnabled(Number.isFinite(parseFloat(shownPrice)) && parseFloat(shownPrice) > 0);
+    if (!supplierLive) {
+      showStatus("Live eSIM inventory is temporarily unavailable. Payment is paused until supplier access is restored.", "error");
+    }
+    setPayButtonsEnabled(supplierLive && Number.isFinite(parseFloat(shownPrice)) && parseFloat(shownPrice) > 0);
   }
   loadPackageFromCatalog();
 
@@ -1375,4 +1380,3 @@ div[id*="vercel"] {
 
 </body>
 </html>
-
