@@ -217,6 +217,11 @@ class SupplierService:
         """
         logger.info(f"Provisioning eSIM for order {order_id}, package: {package_code}, buyer: {buyer_email}")
         
+        # Test mode fallback for verifying checkout, LPA string, and QR code delivery
+        if os.environ.get("RESELLPORTAL_TEST_MODE") == "1":
+            logger.info("Test mode active: generating GSMA eSIM activation profile for order %s", order_id)
+            return SupplierService._generate_provisioned_profile(package_code, order_id)
+
         if not SUPPLIER_API_KEY or not SUPPLIER_API_SECRET:
             return {"success": False, "error": "Supplier credentials are not configured"}
         try:

@@ -898,15 +898,27 @@
   let elements = null;
   let cardElement = null;
   let paymentRequest = null;
-  const STRIPE_PK = "pk_live_51UE2VdAfxpe3IXqjiqPI78LCISbHs8VOu7QdYlqo1VUSooyxSHKLESAiIxYnZ6B985yF5UG50dVMUnfRyDsAisIZ0042l1QcTx";
-
-  function initStripe() {
+  async function initStripe() {
     try {
       if (typeof Stripe === "undefined") {
         console.warn("Stripe.js not loaded yet");
         return;
       }
-      stripe = Stripe(STRIPE_PK);
+      let pk = "";
+      try {
+        const res = await fetch("/api/checkout/stripe/config");
+        if (res.ok) {
+          const cfg = await res.json();
+          if (cfg && cfg.publishableKey) pk = cfg.publishableKey;
+        }
+      } catch (err) {
+        console.warn("Could not load Stripe config:", err);
+      }
+      if (!pk) {
+        console.warn("Stripe publishable key is not configured on server.");
+        return;
+      }
+      stripe = Stripe(pk);
       elements = stripe.elements();
 
       // 1. Mount Card Element
