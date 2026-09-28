@@ -7,6 +7,21 @@
       "source": "/social.html",
       "destination": "/social",
       "permanent": true
+    },
+    {
+      "source": "/checkout",
+      "destination": "https://traveltripworld.appserviceportal.com/",
+      "permanent": false
+    },
+    {
+      "source": "/checkout/(.*)",
+      "destination": "https://traveltripworld.appserviceportal.com/",
+      "permanent": false
+    },
+    {
+      "source": "/store",
+      "destination": "https://traveltripworld.appserviceportal.com/",
+      "permanent": false
     }
   ],
   "rewrites": [
@@ -52,10 +67,6 @@
     },
     {
       "source": "/catalog/(.*)",
-      "destination": "/api"
-    },
-    {
-      "source": "/checkout/(.*)",
       "destination": "/api"
     }
   ],
