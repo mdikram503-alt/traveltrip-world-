@@ -7,6 +7,8 @@ const BOT_TOKEN = process.env.BOT_TOKEN;
 const CHANNEL_ID = process.env.CHANNEL_ID || "@tTraveltrip_World";
 const PORT = Number(process.env.PORT || 10000);
 const WEBSITE_URL = process.env.WEBSITE_URL || "https://traveltrip.world";
+const AUTO_POSTER_URL = process.env.AUTO_POSTER_URL || "";
+const AUTO_POSTER_ADMIN_KEY = process.env.AUTO_POSTER_ADMIN_KEY || "";
 
 if (!BOT_TOKEN) {
   throw new Error("BOT_TOKEN is required");
@@ -70,10 +72,10 @@ function plansText() {
 
 async function emergencyFix() {
   await bot.telegram.deleteWebhook({ drop_pending_updates: true });
-  console.log("✅ Webhook deleted!");
+  console.log("Webhook deleted");
 
   const me = await bot.telegram.getMe();
-  console.log(`✅ Bot verified: @${me.username}`);
+  console.log(`Bot verified: @${me.username}`);
 
   await bot.telegram.deleteMyCommands();
   await bot.telegram.setMyCommands([
@@ -83,13 +85,34 @@ async function emergencyFix() {
     { command: "website", description: "Open TravelTrip website" },
     { command: "support", description: "Get support" },
   ]);
-  console.log("✅ Commands set");
+  console.log("Commands set");
+}
+
+async function sendToAutoPoster(payload) {
+  if (!AUTO_POSTER_URL || !AUTO_POSTER_ADMIN_KEY) {
+    return { ok: false, skipped: true, reason: "AUTO_POSTER_URL or AUTO_POSTER_ADMIN_KEY missing" };
+  }
+
+  const response = await fetch(`${AUTO_POSTER_URL.replace(/\/$/, "")}/post`, {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      "x-admin-key": AUTO_POSTER_ADMIN_KEY,
+    },
+    body: JSON.stringify(payload),
+  });
+
+  const data = await response.json();
+  return { ok: response.ok && data.ok === true, status: response.status, data };
 }
 
 bot.start(async (ctx) => {
   await ctx.reply(
     [
       "Welcome to TravelTrip Alerts.",
+      "",
+      "Send a photo or video with caption here.",
+      "I will publish it through the TravelTrip auto-poster.",
       "",
       "Use /website to open TravelTrip World.",
       "Use /plans to view available eSIM packages.",
@@ -131,14 +154,23 @@ bot.action("support", async (ctx) => {
   await ctx.reply(`Support: ${WEBSITE_URL}`);
 });
 
-// Commands must stay above this photo handler so command messages are handled first.
+// Commands must stay above media handlers so command messages are handled first.
 bot.on("photo", async (ctx) => {
   const caption = ctx.message.caption || "";
   const photos = ctx.message.photo;
   const largestPhoto = photos[photos.length - 1];
+  const imageUrl = await ctx.telegram.getFileLink(largestPhoto.file_id);
 
-  await ctx.telegram.sendPhoto(CHANNEL_ID, largestPhoto.file_id, { caption });
-  await ctx.reply(`Photo posted to ${CHANNEL_ID}`);
+  const result = await sendToAutoPoster({ caption, imageUrl: imageUrl.href });
+  await ctx.reply(result.ok ? "Posted through TravelTrip auto-poster." : `Auto-poster failed: ${result.reason || result.status || "unknown error"}`);
+});
+
+bot.on("video", async (ctx) => {
+  const caption = ctx.message.caption || "";
+  const videoUrl = await ctx.telegram.getFileLink(ctx.message.video.file_id);
+
+  const result = await sendToAutoPoster({ caption, videoUrl: videoUrl.href });
+  await ctx.reply(result.ok ? "Video posted through TravelTrip auto-poster." : `Auto-poster failed: ${result.reason || result.status || "unknown error"}`);
 });
 
 bot.catch((err, ctx) => {
@@ -164,7 +196,7 @@ async function start() {
 
   await emergencyFix();
   await bot.launch();
-  console.log("✅✅✅ BOT LAUNCHED - /start /website WILL WORK NOW!");
+  console.log("BOT LAUNCHED - Telegram to auto-poster is ready");
 }
 
 start().catch((err) => {
