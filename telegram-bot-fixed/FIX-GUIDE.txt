@@ -1,0 +1,34 @@
+TravelTrip Telegram Bot Fix
+
+What was done:
+- Telegram webhook was deleted with drop_pending_updates=true.
+- Bot token was verified with getMe.
+- This package runs Telegraf in polling mode, not webhook mode.
+- Commands are registered before the photo handler.
+- Express health endpoints are available on / and /health for Render.
+
+Render setup:
+1. Upload/deploy this folder.
+2. Build command: npm install
+3. Start command: npm start
+4. Environment variables:
+   BOT_TOKEN=<new BotFather token recommended>
+   CHANNEL_ID=@tTraveltrip_World
+   PORT=10000
+   WEBSITE_URL=https://traveltrip.world
+5. Clear build cache and deploy.
+
+Expected Render logs:
+✅ Webhook deleted!
+✅ Bot verified: @travel_trip_world_bot
+✅ Commands set
+✅✅✅ BOT LAUNCHED - /start /website WILL WORK NOW!
+
+Test:
+- /start replies with welcome message.
+- /website replies with https://traveltrip.world.
+- /plans replies with 32 package lines.
+- Sending a photo with caption posts it to @tTraveltrip_World.
+
+Security:
+The old token was exposed in chat. After confirming the fix, revoke it in @BotFather and update Render with the new BOT_TOKEN.
