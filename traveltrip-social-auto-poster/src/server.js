@@ -41,6 +41,7 @@ app.get("/health", (_req, res) => {
 app.post("/post", requireAdmin, async (req, res) => {
   const caption = normalizeCaption(req.body.caption);
   const imageUrl = req.body.imageUrl || "";
+  const videoUrl = req.body.videoUrl || "";
   const targets = req.body.targets || [
     "telegram",
     "facebook",
@@ -52,11 +53,11 @@ app.post("/post", requireAdmin, async (req, res) => {
   ];
 
   const jobs = [];
-  if (targets.includes("telegram")) jobs.push(postToTelegram({ caption, imageUrl }));
+  if (targets.includes("telegram")) jobs.push(postToTelegram({ caption, imageUrl, videoUrl }));
   if (targets.includes("facebook")) jobs.push(postToFacebook({ caption, imageUrl }));
   if (targets.includes("instagram")) jobs.push(postToInstagram({ caption, imageUrl }));
-  if (targets.includes("linkedin")) jobs.push(postToLinkedIn({ caption, imageUrl }));
-  if (targets.includes("x")) jobs.push(postToX({ caption, imageUrl }));
+  if (targets.includes("linkedin")) jobs.push(postToLinkedIn({ caption, imageUrl, videoUrl }));
+  if (targets.includes("x")) jobs.push(postToX({ caption, imageUrl, videoUrl }));
   if (targets.includes("pinterest")) jobs.push(postToPinterest({ caption, imageUrl }));
 
   const results = await Promise.allSettled(jobs);
@@ -73,6 +74,7 @@ app.post("/post", requireAdmin, async (req, res) => {
     ok: platformResults.some((result) => result.ok),
     caption,
     imageUrl,
+    videoUrl,
     results: platformResults,
   });
 });
