@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instant eSIM</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;800;900&display=swap');
+
+        :root {
+            --primary: #00ffcc;
+            --secondary: #ff007f;
+            --bg-color: #0b0f19;
+            --text-light: #ffffff;
+            --text-muted: #a0aec0;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-light);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-image: radial-gradient(circle at top right, rgba(0, 255, 204, 0.1), transparent 40%),
+                              radial-gradient(circle at bottom left, rgba(255, 0, 127, 0.1), transparent 40%);
+        }
+
+        .hero-container {
+            text-align: center;
+            padding: 4rem;
+            max-width: 1000px;
+            width: 90%;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 30px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(255,255,255,0.02);
+            backdrop-filter: blur(20px);
+            animation: fadeIn 1s ease-out;
+        }
+
+        .title {
+            font-size: 6rem;
+            font-weight: 900;
+            margin: 0;
+            line-height: 1.1;
+            text-transform: uppercase;
+            letter-spacing: -2px;
+            background: linear-gradient(135deg, var(--text-light) 0%, var(--primary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 40px rgba(0, 255, 204, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .lightning {
+            color: var(--primary);
+            text-shadow: 0 0 20px var(--primary);
+            -webkit-text-fill-color: var(--primary);
+            animation: pulse 2s infinite;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin: 4rem 0;
+        }
+
+        .feature-card {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 2rem;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.05), transparent);
+            transform: translateX(-100%);
+            transition: 0.6s;
+        }
+
+        .feature-card:hover::before {
+            transform: translateX(100%);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: rgba(0, 255, 204, 0.3);
+            box-shadow: 0 15px 35px -10px rgba(0, 255, 204, 0.2);
+        }
+
+        .feature-card p {
+            margin: 0;
+            font-size: 1.3rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            margin-top: 8px;
+        }
+
+        .feature-card .highlight {
+            color: var(--text-light);
+            font-weight: 900;
+            display: block;
+            font-size: 1.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .feature-card .accent {
+            color: var(--primary);
+        }
+
+        .feature-card .accent-secondary {
+            color: var(--secondary);
+        }
+
+        .cta-section {
+            margin-top: 3rem;
+            padding-top: 3rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .cta-text {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 2.5rem;
+            color: var(--text-light);
+            text-transform: uppercase;
+        }
+
+        .cta-text span {
+            color: var(--secondary);
+            text-shadow: 0 0 30px rgba(255, 0, 127, 0.6);
+            display: inline-block;
+            animation: bounce 2s infinite;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--primary), #00ccaa);
+            color: #000;
+            text-decoration: none;
+            padding: 1.5rem 4rem;
+            font-size: 1.8rem;
+            font-weight: 900;
+            border-radius: 50px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+            box-shadow: 0 15px 30px -10px rgba(0, 255, 204, 0.5);
+            border: 2px solid transparent;
+        }
+
+        .cta-button:hover {
+            transform: scale(1.05) translateY(-5px);
+            box-shadow: 0 25px 50px -10px rgba(0, 255, 204, 0.8);
+            border-color: #fff;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.8; text-shadow: 0 0 40px var(--primary); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-10px);}
+            60% {transform: translateY(-5px);}
+        }
+
+        @media (max-width: 768px) {
+            .title { font-size: 3.5rem; }
+            .cta-text { font-size: 2rem; }
+            .hero-container { padding: 2rem; }
+            .feature-card { padding: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="hero-container">
+        <h1 class="title"><span class="lightning">⚡</span> INSTANT eSIM</h1>
+        
+        <div class="features-grid">
+            <div class="feature-card">
+                <span class="highlight">No Limits</span>
+                <p>No Age Limit</p>
+            </div>
+            <div class="feature-card">
+                <span class="highlight">Zero Docs</span>
+                <p>No Passport or ID</p>
+            </div>
+            <div class="feature-card">
+                <span class="highlight">Instant</span>
+                <p>No Verification</p>
+            </div>
+            <div class="feature-card">
+                <span class="highlight accent">Anyone</span>
+                <p>Can Buy Easily</p>
+            </div>
+            <div class="feature-card">
+                <span class="highlight accent-secondary">FREE Setup</span>
+                <p>$0 Hidden Fee</p>
+            </div>
+            <div class="feature-card">
+                <span class="highlight">Simple Login</span>
+                <p>Gmail or Apple ID</p>
+            </div>
+        </div>
+
+        <div class="cta-section">
+            <div class="cta-text">Buy & Activate in <br><span>30 Seconds!</span></div>
+            <a href="#" class="cta-button">Get Started Now</a>
+        </div>
+    </div>
+
+</body>
+</html>
