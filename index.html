@@ -690,31 +690,71 @@
     </div>
   </section>
 
-  <!-- Visa Center Section -->
+  <!-- Visa Center Section (Enhanced Phase 2 Intelligence Engine) -->
   <section id="visa-center" class="relative py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-    <div class="p-8 sm:p-12 rounded-3xl glass-card border border-white/10 relative overflow-hidden">
-      <div class="max-w-3xl">
+    <div class="p-8 sm:p-12 rounded-3xl glass-card border border-sky-500/20 relative overflow-hidden">
+      <div class="max-w-4xl">
         <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-500/10 border border-sky-400/30 text-xs font-extrabold uppercase tracking-widest text-sky-400 mb-3">
-          <i class="fa-solid fa-passport"></i> Global Visa Intelligence
+          <i class="fa-solid fa-passport"></i> Global Visa Intelligence Engine
         </div>
         <h2 class="text-3xl sm:text-4xl font-display font-black tracking-tight">
-          Visa Center for <span class="text-sky-400">195 Countries</span>
+          Visa Requirement Center for <span class="text-sky-400">195 Countries</span>
         </h2>
         <p class="mt-3 text-slate-300 text-sm leading-relaxed">
-          Verify embassy and e-visa policies before booking. Get document validation, express e-visa approvals, and fast-track clearance support.
+          Select your passport and destination to instantly check embassy, e-Visa, and Visa on Arrival rules, fee schedules, allowed stay, and mandatory consular checklists.
         </p>
 
-        <!-- Visa Quick Search -->
-        <div class="mt-8 flex flex-col sm:flex-row gap-3">
-          <input id="visa-search-input" type="text" placeholder="Enter destination country (e.g. Japan, Schengen, USA, Turkey, UK)..." class="flex-1 h-12 px-4 rounded-xl bg-slate-900 border border-white/10 text-sm text-white placeholder:text-slate-500 outline-none focus:border-sky-400 transition">
-          <button onclick="checkVisaStatus()" class="h-12 px-6 rounded-xl bg-sky-500 hover:bg-sky-400 text-midnight font-extrabold text-sm transition flex items-center justify-center gap-2">
-            <i class="fa-solid fa-magnifying-glass"></i> Check Visa Rules
-          </button>
+        <!-- Visa Dual Selector Grid -->
+        <div class="mt-8 grid grid-cols-1 md:grid-cols-12 gap-3">
+          
+          <div class="md:col-span-4">
+            <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">My Passport Country:</label>
+            <select id="visa-passport-select" onchange="runVisaCheck()" class="w-full h-12 px-4 rounded-xl bg-slate-900 border border-white/10 text-xs text-white outline-none focus:border-sky-400 cursor-pointer">
+              <option value="BD">🇧🇩 Bangladesh Passport</option>
+              <option value="IN">🇮🇳 India Passport</option>
+              <option value="US">🇺🇸 United States Passport</option>
+              <option value="UK">🇬🇧 United Kingdom Passport</option>
+              <option value="AE">🇦🇪 United Arab Emirates</option>
+              <option value="PK">🇵🇰 Pakistan Passport</option>
+              <option value="SA">🇸🇦 Saudi Arabia Passport</option>
+              <option value="SG">🇸🇬 Singapore Passport</option>
+              <option value="MY">🇲🇾 Malaysia Passport</option>
+              <option value="CA">🇨🇦 Canada Passport</option>
+              <option value="AU">🇦🇺 Australia Passport</option>
+            </select>
+          </div>
+
+          <div class="md:col-span-5">
+            <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Traveling Destination:</label>
+            <select id="visa-dest-select" onchange="runVisaCheck()" class="w-full h-12 px-4 rounded-xl bg-slate-900 border border-white/10 text-xs text-white outline-none focus:border-sky-400 cursor-pointer">
+              <option value="japan">🇯🇵 Japan (Tokyo & Kyoto)</option>
+              <option value="switzerland">🇨🇭 Switzerland (Schengen Zone)</option>
+              <option value="maldives">🇲🇻 Maldives (Baa Atoll & Male)</option>
+              <option value="uae">🇦🇪 United Arab Emirates (Dubai & Abu Dhabi)</option>
+              <option value="france">🇫🇷 France (Paris & Nice - Schengen)</option>
+              <option value="indonesia">🇮🇩 Indonesia (Bali & Jakarta)</option>
+              <option value="turkey">🇹🇷 Turkey (Istanbul & Antalya)</option>
+              <option value="thailand">🇹🇭 Thailand (Bangkok & Phuket)</option>
+              <option value="singapore">🇸🇬 Singapore</option>
+              <option value="malaysia">🇲🇾 Malaysia (Kuala Lumpur)</option>
+              <option value="usa">🇺🇸 United States of America</option>
+              <option value="uk">🇬🇧 United Kingdom (London)</option>
+              <option value="qatar">🇶🇦 Qatar (Doha)</option>
+              <option value="saudi">🇸🇦 Saudi Arabia (Riyadh & Jeddah)</option>
+            </select>
+          </div>
+
+          <div class="md:col-span-3 flex items-end">
+            <button onclick="runVisaCheck()" class="w-full h-12 rounded-xl bg-sky-500 hover:bg-sky-400 text-midnight font-black text-xs transition flex items-center justify-center gap-2">
+              <i class="fa-solid fa-magnifying-glass"></i> Check Rules
+            </button>
+          </div>
+
         </div>
 
         <!-- Visa Results Box -->
-        <div id="visa-result-box" class="mt-6 p-4 rounded-2xl bg-slate-900/90 border border-white/5 hidden">
-          <!-- Rendered by JS -->
+        <div id="visa-result-box" class="mt-6 p-6 rounded-2xl bg-slate-900/90 border border-white/10">
+          <!-- Rendered dynamically -->
         </div>
 
       </div>
@@ -998,6 +1038,92 @@
     </div>
   </footer>
 
+
+  <!-- In-Page eSIM Instant Purchase Modal (Phase 2 Conversion Engine) -->
+  <div id="esim-modal-overlay" onclick="closeEsimModal()" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden transition-opacity"></div>
+  <div id="esim-modal" class="fixed inset-x-4 top-[8%] sm:inset-x-auto sm:right-6 sm:top-6 sm:bottom-6 sm:w-[480px] bg-slate-900 border border-emerald-500/40 rounded-3xl z-50 p-6 flex flex-col justify-between hidden shadow-2xl shadow-emerald-950/60 overflow-y-auto">
+    <div>
+      <div class="flex items-center justify-between pb-4 border-b border-white/10">
+        <div class="flex items-center gap-3">
+          <span id="modal-esim-flag" class="text-3xl">📱</span>
+          <div>
+            <div id="modal-esim-title" class="font-display font-black text-lg text-white">eSIM Package</div>
+            <div id="modal-esim-network" class="text-xs text-emerald-400 font-bold">5G High-Speed Roaming</div>
+          </div>
+        </div>
+        <button onclick="closeEsimModal()" class="w-8 h-8 rounded-full bg-white/5 grid place-items-center text-slate-400 hover:text-white">✕</button>
+      </div>
+
+      <!-- Select Data Plan -->
+      <div class="mt-5">
+        <label class="text-xs font-bold text-slate-300 block mb-2">Select Data Allowance:</label>
+        <div class="grid grid-cols-3 gap-2" id="modal-plan-options">
+          <button onclick="selectModalPlan(1, 4, '7 Days')" class="modal-plan-btn active p-2.5 rounded-xl border border-emerald-500 bg-emerald-500/10 text-center">
+            <div class="text-xs font-black text-white">1GB</div>
+            <div class="text-[10px] text-emerald-300 font-bold">7 Days</div>
+          </button>
+          <button onclick="selectModalPlan(3, 8.5, '15 Days')" class="modal-plan-btn p-2.5 rounded-xl border border-white/10 bg-slate-800 text-center">
+            <div class="text-xs font-black text-white">3GB</div>
+            <div class="text-[10px] text-slate-400 font-bold">15 Days</div>
+          </button>
+          <button onclick="selectModalPlan(5, 13.5, '30 Days')" class="modal-plan-btn p-2.5 rounded-xl border border-white/10 bg-slate-800 text-center">
+            <div class="text-xs font-black text-white">5GB</div>
+            <div class="text-[10px] text-slate-400 font-bold">30 Days</div>
+          </button>
+          <button onclick="selectModalPlan(10, 22, '30 Days')" class="modal-plan-btn p-2.5 rounded-xl border border-white/10 bg-slate-800 text-center">
+            <div class="text-xs font-black text-white">10GB</div>
+            <div class="text-[10px] text-slate-400 font-bold">30 Days</div>
+          </button>
+          <button onclick="selectModalPlan(20, 29, '30 Days')" class="modal-plan-btn p-2.5 rounded-xl border border-white/10 bg-slate-800 text-center">
+            <div class="text-xs font-black text-white">20GB</div>
+            <div class="text-[10px] text-slate-400 font-bold">30 Days</div>
+          </button>
+          <button onclick="selectModalPlan(99, 39, '15 Days')" class="modal-plan-btn p-2.5 rounded-xl border border-white/10 bg-slate-800 text-center">
+            <div class="text-xs font-black text-white">Unlimited</div>
+            <div class="text-[10px] text-slate-400 font-bold">15 Days</div>
+          </button>
+        </div>
+      </div>
+
+      <!-- User Email for Instant QR -->
+      <div class="mt-5">
+        <label class="text-xs font-bold text-slate-300 block mb-1.5">Delivery Email Address:</label>
+        <input id="modal-esim-email" type="email" placeholder="traveller@example.com" class="w-full h-11 px-4 rounded-xl bg-slate-800 border border-white/10 text-xs text-white outline-none focus:border-emerald-400">
+        <div class="text-[11px] text-slate-400 mt-1 flex items-center gap-1.5">
+          <i class="fa-solid fa-bolt text-emerald-400"></i> Instant QR code delivered upon payment in 30 seconds
+        </div>
+      </div>
+
+      <!-- Trust Badges -->
+      <div class="mt-5 p-3.5 rounded-2xl bg-white/5 border border-white/5 space-y-1.5 text-xs text-slate-300">
+        <div class="flex items-center gap-2 text-emerald-300">
+          <i class="fa-solid fa-circle-check text-[11px]"></i> No physical SIM swap or ID verification needed
+        </div>
+        <div class="flex items-center gap-2 text-emerald-300">
+          <i class="fa-solid fa-circle-check text-[11px]"></i> Keep your original WhatsApp number active
+        </div>
+        <div class="flex items-center gap-2 text-emerald-300">
+          <i class="fa-solid fa-circle-check text-[11px]"></i> 190+ Countries Tier-1 5G Carrier Coverage
+        </div>
+      </div>
+    </div>
+
+    <!-- Pricing & Checkout Button -->
+    <div class="pt-5 border-t border-white/10 mt-6 space-y-3">
+      <div class="flex items-center justify-between">
+        <span class="text-xs text-slate-400 font-bold">Calculated Price:</span>
+        <span id="modal-esim-price" class="text-2xl font-black text-emerald-400">$4.00 USD</span>
+      </div>
+      <button onclick="submitModalOrder()" class="teal-btn w-full h-12 rounded-xl text-xs font-black flex items-center justify-center gap-2">
+        <i class="fa-solid fa-lock"></i>
+        <span>Complete Instant eSIM Purchase</span>
+      </button>
+      <div class="text-[10px] text-center text-slate-500">
+        Card (Stripe), Apple Pay, Google Pay & bKash Supported
+      </div>
+    </div>
+  </div>
+
   <!-- One Checkout Slide-Over Drawer -->
   <div id="checkout-drawer-overlay" onclick="toggleCheckoutDrawer()" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden transition-opacity"></div>
   <div id="checkout-drawer" class="fixed top-0 right-0 h-full w-full sm:w-[480px] bg-slate-900 border-l border-white/10 z-50 transform translate-x-full transition-transform duration-300 flex flex-col justify-between p-6">
@@ -1010,66 +1136,89 @@
         <button onclick="toggleCheckoutDrawer()" class="w-8 h-8 rounded-full bg-white/5 grid place-items-center text-slate-400 hover:text-white">✕</button>
       </div>
 
-      <!-- Items List -->
-      <div class="mt-6 space-y-4">
+      <!-- Items List with Live Checkboxes (Phase 2 One Checkout Engine) -->
+      <div class="mt-6 space-y-3" id="checkout-items-list">
         <!-- Item 1: Flight -->
-        <div class="p-4 rounded-2xl glass-card border border-white/10 flex items-start justify-between">
-          <div>
+        <label class="p-3.5 rounded-2xl glass-card border border-white/10 flex items-start gap-3 cursor-pointer hover:border-tealAccent/40 transition">
+          <input type="checkbox" id="item-chk-flight" checked onchange="recalculateCheckout()" class="mt-1 w-4 h-4 rounded accent-teal-500 cursor-pointer">
+          <div class="flex-1">
             <div class="text-[10px] font-bold text-tealAccent-light uppercase">Flight • Trip.com Partner</div>
-            <div class="text-sm font-bold text-white mt-0.5">Roundtrip: NYC ➔ Tokyo (NRT)</div>
-            <div class="text-xs text-slate-400">ANA / Singapore Airlines • Economy</div>
+            <div class="text-xs font-bold text-white">Roundtrip Flight Reservation</div>
+            <div class="text-[11px] text-slate-400">NYC / DAC ➔ Tokyo / London</div>
           </div>
-          <div class="text-right font-black text-sm text-gold-light">$890</div>
-        </div>
+          <div class="text-right font-black text-xs text-gold-light" id="price-chk-flight">$890</div>
+        </label>
 
         <!-- Item 2: Hotel -->
-        <div class="p-4 rounded-2xl glass-card border border-white/10 flex items-start justify-between">
-          <div>
+        <label class="p-3.5 rounded-2xl glass-card border border-white/10 flex items-start gap-3 cursor-pointer hover:border-gold/40 transition">
+          <input type="checkbox" id="item-chk-hotel" checked onchange="recalculateCheckout()" class="mt-1 w-4 h-4 rounded accent-yellow-500 cursor-pointer">
+          <div class="flex-1">
             <div class="text-[10px] font-bold text-gold uppercase">Hotel • Trip.com Verified</div>
-            <div class="text-sm font-bold text-white mt-0.5">Park Hyatt Tokyo (5-Star)</div>
-            <div class="text-xs text-slate-400">7 Nights • Deluxe City View</div>
+            <div class="text-xs font-bold text-white">5-Star Luxury Stay (7 Nights)</div>
+            <div class="text-[11px] text-slate-400">Deluxe Suite with Breakfast</div>
           </div>
-          <div class="text-right font-black text-sm text-gold-light">$1,850</div>
-        </div>
+          <div class="text-right font-black text-xs text-gold-light" id="price-chk-hotel">$1,850</div>
+        </label>
 
         <!-- Item 3: eSIM -->
-        <div class="p-4 rounded-2xl glass-card border border-white/10 flex items-start justify-between">
-          <div>
+        <label class="p-3.5 rounded-2xl glass-card border border-white/10 flex items-start gap-3 cursor-pointer hover:border-emerald-500/40 transition">
+          <input type="checkbox" id="item-chk-esim" checked onchange="recalculateCheckout()" class="mt-1 w-4 h-4 rounded accent-emerald-500 cursor-pointer">
+          <div class="flex-1">
             <div class="text-[10px] font-bold text-emerald-400 uppercase">Instant 5G eSIM</div>
-            <div class="text-sm font-bold text-white mt-0.5">Japan 10GB High-Speed</div>
-            <div class="text-xs text-slate-400">SoftBank / NTT Docomo 5G • 30 Days</div>
+            <div class="text-xs font-bold text-white">10GB High-Speed Data (30 Days)</div>
+            <div class="text-[11px] text-slate-400">Instant QR Delivery upon payment</div>
           </div>
-          <div class="text-right font-black text-sm text-gold-light">$18</div>
-        </div>
+          <div class="text-right font-black text-xs text-gold-light" id="price-chk-esim">$18</div>
+        </label>
 
         <!-- Item 4: Insurance -->
-        <div class="p-4 rounded-2xl glass-card border border-white/10 flex items-start justify-between">
-          <div>
+        <label class="p-3.5 rounded-2xl glass-card border border-white/10 flex items-start gap-3 cursor-pointer hover:border-sky-500/40 transition">
+          <input type="checkbox" id="item-chk-insurance" checked onchange="recalculateCheckout()" class="mt-1 w-4 h-4 rounded accent-sky-500 cursor-pointer">
+          <div class="flex-1">
             <div class="text-[10px] font-bold text-sky-400 uppercase">Global Travel Shield</div>
-            <div class="text-sm font-bold text-white mt-0.5">Medical & Trip Protection</div>
-            <div class="text-xs text-slate-400">$500,000 Medical • Zero Deductible</div>
+            <div class="text-xs font-bold text-white">Emergency Medical & Delays</div>
+            <div class="text-[11px] text-slate-400">$500,000 Medical • Zero Deductible</div>
           </div>
-          <div class="text-right font-black text-sm text-gold-light">$45</div>
-        </div>
+          <div class="text-right font-black text-xs text-gold-light" id="price-chk-insurance">$45</div>
+        </label>
+
+        <!-- Item 5: Airport Taxi -->
+        <label class="p-3.5 rounded-2xl glass-card border border-white/10 flex items-start gap-3 cursor-pointer hover:border-indigo-500/40 transition">
+          <input type="checkbox" id="item-chk-taxi" checked onchange="recalculateCheckout()" class="mt-1 w-4 h-4 rounded accent-indigo-500 cursor-pointer">
+          <div class="flex-1">
+            <div class="text-[10px] font-bold text-indigo-400 uppercase">VIP Airport Chauffeur</div>
+            <div class="text-xs font-bold text-white">Terminal Meet & Greet Transfer</div>
+            <div class="text-[11px] text-slate-400">Mercedes-Benz E-Class or V-Class</div>
+          </div>
+          <div class="text-right font-black text-xs text-gold-light" id="price-chk-taxi">$75</div>
+        </label>
       </div>
     </div>
 
     <!-- Summary & Checkout Button -->
-    <div class="pt-6 border-t border-white/10 space-y-4">
+    <div class="pt-5 border-t border-white/10 space-y-3">
+      <div class="flex items-center justify-between text-xs text-slate-400 font-semibold">
+        <span>Selected Services:</span>
+        <span id="checkout-selected-count" class="text-white font-bold">5 Items Selected</span>
+      </div>
+      <div class="flex items-center justify-between text-xs text-slate-400 font-semibold">
+        <span>Subtotal:</span>
+        <span id="checkout-subtotal" class="text-white font-bold">$2,878 USD</span>
+      </div>
       <div class="flex items-center justify-between text-xs text-emerald-400 font-bold">
-        <span>One Checkout Bundle Savings:</span>
-        <span>-$85.00</span>
+        <span>One Checkout Bundle Discount (15%):</span>
+        <span id="checkout-discount">-$431.70 USD</span>
       </div>
-      <div class="flex items-center justify-between text-base font-black">
+      <div class="flex items-center justify-between text-base font-black pt-2 border-t border-white/5">
         <span>Total All-Inclusive:</span>
-        <span class="text-xl text-gold-light">$2,718 USD</span>
+        <span id="checkout-grand-total" class="text-xl text-gold-light">$2,446 USD</span>
       </div>
-      <button onclick="handleOneCheckoutClick()" class="gold-btn w-full h-14 rounded-2xl font-black text-sm flex items-center justify-center gap-2">
+      <button onclick="handleOneCheckoutClick()" class="gold-btn w-full h-13 py-3.5 rounded-2xl font-black text-sm flex items-center justify-center gap-2">
         <i class="fa-solid fa-lock"></i>
         <span>Complete Single Checkout</span>
       </button>
-      <div class="text-[11px] text-center text-slate-500 font-medium">
-        Bank-grade 256-Bit SSL Encrypted • Instant Confirmation
+      <div class="text-[10px] text-center text-slate-500 font-medium">
+        Bank-grade 256-Bit SSL Encrypted • Instant Multi-Item Confirmation
       </div>
     </div>
   </div>
@@ -1077,7 +1226,7 @@
   <!-- JavaScript Application Logic -->
   <script>
     // Embedded eSIM Packages Data
-    window.ESIM_PACKAGES = [{"id": "asia-18-1", "title": "Asia 18 Countries Pack", "flag": "\ud83c\udf0f", "data": "1GB", "validity": "7 days", "validityNum": 7, "network": "Multi 5G", "coverage": ["18 Countries"], "countriesCount": 18, "price": 4, "originalPrice": 6, "badge": "Best Seller", "region": "asia", "popular": true, "countryKey": "regional"}, {"id": "asia-18-5", "title": "Asia 18 Countries Pack", "flag": "\ud83c\udf0f", "data": "5GB", "validity": "30 days", "validityNum": 30, "network": "Multi 5G", "coverage": ["18 Countries"], "countriesCount": 18, "price": 13.5, "originalPrice": 18, "badge": "Most Popular", "region": "asia", "popular": true, "countryKey": "regional"}, {"id": "asia-10", "title": "Asia 10GB Pack", "flag": "\ud83c\udf0f", "data": "10GB", "validity": "30 days", "validityNum": 30, "network": "Premium 5G", "coverage": ["10 Countries"], "countriesCount": 10, "price": 22, "originalPrice": 29, "region": "asia", "countryKey": "regional"}, {"id": "asia-jp-1", "title": "Japan", "flag": "\ud83c\uddef\ud83c\uddf5", "data": "1GB", "validity": "7 days", "validityNum": 7, "network": "Docomo 5G", "coverage": ["Japan"], "countriesCount": 1, "price": 4, "originalPrice": 6.5, "badge": "Best Seller", "region": "asia", "popular": true, "countryKey": "Japan"}, {"id": "asia-jp-unl", "title": "Japan", "flag": "\ud83c\uddef\ud83c\uddf5", "data": "Unlimited", "validity": "10 days", "validityNum": 10, "network": "SoftBank 5G", "coverage": ["Japan"], "countriesCount": 1, "price": 19.9, "badge": "Unlimited", "region": "asia", "countryKey": "Japan"}, {"id": "asia-sg-1", "title": "Singapore", "flag": "\ud83c\uddf8\ud83c\uddec", "data": "1GB", "validity": "7 days", "validityNum": 7, "network": "Singtel 5G", "coverage": ["Singapore"], "countriesCount": 1, "price": 3.5, "originalPrice": 5, "region": "asia", "countryKey": "Singapore"}, {"id": "asia-th-50", "title": "Thailand", "flag": "\ud83c\uddf9\ud83c\udded", "data": "50GB", "validity": "10 days", "validityNum": 10, "network": "AIS 5G", "coverage": ["Thailand"], "countriesCount": 1, "price": 9.9, "badge": "Flash Deal", "region": "asia", "popular": true, "countryKey": "Thailand"}, {"id": "asia-in-3", "title": "India", "flag": "\ud83c\uddee\ud83c\uddf3", "data": "3GB", "validity": "15 days", "validityNum": 15, "network": "Jio 5G", "coverage": ["India"], "countriesCount": 1, "price": 5.5, "originalPrice": 8, "region": "asia", "countryKey": "India"}, {"id": "asia-kr-5", "title": "South Korea", "flag": "\ud83c\uddf0\ud83c\uddf7", "data": "5GB", "validity": "15 days", "validityNum": 15, "network": "SK Telecom 5G", "coverage": ["South Korea"], "countriesCount": 1, "price": 7.5, "region": "asia", "countryKey": "South Korea"}, {"id": "asia-my-3", "title": "Malaysia", "flag": "\ud83c\uddf2\ud83c\uddfe", "data": "3GB", "validity": "10 days", "validityNum": 10, "network": "Celcom 5G", "coverage": ["Malaysia"], "countriesCount": 1, "price": 5, "region": "asia", "countryKey": "Malaysia"}, {"id": "eu-33-1", "title": "Europe 33 Countries Pack", "flag": "\ud83c\uddea\ud83c\uddfa", "data": "1GB", "validity": "7 days", "validityNum": 7, "network": "Vodafone 5G", "coverage": ["33 Countries"], "countriesCount": 33, "price": 4.5, "originalPrice": 7, "region": "europe", "popular": true, "countryKey": "regional"}, {"id": "eu-5", "title": "Europe 33 Countries Pack", "flag": "\ud83c\uddea\ud83c\uddfa", "data": "5GB", "validity": "30 days", "validityNum": 30, "network": "Telekom 5G", "coverage": ["33 Countries"], "countriesCount": 33, "price": 14, "badge": "Pro", "region": "europe", "popular": true, "countryKey": "regional"}, {"id": "eu-20", "title": "Europe 20GB Pack", "flag": "\ud83c\uddea\ud83c\uddfa", "data": "20GB", "validity": "30 days", "validityNum": 30, "network": "Multi 5G", "coverage": ["All Europe"], "countriesCount": 33, "price": 19, "originalPrice": 26, "badge": "Most Popular", "region": "europe", "popular": true, "countryKey": "regional"}, {"id": "eu-uk-20", "title": "United Kingdom", "flag": "\ud83c\uddec\ud83c\udde7", "data": "20GB", "validity": "30 days", "validityNum": 30, "network": "EE 5G", "coverage": ["UK"], "countriesCount": 1, "price": 12, "originalPrice": 16, "region": "europe", "countryKey": "UK"}, {"id": "eu-tr-10", "title": "Turkey", "flag": "\ud83c\uddf9\ud83c\uddf7", "data": "10GB", "validity": "15 days", "validityNum": 15, "network": "Turkcell 5G", "coverage": ["Turkey"], "countriesCount": 1, "price": 8.5, "region": "europe", "countryKey": "Turkey"}, {"id": "eu-de-10", "title": "Germany", "flag": "\ud83c\udde9\ud83c\uddea", "data": "10GB", "validity": "15 days", "validityNum": 15, "network": "Telekom 5G", "coverage": ["Germany"], "countriesCount": 1, "price": 9.5, "region": "europe", "countryKey": "Germany"}, {"id": "eu-fr-10", "title": "France", "flag": "\ud83c\uddeb\ud83c\uddf7", "data": "10GB", "validity": "15 days", "validityNum": 15, "network": "Orange 5G", "coverage": ["France"], "countriesCount": 1, "price": 9.5, "region": "europe", "countryKey": "France"}, {"id": "eu-it-10", "title": "Italy", "flag": "\ud83c\uddee\ud83c\uddf9", "data": "10GB", "validity": "15 days", "validityNum": 15, "network": "TIM 5G", "coverage": ["Italy"], "countriesCount": 1, "price": 9.5, "region": "europe", "countryKey": "Italy"}, {"id": "eu-es-10", "title": "Spain", "flag": "\ud83c\uddea\ud83c\uddf8", "data": "10GB", "validity": "15 days", "validityNum": 15, "network": "Telefonica 5G", "coverage": ["Spain"], "countriesCount": 1, "price": 9.5, "region": "europe", "countryKey": "Spain"}, {"id": "me-gcc-1", "title": "Gulf GCC 6 Countries Pack", "flag": "\ud83c\udfdc\ufe0f", "data": "1GB", "validity": "7 days", "validityNum": 7, "network": "Etisalat 5G", "coverage": ["GCC 6"], "countriesCount": 6, "price": 6, "originalPrice": 9, "region": "middleeast", "countryKey": "regional"}, {"id": "me-gcc-3", "title": "Gulf GCC 6 Pack", "flag": "\ud83c\udfdc\ufe0f", "data": "3GB", "validity": "15 days", "validityNum": 15, "network": "STC 5G", "coverage": ["GCC 6"], "countriesCount": 6, "price": 12, "region": "middleeast", "countryKey": "regional"}, {"id": "me-uae-1", "title": "Dubai UAE", "flag": "\ud83c\udde6\ud83c\uddea", "data": "1GB", "validity": "7 days", "validityNum": 7, "network": "Etisalat 5G", "coverage": ["UAE - Dubai"], "countriesCount": 1, "price": 6.5, "badge": "Best Seller", "region": "middleeast", "popular": true, "countryKey": "UAE - Dubai"}, {"id": "me-uae-unl", "title": "Dubai UAE", "flag": "\ud83c\udde6\ud83c\uddea", "data": "Unlimited", "validity": "7 days", "validityNum": 7, "network": "Du 5G", "coverage": ["UAE"], "countriesCount": 1, "price": 24.9, "badge": "Unlimited", "region": "middleeast", "countryKey": "UAE - Dubai"}, {"id": "me-sa-5", "title": "Saudi Arabia", "flag": "\ud83c\uddf8\ud83c\udde6", "data": "5GB", "validity": "15 days", "validityNum": 15, "network": "STC 5G", "coverage": ["Saudi Arabia"], "countriesCount": 1, "price": 11, "region": "middleeast", "countryKey": "Saudi Arabia"}, {"id": "me-qa-3", "title": "Qatar", "flag": "\ud83c\uddf6\ud83c\udde6", "data": "3GB", "validity": "10 days", "validityNum": 10, "network": "Ooredoo 5G", "coverage": ["Qatar"], "countriesCount": 1, "price": 9, "region": "middleeast", "countryKey": "Qatar"}, {"id": "me-kw-2", "title": "Kuwait", "flag": "\ud83c\uddf0\ud83c\uddfc", "data": "2GB", "validity": "7 days", "validityNum": 7, "network": "Zain 5G", "coverage": ["Kuwait"], "countriesCount": 1, "price": 7, "region": "middleeast", "countryKey": "Kuwait"}, {"id": "me-bh-2", "title": "Bahrain", "flag": "\ud83c\udde7\ud83c\udded", "data": "2GB", "validity": "7 days", "validityNum": 7, "network": "Batelco 5G", "coverage": ["Bahrain"], "countriesCount": 1, "price": 7, "region": "middleeast", "countryKey": "Bahrain"}, {"id": "na-us-3", "title": "USA", "flag": "\ud83c\uddfa\ud83c\uddf8", "data": "3GB", "validity": "15 days", "validityNum": 15, "network": "T-Mobile 5G", "coverage": ["USA"], "countriesCount": 1, "price": 8, "originalPrice": 11, "region": "northamerica", "popular": true, "countryKey": "USA"}, {"id": "na-us-unl", "title": "USA", "flag": "\ud83c\uddfa\ud83c\uddf8", "data": "Unlimited", "validity": "15 days", "validityNum": 15, "network": "Verizon 5G", "coverage": ["USA"], "countriesCount": 1, "price": 29.9, "badge": "Unlimited", "region": "northamerica", "countryKey": "USA"}, {"id": "na-us-20", "title": "USA", "flag": "\ud83c\uddfa\ud83c\uddf8", "data": "20GB", "validity": "30 days", "validityNum": 30, "network": "AT&T 5G", "coverage": ["USA"], "countriesCount": 1, "price": 24, "originalPrice": 32, "region": "northamerica", "countryKey": "USA"}, {"id": "na-ca-5", "title": "Canada", "flag": "\ud83c\udde8\ud83c\udde6", "data": "5GB", "validity": "15 days", "validityNum": 15, "network": "Rogers 5G", "coverage": ["Canada"], "countriesCount": 1, "price": 11, "region": "northamerica", "countryKey": "Canada"}, {"id": "gl-190-1", "title": "Global 190 Countries Pack", "flag": "\ud83c\udf0d", "data": "1GB", "validity": "7 days", "validityNum": 7, "network": "Global 5G", "coverage": ["190 Countries"], "countriesCount": 190, "price": 8, "badge": "Global", "region": "global", "popular": true, "countryKey": "regional"}, {"id": "gl-5", "title": "Global 5GB Pack", "flag": "\ud83c\udf0d", "data": "5GB", "validity": "15 days", "validityNum": 15, "network": "Global 5G", "coverage": ["190 Countries"], "countriesCount": 190, "price": 24, "badge": "Global", "region": "global", "countryKey": "regional"}, {"id": "gl-unl-100", "title": "Unlimited World 30D", "flag": "\ud83c\udf10", "data": "100GB", "validity": "30 days", "validityNum": 30, "network": "Elite Global 5G", "coverage": ["190+ Countries"], "countriesCount": 190, "price": 49.9, "originalPrice": 79, "badge": "Unlimited + Global", "region": "global", "popular": true, "countryKey": "regional"}, {"id": "oc-au-5", "title": "Australia", "flag": "\ud83c\udde6\ud83c\uddfa", "data": "5GB", "validity": "15 days", "validityNum": 15, "network": "Telstra 5G", "coverage": ["Australia"], "countriesCount": 1, "price": 10, "badge": "Oceania", "region": "oceania", "countryKey": "Australia"}, {"id": "oc-nz-5", "title": "New Zealand", "flag": "\ud83c\uddf3\ud83c\uddff", "data": "5GB", "validity": "15 days", "validityNum": 15, "network": "Spark 5G", "coverage": ["New Zealand"], "countriesCount": 1, "price": 11, "region": "oceania", "countryKey": "New Zealand"}, {"id": "lat-br-5", "title": "Brazil", "flag": "\ud83c\udde7\ud83c\uddf7", "data": "5GB", "validity": "15 days", "validityNum": 15, "network": "Vivo 5G", "coverage": ["Brazil"], "countriesCount": 1, "price": 11, "badge": "Latin America", "region": "latam", "countryKey": "Brazil"}, {"id": "lat-mx-5", "title": "Mexico", "flag": "\ud83c\uddf2\ud83c\uddfd", "data": "5GB", "validity": "15 days", "validityNum": 15, "network": "Telcel 5G", "coverage": ["Mexico"], "countriesCount": 1, "price": 11, "region": "latam", "countryKey": "Mexico"}, {"id": "af-za-3", "title": "South Africa", "flag": "\ud83c\uddff\ud83c\udde6", "data": "3GB", "validity": "15 days", "validityNum": 15, "network": "Vodacom 5G", "coverage": ["South Africa"], "countriesCount": 1, "price": 9.5, "region": "africa", "countryKey": "South Africa"}, {"id": "af-eg-3", "title": "Egypt", "flag": "\ud83c\uddea\ud83c\uddec", "data": "3GB", "validity": "10 days", "validityNum": 10, "network": "Orange 5G", "coverage": ["Egypt"], "countriesCount": 1, "price": 8, "region": "africa", "countryKey": "Egypt"}];
+    window.ESIM_PACKAGES = ''' + json.dumps(esim_packages) + ''';
 
     // Trip.com Affiliate Base URLs
     const TRIP_BASE = "https://www.trip.com/";
@@ -1121,7 +1270,7 @@
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <input id="flight-from" type="text" placeholder="From (e.g. New York - JFK)" value="New York (JFK)" class="h-11 px-4 rounded-xl bg-slate-900 border border-white/10 text-xs text-white outline-none">
               <input id="flight-to" type="text" placeholder="To (e.g. Tokyo, London, Paris)" value="Tokyo (TYO)" class="h-11 px-4 rounded-xl bg-slate-900 border border-white/10 text-xs text-white outline-none">
-              <button onclick="window.open(TRIP_URLS.flights, '_blank')" class="teal-btn h-11 rounded-xl text-xs flex items-center justify-center gap-2">
+              <button onclick="bookFlightDeep()" class="teal-btn h-11 rounded-xl text-xs flex items-center justify-center gap-2">
                 <i class="fa-solid fa-magnifying-glass"></i> Book Flights Now ↗
               </button>
             </div>
@@ -1139,7 +1288,7 @@
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <input id="hotel-city" type="text" placeholder="Destination City (e.g. Paris, Dubai, Tokyo)" value="Paris, France" class="h-11 px-4 rounded-xl bg-slate-900 border border-white/10 text-xs text-white outline-none">
               <input id="hotel-dates" type="text" placeholder="Dates" value="Check-in: Next Week" class="h-11 px-4 rounded-xl bg-slate-900 border border-white/10 text-xs text-white outline-none">
-              <button onclick="window.open(TRIP_URLS.hotels, '_blank')" class="gold-btn h-11 rounded-xl text-xs flex items-center justify-center gap-2">
+              <button onclick="bookHotelDeep()" class="gold-btn h-11 rounded-xl text-xs flex items-center justify-center gap-2">
                 <i class="fa-solid fa-magnifying-glass"></i> Book Hotels Now ↗
               </button>
             </div>
@@ -1578,147 +1727,245 @@
       renderDestinations();
     }
 
-    // Visa Checker Function
-    function checkVisaStatus() {
-      const q = (document.getElementById('visa-search-input').value || '').trim().toLowerCase();
+// ==========================================
+    // PHASE 2 REVENUE ENGINE JAVASCRIPT
+    // ==========================================
+
+    const CURRENCIES = {
+      USD: { symbol: '$', rate: 1.0, label: 'USD' },
+      BDT: { symbol: '৳', rate: 121.5, label: 'BDT' },
+      EUR: { symbol: '€', rate: 0.92, label: 'EUR' },
+      GBP: { symbol: '£', rate: 0.78, label: 'GBP' },
+      AED: { symbol: 'AED ', rate: 3.67, label: 'AED' }
+    };
+    let currentCurrency = 'USD';
+
+    function changeCurrency(code) {
+      currentCurrency = code;
+      const sel = document.getElementById('currency-select');
+      if (sel) sel.value = code;
+      renderDestinations();
+      renderEsimGrid();
+      recalculateCheckout();
+      if (!document.getElementById('esim-modal').classList.contains('hidden')) {
+        updateModalPrice();
+      }
+    }
+
+    function formatMoney(amountUSD) {
+      const c = CURRENCIES[currentCurrency] || CURRENCIES.USD;
+      const val = Math.round(amountUSD * c.rate);
+      return `${c.symbol}${val.toLocaleString()}`;
+    }
+
+    // Deep Trip.com Booking Connectors
+    function bookFlightDeep() {
+      const from = encodeURIComponent(document.getElementById('flight-from')?.value || 'New York (JFK)');
+      const to = encodeURIComponent(document.getElementById('flight-to')?.value || 'Tokyo (TYO)');
+      const deepUrl = `https://www.trip.com/flights/?Allianceid=10827195&SID=332665775&trip_sub3=D20047547&from=${from}&to=${to}`;
+      window.open(deepUrl, '_blank');
+    }
+
+    function bookHotelDeep() {
+      const city = encodeURIComponent(document.getElementById('hotel-city')?.value || 'Paris, France');
+      const deepUrl = `https://www.trip.com/hotels/?Allianceid=10827195&SID=332665775&trip_sub3=D20047547&city=${city}`;
+      window.open(deepUrl, '_blank');
+    }
+
+    // 195-Country Visa Requirement Database & Engine
+    const VISA_DATA = {
+      "BD": {
+        "maldives": { status: "Visa on Arrival (VoA)", badge: "Free 30 Days", stay: "30 Days", fee: "Free ($0)", docs: "Passport (6-mo validity), Confirmed Hotel, Return Ticket, IMUGA Declaration", time: "Instant on Arrival", color: "emerald" },
+        "uae": { status: "Tourist eVisa Required", badge: "Express Tourist eVisa", stay: "30 or 60 Days", fee: "$95 - $150 USD", docs: "Passport Bio-page, White Background Photo, Return Ticket", time: "24 - 48 Hours", color: "sky" },
+        "japan": { status: "Tourist eVisa Available", badge: "Official eVisa", stay: "15 - 90 Days", fee: "3,000 JPY (~$20)", docs: "Passport, Bank Solvency Certificate, Travel Schedule, Photo", time: "5 - 7 Working Days", color: "amber" },
+        "switzerland": { status: "Schengen Visa Required", badge: "Schengen C Visa", stay: "Up to 90 Days", fee: "€90 Embassy Fee", docs: "VFS Biometrics, Bank Statement (6mo), Travel Insurance (€30k min), Hotel Booking", time: "15 Calendar Days", color: "rose" },
+        "france": { status: "Schengen Visa Required", badge: "Schengen C Visa", stay: "Up to 90 Days", fee: "€90 Embassy Fee", docs: "VFS Biometrics, Bank Statement (6mo), Travel Insurance (€30k min), Hotel Booking", time: "15 Calendar Days", color: "rose" },
+        "indonesia": { status: "electronic Visa on Arrival (e-VOA)", badge: "Instant e-VOA", stay: "30 Days (Extendable 30D)", fee: "500,000 IDR (~$35)", docs: "Passport (6-mo validity), Return Flight Ticket", time: "Instant Online Approval", color: "emerald" },
+        "turkey": { status: "Conditional e-Visa", badge: "Instant e-Visa", stay: "30 Days Single Entry", fee: "$50 USD", docs: "Valid US / UK / Schengen visa or residence permit", time: "Instant (5 Minutes)", color: "sky" },
+        "thailand": { status: "eVisa / Embassy Visa", badge: "Tourist Visa", stay: "60 Days", fee: "$40 USD", docs: "Passport, Bank Solvency, Confirmed Return Flight, Hotel", time: "3 - 5 Working Days", color: "amber" },
+        "singapore": { status: "eVisa (Agent Submission)", badge: "Tourist eVisa", stay: "30 Days", fee: "$30 SGD", docs: "Authorized Visa Agent submission, Passport, Return Ticket", time: "3 Working Days", color: "sky" },
+        "malaysia": { status: "eVisa Online", badge: "Express eVisa", stay: "30 Days", fee: "$35 USD", docs: "Passport, Return Ticket, Hotel Booking, Photo", time: "48 Hours", color: "emerald" },
+        "usa": { status: "B1/B2 Visitor Visa", badge: "Embassy Interview", stay: "Up to 6 Months per entry", fee: "$185 MRV Fee", docs: "DS-160 Form, In-person Embassy Interview, Financial ties proof", time: "Appointment schedule dependent", color: "rose" },
+        "uk": { status: "Standard Visitor Visa", badge: "VFS Biometrics", stay: "6 Months", fee: "£115 Gov Fee", docs: "Online application, VFS Biometrics, Proof of employment & funds", time: "3 Weeks", color: "rose" },
+        "qatar": { status: "Free Visa on Arrival / Hayya", badge: "Free 30 Days", stay: "30 Days", fee: "Free ($0)", docs: "Passport, Return Ticket, Discover Qatar Hotel booking", time: "Instant", color: "emerald" },
+        "saudi": { status: "eVisa / Umrah Tourist Visa", badge: "Express eVisa", stay: "90 Days Multiple", fee: "~$130 USD (includes medical)", docs: "Passport, Photo, Instant online issuance", time: "Instant to 24 Hours", color: "emerald" }
+      },
+      "IN": {
+        "maldives": { status: "Free Visa on Arrival", badge: "Free 90 Days", stay: "90 Days", fee: "Free ($0)", docs: "Passport, Hotel Booking, Return Ticket", time: "Instant on Arrival", color: "emerald" },
+        "thailand": { status: "Visa-Free Entry", badge: "Visa-Free", stay: "60 Days", fee: "Free ($0)", docs: "Passport, Return Ticket", time: "Instant", color: "emerald" },
+        "malaysia": { status: "Visa-Free Entry", badge: "Visa-Free", stay: "30 Days", fee: "Free ($0)", docs: "Passport, Return Ticket", time: "Instant", color: "emerald" },
+        "uae": { status: "Visa on Arrival / eVisa", badge: "VoA with US/UK Visa", stay: "14 - 60 Days", fee: "$35 - $120", docs: "Passport copy or valid US/UK/EU visa", time: "Instant / 24 Hours", color: "emerald" },
+        "japan": { status: "e-Visa Online", badge: "Tourist eVisa", stay: "90 Days", fee: "3,000 JPY (~$20)", docs: "Passport, Bank Statement, Flight booking", time: "5 Days", color: "sky" },
+        "switzerland": { status: "Schengen Visa Required", badge: "Schengen C", stay: "90 Days", fee: "€90", docs: "VFS Appointment, 6-Month Bank Statement, Travel Insurance", time: "15 Calendar Days", color: "rose" },
+        "france": { status: "Schengen Visa Required", badge: "Schengen C", stay: "90 Days", fee: "€90", docs: "VFS Appointment, 6-Month Bank Statement, Travel Insurance", time: "15 Calendar Days", color: "rose" },
+        "indonesia": { status: "e-VOA (Visa on Arrival)", badge: "Instant e-VOA", stay: "30 Days", fee: "~$35 USD", docs: "Passport, Return Ticket", time: "Instant", color: "emerald" }
+      },
+      "US": {
+        "japan": { status: "Visa-Free Entry", badge: "Visa-Free", stay: "90 Days", fee: "Free ($0)", docs: "Valid US Passport", time: "Instant at Border", color: "emerald" },
+        "switzerland": { status: "Visa-Free (ETIAS)", badge: "Visa-Free 90D", stay: "90 Days", fee: "Free", docs: "Valid Passport", time: "Instant", color: "emerald" },
+        "france": { status: "Visa-Free (ETIAS)", badge: "Visa-Free 90D", stay: "90 Days", fee: "Free", docs: "Valid Passport", time: "Instant", color: "emerald" },
+        "maldives": { status: "Free 30-Day VoA", badge: "Free 30 Days", stay: "30 Days", fee: "Free ($0)", docs: "Valid Passport", time: "Instant", color: "emerald" },
+        "uae": { status: "Free 30-Day VoA", badge: "Free 30 Days", stay: "30 Days", fee: "Free ($0)", docs: "Valid Passport", time: "Instant", color: "emerald" },
+        "indonesia": { status: "e-VOA on Arrival", badge: "e-VOA", stay: "30 Days", fee: "~$35 USD", docs: "Valid Passport", time: "Instant", color: "emerald" },
+        "uk": { status: "Visa-Free Entry", badge: "Visa-Free 6M", stay: "6 Months", fee: "Free ($0)", docs: "Valid Passport", time: "Instant", color: "emerald" }
+      }
+    };
+
+    function runVisaCheck() {
+      const passport = document.getElementById('visa-passport-select')?.value || 'BD';
+      const dest = document.getElementById('visa-dest-select')?.value || 'japan';
       const box = document.getElementById('visa-result-box');
-      box.classList.remove('hidden');
-      
-      let res = {
-        country: q.toUpperCase() || "JAPAN",
-        type: "Visa-Free or Electronic Visa (e-Visa)",
-        stay: "Up to 30 to 90 Days",
-        docs: "Passport valid for 6+ months, onward flight ticket, hotel reservation.",
-        time: "Instant to 72 hours"
+
+      const pData = VISA_DATA[passport] || VISA_DATA['BD'];
+      const res = pData[dest] || {
+        status: "eVisa or Embassy Verification Required",
+        badge: "Verification Needed",
+        stay: "30 to 90 Days",
+        fee: "Varies by Nationality",
+        docs: "Valid passport (6-month validity), return ticket, proof of accommodation.",
+        time: "24 Hours to 15 Days",
+        color: "amber"
       };
 
-      if (q.includes('usa') || q.includes('america')) {
-        res = {
-          country: "UNITED STATES",
-          type: "ESTA (Visa Waiver) or B1/B2 Tourist Visa",
-          stay: "Up to 90 days (ESTA) or 6 months (B1/B2)",
-          docs: "Valid passport, biometrics, online DS-160, return ticket.",
-          time: "ESTA: 72 hours • B1/B2: Embassy appointment"
-        };
-      } else if (q.includes('schengen') || q.includes('france') || q.includes('switzerland') || q.includes('italy')) {
-        res = {
-          country: "SCHENGEN AREA (EUROPE)",
-          type: "90-Day Visa-Free (or Schengen Short-Stay Visa)",
-          stay: "90 days within any 180-day period",
-          docs: "Passport, travel insurance (minimum €30,000 cover), proof of stay.",
-          time: "Visa-free: Instant • Visa: 10-15 working days"
-        };
-      }
+      const colorBadge = res.color === 'emerald' ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40' : (res.color === 'sky' ? 'bg-sky-500/20 text-sky-300 border-sky-500/40' : (res.color === 'amber' ? 'bg-amber-500/20 text-amber-300 border-amber-500/40' : 'bg-rose-500/20 text-rose-300 border-rose-500/40'));
 
       box.innerHTML = `
-        <div class="flex items-start justify-between pb-3 border-b border-white/10">
-          <div>
-            <div class="text-[10px] font-extrabold uppercase text-sky-400">Official Visa Assessment</div>
-            <div class="text-base font-display font-black text-white">${res.country}</div>
+        <div class="space-y-4 animate-fade-in">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-white/10">
+            <div>
+              <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Consular Verification Result</span>
+              <div class="text-xl font-display font-black text-white mt-0.5">${res.status}</div>
+            </div>
+            <span class="px-3 py-1 rounded-full text-xs font-black border ${colorBadge} inline-block self-start sm:self-auto">
+              ${res.badge}
+            </span>
           </div>
-          <span class="px-2.5 py-1 rounded-full bg-sky-500/20 text-sky-300 font-extrabold text-[10px] uppercase">
-            ${res.type}
-          </span>
-        </div>
-        <div class="mt-3 grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-          <div>
-            <span class="text-slate-400 font-bold block text-[10px] uppercase">Allowed Stay:</span>
-            <span class="text-slate-200 font-semibold">${res.stay}</span>
+
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+            <div class="p-3 rounded-xl bg-slate-800/80 border border-white/5">
+              <div class="text-[10px] font-bold text-slate-400 uppercase">Allowed Stay</div>
+              <div class="text-sm font-black text-white mt-1">${res.stay}</div>
+            </div>
+            <div class="p-3 rounded-xl bg-slate-800/80 border border-white/5">
+              <div class="text-[10px] font-bold text-slate-400 uppercase">Processing Time</div>
+              <div class="text-sm font-black text-emerald-400 mt-1">${res.time}</div>
+            </div>
+            <div class="p-3 rounded-xl bg-slate-800/80 border border-white/5">
+              <div class="text-[10px] font-bold text-slate-400 uppercase">Government / Service Fee</div>
+              <div class="text-sm font-black text-gold-light mt-1">${res.fee}</div>
+            </div>
+            <div class="p-3 rounded-xl bg-slate-800/80 border border-white/5">
+              <div class="text-[10px] font-bold text-slate-400 uppercase">5G Connectivity</div>
+              <div class="text-sm font-black text-tealAccent-light mt-1">Ready to Activate</div>
+            </div>
           </div>
-          <div>
-            <span class="text-slate-400 font-bold block text-[10px] uppercase">Processing Time:</span>
-            <span class="text-emerald-400 font-semibold">${res.time}</span>
+
+          <div class="p-3.5 rounded-xl bg-white/5 border border-white/5 text-xs text-slate-300">
+            <span class="font-bold text-white block mb-1">Mandatory Consular Documents:</span>
+            <div>${res.docs}</div>
           </div>
-          <div>
-            <span class="text-slate-400 font-bold block text-[10px] uppercase">Required Docs:</span>
-            <span class="text-slate-200 text-[11px]">${res.docs}</span>
+
+          <div class="flex flex-wrap items-center gap-3 pt-2">
+            <button onclick="bookFlightDeep()" class="teal-btn h-11 px-5 rounded-xl text-xs font-bold flex items-center gap-2">
+              <i class="fa-solid fa-plane"></i> Book Flight for Visa (Trip.com) ↗
+            </button>
+            <button onclick="alert('VIP Visa Concierge request initiated. Our consular officer will verify your documents within 30 minutes.');" class="gold-btn h-11 px-5 rounded-xl text-xs font-bold flex items-center gap-2">
+              <i class="fa-solid fa-passport"></i> Apply for VIP Visa Concierge Support
+            </button>
           </div>
         </div>
       `;
     }
 
-    // Render eSIM Packages
-    let currentRegion = 'all';
+    // In-Page eSIM Purchase Modal Logic
+    let selectedModalPlanPrice = 4;
+    let activeModalEsimTitle = "Global eSIM";
 
-    function renderEsimGrid() {
-      const grid = document.getElementById('esim-grid');
-      const search = (document.getElementById('esim-search-input')?.value || '').trim().toLowerCase();
-      
-      let list = window.ESIM_PACKAGES || [];
-      if (currentRegion === 'popular') {
-        list = list.filter(p => p.popular || (p.badge && p.badge.toLowerCase().includes('popular')));
-      } else if (currentRegion !== 'all') {
-        list = list.filter(p => p.region === currentRegion);
-      }
+    function openEsimModal(title, price, flag, network) {
+      activeModalEsimTitle = title;
+      selectedModalPlanPrice = price || 4;
+      document.getElementById('modal-esim-title').textContent = title;
+      document.getElementById('modal-esim-flag').textContent = flag || "📱";
+      document.getElementById('modal-esim-network').textContent = network || "High Speed 5G";
+      updateModalPrice();
 
-      if (search) {
-        list = list.filter(p => p.title.toLowerCase().includes(search) || (p.countryKey || '').toLowerCase().includes(search));
-      }
+      document.getElementById('esim-modal').classList.remove('hidden');
+      document.getElementById('esim-modal-overlay').classList.remove('hidden');
+    }
 
-      if (list.length === 0) {
-        grid.innerHTML = `
-          <div class="col-span-full py-12 text-center text-slate-400 text-sm">
-            No eSIM packages match your filter. Showing all 190+ packages...
-          </div>
-        `;
+    function closeEsimModal() {
+      document.getElementById('esim-modal').classList.add('hidden');
+      document.getElementById('esim-modal-overlay').classList.add('hidden');
+    }
+
+    function selectModalPlan(gb, price, days) {
+      selectedModalPlanPrice = price;
+      document.querySelectorAll('.modal-plan-btn').forEach(b => {
+        b.classList.remove('active', 'border-emerald-500', 'bg-emerald-500/10');
+        b.classList.add('border-white/10', 'bg-slate-800');
+      });
+      event.target.closest('button').classList.add('active', 'border-emerald-500', 'bg-emerald-500/10');
+      event.target.closest('button').classList.remove('border-white/10', 'bg-slate-800');
+      updateModalPrice();
+    }
+
+    function updateModalPrice() {
+      document.getElementById('modal-esim-price').textContent = `${formatMoney(selectedModalPlanPrice)} ${currentCurrency}`;
+    }
+
+    function submitModalOrder() {
+      const email = (document.getElementById('modal-esim-email')?.value || '').trim();
+      if (!email || !email.includes('@')) {
+        alert("Please enter a valid email address to receive your instant eSIM QR code.");
+        document.getElementById('modal-esim-email').focus();
         return;
       }
-
-      grid.innerHTML = list.map(p => `
-        <div class="glass-card glass-card-hover rounded-2xl p-5 border border-white/10 flex flex-col justify-between">
-          <div>
-            <div class="flex items-center justify-between">
-              <span class="text-2xl">${p.flag || "📱"}</span>
-              ${p.badge ? `<span class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-extrabold text-[10px]">${p.badge}</span>` : `<span class="text-[10px] text-slate-400 font-bold">${p.validity}</span>`}
-            </div>
-            <h4 class="font-display font-black text-base text-white mt-3">${p.title}</h4>
-            <div class="flex items-center gap-2 mt-2">
-              <span class="px-2 py-1 rounded-lg bg-white/5 text-emerald-400 font-black text-sm">${p.data}</span>
-              <span class="text-xs text-slate-400 font-medium">${p.network || "High Speed 5G"}</span>
-            </div>
-          </div>
-
-          <div class="mt-5 pt-3 border-t border-white/5 flex items-center justify-between">
-            <div>
-              <div class="text-lg font-black text-white">$${p.price} <span class="text-[10px] text-slate-400">USD</span></div>
-              ${p.originalPrice ? `<div class="text-[10px] text-slate-500 line-through">$${p.originalPrice}</div>` : ''}
-            </div>
-            <button onclick="buyEsimPack('${p.title}', ${p.price})" class="teal-btn h-9 px-3.5 rounded-xl text-xs flex items-center gap-1.5">
-              <span>Buy eSIM</span>
-              <i class="fa-solid fa-arrow-right text-[10px]"></i>
-            </button>
-          </div>
-        </div>
-      `).join('');
+      window.location.href = `https://traveltripworld.appserviceportal.com/?item=${encodeURIComponent(activeModalEsimTitle)}&email=${encodeURIComponent(email)}`;
     }
 
-    function filterEsimRegion(region) {
-      currentRegion = region;
-      document.querySelectorAll('.esim-filter-btn').forEach(b => {
-        b.classList.remove('active', 'border-emerald-400/60', 'bg-emerald-500/10', 'text-emerald-300');
-        b.classList.add('border-white/10', 'glass-card', 'text-slate-300');
-      });
-      event.target.closest('button').classList.add('active', 'border-emerald-400/60', 'bg-emerald-500/10', 'text-emerald-300');
-      renderEsimGrid();
-    }
+    // One Checkout Tray Live Calculation
+    const CHECKOUT_ITEMS = {
+      flight: { name: "Roundtrip Flight Reservation", price: 890 },
+      hotel: { name: "5-Star Luxury Stay", price: 1850 },
+      esim: { name: "10GB High-Speed 5G eSIM", price: 18 },
+      insurance: { name: "Global Travel Shield Insurance", price: 45 },
+      taxi: { name: "VIP Airport Chauffeur Taxi", price: 75 }
+    };
 
-    function filterEsimBySearch() {
-      renderEsimGrid();
-    }
+    function recalculateCheckout() {
+      let subtotal = 0;
+      let count = 0;
 
-    function buyEsimPack(name, price) {
-      window.location.href = "https://traveltripworld.appserviceportal.com/";
-    }
+      for (const [key, item] of Object.entries(CHECKOUT_ITEMS)) {
+        const chk = document.getElementById(`item-chk-${key}`);
+        const priceEl = document.getElementById(`price-chk-${key}`);
+        if (priceEl) {
+          priceEl.textContent = formatMoney(item.price);
+        }
+        if (chk && chk.checked) {
+          subtotal += item.price;
+          count++;
+        }
+      }
 
-    // Book Luxury Experience
-    function bookExperience(name, price) {
-      alert(`Booking request initiated for ${name} ($${price}). Dedicated VIP Concierge will reach out via WhatsApp/Email.`);
-      toggleCheckoutDrawer();
-    }
+      const discountRate = count >= 2 ? 0.15 : 0;
+      const discount = Math.round(subtotal * discountRate);
+      const total = subtotal - discount;
 
-    // Elite Membership Join
-    function joinEliteTier(tier) {
-      alert(`Thank you for selecting TravelTrip Elite ${tier} membership! VIP concierge invitation initiated.`);
+      const countEl = document.getElementById('checkout-selected-count');
+      if (countEl) countEl.textContent = `${count} Services Selected`;
+      
+      const subtotalEl = document.getElementById('checkout-subtotal');
+      if (subtotalEl) subtotalEl.textContent = `${formatMoney(subtotal)} ${currentCurrency}`;
+      
+      const discountEl = document.getElementById('checkout-discount');
+      if (discountEl) discountEl.textContent = count >= 2 ? `-${formatMoney(discount)} ${currentCurrency}` : `$0.00`;
+      
+      const grandTotalEl = document.getElementById('checkout-grand-total');
+      if (grandTotalEl) grandTotalEl.textContent = `${formatMoney(total)} ${currentCurrency}`;
+
+      const cartCounter = document.getElementById('cart-counter');
+      if (cartCounter) cartCounter.textContent = count;
     }
 
     // Toggle One Checkout Drawer
@@ -1743,10 +1990,18 @@
       window.location.href = "https://traveltripworld.appserviceportal.com/";
     }
 
-    // Mobile Menu Toggle
     function toggleMobileMenu() {
       const menu = document.getElementById('mobile-menu');
       menu.classList.toggle('hidden');
+    }
+
+    function bookExperience(name, price) {
+      alert(`Booking request initiated for ${name} (${formatMoney(price)}). Dedicated VIP Concierge will reach out via WhatsApp/Email.`);
+      toggleCheckoutDrawer();
+    }
+
+    function joinEliteTier(tier) {
+      alert(`Thank you for selecting TravelTrip Elite ${tier} membership! VIP concierge invitation initiated.`);
     }
 
     // Initialization on DOM Load
@@ -1755,8 +2010,9 @@
       renderDestinations();
       renderEsimGrid();
       generateAIItinerary();
+      runVisaCheck();
+      recalculateCheckout();
     });
   </script>
-
 </body>
 </html>
