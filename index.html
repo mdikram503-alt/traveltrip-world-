@@ -223,12 +223,21 @@
         <a href="#esim-store" class="px-3.5 py-2 rounded-xl hover:text-white hover:bg-white/5 transition flex items-center gap-1.5">
           <i class="fa-solid fa-sim-card text-emerald-400 text-xs"></i> eSIM Store
         </a>
+        <a href="#travel-wallet" class="px-3.5 py-2 rounded-xl hover:text-white hover:bg-white/5 transition flex items-center gap-1.5">
+          <i class="fa-solid fa-wallet text-gold text-xs"></i> Wallet
+        </a>
       </nav>
 
-      <!-- Right Header Actions -->
-      <div class="flex items-center gap-3">
+      <!-- Right Header Actions (Phase 3 Premium Controls) -->
+      <div class="flex items-center gap-2 sm:gap-3">
+        <!-- Travel Dashboard Drawer Button (Phase 3) -->
+        <button onclick="toggleDashboardDrawer()" class="h-10 px-3.5 rounded-xl glass-card hover:border-tealAccent/50 text-xs font-bold transition flex items-center gap-2 text-slate-200">
+          <i class="fa-solid fa-user-astronaut text-tealAccent-light"></i>
+          <span class="hidden md:inline">Dashboard</span>
+        </button>
+
         <!-- One Checkout Drawer Button -->
-        <button onclick="toggleCheckoutDrawer()" class="relative h-10 px-4 rounded-xl glass-card hover:border-gold/50 text-xs font-bold transition flex items-center gap-2 text-slate-200">
+        <button onclick="toggleCheckoutDrawer()" class="relative h-10 px-3.5 sm:px-4 rounded-xl glass-card hover:border-gold/50 text-xs font-bold transition flex items-center gap-2 text-slate-200">
           <i class="fa-solid fa-bag-shopping text-gold"></i>
           <span class="hidden sm:inline">Checkout</span>
           <span id="cart-counter" class="w-5 h-5 rounded-full bg-gold text-midnight font-extrabold text-[10px] grid place-items-center">2</span>
@@ -414,8 +423,18 @@
           <span class="text-[11px] font-bold text-tealAccent-light uppercase tracking-wider">Instant Generator</span>
         </div>
 
+        <!-- AI Planner Mode Switcher (Phase 3 Engine) -->
+        <div class="flex items-center gap-1.5 p-1 rounded-2xl bg-slate-900 border border-white/10 text-xs">
+          <button onclick="switchPlannerMode('single')" id="planner-mode-single" class="flex-1 py-2 rounded-xl font-black bg-gold text-midnight transition">
+            <i class="fa-solid fa-map-pin mr-1"></i> Single Destination
+          </button>
+          <button onclick="switchPlannerMode('multi')" id="planner-mode-multi" class="flex-1 py-2 rounded-xl font-bold text-slate-300 hover:text-white transition">
+            <i class="fa-solid fa-route mr-1"></i> Multi-City Route
+          </button>
+        </div>
+
         <!-- Quick Idea Pills -->
-        <div>
+        <div id="planner-presets-box">
           <label class="block text-[11px] font-extrabold uppercase tracking-wider text-slate-400 mb-2">Preset Luxury Journeys</label>
           <div class="grid grid-cols-2 gap-2 text-xs">
             <button onclick="loadPreset('europe')" class="p-2.5 rounded-xl bg-slate-900/90 border border-white/10 hover:border-gold/60 text-left transition">
@@ -867,6 +886,133 @@
     </div>
   </section>
 
+
+  <!-- TravelTrip Digital Travel Wallet & Virtual Card (Phase 3 Premium Feature) -->
+  <section id="travel-wallet" class="relative py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+    <div class="text-center mb-12">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gold/10 border border-gold/30 text-xs font-extrabold uppercase tracking-widest text-gold-light mb-3">
+        <i class="fa-solid fa-wallet"></i> Integrated Fintech Engine
+      </div>
+      <h2 class="text-3xl sm:text-5xl font-display font-black tracking-tight">
+        TravelTrip <span class="gold-gradient-text">Travel Wallet & Virtual Card</span>
+      </h2>
+      <p class="mt-3 text-slate-400 max-w-xl mx-auto text-sm sm:text-base">
+        Zero foreign transaction fees, automated 5% cashback on all travel bookings, instant multi-currency balances, and Apple Pay / Google Pay ready virtual titanium card.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+      
+      <!-- Virtual Card Showcase -->
+      <div class="lg:col-span-6 flex justify-center">
+        <div class="w-full max-w-md p-7 rounded-3xl bg-gradient-to-tr from-[#0b0f1e] via-[#161d31] to-[#252516] border border-gold/40 shadow-2xl shadow-gold/10 relative overflow-hidden group">
+          <!-- Metallic Gloss Effect -->
+          <div class="absolute -right-20 -top-20 w-60 h-60 bg-gold/10 rounded-full blur-3xl"></div>
+          <div class="absolute -left-20 -bottom-20 w-60 h-60 bg-tealAccent/10 rounded-full blur-3xl"></div>
+          
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <div class="w-7 h-7 rounded-lg bg-gold/20 text-gold grid place-items-center font-black text-xs border border-gold/30">TT</div>
+              <span class="font-display font-black text-sm tracking-wider text-white">TRAVELTRIP <span class="text-gold">BLACK</span></span>
+            </div>
+            <i class="fa-solid fa-wifi text-slate-400 text-lg"></i>
+          </div>
+
+          <!-- Chip & NFC -->
+          <div class="my-8 flex items-center justify-between">
+            <div class="w-12 h-9 rounded-lg bg-gradient-to-r from-amber-200 to-yellow-500 border border-amber-300 shadow-inner flex items-center justify-center">
+              <div class="w-8 h-5 border border-amber-600/40 rounded"></div>
+            </div>
+            <span class="text-[11px] font-bold px-2.5 py-1 rounded-full bg-gold/20 text-gold-light border border-gold/30">
+              Titanium Virtual
+            </span>
+          </div>
+
+          <!-- Card Number -->
+          <div class="font-mono text-xl sm:text-2xl font-bold tracking-[0.25em] text-white">
+            4928 •••• •••• 8829
+          </div>
+
+          <!-- Card Details -->
+          <div class="mt-6 flex items-center justify-between text-xs">
+            <div>
+              <div class="text-[10px] text-slate-400 uppercase font-bold">Cardholder</div>
+              <div class="font-bold text-white tracking-wider mt-0.5">MOHAMMAD AKRAM</div>
+            </div>
+            <div>
+              <div class="text-[10px] text-slate-400 uppercase font-bold">Valid Thru</div>
+              <div class="font-bold text-white tracking-wider mt-0.5">10/29</div>
+            </div>
+            <div>
+              <div class="text-[10px] text-slate-400 uppercase font-bold">CVV</div>
+              <div id="wallet-cvv" class="font-mono font-bold text-gold tracking-widest mt-0.5">•••</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Wallet Balances & Management Panel -->
+      <div class="lg:col-span-6 space-y-4">
+        
+        <div class="p-6 rounded-3xl glass-card border border-white/10 space-y-5">
+          <div class="flex items-center justify-between">
+            <div>
+              <span class="text-xs text-slate-400 font-bold uppercase tracking-wider">Available Travel Balance</span>
+              <div id="wallet-main-balance" class="text-3xl sm:text-4xl font-display font-black text-white mt-1">$3,450.00 USD</div>
+            </div>
+            <button onclick="toggleCvvVisibility()" class="h-9 px-3.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs text-slate-300 font-bold transition flex items-center gap-1.5">
+              <i class="fa-solid fa-eye text-gold"></i>
+              <span id="cvv-btn-text">Reveal CVV</span>
+            </button>
+          </div>
+
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs">
+            <div class="p-3 rounded-2xl bg-slate-900 border border-white/5">
+              <div class="text-[10px] font-bold text-slate-400 uppercase">Cashback Earned</div>
+              <div id="wallet-cashback" class="text-base font-black text-emerald-400 mt-0.5">$185.00</div>
+              <div class="text-[10px] text-slate-500 mt-0.5">5% Auto-rebate</div>
+            </div>
+            <div class="p-3 rounded-2xl bg-slate-900 border border-white/5">
+              <div class="text-[10px] font-bold text-slate-400 uppercase">TravelPoints</div>
+              <div class="text-base font-black text-gold-light mt-0.5">14,200 PTS</div>
+              <div class="text-[10px] text-slate-500 mt-0.5">Worth $142 in flights</div>
+            </div>
+            <div class="p-3 rounded-2xl bg-slate-900 border border-white/5 col-span-2 sm:col-span-1">
+              <div class="text-[10px] font-bold text-slate-400 uppercase">Card Status</div>
+              <div class="text-base font-black text-tealAccent-light mt-0.5 flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Active
+              </div>
+              <div class="text-[10px] text-slate-500 mt-0.5">Apple / Google Pay</div>
+            </div>
+          </div>
+
+          <!-- Wallet Actions -->
+          <div class="flex flex-wrap items-center gap-3 pt-2">
+            <button onclick="openTopupModal()" class="gold-btn flex-1 h-12 rounded-xl text-xs font-bold flex items-center justify-center gap-2">
+              <i class="fa-solid fa-plus-circle"></i> Add Funds (bKash / Card)
+            </button>
+            <button onclick="alert('TravelPoints successfully applied! 14,200 points credited for instant checkout discount.')" class="teal-btn flex-1 h-12 rounded-xl text-xs font-bold flex items-center justify-center gap-2">
+              <i class="fa-solid fa-gift"></i> Redeem Points
+            </button>
+          </div>
+        </div>
+
+        <!-- Zero FX Guarantee Badge -->
+        <div class="p-4 rounded-2xl bg-emerald-950/20 border border-emerald-500/20 flex items-center justify-between text-xs">
+          <div class="flex items-center gap-3 text-emerald-300">
+            <i class="fa-solid fa-shield-halved text-xl text-emerald-400"></i>
+            <div>
+              <div class="font-bold text-white">0% Foreign Exchange Markup Guarantee</div>
+              <div class="text-[11px] text-slate-400">Spend anywhere in 195 countries at interbank mid-market exchange rates.</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
   <!-- TravelTrip Elite Membership -->
   <section id="elite" class="relative py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
     <div class="text-center mb-14">
@@ -879,6 +1025,52 @@
       <p class="mt-3 text-slate-400 max-w-xl mx-auto text-sm sm:text-base">
         Unlock VIP airport lounges, dedicated 24/7 human travel managers, complimentary unlimited global eSIM data, and luxury hotel upgrades.
       </p>
+    </div>
+
+
+    <!-- Interactive Rewards & Points Estimator (Phase 3 Engine) -->
+    <div class="mt-14 max-w-4xl mx-auto p-6 sm:p-8 rounded-3xl glass-card border border-gold/30">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-white/10">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-wider text-gold-light">✦ Interactive Rewards Calculator</span>
+          <h3 class="text-2xl font-display font-black text-white mt-1">Calculate Your Journey Returns</h3>
+          <p class="text-xs text-slate-400 mt-0.5">Every flight, hotel, and luxury experience booked returns points & cashback.</p>
+        </div>
+        <div class="shrink-0 flex items-center gap-2">
+          <span class="text-xs text-slate-400 font-bold">Planned Trip Budget:</span>
+          <span id="rewards-budget-display" class="text-xl font-display font-black text-gold">$4,000</span>
+        </div>
+      </div>
+
+      <div class="mt-6 space-y-6">
+        <div>
+          <input id="rewards-budget-slider" type="range" min="500" max="15000" step="250" value="4000" oninput="updateRewardsCalculator(this.value)" class="w-full accent-yellow-500 cursor-pointer h-2 bg-slate-800 rounded-lg">
+          <div class="flex justify-between text-[10px] text-slate-500 font-bold mt-1">
+            <span>$500</span>
+            <span>$5,000</span>
+            <span>$10,000</span>
+            <span>$15,000+</span>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
+          <div class="p-4 rounded-2xl bg-slate-900 border border-white/5">
+            <div class="text-[10px] uppercase font-bold text-slate-400">TravelPoints Earned</div>
+            <div id="rewards-points" class="text-2xl font-black text-gold-light mt-1">20,000 PTS</div>
+            <div class="text-[11px] text-slate-500 mt-0.5">5x Point Multiplier</div>
+          </div>
+          <div class="p-4 rounded-2xl bg-slate-900 border border-white/5">
+            <div class="text-[10px] uppercase font-bold text-slate-400">Wallet Cashback</div>
+            <div id="rewards-cashback" class="text-2xl font-black text-emerald-400 mt-1">$200.00</div>
+            <div class="text-[11px] text-slate-500 mt-0.5">Instant 5% Credit</div>
+          </div>
+          <div class="p-4 rounded-2xl bg-slate-900 border border-white/5">
+            <div class="text-[10px] uppercase font-bold text-slate-400">Unlocked Perk</div>
+            <div id="rewards-perk" class="text-sm font-bold text-tealAccent-light mt-2">Free 10GB Global eSIM</div>
+            <div class="text-[10px] text-slate-500 mt-0.5">+ VIP Hotel Breakfast</div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- Tiers Grid -->
@@ -1144,6 +1336,162 @@
         Card (Stripe), Apple Pay, Google Pay & bKash Supported
       </div>
     </div>
+  </div>
+
+
+  <!-- User Travel Dashboard Slide-Over Drawer (Phase 3 Premium Experience) -->
+  <div id="dashboard-drawer-overlay" onclick="toggleDashboardDrawer()" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden transition-opacity"></div>
+  <div id="dashboard-drawer" class="fixed top-0 right-0 h-full w-full sm:w-[500px] bg-slate-900 border-l border-white/10 z-50 transform translate-x-full transition-transform duration-300 flex flex-col justify-between p-6 overflow-y-auto">
+    <div>
+      <div class="flex items-center justify-between pb-4 border-b border-white/10">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-tealAccent-dark to-tealAccent text-white grid place-items-center font-black">
+            <i class="fa-solid fa-user-astronaut text-sm"></i>
+          </div>
+          <div>
+            <div class="font-display font-black text-base text-white">Mohammad Akram</div>
+            <div class="flex items-center gap-2 mt-0.5">
+              <span class="px-2 py-0.5 rounded-full bg-gold/20 text-gold-light font-extrabold text-[10px] border border-gold/30">
+                ✦ Elite Gold Member
+              </span>
+              <span class="text-[11px] text-slate-400">1,600 pts to Platinum</span>
+            </div>
+          </div>
+        </div>
+        <button onclick="toggleDashboardDrawer()" class="w-8 h-8 rounded-full bg-white/5 grid place-items-center text-slate-400 hover:text-white">✕</button>
+      </div>
+
+      <!-- Active Confirmed Journey -->
+      <div class="mt-6">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs font-bold text-slate-300 uppercase tracking-wider">Upcoming Journey</span>
+          <span class="text-[10px] font-black px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300">CONFIRMED</span>
+        </div>
+        
+        <div class="p-4 rounded-2xl glass-card border border-tealAccent/30 space-y-3">
+          <div class="flex items-center justify-between">
+            <div class="text-sm font-black text-white">Tokyo & Kyoto Cultural Tour</div>
+            <span class="text-xs font-bold text-tealAccent-light">Oct 15 - Oct 25</span>
+          </div>
+          
+          <div class="space-y-2 text-xs text-slate-300">
+            <div class="flex items-center justify-between p-2 rounded-xl bg-slate-900 border border-white/5">
+              <span class="flex items-center gap-2"><i class="fa-solid fa-plane text-tealAccent-light"></i> SQ638 • Singapore Airlines</span>
+              <span class="font-bold text-white">Seat 14A</span>
+            </div>
+            <div class="flex items-center justify-between p-2 rounded-xl bg-slate-900 border border-white/5">
+              <span class="flex items-center gap-2"><i class="fa-solid fa-hotel text-gold-light"></i> Park Hyatt Tokyo (7N)</span>
+              <span class="font-bold text-gold-light">5-Star Deluxe</span>
+            </div>
+            <div class="flex items-center justify-between p-2 rounded-xl bg-slate-900 border border-white/5">
+              <span class="flex items-center gap-2"><i class="fa-solid fa-sim-card text-emerald-400"></i> Japan 10GB 5G eSIM</span>
+              <button onclick="alert('eSIM Profile: LPA:1$esim.traveltrip.world$TT-8829-JP10. QR code emailed to you!')" class="text-emerald-400 font-bold hover:underline">View QR Code ↗</button>
+            </div>
+            <div class="flex items-center justify-between p-2 rounded-xl bg-slate-900 border border-white/5">
+              <span class="flex items-center gap-2"><i class="fa-solid fa-passport text-sky-400"></i> Japan eVisa Status</span>
+              <span class="font-bold text-emerald-400">Approved ✓</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Wallet Overview -->
+      <div class="mt-6 p-4 rounded-2xl bg-gradient-to-r from-slate-900 to-indigo-950 border border-white/10">
+        <div class="flex items-center justify-between">
+          <div>
+            <div class="text-[10px] text-slate-400 font-bold uppercase">Wallet Stored Credits</div>
+            <div id="dash-wallet-bal" class="text-xl font-black text-white mt-0.5">$3,450.00 USD</div>
+          </div>
+          <button onclick="toggleDashboardDrawer(); openTopupModal();" class="h-9 px-3.5 rounded-xl gold-btn text-xs font-bold">
+            + Top Up
+          </button>
+        </div>
+      </div>
+
+      <!-- Saved Wishlist Journeys -->
+      <div class="mt-6">
+        <span class="text-xs font-bold text-slate-300 uppercase tracking-wider block mb-2">Saved Wishlist</span>
+        <div class="space-y-2 text-xs">
+          <div class="p-3 rounded-xl glass-card flex items-center justify-between">
+            <div>
+              <div class="font-bold text-white">🇨🇭 Swiss Alps Glacier Route</div>
+              <div class="text-[11px] text-slate-400">Zermatt & Zurich • 10 Days</div>
+            </div>
+            <button onclick="loadPreset('europe'); toggleDashboardDrawer();" class="text-gold font-bold hover:underline">Plan ➔</button>
+          </div>
+          <div class="p-3 rounded-xl glass-card flex items-center justify-between">
+            <div>
+              <div class="font-bold text-white">🇲🇻 Maldives Overwater Villa</div>
+              <div class="text-[11px] text-slate-400">Baa Atoll Private Island • 6 Days</div>
+            </div>
+            <button onclick="loadPreset('maldives'); toggleDashboardDrawer();" class="text-gold font-bold hover:underline">Plan ➔</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 24/7 Concierge Hotline -->
+    <div class="pt-6 border-t border-white/10 space-y-3">
+      <div class="text-xs text-slate-300 font-bold flex items-center gap-2">
+        <i class="fa-solid fa-headset text-gold"></i> 24/7 Dedicated Human Travel Concierge
+      </div>
+      <div class="grid grid-cols-2 gap-2 text-xs">
+        <button onclick="window.open('https://wa.me/?text=Hello%20TravelTrip%20Concierge', '_blank')" class="h-11 rounded-xl bg-emerald-600 hover:bg-emerald-500 font-bold text-white flex items-center justify-center gap-2 transition">
+          <i class="fa-brands fa-whatsapp text-base"></i> WhatsApp
+        </button>
+        <button onclick="window.open('https://t.me/', '_blank')" class="h-11 rounded-xl bg-sky-600 hover:bg-sky-500 font-bold text-white flex items-center justify-center gap-2 transition">
+          <i class="fa-brands fa-telegram text-base"></i> Telegram
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Wallet Top-Up Modal (Phase 3) -->
+  <div id="topup-modal-overlay" onclick="closeTopupModal()" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden transition-opacity"></div>
+  <div id="topup-modal" class="fixed inset-x-4 top-[15%] sm:inset-x-auto sm:left-1/2 sm:-translate-x-1/2 sm:w-[440px] bg-slate-900 border border-gold/40 rounded-3xl z-50 p-6 hidden shadow-2xl space-y-5">
+    <div class="flex items-center justify-between pb-3 border-b border-white/10">
+      <div class="flex items-center gap-2 text-gold-light font-display font-black text-lg">
+        <i class="fa-solid fa-circle-dollar-to-slot"></i> Top Up Travel Wallet
+      </div>
+      <button onclick="closeTopupModal()" class="w-8 h-8 rounded-full bg-white/5 grid place-items-center text-slate-400 hover:text-white">✕</button>
+    </div>
+
+    <div>
+      <label class="block text-xs font-bold text-slate-300 mb-1.5">Enter Amount to Add:</label>
+      <div class="flex items-center h-12 px-4 rounded-xl bg-slate-800 border border-white/10 focus-within:border-gold">
+        <span class="text-gold font-black mr-2">$</span>
+        <input id="topup-amount-input" type="number" value="500" class="bg-transparent text-white font-black text-lg outline-none w-full">
+      </div>
+      <div class="flex gap-2 mt-2">
+        <button onclick="document.getElementById('topup-amount-input').value = 250" class="px-3 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-xs font-bold text-slate-300">+$250</button>
+        <button onclick="document.getElementById('topup-amount-input').value = 500" class="px-3 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-xs font-bold text-slate-300">+$500</button>
+        <button onclick="document.getElementById('topup-amount-input').value = 1000" class="px-3 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-xs font-bold text-slate-300">+$1,000</button>
+      </div>
+    </div>
+
+    <div>
+      <label class="block text-xs font-bold text-slate-300 mb-1.5">Select Payment Method:</label>
+      <div class="space-y-2 text-xs">
+        <label class="p-3 rounded-xl bg-slate-800 border border-white/10 flex items-center justify-between cursor-pointer hover:border-gold/50">
+          <span class="flex items-center gap-2 font-bold text-white"><i class="fa-solid fa-credit-card text-gold"></i> Credit / Debit Card (Stripe)</span>
+          <input type="radio" name="topup-method" checked class="accent-yellow-500">
+        </label>
+        <label class="p-3 rounded-xl bg-slate-800 border border-white/10 flex items-center justify-between cursor-pointer hover:border-pink-500/50">
+          <span class="flex items-center gap-2 font-bold text-white"><i class="fa-solid fa-mobile-screen-button text-pink-400"></i> bKash / Local Mobile Pay</span>
+          <input type="radio" name="topup-method" class="accent-pink-500">
+        </label>
+        <label class="p-3 rounded-xl bg-slate-800 border border-white/10 flex items-center justify-between cursor-pointer hover:border-tealAccent/50">
+          <span class="flex items-center gap-2 font-bold text-white"><i class="fa-brands fa-apple text-slate-300"></i> Apple Pay / Google Pay</span>
+          <input type="radio" name="topup-method" class="accent-teal-500">
+        </label>
+      </div>
+    </div>
+
+    <button onclick="submitWalletTopup()" class="gold-btn w-full h-12 rounded-xl text-xs font-black flex items-center justify-center gap-2">
+      <i class="fa-solid fa-lock"></i> Authorize Instant Deposit
+    </button>
   </div>
 
   <!-- One Checkout Slide-Over Drawer -->
@@ -1769,6 +2117,8 @@
       renderDestinations();
       renderEsimGrid();
       recalculateCheckout();
+      updateWalletUI();
+      updateRewardsCalculator(document.getElementById('rewards-budget-slider')?.value || 4000);
       if (!document.getElementById('esim-modal').classList.contains('hidden')) {
         updateModalPrice();
       }
@@ -2026,6 +2376,118 @@
       alert(`Thank you for selecting TravelTrip Elite ${tier} membership! VIP concierge invitation initiated.`);
     }
 
+
+    // ==========================================
+    // PHASE 3 PREMIUM JAVASCRIPT ENGINE
+    // ==========================================
+
+    let plannerMode = 'single';
+    let walletCvvRevealed = false;
+    let userWalletBalance = 3450;
+
+    function switchPlannerMode(mode) {
+      plannerMode = mode;
+      const singleBtn = document.getElementById('planner-mode-single');
+      const multiBtn = document.getElementById('planner-mode-multi');
+      const destInput = document.getElementById('ai-destination');
+
+      if (mode === 'multi') {
+        singleBtn.classList.remove('bg-gold', 'text-midnight', 'font-black');
+        singleBtn.classList.add('text-slate-300', 'font-bold');
+        multiBtn.classList.add('bg-gold', 'text-midnight', 'font-black');
+        multiBtn.classList.remove('text-slate-300', 'font-bold');
+
+        destInput.value = "Multi-City: Paris (3D) ➔ Zermatt (4D) ➔ Rome (3D)";
+        document.getElementById('ai-days').value = "10";
+        document.getElementById('ai-budget').value = "4500";
+      } else {
+        multiBtn.classList.remove('bg-gold', 'text-midnight', 'font-black');
+        multiBtn.classList.add('text-slate-300', 'font-bold');
+        singleBtn.classList.add('bg-gold', 'text-midnight', 'font-black');
+        singleBtn.classList.remove('text-slate-300', 'font-bold');
+
+        destInput.value = "Europe (Switzerland, Paris & Italy)";
+        document.getElementById('ai-days').value = "10";
+        document.getElementById('ai-budget').value = "4000";
+      }
+      generateAIItinerary();
+    }
+
+    function toggleDashboardDrawer() {
+      const drawer = document.getElementById('dashboard-drawer');
+      const overlay = document.getElementById('dashboard-drawer-overlay');
+      if (drawer.classList.contains('translate-x-full')) {
+        drawer.classList.remove('translate-x-full');
+        overlay.classList.remove('hidden');
+      } else {
+        drawer.classList.add('translate-x-full');
+        overlay.classList.add('hidden');
+      }
+    }
+
+    function toggleCvvVisibility() {
+      walletCvvRevealed = !walletCvvRevealed;
+      const cvvEl = document.getElementById('wallet-cvv');
+      const btnEl = document.getElementById('cvv-btn-text');
+      if (walletCvvRevealed) {
+        cvvEl.textContent = '742';
+        btnEl.textContent = 'Hide CVV';
+      } else {
+        cvvEl.textContent = '•••';
+        btnEl.textContent = 'Reveal CVV';
+      }
+    }
+
+    function openTopupModal() {
+      document.getElementById('topup-modal').classList.remove('hidden');
+      document.getElementById('topup-modal-overlay').classList.remove('hidden');
+    }
+
+    function closeTopupModal() {
+      document.getElementById('topup-modal').classList.add('hidden');
+      document.getElementById('topup-modal-overlay').classList.add('hidden');
+    }
+
+    function submitWalletTopup() {
+      const amt = Number(document.getElementById('topup-amount-input')?.value || 500);
+      userWalletBalance += amt;
+      updateWalletUI();
+      closeTopupModal();
+      alert(`Success! ${formatMoney(amt)} deposited into your TravelTrip Wallet. New balance: ${formatMoney(userWalletBalance)}.`);
+    }
+
+    function updateWalletUI() {
+      const mainEl = document.getElementById('wallet-main-balance');
+      if (mainEl) mainEl.textContent = `${formatMoney(userWalletBalance)} ${currentCurrency}`;
+      
+      const dashBalEl = document.getElementById('dash-wallet-bal');
+      if (dashBalEl) dashBalEl.textContent = `${formatMoney(userWalletBalance)} ${currentCurrency}`;
+
+      const cashbackEl = document.getElementById('wallet-cashback');
+      if (cashbackEl) cashbackEl.textContent = formatMoney(185);
+    }
+
+    function updateRewardsCalculator(val) {
+      const budget = Number(val);
+      const points = budget * 5;
+      const cashback = Math.round(budget * 0.05);
+
+      document.getElementById('rewards-budget-display').textContent = formatMoney(budget);
+      document.getElementById('rewards-points').textContent = `${points.toLocaleString()} PTS`;
+      document.getElementById('rewards-cashback').textContent = formatMoney(cashback);
+
+      const perkEl = document.getElementById('rewards-perk');
+      if (budget >= 7000) {
+        perkEl.textContent = "Complimentary Superyacht Day Cruise";
+      } else if (budget >= 4000) {
+        perkEl.textContent = "Free 10GB Global 5G eSIM + Lounge";
+      } else if (budget >= 2000) {
+        perkEl.textContent = "Free 5GB Regional 5G eSIM";
+      } else {
+        perkEl.textContent = "Free 1GB High-Speed eSIM";
+      }
+    }
+
     // Initialization on DOM Load
     document.addEventListener('DOMContentLoaded', () => {
       switchHubTab('flights');
@@ -2034,6 +2496,8 @@
       generateAIItinerary();
       runVisaCheck();
       recalculateCheckout();
+      updateWalletUI();
+      updateRewardsCalculator(4000);
     });
   </script>
 </body>
