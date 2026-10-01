@@ -380,10 +380,10 @@
   <div class="relative overflow-hidden border-b border-white/5">
     <!-- Cinematic Flight Photo Backdrop with Ken Burns & Smooth Fade -->
     <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-      <!-- Active Background Image -->
+      <!-- Active Background Image (Real Premier Airlines Landing Showcase) -->
       <img id="hero-flight-bg" 
-           src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=2000&q=85" 
-           alt="Luxury Flight Backdrop" 
+           src="/images/airlines/emirates-a380.jpg" 
+           alt="Emirates A380 Landing Touchdown" 
            class="w-full h-full object-cover object-center animate-ken-burns transition-opacity duration-1000 ease-in-out opacity-45">
       <!-- Multi-Stop Deep Dark Gradient Vignette for Supreme Contrast & Warmth -->
       <div class="absolute inset-0 bg-gradient-to-b from-[#050816]/45 via-[#050816]/75 to-[#050816]"></div>
@@ -543,31 +543,44 @@
         </div>
       </div>
     </div>
-    <!-- Cinematic Flight Scene Switcher Pill -->
-    <div class="mt-8 inline-flex flex-wrap items-center justify-center gap-2 p-1.5 rounded-full glass-card border border-white/10 shadow-xl backdrop-blur-md">
-      <div class="flex items-center gap-1.5 px-3 py-1 text-[11px] font-bold text-slate-400">
-        <i class="fa-solid fa-camera-retro text-gold"></i>
-        <span>Flight Scenes:</span>
+    <!-- Cinematic Flight Scene Switcher Pill (Premier Airlines Landing Showcase) -->
+    <div class="mt-8 inline-flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 p-1.5 rounded-full glass-card border border-white/10 shadow-xl backdrop-blur-md max-w-4xl mx-auto">
+      <div class="flex items-center gap-1.5 px-2.5 sm:px-3 py-1 text-[11px] font-bold text-slate-400">
+        <i class="fa-solid fa-plane-arrival text-gold"></i>
+        <span>Premier Landings:</span>
       </div>
       <button onclick="setFlightScene(0)" class="flight-scene-btn active px-3 py-1 rounded-full text-[11px] font-extrabold transition flex items-center gap-1.5 bg-gold/20 text-gold border border-gold/40 shadow-sm">
-        <span>✈️ Sunset Wing</span>
+        <span>🇦🇪 Emirates A380</span>
       </button>
       <button onclick="setFlightScene(1)" class="flight-scene-btn px-3 py-1 rounded-full text-[11px] font-extrabold transition flex items-center gap-1.5 text-slate-300 hover:text-white border border-transparent">
-        <span>☁️ Jet Clouds</span>
+        <span>🇶🇦 Qatar Airways</span>
       </button>
       <button onclick="setFlightScene(2)" class="flight-scene-btn px-3 py-1 rounded-full text-[11px] font-extrabold transition flex items-center gap-1.5 text-slate-300 hover:text-white border border-transparent">
-        <span>🗼 Tokyo Twilight</span>
+        <span>🇸🇬 Singapore Air</span>
       </button>
       <button onclick="setFlightScene(3)" class="flight-scene-btn px-3 py-1 rounded-full text-[11px] font-extrabold transition flex items-center gap-1.5 text-slate-300 hover:text-white border border-transparent">
-        <span>🏔️ Alps Skyway</span>
+        <span>🇦🇪 Etihad 787</span>
       </button>
       <button onclick="setFlightScene(4)" class="flight-scene-btn px-3 py-1 rounded-full text-[11px] font-extrabold transition flex items-center gap-1.5 text-slate-300 hover:text-white border border-transparent">
-        <span>🌴 Maldives Aerial</span>
+        <span>🇧🇩 Biman 787</span>
+      </button>
+      <button onclick="setFlightScene(5)" class="flight-scene-btn px-3 py-1 rounded-full text-[11px] font-extrabold transition flex items-center gap-1.5 text-slate-300 hover:text-white border border-transparent">
+        <span>🇹🇷 Turkish Airlines</span>
       </button>
       <button id="flight-cycle-btn" onclick="toggleFlightAutoCycle()" class="px-2.5 py-1 rounded-full text-[11px] font-bold text-tealAccent-light hover:bg-tealAccent/10 transition flex items-center gap-1">
         <i id="flight-cycle-icon" class="fa-solid fa-arrows-rotate animate-spin text-[10px]"></i>
         <span>Auto</span>
       </button>
+    </div>
+
+    <!-- Live Flight Radar HUD Overlay Status -->
+    <div class="mt-3 flex justify-center">
+      <div id="hero-airline-hud" class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full glass-card border border-tealAccent/30 text-[11px] text-slate-200 shadow-xl">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span class="text-gold-light font-bold" id="radar-airline-name">🇦🇪 Emirates A380</span>
+        <span class="text-slate-500">•</span>
+        <span class="text-tealAccent-light font-medium" id="radar-flight-status">EK202 • Final Approach Dubai DXB • Alt: 750ft • Gear Down Touchdown</span>
+      </div>
     </div>
 
   </section>
@@ -2751,29 +2764,34 @@
 
     const FLIGHT_SCENES = [
       {
-        title: "Sunset Wing",
-        url: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=2000&q=85",
-        desc: "Golden Hour Transpacific Cruising Altitude"
+        title: "🇦🇪 Emirates A380",
+        url: "/images/airlines/emirates-a380.jpg",
+        desc: "EK202 • Final Approach Dubai DXB • Alt: 750ft • Gear Down Touchdown"
       },
       {
-        title: "Jet Clouds",
-        url: "https://images.unsplash.com/photo-1569154941061-e231b4725ef1?auto=format&fit=crop&w=2000&q=85",
-        desc: "High-Altitude Jet Stream over Endless Cirrus"
+        title: "🇶🇦 Qatar Airways A350",
+        url: "/images/airlines/qatar-airways.jpg",
+        desc: "QR007 • Hamad Intl DOH • Flare Approach • 140 kts"
       },
       {
-        title: "Tokyo Twilight",
-        url: "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=2000&q=85",
-        desc: "Shinjuku & Tokyo Tower Aerial Ascent"
+        title: "🇸🇬 Singapore Airlines",
+        url: "/images/airlines/singapore-airlines.jpg",
+        desc: "SQ318 • Singapore Changi SIN • Runway 20R Touchdown"
       },
       {
-        title: "Alps Skyway",
-        url: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=2000&q=85",
-        desc: "Matterhorn Peak Aviation Corridor"
+        title: "🇦🇪 Etihad 787 Dreamliner",
+        url: "/images/airlines/etihad-airways.jpg",
+        desc: "EY101 • Abu Dhabi AUH • Touchdown Smoke • Runway 13R"
       },
       {
-        title: "Maldives Aerial",
-        url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=2000&q=85",
-        desc: "Turquoise Seaplane Descent into North Malé Atoll"
+        title: "🇧🇩 Biman Bangladesh 787",
+        url: "/images/airlines/biman-bangladesh.jpg",
+        desc: "BG084 • Hazrat Shahjalal DAC • Final Approach Runway 14"
+      },
+      {
+        title: "🇹🇷 Turkish Airlines A330",
+        url: "/images/airlines/turkish-airlines.jpg",
+        desc: "TK1984 • Istanbul IST • Final Approach & Touchdown Flare"
       }
     ];
 
@@ -2792,6 +2810,12 @@
           imgEl.style.opacity = '0.45';
         }, 300);
       }
+
+      // Dynamically update Live Flight Radar HUD
+      const radarName = document.getElementById('radar-airline-name');
+      const radarStatus = document.getElementById('radar-flight-status');
+      if (radarName) radarName.textContent = FLIGHT_SCENES[idx].title;
+      if (radarStatus) radarStatus.textContent = FLIGHT_SCENES[idx].desc;
 
       document.querySelectorAll('.flight-scene-btn').forEach((btn, i) => {
         if (i === idx) {
