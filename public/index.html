@@ -113,6 +113,68 @@
     }
 
 
+    /* Cinematic Flight Background & Jet Animations */
+    @keyframes flyAcross {
+      0% {
+        transform: translate(-120px, 60px) rotate(-10deg) scale(0.65);
+        opacity: 0;
+      }
+      6% {
+        opacity: 0.9;
+      }
+      88% {
+        opacity: 0.9;
+      }
+      100% {
+        transform: translate(105vw, -120px) rotate(-10deg) scale(1.05);
+        opacity: 0;
+      }
+    }
+    .animate-flight-jet {
+      animation: flyAcross 20s linear infinite;
+    }
+
+    @keyframes flyAcrossSecondary {
+      0% {
+        transform: translate(-140px, 30px) rotate(-14deg) scale(0.5);
+        opacity: 0;
+      }
+      8% {
+        opacity: 0.7;
+      }
+      85% {
+        opacity: 0.7;
+      }
+      100% {
+        transform: translate(105vw, -80px) rotate(-14deg) scale(0.75);
+        opacity: 0;
+      }
+    }
+    .animate-flight-jet-secondary {
+      animation: flyAcrossSecondary 28s linear infinite 10s;
+    }
+
+    .jet-contrail {
+      background: linear-gradient(90deg, transparent 0%, rgba(45, 212, 191, 0.15) 30%, rgba(45, 212, 191, 0.45) 75%, rgba(255, 255, 255, 0.95) 100%);
+      filter: blur(0.8px);
+      box-shadow: 0 0 10px rgba(45, 212, 191, 0.5);
+    }
+
+    @keyframes kenBurnsSlow {
+      0% {
+        transform: scale(1.02) translate(0, 0);
+      }
+      50% {
+        transform: scale(1.06) translate(-1%, -1%);
+      }
+      100% {
+        transform: scale(1.02) translate(0, 0);
+      }
+    }
+    .animate-ken-burns {
+      animation: kenBurnsSlow 26s ease-in-out infinite alternate;
+    }
+
     /* 3D Animations & Gyroscopic Perspectives */
     @keyframes floatSlow {
       0%, 100% { transform: translateY(0px) rotate(0deg); }
@@ -314,10 +376,49 @@
     </div>
   </header>
 
-  <!-- Hero Section with 3D Ambient Constellation -->
-  <section class="relative pt-12 pb-24 md:pt-20 md:pb-32 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-center overflow-hidden">
-    <!-- Ambient 3D Constellation Particle Canvas -->
-    <canvas id="hero-particle-canvas" class="absolute inset-0 w-full h-full pointer-events-none opacity-40 z-0"></canvas>
+  <!-- Hero Section with Cinematic Flight Background & 3D Ambient Constellation -->
+  <div class="relative overflow-hidden border-b border-white/5">
+    <!-- Cinematic Flight Photo Backdrop with Ken Burns & Smooth Fade -->
+    <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+      <!-- Active Background Image -->
+      <img id="hero-flight-bg" 
+           src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=2000&q=85" 
+           alt="Luxury Flight Backdrop" 
+           class="w-full h-full object-cover object-center animate-ken-burns transition-opacity duration-1000 ease-in-out opacity-45">
+      <!-- Multi-Stop Deep Dark Gradient Vignette for Supreme Contrast & Warmth -->
+      <div class="absolute inset-0 bg-gradient-to-b from-[#050816]/45 via-[#050816]/75 to-[#050816]"></div>
+      <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,transparent_0%,rgba(5,8,22,0.5)_50%,#050816_100%)]"></div>
+
+      <!-- Animated Commercial Superjet Crossing Sky (Primary) -->
+      <div class="absolute top-10 left-0 w-full h-44 pointer-events-none overflow-hidden opacity-90">
+        <div class="animate-flight-jet absolute flex items-center">
+          <!-- Luminous Jet Contrail Vapor -->
+          <div class="w-56 sm:w-96 h-[2.5px] jet-contrail mr-[-4px]"></div>
+          <!-- Jet Aircraft Silhouette & Strobe -->
+          <div class="relative text-white drop-shadow-[0_0_12px_rgba(45,212,191,0.9)]">
+            <i class="fa-solid fa-plane text-tealAccent-light text-lg sm:text-xl transform rotate-[-45deg]"></i>
+            <!-- Pulsing Strobe Beacon Light -->
+            <span class="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-red-400 animate-ping"></span>
+            <span class="absolute -bottom-1 -left-1 w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Distant High-Altitude Cruising Aircraft (Secondary) -->
+      <div class="absolute top-28 left-0 w-full h-32 pointer-events-none overflow-hidden opacity-60">
+        <div class="animate-flight-jet-secondary absolute flex items-center">
+          <div class="w-36 sm:w-60 h-[1.5px] jet-contrail mr-[-3px]"></div>
+          <div class="relative text-gold drop-shadow-[0_0_8px_rgba(212,175,55,0.7)]">
+            <i class="fa-solid fa-plane-up text-gold-light text-xs sm:text-sm transform rotate-[-45deg]"></i>
+            <span class="absolute -top-1 -right-0.5 w-1.5 h-1.5 rounded-full bg-gold animate-ping"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section class="relative pt-12 pb-24 md:pt-20 md:pb-32 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-center z-10">
+      <!-- Ambient 3D Constellation Particle Canvas -->
+      <canvas id="hero-particle-canvas" class="absolute inset-0 w-full h-full pointer-events-none opacity-40 z-0"></canvas>
 
     <!-- Floating 3D Micro-Widgets -->
     <div class="hidden xl:flex absolute left-4 top-1/4 p-3.5 rounded-2xl glass-card border border-tealAccent/30 items-center gap-3 shadow-2xl animate-float-slow z-20 pointer-events-none">
@@ -442,8 +543,35 @@
         </div>
       </div>
     </div>
+    <!-- Cinematic Flight Scene Switcher Pill -->
+    <div class="mt-8 inline-flex flex-wrap items-center justify-center gap-2 p-1.5 rounded-full glass-card border border-white/10 shadow-xl backdrop-blur-md">
+      <div class="flex items-center gap-1.5 px-3 py-1 text-[11px] font-bold text-slate-400">
+        <i class="fa-solid fa-camera-retro text-gold"></i>
+        <span>Flight Scenes:</span>
+      </div>
+      <button onclick="setFlightScene(0)" class="flight-scene-btn active px-3 py-1 rounded-full text-[11px] font-extrabold transition flex items-center gap-1.5 bg-gold/20 text-gold border border-gold/40 shadow-sm">
+        <span>✈️ Sunset Wing</span>
+      </button>
+      <button onclick="setFlightScene(1)" class="flight-scene-btn px-3 py-1 rounded-full text-[11px] font-extrabold transition flex items-center gap-1.5 text-slate-300 hover:text-white border border-transparent">
+        <span>☁️ Jet Clouds</span>
+      </button>
+      <button onclick="setFlightScene(2)" class="flight-scene-btn px-3 py-1 rounded-full text-[11px] font-extrabold transition flex items-center gap-1.5 text-slate-300 hover:text-white border border-transparent">
+        <span>🗼 Tokyo Twilight</span>
+      </button>
+      <button onclick="setFlightScene(3)" class="flight-scene-btn px-3 py-1 rounded-full text-[11px] font-extrabold transition flex items-center gap-1.5 text-slate-300 hover:text-white border border-transparent">
+        <span>🏔️ Alps Skyway</span>
+      </button>
+      <button onclick="setFlightScene(4)" class="flight-scene-btn px-3 py-1 rounded-full text-[11px] font-extrabold transition flex items-center gap-1.5 text-slate-300 hover:text-white border border-transparent">
+        <span>🌴 Maldives Aerial</span>
+      </button>
+      <button id="flight-cycle-btn" onclick="toggleFlightAutoCycle()" class="px-2.5 py-1 rounded-full text-[11px] font-bold text-tealAccent-light hover:bg-tealAccent/10 transition flex items-center gap-1">
+        <i id="flight-cycle-icon" class="fa-solid fa-arrows-rotate animate-spin text-[10px]"></i>
+        <span>Auto</span>
+      </button>
+    </div>
 
   </section>
+  </div>
 
   <!-- AI Concierge ("Plan My Trip") Section -->
   <section id="ai-concierge" class="relative py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
@@ -2618,6 +2746,83 @@
 
     // ==========================================
     // ==========================================
+    // CINEMATIC FLIGHT BACKGROUND CONTROLLER
+    // ==========================================
+
+    const FLIGHT_SCENES = [
+      {
+        title: "Sunset Wing",
+        url: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=2000&q=85",
+        desc: "Golden Hour Transpacific Cruising Altitude"
+      },
+      {
+        title: "Jet Clouds",
+        url: "https://images.unsplash.com/photo-1569154941061-e231b4725ef1?auto=format&fit=crop&w=2000&q=85",
+        desc: "High-Altitude Jet Stream over Endless Cirrus"
+      },
+      {
+        title: "Tokyo Twilight",
+        url: "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=2000&q=85",
+        desc: "Shinjuku & Tokyo Tower Aerial Ascent"
+      },
+      {
+        title: "Alps Skyway",
+        url: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=2000&q=85",
+        desc: "Matterhorn Peak Aviation Corridor"
+      },
+      {
+        title: "Maldives Aerial",
+        url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=2000&q=85",
+        desc: "Turquoise Seaplane Descent into North Malé Atoll"
+      }
+    ];
+
+    let currentFlightScene = 0;
+    let flightAutoCycleInterval = null;
+    let isFlightAutoCycleActive = true;
+
+    function setFlightScene(idx) {
+      if (idx < 0 || idx >= FLIGHT_SCENES.length) return;
+      currentFlightScene = idx;
+      const imgEl = document.getElementById('hero-flight-bg');
+      if (imgEl) {
+        imgEl.style.opacity = '0';
+        setTimeout(() => {
+          imgEl.src = FLIGHT_SCENES[idx].url;
+          imgEl.style.opacity = '0.45';
+        }, 300);
+      }
+
+      document.querySelectorAll('.flight-scene-btn').forEach((btn, i) => {
+        if (i === idx) {
+          btn.className = 'flight-scene-btn active px-3 py-1 rounded-full text-[11px] font-extrabold transition flex items-center gap-1.5 bg-gold/20 text-gold border border-gold/40 shadow-sm';
+        } else {
+          btn.className = 'flight-scene-btn px-3 py-1 rounded-full text-[11px] font-extrabold transition flex items-center gap-1.5 text-slate-300 hover:text-white border border-transparent';
+        }
+      });
+    }
+
+    function toggleFlightAutoCycle() {
+      isFlightAutoCycleActive = !isFlightAutoCycleActive;
+      const icon = document.getElementById('flight-cycle-icon');
+      if (isFlightAutoCycleActive) {
+        if (icon) icon.className = 'fa-solid fa-arrows-rotate animate-spin text-[10px]';
+        startFlightAutoCycle();
+      } else {
+        if (icon) icon.className = 'fa-solid fa-pause text-[10px]';
+        clearInterval(flightAutoCycleInterval);
+      }
+    }
+
+    function startFlightAutoCycle() {
+      clearInterval(flightAutoCycleInterval);
+      flightAutoCycleInterval = setInterval(() => {
+        const next = (currentFlightScene + 1) % FLIGHT_SCENES.length;
+        setFlightScene(next);
+      }, 7000);
+    }
+
+    // ==========================================
     // 3D INTERACTIVE GLOBE & ANIMATION ENGINE
     // ==========================================
 
@@ -2976,6 +3181,7 @@
     // Initialization on DOM Load with isolated error boundaries
     document.addEventListener('DOMContentLoaded', () => {
       [
+        ['startFlightAutoCycle', startFlightAutoCycle],
         ['init3DGlobe', init3DGlobe],
         ['initHeroConstellation', initHeroConstellation],
         ['init3DCardTilt', init3DCardTilt],
