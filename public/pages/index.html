@@ -161,9 +161,17 @@
         <span class="hidden lg:inline text-emerald-400 font-semibold">Official Trip.com Partnership</span>
       </div>
       <div class="flex items-center gap-3 shrink-0 text-slate-300">
-        <span class="cursor-pointer hover:text-gold transition flex items-center gap-1 text-[11px]">
-          <i class="fa-solid fa-globe text-gold"></i> English (USD $)
-        </span>
+        <div class="flex items-center gap-1.5 bg-slate-900 border border-white/10 rounded-lg px-2 py-0.5">
+          <i class="fa-solid fa-coins text-gold text-[10px]"></i>
+          <span class="text-[10px] text-slate-400 font-bold hidden sm:inline">Currency:</span>
+          <select id="currency-select" onchange="changeCurrency(this.value)" class="bg-transparent text-gold-light font-bold text-[11px] focus:outline-none cursor-pointer">
+            <option value="USD" class="bg-slate-900 text-white">USD ($)</option>
+            <option value="BDT" class="bg-slate-900 text-white">BDT (৳)</option>
+            <option value="EUR" class="bg-slate-900 text-white">EUR (€)</option>
+            <option value="GBP" class="bg-slate-900 text-white">GBP (£)</option>
+            <option value="AED" class="bg-slate-900 text-white">AED (د.إ)</option>
+          </select>
+        </div>
         <a href="#elite" class="hover:text-gold transition font-bold text-gold-light flex items-center gap-1 text-[11px]">
           <i class="fa-solid fa-crown text-gold"></i> Join Elite
         </a>
@@ -359,7 +367,21 @@
     <!-- Active Hub Panel (Interactive Search Redirection) -->
     <div id="hub-panel-container" class="mt-6 max-w-4xl mx-auto p-5 rounded-2xl glass-card text-left">
       <div id="hub-panel-content">
-        <!-- Rendered by JS -->
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <div class="text-sm font-bold text-tealAccent-light flex items-center gap-2">
+              <i class="fa-solid fa-plane"></i> Search & Book Flights Worldwide (Trip.com)
+            </div>
+            <span class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300">Best Price Guarantee</span>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <input id="flight-from" type="text" placeholder="From (e.g. New York - JFK)" value="New York (JFK)" class="h-11 px-4 rounded-xl bg-slate-900 border border-white/10 text-xs text-white outline-none">
+            <input id="flight-to" type="text" placeholder="To (e.g. Tokyo, London, Paris)" value="Tokyo (TYO)" class="h-11 px-4 rounded-xl bg-slate-900 border border-white/10 text-xs text-white outline-none">
+            <button onclick="bookFlightDeep()" class="teal-btn h-11 rounded-xl text-xs flex items-center justify-center gap-2">
+              <i class="fa-solid fa-magnifying-glass"></i> Book Flights Now ↗
+            </button>
+          </div>
+        </div>
       </div>
     </div>
 
