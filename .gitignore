@@ -13,3 +13,5 @@ write_clean.py
 *.secret
 telegram_bot_config.json
 .venv/
+chrome_temp_profile/
+*.txt
