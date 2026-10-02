@@ -1536,18 +1536,37 @@
       </div>
     </div>
 
-    <!-- Pricing & Checkout Button -->
-    <div class="pt-5 border-t border-white/10 mt-6 space-y-3">
+    <!-- Pricing & Checkout Buttons (Stripe, PayPal, ResellPortal) -->
+    <div class="pt-5 border-t border-white/10 mt-6 space-y-2.5">
       <div class="flex items-center justify-between">
         <span class="text-xs text-slate-400 font-bold">Calculated Price:</span>
         <span id="modal-esim-price" class="text-2xl font-black text-emerald-400">$4.00 USD</span>
       </div>
-      <button onclick="submitModalOrder()" class="teal-btn w-full h-12 rounded-xl text-xs font-black flex items-center justify-center gap-2">
-        <i class="fa-solid fa-lock"></i>
-        <span>Complete Instant eSIM Purchase</span>
+      
+      <!-- Primary: Stripe Card & Apple/Google Pay -->
+      <button onclick="payWithStripe(event)" class="teal-btn w-full h-11 rounded-xl text-xs font-black flex items-center justify-center gap-2">
+        <i class="fa-solid fa-credit-card"></i>
+        <span>Pay with Card · Apple Pay / Google Pay</span>
       </button>
-      <div class="text-[10px] text-center text-slate-500">
-        Card (Stripe), Apple Pay, Google Pay & bKash Supported
+
+      <!-- Secondary: PayPal Checkout -->
+      <button onclick="payWithPaypal(event)" class="w-full h-11 rounded-xl text-xs font-black flex items-center justify-center gap-2 bg-[#0070BA] hover:bg-[#005ea6] text-white transition">
+        <i class="fa-brands fa-paypal text-sm"></i>
+        <span>Pay with PayPal Checkout</span>
+      </button>
+
+      <!-- Tertiary: Official ResellPortal Wholesale -->
+      <button onclick="submitModalOrder()" class="w-full h-9 rounded-xl text-[11px] font-semibold flex items-center justify-center gap-1.5 bg-white/5 hover:bg-white/10 text-slate-300 transition border border-white/10">
+        <i class="fa-solid fa-store text-emerald-400"></i>
+        <span>Open ResellPortal Wholesale Store</span>
+      </button>
+
+      <div class="text-[10px] text-center text-slate-400 pt-1 flex items-center justify-center gap-3">
+        <span><i class="fa-solid fa-shield-halved text-emerald-400"></i> 256-bit SSL</span>
+        <span>•</span>
+        <span>Stripe Verified</span>
+        <span>•</span>
+        <span>PayPal Protected</span>
       </div>
     </div>
   </div>
@@ -2661,6 +2680,71 @@
 
     function updateModalPrice() {
       document.getElementById('modal-esim-price').textContent = `${formatMoney(selectedModalPlanPrice)} ${currentCurrency}`;
+    }
+
+    async function payWithStripe(e) {
+      const email = (document.getElementById('modal-esim-email')?.value || '').trim();
+      if (!email || !email.includes('@')) {
+        alert("Please enter a valid email address to receive your instant eSIM QR code.");
+        document.getElementById('modal-esim-email')?.focus();
+        return;
+      }
+      const btn = e ? e.currentTarget : null;
+      if (btn) {
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing Stripe...';
+        btn.disabled = true;
+      }
+      try {
+        const res = await fetch('/create-payment-intent', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            packageCode: activeModalPackageCode || 'GLOBAL-1GB-7D',
+            amount: selectedModalPlanPrice,
+            buyerEmail: email,
+            buyerName: 'Traveler Customer'
+          })
+        });
+        const data = await res.json();
+        const targetUrl = `https://traveltripworld.appserviceportal.com/?item=${encodeURIComponent(activeModalEsimTitle)}&sku=${encodeURIComponent(activeModalPackageCode)}&email=${encodeURIComponent(email)}&order_id=${encodeURIComponent(data.orderId || '')}&pay=stripe`;
+        window.location.href = targetUrl;
+      } catch (err) {
+        window.location.href = `https://traveltripworld.appserviceportal.com/?item=${encodeURIComponent(activeModalEsimTitle)}&sku=${encodeURIComponent(activeModalPackageCode)}&email=${encodeURIComponent(email)}&pay=stripe`;
+      }
+    }
+
+    async function payWithPaypal(e) {
+      const email = (document.getElementById('modal-esim-email')?.value || '').trim();
+      if (!email || !email.includes('@')) {
+        alert("Please enter a valid email address to receive your instant eSIM QR code.");
+        document.getElementById('modal-esim-email')?.focus();
+        return;
+      }
+      const btn = e ? e.currentTarget : null;
+      if (btn) {
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing PayPal...';
+        btn.disabled = true;
+      }
+      try {
+        const res = await fetch('/create-paypal-order', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            packageCode: activeModalPackageCode || 'GLOBAL-1GB-7D',
+            amount: selectedModalPlanPrice,
+            buyerEmail: email,
+            buyerName: 'Traveler Customer'
+          })
+        });
+        const data = await res.json();
+        if (data.approval_url) {
+          window.location.href = data.approval_url;
+        } else {
+          window.location.href = `https://traveltripworld.appserviceportal.com/?item=${encodeURIComponent(activeModalEsimTitle)}&sku=${encodeURIComponent(activeModalPackageCode)}&email=${encodeURIComponent(email)}&pay=paypal`;
+        }
+      } catch (err) {
+        window.location.href = `https://traveltripworld.appserviceportal.com/?item=${encodeURIComponent(activeModalEsimTitle)}&sku=${encodeURIComponent(activeModalPackageCode)}&email=${encodeURIComponent(email)}&pay=paypal`;
+      }
     }
 
     function submitModalOrder() {
