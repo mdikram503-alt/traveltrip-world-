@@ -1016,14 +1016,17 @@
   <!-- eSIM Store (190+ Countries) -->
   <section id="esim-store" class="relative py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
     <div class="text-center mb-12">
-      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-400/30 text-xs font-extrabold uppercase tracking-widest text-emerald-400 mb-3">
-        <i class="fa-solid fa-sim-card"></i> Instant Global High-Speed 5G
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-400/30 text-xs font-extrabold uppercase tracking-widest text-emerald-400 mb-3 shadow-lg shadow-emerald-500/10">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span id="esim-api-badge">ResellPortal Wholesale Live Sync</span>
+        <span class="text-slate-500">•</span>
+        <span id="esim-api-count" class="text-white font-bold">117+ Packages</span>
       </div>
       <h2 class="text-3xl sm:text-5xl font-display font-black tracking-tight">
         eSIM Store • <span class="teal-gradient-text">190+ Countries</span>
       </h2>
       <p class="mt-3 text-slate-400 max-w-xl mx-auto text-sm sm:text-base">
-        No passport required. No identity verification. Instant QR code delivered to your email in 30 seconds. Connect upon landing in every corner of the world.
+        Directly connected to wholesale carrier networks via ResellPortal API. Instant GSMA QR code delivered in 30 seconds with 5G multi-carrier roaming.
       </p>
 
       <!-- Region Filter Tabs -->
@@ -1806,8 +1809,81 @@
 
   <!-- JavaScript Application Logic -->
   <script>
-    // Embedded eSIM Packages Data
-    window.ESIM_PACKAGES = [{"id": "asia-18-1", "title": "Asia 18 Countries Pack", "flag": "\ud83c\udf0f", "data": "1GB", "validity": "7 days", "validityNum": 7, "network": "Multi 5G", "coverage": ["18 Countries"], "countriesCount": 18, "price": 4, "originalPrice": 6, "badge": "Best Seller", "region": "asia", "popular": true, "countryKey": "regional"}, {"id": "asia-18-5", "title": "Asia 18 Countries Pack", "flag": "\ud83c\udf0f", "data": "5GB", "validity": "30 days", "validityNum": 30, "network": "Multi 5G", "coverage": ["18 Countries"], "countriesCount": 18, "price": 13.5, "originalPrice": 18, "badge": "Most Popular", "region": "asia", "popular": true, "countryKey": "regional"}, {"id": "asia-10", "title": "Asia 10GB Pack", "flag": "\ud83c\udf0f", "data": "10GB", "validity": "30 days", "validityNum": 30, "network": "Premium 5G", "coverage": ["10 Countries"], "countriesCount": 10, "price": 22, "originalPrice": 29, "region": "asia", "countryKey": "regional"}, {"id": "asia-jp-1", "title": "Japan", "flag": "\ud83c\uddef\ud83c\uddf5", "data": "1GB", "validity": "7 days", "validityNum": 7, "network": "Docomo 5G", "coverage": ["Japan"], "countriesCount": 1, "price": 4, "originalPrice": 6.5, "badge": "Best Seller", "region": "asia", "popular": true, "countryKey": "Japan"}, {"id": "asia-jp-unl", "title": "Japan", "flag": "\ud83c\uddef\ud83c\uddf5", "data": "Unlimited", "validity": "10 days", "validityNum": 10, "network": "SoftBank 5G", "coverage": ["Japan"], "countriesCount": 1, "price": 19.9, "badge": "Unlimited", "region": "asia", "countryKey": "Japan"}, {"id": "asia-sg-1", "title": "Singapore", "flag": "\ud83c\uddf8\ud83c\uddec", "data": "1GB", "validity": "7 days", "validityNum": 7, "network": "Singtel 5G", "coverage": ["Singapore"], "countriesCount": 1, "price": 3.5, "originalPrice": 5, "region": "asia", "countryKey": "Singapore"}, {"id": "asia-th-50", "title": "Thailand", "flag": "\ud83c\uddf9\ud83c\udded", "data": "50GB", "validity": "10 days", "validityNum": 10, "network": "AIS 5G", "coverage": ["Thailand"], "countriesCount": 1, "price": 9.9, "badge": "Flash Deal", "region": "asia", "popular": true, "countryKey": "Thailand"}, {"id": "asia-in-3", "title": "India", "flag": "\ud83c\uddee\ud83c\uddf3", "data": "3GB", "validity": "15 days", "validityNum": 15, "network": "Jio 5G", "coverage": ["India"], "countriesCount": 1, "price": 5.5, "originalPrice": 8, "region": "asia", "countryKey": "India"}, {"id": "asia-kr-5", "title": "South Korea", "flag": "\ud83c\uddf0\ud83c\uddf7", "data": "5GB", "validity": "15 days", "validityNum": 15, "network": "SK Telecom 5G", "coverage": ["South Korea"], "countriesCount": 1, "price": 7.5, "region": "asia", "countryKey": "South Korea"}, {"id": "asia-my-3", "title": "Malaysia", "flag": "\ud83c\uddf2\ud83c\uddfe", "data": "3GB", "validity": "10 days", "validityNum": 10, "network": "Celcom 5G", "coverage": ["Malaysia"], "countriesCount": 1, "price": 5, "region": "asia", "countryKey": "Malaysia"}, {"id": "eu-33-1", "title": "Europe 33 Countries Pack", "flag": "\ud83c\uddea\ud83c\uddfa", "data": "1GB", "validity": "7 days", "validityNum": 7, "network": "Vodafone 5G", "coverage": ["33 Countries"], "countriesCount": 33, "price": 4.5, "originalPrice": 7, "region": "europe", "popular": true, "countryKey": "regional"}, {"id": "eu-5", "title": "Europe 33 Countries Pack", "flag": "\ud83c\uddea\ud83c\uddfa", "data": "5GB", "validity": "30 days", "validityNum": 30, "network": "Telekom 5G", "coverage": ["33 Countries"], "countriesCount": 33, "price": 14, "badge": "Pro", "region": "europe", "popular": true, "countryKey": "regional"}, {"id": "eu-20", "title": "Europe 20GB Pack", "flag": "\ud83c\uddea\ud83c\uddfa", "data": "20GB", "validity": "30 days", "validityNum": 30, "network": "Multi 5G", "coverage": ["All Europe"], "countriesCount": 33, "price": 19, "originalPrice": 26, "badge": "Most Popular", "region": "europe", "popular": true, "countryKey": "regional"}, {"id": "eu-uk-20", "title": "United Kingdom", "flag": "\ud83c\uddec\ud83c\udde7", "data": "20GB", "validity": "30 days", "validityNum": 30, "network": "EE 5G", "coverage": ["UK"], "countriesCount": 1, "price": 12, "originalPrice": 16, "region": "europe", "countryKey": "UK"}, {"id": "eu-tr-10", "title": "Turkey", "flag": "\ud83c\uddf9\ud83c\uddf7", "data": "10GB", "validity": "15 days", "validityNum": 15, "network": "Turkcell 5G", "coverage": ["Turkey"], "countriesCount": 1, "price": 8.5, "region": "europe", "countryKey": "Turkey"}, {"id": "eu-de-10", "title": "Germany", "flag": "\ud83c\udde9\ud83c\uddea", "data": "10GB", "validity": "15 days", "validityNum": 15, "network": "Telekom 5G", "coverage": ["Germany"], "countriesCount": 1, "price": 9.5, "region": "europe", "countryKey": "Germany"}, {"id": "eu-fr-10", "title": "France", "flag": "\ud83c\uddeb\ud83c\uddf7", "data": "10GB", "validity": "15 days", "validityNum": 15, "network": "Orange 5G", "coverage": ["France"], "countriesCount": 1, "price": 9.5, "region": "europe", "countryKey": "France"}, {"id": "eu-it-10", "title": "Italy", "flag": "\ud83c\uddee\ud83c\uddf9", "data": "10GB", "validity": "15 days", "validityNum": 15, "network": "TIM 5G", "coverage": ["Italy"], "countriesCount": 1, "price": 9.5, "region": "europe", "countryKey": "Italy"}, {"id": "eu-es-10", "title": "Spain", "flag": "\ud83c\uddea\ud83c\uddf8", "data": "10GB", "validity": "15 days", "validityNum": 15, "network": "Telefonica 5G", "coverage": ["Spain"], "countriesCount": 1, "price": 9.5, "region": "europe", "countryKey": "Spain"}, {"id": "me-gcc-1", "title": "Gulf GCC 6 Countries Pack", "flag": "\ud83c\udfdc\ufe0f", "data": "1GB", "validity": "7 days", "validityNum": 7, "network": "Etisalat 5G", "coverage": ["GCC 6"], "countriesCount": 6, "price": 6, "originalPrice": 9, "region": "middleeast", "countryKey": "regional"}, {"id": "me-gcc-3", "title": "Gulf GCC 6 Pack", "flag": "\ud83c\udfdc\ufe0f", "data": "3GB", "validity": "15 days", "validityNum": 15, "network": "STC 5G", "coverage": ["GCC 6"], "countriesCount": 6, "price": 12, "region": "middleeast", "countryKey": "regional"}, {"id": "me-uae-1", "title": "Dubai UAE", "flag": "\ud83c\udde6\ud83c\uddea", "data": "1GB", "validity": "7 days", "validityNum": 7, "network": "Etisalat 5G", "coverage": ["UAE - Dubai"], "countriesCount": 1, "price": 6.5, "badge": "Best Seller", "region": "middleeast", "popular": true, "countryKey": "UAE - Dubai"}, {"id": "me-uae-unl", "title": "Dubai UAE", "flag": "\ud83c\udde6\ud83c\uddea", "data": "Unlimited", "validity": "7 days", "validityNum": 7, "network": "Du 5G", "coverage": ["UAE"], "countriesCount": 1, "price": 24.9, "badge": "Unlimited", "region": "middleeast", "countryKey": "UAE - Dubai"}, {"id": "me-sa-5", "title": "Saudi Arabia", "flag": "\ud83c\uddf8\ud83c\udde6", "data": "5GB", "validity": "15 days", "validityNum": 15, "network": "STC 5G", "coverage": ["Saudi Arabia"], "countriesCount": 1, "price": 11, "region": "middleeast", "countryKey": "Saudi Arabia"}, {"id": "me-qa-3", "title": "Qatar", "flag": "\ud83c\uddf6\ud83c\udde6", "data": "3GB", "validity": "10 days", "validityNum": 10, "network": "Ooredoo 5G", "coverage": ["Qatar"], "countriesCount": 1, "price": 9, "region": "middleeast", "countryKey": "Qatar"}, {"id": "me-kw-2", "title": "Kuwait", "flag": "\ud83c\uddf0\ud83c\uddfc", "data": "2GB", "validity": "7 days", "validityNum": 7, "network": "Zain 5G", "coverage": ["Kuwait"], "countriesCount": 1, "price": 7, "region": "middleeast", "countryKey": "Kuwait"}, {"id": "me-bh-2", "title": "Bahrain", "flag": "\ud83c\udde7\ud83c\udded", "data": "2GB", "validity": "7 days", "validityNum": 7, "network": "Batelco 5G", "coverage": ["Bahrain"], "countriesCount": 1, "price": 7, "region": "middleeast", "countryKey": "Bahrain"}, {"id": "na-us-3", "title": "USA", "flag": "\ud83c\uddfa\ud83c\uddf8", "data": "3GB", "validity": "15 days", "validityNum": 15, "network": "T-Mobile 5G", "coverage": ["USA"], "countriesCount": 1, "price": 8, "originalPrice": 11, "region": "northamerica", "popular": true, "countryKey": "USA"}, {"id": "na-us-unl", "title": "USA", "flag": "\ud83c\uddfa\ud83c\uddf8", "data": "Unlimited", "validity": "15 days", "validityNum": 15, "network": "Verizon 5G", "coverage": ["USA"], "countriesCount": 1, "price": 29.9, "badge": "Unlimited", "region": "northamerica", "countryKey": "USA"}, {"id": "na-us-20", "title": "USA", "flag": "\ud83c\uddfa\ud83c\uddf8", "data": "20GB", "validity": "30 days", "validityNum": 30, "network": "AT&T 5G", "coverage": ["USA"], "countriesCount": 1, "price": 24, "originalPrice": 32, "region": "northamerica", "countryKey": "USA"}, {"id": "na-ca-5", "title": "Canada", "flag": "\ud83c\udde8\ud83c\udde6", "data": "5GB", "validity": "15 days", "validityNum": 15, "network": "Rogers 5G", "coverage": ["Canada"], "countriesCount": 1, "price": 11, "region": "northamerica", "countryKey": "Canada"}, {"id": "gl-190-1", "title": "Global 190 Countries Pack", "flag": "\ud83c\udf0d", "data": "1GB", "validity": "7 days", "validityNum": 7, "network": "Global 5G", "coverage": ["190 Countries"], "countriesCount": 190, "price": 8, "badge": "Global", "region": "global", "popular": true, "countryKey": "regional"}, {"id": "gl-5", "title": "Global 5GB Pack", "flag": "\ud83c\udf0d", "data": "5GB", "validity": "15 days", "validityNum": 15, "network": "Global 5G", "coverage": ["190 Countries"], "countriesCount": 190, "price": 24, "badge": "Global", "region": "global", "countryKey": "regional"}, {"id": "gl-unl-100", "title": "Unlimited World 30D", "flag": "\ud83c\udf10", "data": "100GB", "validity": "30 days", "validityNum": 30, "network": "Elite Global 5G", "coverage": ["190+ Countries"], "countriesCount": 190, "price": 49.9, "originalPrice": 79, "badge": "Unlimited + Global", "region": "global", "popular": true, "countryKey": "regional"}, {"id": "oc-au-5", "title": "Australia", "flag": "\ud83c\udde6\ud83c\uddfa", "data": "5GB", "validity": "15 days", "validityNum": 15, "network": "Telstra 5G", "coverage": ["Australia"], "countriesCount": 1, "price": 10, "badge": "Oceania", "region": "oceania", "countryKey": "Australia"}, {"id": "oc-nz-5", "title": "New Zealand", "flag": "\ud83c\uddf3\ud83c\uddff", "data": "5GB", "validity": "15 days", "validityNum": 15, "network": "Spark 5G", "coverage": ["New Zealand"], "countriesCount": 1, "price": 11, "region": "oceania", "countryKey": "New Zealand"}, {"id": "lat-br-5", "title": "Brazil", "flag": "\ud83c\udde7\ud83c\uddf7", "data": "5GB", "validity": "15 days", "validityNum": 15, "network": "Vivo 5G", "coverage": ["Brazil"], "countriesCount": 1, "price": 11, "badge": "Latin America", "region": "latam", "countryKey": "Brazil"}, {"id": "lat-mx-5", "title": "Mexico", "flag": "\ud83c\uddf2\ud83c\uddfd", "data": "5GB", "validity": "15 days", "validityNum": 15, "network": "Telcel 5G", "coverage": ["Mexico"], "countriesCount": 1, "price": 11, "region": "latam", "countryKey": "Mexico"}, {"id": "af-za-3", "title": "South Africa", "flag": "\ud83c\uddff\ud83c\udde6", "data": "3GB", "validity": "15 days", "validityNum": 15, "network": "Vodacom 5G", "coverage": ["South Africa"], "countriesCount": 1, "price": 9.5, "region": "africa", "countryKey": "South Africa"}, {"id": "af-eg-3", "title": "Egypt", "flag": "\ud83c\uddea\ud83c\uddec", "data": "3GB", "validity": "10 days", "validityNum": 10, "network": "Orange 5G", "coverage": ["Egypt"], "countriesCount": 1, "price": 8, "region": "africa", "countryKey": "Egypt"}];
+    // Embedded ResellPortal Fallback Packages
+    window.ESIM_PACKAGES = [
+      {"id": "UAE-1GB-3D", "packageCode": "UAE-1GB-3D", "title": "UAE & Dubai 1GB", "flag": "🇦🇪", "data": "1 GB", "validity": "3 Days", "network": "e& (Etisalat)/du 5G", "price": 3.90, "originalPrice": 6.00, "region": "middleeast", "popular": true, "countryKey": "UAE"},
+      {"id": "UAE-5GB-15D", "packageCode": "UAE-5GB-15D", "title": "UAE & Dubai 5GB", "flag": "🇦🇪", "data": "5 GB", "validity": "15 Days", "network": "e& (Etisalat)/du 5G", "price": 16.50, "originalPrice": 22.00, "badge": "Best Seller", "region": "middleeast", "popular": true, "countryKey": "UAE"},
+      {"id": "BD-1GB-7D", "packageCode": "BD-1GB-7D", "title": "Bangladesh 1GB", "flag": "🇧🇩", "data": "1 GB", "validity": "7 Days", "network": "Grameenphone/Robi 4G/5G", "price": 4.50, "originalPrice": 7.00, "badge": "Best Value", "region": "asia", "popular": true, "countryKey": "Bangladesh"},
+      {"id": "IN-3GB-7D", "packageCode": "IN-3GB-7D", "title": "India 3GB", "flag": "🇮🇳", "data": "3 GB", "validity": "7 Days", "network": "Jio/Airtel 5G", "price": 7.50, "originalPrice": 11.00, "badge": "Popular", "region": "asia", "popular": true, "countryKey": "India"},
+      {"id": "EU-5GB-30D", "packageCode": "EU-5GB-30D", "title": "Europe 33 Countries 5GB", "flag": "🇪🇺", "data": "5 GB", "validity": "30 Days", "network": "Vodafone/Telekom 5G", "price": 14.00, "originalPrice": 19.00, "badge": "Euro Travel", "region": "europe", "popular": true, "countryKey": "Europe"},
+      {"id": "EU-10GB-30D", "packageCode": "EU-10GB-30D", "title": "Europe 33 Countries 10GB", "flag": "🇪🇺", "data": "10 GB", "validity": "30 Days", "network": "Vodafone/Telekom 5G", "price": 22.50, "originalPrice": 29.00, "badge": "Most Popular", "region": "europe", "popular": true, "countryKey": "Europe"},
+      {"id": "US-3GB-7D", "packageCode": "US-3GB-7D", "title": "USA 3GB Explorer", "flag": "🇺🇸", "data": "3 GB", "validity": "7 Days", "network": "T-Mobile/AT&T 5G", "price": 8.00, "originalPrice": 12.00, "badge": "USA 5G", "region": "northamerica", "popular": true, "countryKey": "USA"},
+      {"id": "US-10GB-30D", "packageCode": "US-10GB-30D", "title": "USA 10GB Unlimited", "flag": "🇺🇸", "data": "10 GB", "validity": "30 Days", "network": "T-Mobile/AT&T 5G", "price": 24.00, "originalPrice": 34.00, "badge": "Pro", "region": "northamerica", "popular": true, "countryKey": "USA"},
+      {"id": "GLOBAL-5GB-30D", "packageCode": "GLOBAL-5GB-30D", "title": "Global 130+ Countries 5GB", "flag": "🌐", "data": "5 GB", "validity": "30 Days", "network": "Tier-1 Roaming", "price": 28.00, "originalPrice": 38.00, "badge": "Global Roam", "region": "global", "popular": true, "countryKey": "Global"}
+    ];
+
+    let currentRegion = 'all';
+    let isResellPortalLive = false;
+
+    // ResellPortal Wholesale API Integration
+    async function fetchResellPortalCatalog(locFilter = 'ALL') {
+      const badgeText = document.getElementById('esim-api-badge');
+      const badgeCount = document.getElementById('esim-api-count');
+      try {
+        const queryLoc = locFilter === 'all' || locFilter === 'popular' ? 'ALL' : locFilter;
+        const res = await fetch(`/api/packages?location=${encodeURIComponent(queryLoc)}`);
+        if (res.ok) {
+          const json = await res.json();
+          if (json && json.packages && json.packages.length > 0) {
+            isResellPortalLive = json.supplier_live || true;
+            const FLAG_MAP = {
+              'BD': '🇧🇩', 'IN': '🇮🇳', 'PK': '🇵🇰', 'UAE': '🇦🇪', 'AE': '🇦🇪',
+              'OM': '🇴🇲', 'QA': '🇶🇦', 'EU': '🇪🇺', 'ASIA': '🌏', 'GLOBAL': '🌐',
+              'TH': '🇹🇭', 'US': '🇺🇸', 'JP': '🇯🇵', 'SG': '🇸🇬', 'MY': '🇲🇾', 'KR': '🇰🇷'
+            };
+
+            const liveList = json.packages.map(p => {
+              const r = (p.region || 'GLOBAL').toUpperCase();
+              const flag = FLAG_MAP[r] || (p.name.includes('Bangladesh') ? '🇧🇩' : (p.name.includes('India') ? '🇮🇳' : (p.name.includes('Dubai') || p.name.includes('UAE') ? '🇦🇪' : (p.name.includes('Europe') ? '🇪🇺' : (p.name.includes('USA') ? '🇺🇸' : '📱')))));
+              const price = parseFloat(p.priceUsd) || 4.0;
+              return {
+                id: p.packageCode,
+                packageCode: p.packageCode,
+                title: p.name,
+                flag: flag,
+                data: p.data,
+                validity: p.validity,
+                network: p.network || "Tier-1 Carrier 5G",
+                price: price,
+                originalPrice: Math.round(price * 1.35 * 10) / 10,
+                region: mapPkgRegion(r),
+                badge: p.unlimited ? "Unlimited 5G" : (price < 5 ? "Wholesale ⚡" : "Wholesale Tier"),
+                popular: p.unlimited || price < 7 || p.packageCode.includes('1GB') || p.packageCode.includes('5GB'),
+                countryKey: p.name
+              };
+            });
+
+            if (liveList.length > 0) {
+              window.ESIM_PACKAGES = liveList;
+              if (badgeCount) badgeCount.textContent = `${liveList.length} Live Wholesale Plans`;
+              if (badgeText) badgeText.textContent = isResellPortalLive ? "ResellPortal Wholesale Live Sync" : "ResellPortal Inventory Verified";
+              renderEsimGrid();
+            }
+          }
+        }
+      } catch (err) {
+        console.warn("ResellPortal sync notice:", err);
+      }
+    }
+
+    function mapPkgRegion(r) {
+      r = (r || '').toUpperCase();
+      if (['BD', 'IN', 'PK', 'ASIA', 'TH', 'JP', 'SG', 'MY', 'KR'].includes(r)) return 'asia';
+      if (['EU', 'FR', 'DE', 'IT', 'ES', 'UK'].includes(r)) return 'europe';
+      if (['UAE', 'AE', 'OM', 'QA', 'SA', 'KW', 'BH'].includes(r)) return 'middleeast';
+      if (['US', 'CA'].includes(r)) return 'northamerica';
+      return 'global';
+    }
 
     // Trip.com Affiliate Base URLs
     const TRIP_BASE = "https://www.trip.com/";
@@ -2352,6 +2428,27 @@
       window.open(deepUrl, '_blank');
     }
 
+    function buyEsimPack(titleEnc, price, flag, networkEnc, packageCode) {
+      const title = decodeURIComponent(titleEnc);
+      const network = decodeURIComponent(networkEnc || '');
+      openEsimModal(title, price, flag, network, packageCode);
+    }
+
+    function filterEsimRegion(region) {
+      currentRegion = region;
+      document.querySelectorAll('.esim-filter-btn').forEach(btn => {
+        btn.className = 'esim-filter-btn px-4 py-2 rounded-full text-xs font-semibold border border-white/10 glass-card text-slate-300 hover:text-white';
+      });
+      if (window.event && window.event.target) {
+        window.event.target.closest('button').className = 'esim-filter-btn active px-4 py-2 rounded-full text-xs font-extrabold border border-emerald-400/60 bg-emerald-500/10 text-emerald-300';
+      }
+      renderEsimGrid();
+    }
+
+    function filterEsimBySearch() {
+      renderEsimGrid();
+    }
+
     function renderEsimGrid() {
       const grid = document.getElementById('esim-grid');
       const search = (document.getElementById('esim-search-input')?.value || '').trim().toLowerCase();
@@ -2364,13 +2461,13 @@
       }
 
       if (search) {
-        list = list.filter(p => p.title.toLowerCase().includes(search) || (p.countryKey || '').toLowerCase().includes(search));
+        list = list.filter(p => (p.title || '').toLowerCase().includes(search) || (p.countryKey || '').toLowerCase().includes(search) || (p.packageCode || '').toLowerCase().includes(search));
       }
 
       if (list.length === 0) {
         grid.innerHTML = `
           <div class="col-span-full py-12 text-center text-slate-400 text-sm">
-            No eSIM packages match your filter. Showing all 190+ packages...
+            No eSIM packages match your filter. Showing all available packages...
           </div>
         `;
         return;
@@ -2379,23 +2476,26 @@
       grid.innerHTML = list.map(p => `
         <div class="glass-card glass-card-hover rounded-2xl p-5 border border-white/10 flex flex-col justify-between">
           <div>
-            <div class="flex items-center justify-between">
+            <div class="flex items-center justify-between gap-2">
               <span class="text-2xl">${p.flag || "📱"}</span>
-              ${p.badge ? `<span class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-extrabold text-[10px]">${p.badge}</span>` : `<span class="text-[10px] text-slate-400 font-bold">${p.validity}</span>`}
+              <div class="flex items-center gap-1.5 flex-wrap justify-end">
+                ${p.packageCode ? `<span class="font-mono text-[9px] px-1.5 py-0.5 rounded bg-white/5 text-slate-400 border border-white/5">${p.packageCode}</span>` : ''}
+                ${p.badge ? `<span class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-extrabold text-[10px]">${p.badge}</span>` : `<span class="text-[10px] text-slate-400 font-bold">${p.validity}</span>`}
+              </div>
             </div>
             <h4 class="font-display font-black text-base text-white mt-3">${p.title}</h4>
             <div class="flex items-center gap-2 mt-2">
               <span class="px-2 py-1 rounded-lg bg-white/5 text-emerald-400 font-black text-sm">${p.data}</span>
-              <span class="text-xs text-slate-400 font-medium">${p.network || "High Speed 5G"}</span>
+              <span class="text-xs text-slate-400 font-medium truncate max-w-[150px]">${p.network || "High Speed 5G"}</span>
             </div>
           </div>
 
           <div class="mt-5 pt-3 border-t border-white/5 flex items-center justify-between">
             <div>
-              <div class="text-lg font-black text-white">$${p.price} <span class="text-[10px] text-slate-400">USD</span></div>
-              ${p.originalPrice ? `<div class="text-[10px] text-slate-500 line-through">$${p.originalPrice}</div>` : ''}
+              <div class="text-lg font-black text-white">${formatMoney(p.price)} <span class="text-[10px] text-slate-400">${currentCurrency}</span></div>
+              ${p.originalPrice ? `<div class="text-[10px] text-slate-500 line-through">${formatMoney(p.originalPrice)}</div>` : ''}
             </div>
-            <button onclick="buyEsimPack('${p.title}', ${p.price})" class="teal-btn h-9 px-3.5 rounded-xl text-xs flex items-center gap-1.5">
+            <button onclick="buyEsimPack('${encodeURIComponent(p.title)}', ${p.price}, '${p.flag}', '${encodeURIComponent(p.network || '')}', '${p.packageCode || ''}')" class="teal-btn h-9 px-3.5 rounded-xl text-xs flex items-center gap-1.5">
               <span>Buy eSIM</span>
               <i class="fa-solid fa-arrow-right text-[10px]"></i>
             </button>
@@ -2517,16 +2617,24 @@
       `;
     }
 
-    // In-Page eSIM Purchase Modal Logic
+    // In-Page eSIM Purchase Modal Logic (ResellPortal Integration)
     let selectedModalPlanPrice = 4;
     let activeModalEsimTitle = "Global eSIM";
+    let activeModalPackageCode = "";
 
-    function openEsimModal(title, price, flag, network) {
-      activeModalEsimTitle = title;
+    function openEsimModal(title, price, flag, network, packageCode) {
+      activeModalEsimTitle = title || "eSIM Package";
+      activeModalPackageCode = packageCode || "";
       selectedModalPlanPrice = price || 4;
-      document.getElementById('modal-esim-title').textContent = title;
-      document.getElementById('modal-esim-flag').textContent = flag || "📱";
-      document.getElementById('modal-esim-network').textContent = network || "High Speed 5G";
+
+      const titleEl = document.getElementById('modal-esim-title');
+      const flagEl = document.getElementById('modal-esim-flag');
+      const netEl = document.getElementById('modal-esim-network');
+
+      if (titleEl) titleEl.textContent = title;
+      if (flagEl) flagEl.textContent = flag || "📱";
+      if (netEl) netEl.textContent = `${network || "High Speed 5G"} ${packageCode ? '• SKU: ' + packageCode : ''}`;
+
       updateModalPrice();
 
       document.getElementById('esim-modal').classList.remove('hidden');
@@ -2544,8 +2652,10 @@
         b.classList.remove('active', 'border-emerald-500', 'bg-emerald-500/10');
         b.classList.add('border-white/10', 'bg-slate-800');
       });
-      event.target.closest('button').classList.add('active', 'border-emerald-500', 'bg-emerald-500/10');
-      event.target.closest('button').classList.remove('border-white/10', 'bg-slate-800');
+      if (window.event && window.event.target) {
+        window.event.target.closest('button').classList.add('active', 'border-emerald-500', 'bg-emerald-500/10');
+        window.event.target.closest('button').classList.remove('border-white/10', 'bg-slate-800');
+      }
       updateModalPrice();
     }
 
@@ -2560,7 +2670,9 @@
         document.getElementById('modal-esim-email').focus();
         return;
       }
-      window.location.href = `https://traveltripworld.appserviceportal.com/?item=${encodeURIComponent(activeModalEsimTitle)}&email=${encodeURIComponent(email)}`;
+      
+      const targetUrl = `https://traveltripworld.appserviceportal.com/?item=${encodeURIComponent(activeModalEsimTitle)}&sku=${encodeURIComponent(activeModalPackageCode)}&email=${encodeURIComponent(email)}`;
+      window.location.href = targetUrl;
     }
 
     // One Checkout Tray Live Calculation
@@ -3212,6 +3324,7 @@
         ['switchHubTab', () => switchHubTab('flights')],
         ['renderDestinations', renderDestinations],
         ['renderEsimGrid', renderEsimGrid],
+        ['fetchResellPortalCatalog', () => fetchResellPortalCatalog('ALL')],
         ['generateAIItinerary', generateAIItinerary],
         ['runVisaCheck', runVisaCheck],
         ['recalculateCheckout', recalculateCheckout],

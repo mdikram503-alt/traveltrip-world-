@@ -9,6 +9,41 @@
       "permanent": true
     },
     {
+      "source": "/packages",
+      "destination": "/#esim-store",
+      "permanent": true
+    },
+    {
+      "source": "/esim-bangladesh",
+      "destination": "/esim/bangladesh",
+      "permanent": true
+    },
+    {
+      "source": "/esim-india",
+      "destination": "/esim/india",
+      "permanent": true
+    },
+    {
+      "source": "/esim-oman",
+      "destination": "/esim/oman",
+      "permanent": true
+    },
+    {
+      "source": "/esim-pakistan",
+      "destination": "/esim/pakistan",
+      "permanent": true
+    },
+    {
+      "source": "/esim-qatar",
+      "destination": "/esim/qatar",
+      "permanent": true
+    },
+    {
+      "source": "/esim-uae",
+      "destination": "/esim/uae",
+      "permanent": true
+    },
+    {
       "source": "/checkout",
       "destination": "https://traveltripworld.appserviceportal.com/",
       "permanent": false
