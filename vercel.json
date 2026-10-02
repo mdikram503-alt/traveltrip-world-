@@ -97,6 +97,42 @@
       "destination": "/social.html"
     },
     {
+      "source": "/create-payment-intent",
+      "destination": "/api"
+    },
+    {
+      "source": "/create-paypal-order",
+      "destination": "/api"
+    },
+    {
+      "source": "/flights",
+      "destination": "/api"
+    },
+    {
+      "source": "/hotels",
+      "destination": "/api"
+    },
+    {
+      "source": "/tours",
+      "destination": "/api"
+    },
+    {
+      "source": "/visa",
+      "destination": "/api"
+    },
+    {
+      "source": "/wallet",
+      "destination": "/api"
+    },
+    {
+      "source": "/vip",
+      "destination": "/api"
+    },
+    {
+      "source": "/membership",
+      "destination": "/api"
+    },
+    {
       "source": "/api/(.*)",
       "destination": "/api"
     },

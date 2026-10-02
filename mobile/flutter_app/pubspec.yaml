@@ -1,0 +1,38 @@
+name: traveltrip_world
+description: "TravelTrip.World - International Travel Super App, eSIM Marketplace, Flights, Hotels, Visa & AI Planner"
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # Payment Gateways (Stripe & PayPal)
+  flutter_stripe: ^11.0.0
+  webview_flutter: ^4.8.0
+  http: ^1.2.0
+
+  # UI, Icons, Typography
+  google_fonts: ^6.2.1
+  font_awesome_flutter: ^10.7.0
+  cached_network_image: ^3.3.1
+  intl: ^0.19.0
+  qr_flutter: ^4.1.0
+
+  # State Management & Persistence
+  provider: ^6.1.2
+  shared_preferences: ^2.2.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/
+    - assets/icons/

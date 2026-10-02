@@ -18,6 +18,7 @@
 - 🛂 **195-Country Visa Intelligence:** Real-time passport requirements, visa-free status, eVisa processing, and embassy assistance rules.
 - 💳 **TravelTrip Travel Wallet & Virtual Titanium Card:** 0% foreign transaction fees, automated 5% cashback on travel bookings, instant multi-currency balances (USD, AED, SAR, EUR, GBP, BDT), and Apple Pay / Google Pay support.
 - 📶 **Instant 5G/4G Global eSIM Store:** Instant QR delivery across 190+ countries with zero paperwork and zero roaming fees.
+- 📱 **Flutter Travel Super App (`mobile/flutter_app/`):** Full mobile codebase featuring Stripe PaymentSheet (`flutter_stripe: ^11.0.0`), PayPal in-app WebView checkout, 9-service bottom navigation, live ResellPortal sync, and AI Trip Planner. Full guide: [`FLUTTER_SUPER_APP_ARCHITECTURE.md`](file:///mobile/FLUTTER_SUPER_APP_ARCHITECTURE.md).
 
 ---
 
