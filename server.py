@@ -958,10 +958,12 @@ STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY") or os.environ.get("STRIP
 @app.route("/api/checkout/stripe/config", methods=["GET"])
 @app.route("/checkout/stripe/config", methods=["GET"])
 def stripe_config():
+    is_live = bool(STRIPE_SECRET_KEY and STRIPE_SECRET_KEY.startswith("sk_live_"))
     return jsonify({
-        "publishableKey": STRIPE_PUBLISHABLE_KEY or "pk_test_51MockTravelTripKey00000000000",
+        "publishableKey": STRIPE_PUBLISHABLE_KEY or "",
         "currency": "USD",
-        "live": bool(STRIPE_PUBLISHABLE_KEY and STRIPE_SECRET_KEY)
+        "live": is_live,
+        "configured": bool(STRIPE_PUBLISHABLE_KEY and STRIPE_SECRET_KEY)
     })
 
 @app.route("/api/checkout/stripe/create-payment-intent", methods=["POST"])
@@ -1033,19 +1035,12 @@ def stripe_create_payment_intent():
     )
 
     if not STRIPE_SECRET_KEY:
-        # Development / Sandbox mode fallback when keys are pending setup
-        mock_client_secret = f"pi_mock_{secrets.token_hex(12)}_secret_{secrets.token_hex(8)}"
         return jsonify({
-            "clientSecret": mock_client_secret,
-            "paymentIntentId": f"pi_mock_{secrets.token_hex(12)}",
-            "orderId": order_id,
-            "amount": price_usd,
-            "currency": "USD",
-            "publishableKey": STRIPE_PUBLISHABLE_KEY or "pk_test_traveltrip_dev",
-            "note": "Stripe test sandbox mode active. Configure STRIPE_SECRET_KEY in .env for production processing."
-        })
+            "error": "Payment gateway configuration required. Please contact support to complete your order.",
+            "code": "STRIPE_NOT_CONFIGURED"
+        }), 503
     
-    # Call Stripe API
+    # Call Stripe API with automatic payment methods (Cards, Apple Pay, Google Pay)
     stripe_endpoint = "https://api.stripe.com/v1/payment_intents"
     post_params = {
         "amount": str(amount_cents),
@@ -1055,7 +1050,7 @@ def stripe_create_payment_intent():
         "metadata[order_id]": order_id,
         "metadata[package_code]": package_code,
         "metadata[buyer_email]": buyer_email,
-        "payment_method_types[0]": "card"
+        "automatic_payment_methods[enabled]": "true"
     }
     encoded_data = urllib.parse.urlencode(post_params).encode("utf-8")
     req = urllib.request.Request(
@@ -1079,9 +1074,9 @@ def stripe_create_payment_intent():
             })
     except urllib.error.HTTPError as err:
         err_body = err.read().decode("utf-8", errors="ignore")
-        return jsonify({"error": f"Stripe Error: {err_body}"}), 400
+        return jsonify({"error": f"Stripe Gateway Error: {err_body}"}), 400
     except Exception as ex:
-        return jsonify({"error": str(ex)}), 500
+        return jsonify({"error": f"Payment initialization failed: {str(ex)}"}), 500
 
 @app.route("/api/checkout/stripe/confirm-payment", methods=["POST"])
 @app.route("/checkout/stripe/confirm-payment", methods=["POST"])
@@ -1101,26 +1096,28 @@ def stripe_confirm_payment():
 
     is_live_paid = False
     if not STRIPE_SECRET_KEY:
-        # Development / Sandbox mode fallback when live keys are pending
-        update_order_payment(order_id, "paid", payment_intent_id or f"pi_dev_{secrets.token_hex(8)}", details={"gateway": "stripe_sandbox", "captured_at": time.time()})
-    else:
-        # Verify with Stripe
-        stripe_verify_url = f"https://api.stripe.com/v1/payment_intents/{payment_intent_id}"
-        req = urllib.request.Request(
-            stripe_verify_url,
-            headers={"Authorization": f"Bearer {STRIPE_SECRET_KEY}"}
-        )
-        try:
-            with urllib.request.urlopen(req, timeout=12) as response:
-                pi_data = json.loads(response.read().decode("utf-8"))
-                if pi_data.get("status") in ("succeeded", "processing"):
-                    is_live_paid = True
-                else:
-                    return jsonify({"error": f"Payment is not confirmed. Current status: {pi_data.get('status')}"}), 400
-        except Exception as ex:
-            pass
-            
-        update_order_payment(order_id, "paid", payment_intent_id, details={"gateway": "stripe", "captured_at": time.time()})
+        return jsonify({"error": "Payment gateway configuration required. Unverified orders cannot be fulfilled."}), 503
+
+    # Verify real payment status directly with Stripe API
+    stripe_verify_url = f"https://api.stripe.com/v1/payment_intents/{payment_intent_id}"
+    req = urllib.request.Request(
+        stripe_verify_url,
+        headers={"Authorization": f"Bearer {STRIPE_SECRET_KEY}"}
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=12) as response:
+            pi_data = json.loads(response.read().decode("utf-8"))
+            if pi_data.get("status") in ("succeeded", "processing"):
+                is_live_paid = True
+            else:
+                return jsonify({"error": f"Payment was not completed. Current status: {pi_data.get('status')}"}), 400
+    except urllib.error.HTTPError as err:
+        err_msg = err.read().decode("utf-8", errors="ignore")
+        return jsonify({"error": f"Stripe verification failed: {err_msg}"}), 400
+    except Exception as ex:
+        return jsonify({"error": f"Stripe connection error: {str(ex)}"}), 400
+        
+    update_order_payment(order_id, "paid", payment_intent_id, details={"gateway": "stripe", "captured_at": time.time()})
     
     provision_result = SupplierService.provision_esim(
         package_code=order["package_code"],

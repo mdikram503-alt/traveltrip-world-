@@ -153,8 +153,8 @@ export default async function handler(req, res) {
       return res.status(200).send('OK');
     }
 
-    // D. Buy / Order / bKash
-    if (lower.startsWith('/buy') || lower.includes('buy') || lower.includes('bkash') || lower.includes('nagad') || lower.includes('order') || lower.includes('2')) {
+    // D. Buy / Order / Cards / Apple Pay
+    if (lower.startsWith('/buy') || lower.includes('buy') || lower.includes('card') || lower.includes('pay') || lower.includes('order') || lower.includes('2')) {
       await sendBuyInstructions(chatId);
       return res.status(200).send('OK');
     }
@@ -191,7 +191,7 @@ export default async function handler(req, res) {
       `We provide instant 5G eSIM for <b>190+ Countries</b> with instant QR delivery in 30 seconds.\n\n` +
       `📌 <b>Quick Options:</b>\n` +
       `• Reply <b>1</b> for eSIM Plans & Prices\n` +
-      `• Reply <b>2</b> for bKash / Nagad / Card Payment\n` +
+      `• Reply <b>2</b> for Cards / Apple Pay / PayPal\n` +
       `• Reply <b>3</b> for 24/7 Human Support\n` +
       `• Reply <b>4</b> to Open Website`,
       getMainKeyboard()
@@ -212,7 +212,7 @@ function getMainKeyboard() {
   return {
     reply_markup: {
       keyboard: [
-        [{ text: '🛍️ Browse eSIM Plans' }, { text: '💳 Buy eSIM (bKash/Nagad)' }],
+        [{ text: '🛍️ Browse eSIM Plans' }, { text: '💳 Buy eSIM (Cards / Apple Pay)' }],
         [{ text: '🌍 190+ Countries' }, { text: '💬 24/7 Human Support' }],
         [{ text: '🚀 Open Website (TravelTrip.world)' }]
       ],
@@ -230,7 +230,7 @@ async function sendMainMenu(chatId, prefix = '') {
     `⚡ 190+ Countries Instant 5G Data\n` +
     `⚡ QR Code in 30 Seconds to your Gmail\n` +
     `⚡ No ID Card • No Passport • 100% Safe\n` +
-    `💳 Payment: <b>bKash, Nagad, Card & Apple Pay</b>\n\n` +
+    `💳 Payment: <b>Cards, Apple Pay, Google Pay & PayPal</b>\n\n` +
     `👇 <b>Choose an option below:</b>`;
 
   const inlineKeyboard = {
@@ -274,7 +274,7 @@ async function sendPlansList(chatId) {
           { text: '🛒 Select & Buy on Website', web_app: { url: `${WEBSITE_URL}/destinations` } }
         ],
         [
-          { text: '💳 Pay via bKash / Nagad', callback_data: 'action_buy' },
+          { text: '💳 Pay via Card / Apple Pay', callback_data: 'action_buy' },
           { text: '💬 Order on WhatsApp', url: WHATSAPP_URL }
         ]
       ]
@@ -286,11 +286,11 @@ async function sendPlansList(chatId) {
 
 async function sendBuyInstructions(chatId) {
   const text =
-    `💳 <b>How to Buy eSIM with bKash, Nagad or Card:</b>\n\n` +
-    `1️⃣ <b>Direct Online (Fastest):</b>\n` +
-    `Open <a href="${WEBSITE_URL}/checkout">TravelTrip Checkout</a>, enter your Gmail & select bKash/Nagad or Card. Instant QR in 30 seconds!\n\n` +
-    `2️⃣ <b>Via WhatsApp (Manual Assistance):</b>\n` +
-    `Message our 24/7 agent at <b>+971524413931</b>. Send country name + bKash/Nagad payment screenshot. Your eSIM QR will be sent immediately!\n\n` +
+    `💳 <b>How to Buy eSIM with Cards, Apple Pay & PayPal:</b>\n\n` +
+    `1️⃣ <b>Direct Online (Instant):</b>\n` +
+    `Open <a href="${WEBSITE_URL}/checkout">TravelTrip Checkout</a>, enter your Gmail & pay with Visa, Mastercard, Apple Pay, Google Pay or PayPal. Instant QR delivered to your email in 30 seconds!\n\n` +
+    `2️⃣ <b>Via WhatsApp (24/7 Concierge):</b>\n` +
+    `Message our 24/7 concierge at <b>+971524413931</b> for instant personal assistance!\n\n` +
     `✅ 100% Money-back Guarantee | 24/7 Human Concierge`;
 
   const inlineKeyboard = {

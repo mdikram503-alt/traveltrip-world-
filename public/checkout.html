@@ -540,27 +540,7 @@ div[id*="vercel"] {
               <button type="button" class="wallet-badge badge-visa" onclick="clickWalletBadge('visa')">💳 Visa</button>
               <button type="button" class="wallet-badge badge-mastercard" onclick="clickWalletBadge('mastercard')">💳 Mastercard</button>
               <button type="button" class="wallet-badge badge-cards" onclick="clickWalletBadge('card')">💳 Amex / Other</button>
-              <button type="button" class="wallet-badge" style="background: #E11D48; color: #FFFFFF;" onclick="document.querySelector('.local-pay-box').scrollIntoView({behavior: 'smooth'})">🇧🇩 bKash / Nagad</button>
-            </div>
-
-            <!-- bKash / Nagad Local Payment Box -->
-            <div class="local-pay-box" style="background: linear-gradient(135deg, #FFF1F2, #FDF2F8); border: 2px dashed #E11D48; border-radius: 14px; padding: 20px; margin: 18px 0; font-family: 'Plus Jakarta Sans', system-ui, sans-serif;">
-              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px;">
-                <div style="font-size: 16px; font-weight: 800; color: #9F1239; display: flex; align-items: center; gap: 8px;">
-                  <span>🇧🇩</span> বিকাশ বা নগদ দিয়ে কিনতে চান?
-                </div>
-                <span style="background: #E11D48; color: white; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 6px; text-transform: uppercase;">কার্ড ছাড়া সহজ অর্ডার</span>
-              </div>
-              <p style="font-size: 13.5px; color: #4C0519; line-height: 1.5; margin-bottom: 12px;">
-                আপনার কাছে আন্তর্জাতিক ক্রেডিট কার্ড না থাকলেও কোনো সমস্যা নেই! সরাসরি বিকাশ অথবা নগদে সেন্ড মানি করে ২ মিনিটের মধ্যে WhatsApp এ আপনার eSIM QR কোড পেয়ে যান।
-              </p>
-              <div style="background: #FFFFFF; border: 1px solid #FECDD3; border-radius: 8px; padding: 10px 14px; margin-bottom: 14px; font-size: 13.5px; color: #0F172A;">
-                <div>📱 <b>বিকাশ পার্সোনাল:</b> <strong style="color: #BE123C;">01836089766</strong> (Send Money)</div>
-                <div style="margin-top: 4px;">📱 <b>নগদ পার্সোনাল:</b> <strong style="color: #BE123C;">01836089766</strong> (Send Money)</div>
-              </div>
-              <a href="https://wa.me/971524413931?text=Assalamu%20Alaikum,%20ami%20bKash%20diye%20eSIM%20kitte%20chai" target="_blank" style="background: #25D366; color: white; border: none; padding: 11px 20px; border-radius: 8px; font-weight: 800; font-size: 14px; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 14px rgba(37, 211, 102, 0.4);">
-                <span>💬</span> সরাসরি WhatsApp এ কথা বলে অর্ডার করুন ➔
-              </a>
+              <button type="button" class="wallet-badge" style="background: #0070BA; color: #FFFFFF;" onclick="clickWalletBadge('paypal')">🅿️ PayPal</button>
             </div>
 
             <!-- Apple Pay / Google Pay Express Button -->
@@ -582,31 +562,31 @@ div[id*="vercel"] {
 
             <!-- Card Element -->
             <div id="card-container">
-              <div class="form-group">
-                <label class="form-label">Card Number</label>
-                <div style="position: relative;">
-                  <input id="direct-card-number" type="text" class="form-input" placeholder="•••• •••• •••• ••••" maxlength="19" value="4242 •••• •••• 4242">
-                  <span style="position: absolute; right: 12px; top: 12px; font-size: 16px;">💳</span>
+              <div id="card-element-wrapper" style="background: #FFFFFF; border: 1.5px solid #CBD5E1; border-radius: 12px; padding: 14px 16px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); transition: border-color 0.2s;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                  <label class="form-label" style="margin: 0; font-size: 13px; font-weight: 700; color: #334155;">Card Information</label>
+                  <span style="font-size: 11.5px; color: #10B981; font-weight: 700; display: inline-flex; align-items: center; gap: 4px;">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg> 256-Bit SSL Encrypted
+                  </span>
+                </div>
+                <div id="card-element" style="min-height: 40px; padding: 4px 0;">
+                  <!-- Stripe.js mounts authentic PCI-compliant bank card element here -->
                 </div>
               </div>
 
-              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px;">
-                <div>
-                  <label class="form-label">Expiration</label>
-                  <input id="direct-card-exp" type="text" class="form-input" placeholder="MM / YY" maxlength="7" value="12/28">
-                </div>
-                <div>
-                  <label class="form-label">CVC / CVV</label>
-                  <input id="direct-card-cvc" type="password" class="form-input" placeholder="CVC" maxlength="4" value="888">
-                </div>
-              </div>
-
-              <div id="card-element" style="display: none;"></div>
-              <div id="card-errors" style="color: #EF4444; font-size: 13px; margin-top: 6px;"></div>
+              <div id="card-errors" style="color: #EF4444; font-size: 13px; margin-bottom: 12px; font-weight: 600;"></div>
 
               <button id="stripe-pay-button" type="button" class="btn-pay-main" onclick="handleStripePayment()">
                 <span>🔒</span> Complete Secure Payment
               </button>
+
+              <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 14px; font-size: 11.5px; color: #64748B; flex-wrap: wrap;">
+                <span>🔒 Powered by <b>Stripe</b></span>
+                <span>•</span>
+                <span>Visa / Mastercard / Amex / Discover</span>
+                <span>•</span>
+                <span>PCI-DSS Level 1 Compliant</span>
+              </div>
             </div>
 
             <!-- PayPal Element -->
@@ -1045,8 +1025,12 @@ div[id*="vercel"] {
       } catch (err) {
         console.warn("Could not load Stripe config:", err);
       }
-      if (!pk || pk.includes("Mock") || pk.includes("traveltrip_dev")) {
-        console.info("Direct card input mode active.");
+      if (!pk) {
+        console.warn("Stripe publishable key is not configured.");
+        const displayError = document.getElementById("card-errors");
+        if (displayError) {
+          displayError.innerHTML = "🔒 <b>Payment Notice:</b> Real Stripe payment gateway credentials must be configured to process transactions.";
+        }
         return;
       }
       stripe = Stripe(pk);
@@ -1207,6 +1191,11 @@ div[id*="vercel"] {
   }
 
   function clickWalletBadge(type) {
+    if (type === 'paypal') {
+      selectPaymentMethod('paypal');
+      showStatus("🅿️ PayPal selected. Use the PayPal option below to complete your checkout.", "info");
+      return;
+    }
     selectPaymentMethod('card');
     const directCardInput = document.getElementById('direct-card-number');
     const prContainer = document.getElementById('payment-request-container');
@@ -1275,22 +1264,27 @@ div[id*="vercel"] {
 
       let paymentIntentId = data.paymentIntentId || ("pi_" + Date.now());
 
-      // If live Stripe is loaded with real publishable key and cardElement is mounted
-      if (stripe && cardElement && data.clientSecret && !data.clientSecret.startsWith("pi_mock_")) {
-        showStatus("Authorizing card payment with your bank...", "info");
-        const stripeRes = await stripe.confirmCardPayment(data.clientSecret, {
-          payment_method: {
-            card: cardElement,
-            billing_details: { name: buyerName, email: buyerEmail }
-          }
-        });
-        if (stripeRes.error) {
-          throw new Error(stripeRes.error.message);
-        }
-        if (stripeRes.paymentIntent) {
-          paymentIntentId = stripeRes.paymentIntent.id;
-        }
+      if (!stripe || !cardElement) {
+        throw new Error("Stripe payment gateway is not loaded. Please verify Stripe configuration.");
       }
+      if (!data.clientSecret) {
+        throw new Error("Could not initialize Stripe Payment Intent.");
+      }
+
+      showStatus("Authorizing payment securely with your bank...", "info");
+      const stripeRes = await stripe.confirmCardPayment(data.clientSecret, {
+        payment_method: {
+          card: cardElement,
+          billing_details: { name: buyerName, email: buyerEmail }
+        }
+      });
+      if (stripeRes.error) {
+        throw new Error(stripeRes.error.message);
+      }
+      if (!stripeRes.paymentIntent || (stripeRes.paymentIntent.status !== "succeeded" && stripeRes.paymentIntent.status !== "processing")) {
+        throw new Error("Payment was not completed. Please try another card.");
+      }
+      paymentIntentId = stripeRes.paymentIntent.id;
 
       showStatus("Payment approved! Delivering your eSIM...", "info");
 
