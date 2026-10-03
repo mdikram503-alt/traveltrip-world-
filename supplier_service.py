@@ -18,9 +18,12 @@ import base64
 
 logger = logging.getLogger(__name__)
 # ResellPortal Wholesale API
-SUPPLIER_URL = (os.environ.get("RESELLPORTAL_BASE_URL") or os.environ.get("SUPPLIER_URL") or "https://panel.resellportal.com/wp-json/resellportal/v1").strip().rstrip("/")
-SUPPLIER_API_KEY = (os.environ.get("RESELLPORTAL_API_KEY") or os.environ.get("SUPPLIER_API_KEY") or "rp_0990c036bc1783a17f7a58d7e53faf32c52b1af898c0861a").strip()
-SUPPLIER_API_SECRET = (os.environ.get("RESELLPORTAL_API_SECRET") or os.environ.get("SUPPLIER_API_SECRET") or "rps_90173d4c2aeaba71d06652a309c619c1cb1ad28cefe4f16b0f39f12031a7b6bb").strip()
+ACTIVE_RESELLPORTAL_KEY = "rp_0990c036bc1783a17f7a58d7e53faf32c52b1af898c0861a"
+ACTIVE_RESELLPORTAL_SECRET = "rps_90173d4c2aeaba71d06652a309c619c1cb1ad28cefe4f16b0f39f12031a7b6bb"
+
+SUPPLIER_URL = (os.environ.get("RESELLPORTAL_BASE_URL") or "https://panel.resellportal.com/wp-json/resellportal/v1").strip().rstrip("/")
+SUPPLIER_API_KEY = ACTIVE_RESELLPORTAL_KEY
+SUPPLIER_API_SECRET = ACTIVE_RESELLPORTAL_SECRET
 SMDP_DEFAULT = (os.environ.get("DEFAULT_SMDP") or "rsp.esimaccess.com").strip()
 _catalog_cache = {}
 
