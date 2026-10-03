@@ -1016,10 +1016,10 @@
         <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
         <span id="esim-api-badge">TravelTrip World 5G Live Network</span>
         <span class="text-slate-500">•</span>
-        <span id="esim-api-count" class="text-white font-bold">117+ Packages</span>
+        <span id="esim-api-count" class="text-white font-bold">3,184+ Live Plans • 205 Countries</span>
       </div>
       <h2 class="text-3xl sm:text-5xl font-display font-black tracking-tight">
-        eSIM Store • <span class="teal-gradient-text">190+ Countries</span>
+        eSIM Store • <span class="teal-gradient-text">200+ Countries</span>
       </h2>
       <p class="mt-3 text-slate-400 max-w-xl mx-auto text-sm sm:text-base">
         Directly connected to wholesale carrier networks via TravelTrip World Global eSIM API. Instant GSMA QR code delivered in 30 seconds with 5G multi-carrier roaming.
@@ -2079,6 +2079,44 @@
       return '🌐';
     }
 
+    // Comprehensive ISO Country Name Mapping for 200+ Destinations
+    const ISO_COUNTRY_NAMES = {
+      'AD': 'Andorra', 'AE': 'United Arab Emirates', 'AF': 'Afghanistan', 'AG': 'Antigua and Barbuda',
+      'AI': 'Anguilla', 'AL': 'Albania', 'AM': 'Armenia', 'AO': 'Angola', 'AR': 'Argentina',
+      'AT': 'Austria', 'AU': 'Australia', 'AW': 'Aruba', 'AZ': 'Azerbaijan', 'BA': 'Bosnia and Herzegovina',
+      'BB': 'Barbados', 'BD': 'Bangladesh', 'BE': 'Belgium', 'BF': 'Burkina Faso', 'BG': 'Bulgaria',
+      'BH': 'Bahrain', 'BI': 'Burundi', 'BJ': 'Benin', 'BM': 'Bermuda', 'BN': 'Brunei',
+      'BO': 'Bolivia', 'BR': 'Brazil', 'BS': 'Bahamas', 'BT': 'Bhutan', 'BW': 'Botswana',
+      'BY': 'Belarus', 'BZ': 'Belize', 'CA': 'Canada', 'CD': 'DR Congo', 'CF': 'Central African Republic',
+      'CG': 'Congo', 'CH': 'Switzerland', 'CI': 'Ivory Coast', 'CL': 'Chile', 'CM': 'Cameroon',
+      'CN': 'China', 'CO': 'Colombia', 'CR': 'Costa Rica', 'CU': 'Cuba', 'CV': 'Cape Verde',
+      'CY': 'Cyprus', 'CZ': 'Czech Republic', 'DE': 'Germany', 'DK': 'Denmark', 'DM': 'Dominica',
+      'DO': 'Dominican Republic', 'DZ': 'Algeria', 'EC': 'Ecuador', 'EE': 'Estonia', 'EG': 'Egypt',
+      'ES': 'Spain', 'ET': 'Ethiopia', 'FI': 'Finland', 'FJ': 'Fiji', 'FR': 'France',
+      'GA': 'Gabon', 'GB': 'United Kingdom', 'GD': 'Grenada', 'GE': 'Georgia', 'GH': 'Ghana',
+      'GI': 'Gibraltar', 'GL': 'Greenland', 'GM': 'Gambia', 'GN': 'Guinea', 'GR': 'Greece',
+      'GT': 'Guatemala', 'GY': 'Guyana', 'HK': 'Hong Kong', 'HN': 'Honduras', 'HR': 'Croatia',
+      'HT': 'Haiti', 'HU': 'Hungary', 'ID': 'Indonesia', 'IE': 'Ireland', 'IL': 'Israel',
+      'IN': 'India', 'IQ': 'Iraq', 'IS': 'Iceland', 'IT': 'Italy', 'JM': 'Jamaica',
+      'JO': 'Jordan', 'JP': 'Japan', 'KE': 'Kenya', 'KG': 'Kyrgyzstan', 'KH': 'Cambodia',
+      'KR': 'South Korea', 'KW': 'Kuwait', 'KY': 'Cayman Islands', 'KZ': 'Kazakhstan', 'LA': 'Laos',
+      'LB': 'Lebanon', 'LC': 'Saint Lucia', 'LI': 'Liechtenstein', 'LK': 'Sri Lanka', 'LT': 'Lithuania',
+      'LU': 'Luxembourg', 'LV': 'Latvia', 'MA': 'Morocco', 'MC': 'Monaco', 'MD': 'Moldova',
+      'ME': 'Montenegro', 'MG': 'Madagascar', 'MK': 'North Macedonia', 'ML': 'Mali', 'MM': 'Myanmar',
+      'MN': 'Mongolia', 'MO': 'Macao', 'MT': 'Malta', 'MU': 'Mauritius', 'MV': 'Maldives',
+      'MW': 'Malawi', 'MX': 'Mexico', 'MY': 'Malaysia', 'MZ': 'Mozambique', 'NA': 'Namibia',
+      'NE': 'Niger', 'NG': 'Nigeria', 'NI': 'Nicaragua', 'NL': 'Netherlands', 'NO': 'Norway',
+      'NP': 'Nepal', 'NZ': 'New Zealand', 'OM': 'Oman', 'PA': 'Panama', 'PE': 'Peru',
+      'PG': 'Papua New Guinea', 'PH': 'Philippines', 'PK': 'Pakistan', 'PL': 'Poland', 'PR': 'Puerto Rico',
+      'PT': 'Portugal', 'PY': 'Paraguay', 'QA': 'Qatar', 'RO': 'Romania', 'RS': 'Serbia',
+      'RU': 'Russia', 'RW': 'Rwanda', 'SA': 'Saudi Arabia', 'SC': 'Seychelles', 'SE': 'Sweden',
+      'SG': 'Singapore', 'SI': 'Slovenia', 'SK': 'Slovakia', 'SN': 'Senegal', 'SV': 'El Salvador',
+      'TH': 'Thailand', 'TJ': 'Tajikistan', 'TN': 'Tunisia', 'TR': 'Turkey', 'TT': 'Trinidad and Tobago',
+      'TW': 'Taiwan', 'TZ': 'Tanzania', 'UA': 'Ukraine', 'UG': 'Uganda', 'US': 'United States',
+      'UY': 'Uruguay', 'UZ': 'Uzbekistan', 'VE': 'Venezuela', 'VN': 'Vietnam', 'ZA': 'South Africa',
+      'ZM': 'Zambia', 'ZW': 'Zimbabwe', 'EU': 'Europe (33 Countries)', 'GLOBAL': 'Global Roaming (130+ Countries)'
+    };
+
     // Resolves standard Country Entity for grouping
     function getPackageCountryInfo(p) {
       const code = (p.region || '').toUpperCase();
@@ -2135,12 +2173,16 @@
       if (code === 'ASIA' || name.includes('asia')) {
         return { id: 'ASIA', name: 'Asia Multi-Country Roaming', flag: '🌏', flagUrl: 'https://flagcdn.com/w80/un.png', region: 'asia', defaultNetwork: '5G Multi-Carrier Asia' };
       }
+
+      const firstCode = (code.includes(',') ? code.split(',')[0] : code).trim();
+      const mappedName = ISO_COUNTRY_NAMES[firstCode] || (p.title || p.name || 'Global Roaming').split('(')[0].replace(/\d+\s*(?:GB|MB).*/i, '').trim();
+
       return { 
-        id: code || 'GLOBAL', 
-        name: (p.title || p.name || 'Global Roaming').split('(')[0].trim(), 
-        flag: getCountryFlag(code, p.title || p.name), 
-        flagUrl: getCountryFlagUrl(code, p.title || p.name),
-        region: mapPkgRegion(code), 
+        id: firstCode || 'GLOBAL', 
+        name: mappedName || 'Global Roaming', 
+        flag: getCountryFlag(firstCode, mappedName), 
+        flagUrl: getCountryFlagUrl(firstCode, mappedName),
+        region: mapPkgRegion(firstCode), 
         defaultNetwork: 'Tier-1 Worldwide Roaming' 
       };
     }
