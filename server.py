@@ -254,7 +254,12 @@ def handle_options(path):
 # 1. CATALOG ESIM PACKAGES API (Consumed by Web, Android, and iOS Live Shells)
 # ==============================================================================
 
-CATALOG_PACKAGES = {
+_catalog_json_path = os.path.join(os.path.dirname(__file__), "catalog_packages.json")
+try:
+    with open(_catalog_json_path, "r", encoding="utf-8") as _cf:
+        CATALOG_PACKAGES = json.load(_cf)
+except Exception:
+    CATALOG_PACKAGES = {
     "BD": [
         {"packageCode": "BD-1GB-3D", "name": "Bangladesh 1GB (3 Days)", "data": "1 GB", "validity": "3 Days", "network": "Grameenphone/Robi 4G/5G", "priceUsd": "2.80", "unlimited": False},
         {"packageCode": "BD-3GB-3D", "name": "Bangladesh 3GB (3 Days)", "data": "3 GB", "validity": "3 Days", "network": "Grameenphone/Robi 4G/5G", "priceUsd": "4.90", "unlimited": False},
@@ -582,7 +587,16 @@ def get_catalog_destinations():
         "US": {"name": "United States", "flag": "🇺🇸", "currency": "USD"}
     }
     for code, pkgs in CATALOG_PACKAGES.items():
-        meta = dest_metadata.get(code, {"name": code, "flag": "🌍", "currency": "USD"})
+        meta = dest_metadata.get(code)
+        if not meta:
+            if code in ["GLOBAL", "ASIA", "EU"]:
+                flag_emoji = "🌐" if code == "GLOBAL" else ("🇪🇺" if code == "EU" else "🌏")
+            elif len(code) == 2 and code.isalpha():
+                flag_emoji = "".join(chr(0x1F1E6 + ord(c) - ord('A')) for c in code.upper())
+            else:
+                flag_emoji = "🌍"
+            c_name = pkgs[0].get("name", code).split(" 1GB")[0].split(" (")[0] if pkgs else code
+            meta = {"name": c_name, "flag": flag_emoji, "currency": "USD"}
         dest_list.append({
             "code": code,
             "name": meta["name"],

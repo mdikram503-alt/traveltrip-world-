@@ -1019,7 +1019,7 @@
         <span id="esim-api-count" class="text-white font-bold">3,184+ Live Plans • 205 Countries</span>
       </div>
       <h2 class="text-3xl sm:text-5xl font-display font-black tracking-tight">
-        eSIM Store • <span class="teal-gradient-text">200+ Countries</span>
+        eSIM Store • <span class="teal-gradient-text">190+ Countries Live</span>
       </h2>
       <p class="mt-3 text-slate-400 max-w-xl mx-auto text-sm sm:text-base">
         Directly connected to wholesale carrier networks via TravelTrip World Global eSIM API. Instant GSMA QR code delivered in 30 seconds with 5G multi-carrier roaming.
@@ -1027,26 +1027,32 @@
 
       <!-- Region Filter Tabs -->
       <div class="mt-8 flex flex-wrap items-center justify-center gap-2" id="esim-region-tabs">
-        <button onclick="filterEsimRegion('all')" class="esim-filter-btn active px-4 py-2 rounded-full text-xs font-extrabold border border-emerald-400/60 bg-emerald-500/10 text-emerald-300">
-          🌍 All Regions
+        <button onclick="filterEsimRegion('all')" class="esim-filter-btn active px-4 py-2 rounded-full text-xs font-extrabold border border-emerald-400/60 bg-emerald-500/10 text-emerald-300 cursor-pointer">
+          🌍 All 190+ Countries
         </button>
-        <button onclick="filterEsimRegion('popular')" class="esim-filter-btn px-4 py-2 rounded-full text-xs font-semibold border border-white/10 glass-card text-slate-300 hover:text-white">
-          ⭐ Popular Packs
+        <button onclick="filterEsimRegion('popular')" class="esim-filter-btn px-4 py-2 rounded-full text-xs font-semibold border border-white/10 glass-card text-slate-300 hover:text-white cursor-pointer">
+          ⭐ Popular Destinations
         </button>
-        <button onclick="filterEsimRegion('asia')" class="esim-filter-btn px-4 py-2 rounded-full text-xs font-semibold border border-white/10 glass-card text-slate-300 hover:text-white">
+        <button onclick="filterEsimRegion('europe')" class="esim-filter-btn px-4 py-2 rounded-full text-xs font-semibold border border-white/10 glass-card text-slate-300 hover:text-white cursor-pointer">
+          🇪🇺 Europe
+        </button>
+        <button onclick="filterEsimRegion('asia')" class="esim-filter-btn px-4 py-2 rounded-full text-xs font-semibold border border-white/10 glass-card text-slate-300 hover:text-white cursor-pointer">
           🌏 Asia & Pacific
         </button>
-        <button onclick="filterEsimRegion('europe')" class="esim-filter-btn px-4 py-2 rounded-full text-xs font-semibold border border-white/10 glass-card text-slate-300 hover:text-white">
-          🇪🇺 Europe 33+
+        <button onclick="filterEsimRegion('middleeast')" class="esim-filter-btn px-4 py-2 rounded-full text-xs font-semibold border border-white/10 glass-card text-slate-300 hover:text-white cursor-pointer">
+          🕌 Middle East & Gulf
         </button>
-        <button onclick="filterEsimRegion('middleeast')" class="esim-filter-btn px-4 py-2 rounded-full text-xs font-semibold border border-white/10 glass-card text-slate-300 hover:text-white">
-          🕌 Gulf & Middle East
+        <button onclick="filterEsimRegion('americas')" class="esim-filter-btn px-4 py-2 rounded-full text-xs font-semibold border border-white/10 glass-card text-slate-300 hover:text-white cursor-pointer">
+          🌎 Americas
         </button>
-        <button onclick="filterEsimRegion('northamerica')" class="esim-filter-btn px-4 py-2 rounded-full text-xs font-semibold border border-white/10 glass-card text-slate-300 hover:text-white">
-          🇺🇸 USA & Canada
+        <button onclick="filterEsimRegion('africa')" class="esim-filter-btn px-4 py-2 rounded-full text-xs font-semibold border border-white/10 glass-card text-slate-300 hover:text-white cursor-pointer">
+          🌍 Africa
         </button>
-        <button onclick="filterEsimRegion('global')" class="esim-filter-btn px-4 py-2 rounded-full text-xs font-semibold border border-white/10 glass-card text-slate-300 hover:text-white">
-          🌐 190+ Global
+        <button onclick="filterEsimRegion('oceania')" class="esim-filter-btn px-4 py-2 rounded-full text-xs font-semibold border border-white/10 glass-card text-slate-300 hover:text-white cursor-pointer">
+          🏝️ Oceania
+        </button>
+        <button onclick="filterEsimRegion('global')" class="esim-filter-btn px-4 py-2 rounded-full text-xs font-semibold border border-white/10 glass-card text-slate-300 hover:text-white cursor-pointer">
+          🌐 Global Roaming
         </button>
       </div>
 
@@ -2119,59 +2125,70 @@
 
     // Resolves standard Country Entity for grouping
     function getPackageCountryInfo(p) {
+      if (p.countryId && p.countryKey) {
+        return {
+          id: p.countryId,
+          name: p.countryKey,
+          flag: p.flag || getCountryFlag(p.countryId, p.countryKey),
+          flagUrl: p.flagUrl || getCountryFlagUrl(p.countryId, p.countryKey),
+          region: p.region || 'global',
+          defaultNetwork: p.network || 'Tier-1 Worldwide Roaming',
+          popular: !!p.popular
+        };
+      }
       const code = (p.region || '').toUpperCase();
       const name = (p.title || p.name || '').toLowerCase();
       
       if (code === 'BD' || name.includes('bangladesh')) {
-        return { id: 'BD', name: 'Bangladesh', flag: '🇧🇩', flagUrl: 'https://flagcdn.com/w80/bd.png', region: 'asia', defaultNetwork: 'Grameenphone / Robi 4G/5G' };
+        return { id: 'BD', name: 'Bangladesh', flag: '🇧🇩', flagUrl: 'https://flagcdn.com/w80/bd.png', region: 'asia', defaultNetwork: 'Grameenphone / Robi 4G/5G', popular: true };
       }
       if (code === 'UAE' || code === 'AE' || name.includes('uae') || name.includes('dubai')) {
-        return { id: 'UAE', name: 'United Arab Emirates & Dubai', flag: '🇦🇪', flagUrl: 'https://flagcdn.com/w80/ae.png', region: 'middleeast', defaultNetwork: 'e& (Etisalat) / du 5G' };
+        return { id: 'UAE', name: 'United Arab Emirates & Dubai', flag: '🇦🇪', flagUrl: 'https://flagcdn.com/w80/ae.png', region: 'middleeast', defaultNetwork: 'e& (Etisalat) / du 5G', popular: true };
       }
       if (code === 'SA' || name.includes('saudi')) {
-        return { id: 'SA', name: 'Saudi Arabia', flag: '🇸🇦', flagUrl: 'https://flagcdn.com/w80/sa.png', region: 'middleeast', defaultNetwork: 'STC / Mobily 5G' };
+        return { id: 'SA', name: 'Saudi Arabia', flag: '🇸🇦', flagUrl: 'https://flagcdn.com/w80/sa.png', region: 'middleeast', defaultNetwork: 'STC / Mobily 5G', popular: true };
       }
       if (code === 'QA' || name.includes('qatar')) {
-        return { id: 'QA', name: 'Qatar', flag: '🇶🇦', flagUrl: 'https://flagcdn.com/w80/qa.png', region: 'middleeast', defaultNetwork: 'Ooredoo / Vodafone 5G' };
+        return { id: 'QA', name: 'Qatar', flag: '🇶🇦', flagUrl: 'https://flagcdn.com/w80/qa.png', region: 'middleeast', defaultNetwork: 'Ooredoo / Vodafone 5G', popular: true };
       }
       if (code === 'OM' || name.includes('oman')) {
-        return { id: 'OM', name: 'Oman', flag: '🇴🇲', flagUrl: 'https://flagcdn.com/w80/om.png', region: 'middleeast', defaultNetwork: 'Omantel / Ooredoo 5G' };
+        return { id: 'OM', name: 'Oman', flag: '🇴🇲', flagUrl: 'https://flagcdn.com/w80/om.png', region: 'middleeast', defaultNetwork: 'Omantel / Ooredoo 5G', popular: true };
       }
       if (code === 'IN' || name.includes('india')) {
-        return { id: 'IN', name: 'India', flag: '🇮🇳', flagUrl: 'https://flagcdn.com/w80/in.png', region: 'asia', defaultNetwork: 'Jio / Airtel 5G' };
+        return { id: 'IN', name: 'India', flag: '🇮🇳', flagUrl: 'https://flagcdn.com/w80/in.png', region: 'asia', defaultNetwork: 'Jio / Airtel 5G', popular: true };
       }
       if (code === 'PK' || name.includes('pakistan')) {
-        return { id: 'PK', name: 'Pakistan', flag: '🇵🇰', flagUrl: 'https://flagcdn.com/w80/pk.png', region: 'asia', defaultNetwork: 'Jazz / Zong 4G LTE' };
+        return { id: 'PK', name: 'Pakistan', flag: '🇵🇰', flagUrl: 'https://flagcdn.com/w80/pk.png', region: 'asia', defaultNetwork: 'Jazz / Zong 4G LTE', popular: true };
       }
       if (code === 'TH' || name.includes('thailand')) {
-        return { id: 'TH', name: 'Thailand', flag: '🇹🇭', flagUrl: 'https://flagcdn.com/w80/th.png', region: 'asia', defaultNetwork: 'AIS / True 5G' };
+        return { id: 'TH', name: 'Thailand', flag: '🇹🇭', flagUrl: 'https://flagcdn.com/w80/th.png', region: 'asia', defaultNetwork: 'AIS / True 5G', popular: true };
       }
       if (code === 'MY' || name.includes('malaysia')) {
-        return { id: 'MY', name: 'Malaysia', flag: '🇲🇾', flagUrl: 'https://flagcdn.com/w80/my.png', region: 'asia', defaultNetwork: 'Celcom / Digi 5G' };
+        return { id: 'MY', name: 'Malaysia', flag: '🇲🇾', flagUrl: 'https://flagcdn.com/w80/my.png', region: 'asia', defaultNetwork: 'Celcom / Digi 5G', popular: true };
       }
       if (code === 'SG' || name.includes('singapore')) {
-        return { id: 'SG', name: 'Singapore', flag: '🇸🇬', flagUrl: 'https://flagcdn.com/w80/sg.png', region: 'asia', defaultNetwork: 'Singtel / StarHub 5G' };
+        return { id: 'SG', name: 'Singapore', flag: '🇸🇬', flagUrl: 'https://flagcdn.com/w80/sg.png', region: 'asia', defaultNetwork: 'Singtel / StarHub 5G', popular: true };
       }
       if (code === 'JP' || name.includes('japan')) {
-        return { id: 'JP', name: 'Japan', flag: '🇯🇵', flagUrl: 'https://flagcdn.com/w80/jp.png', region: 'asia', defaultNetwork: 'NTT Docomo / SoftBank 5G' };
+        return { id: 'JP', name: 'Japan', flag: '🇯🇵', flagUrl: 'https://flagcdn.com/w80/jp.png', region: 'asia', defaultNetwork: 'NTT Docomo / SoftBank 5G', popular: true };
       }
       if (code === 'TR' || name.includes('turkey') || name.includes('türkiye')) {
-        return { id: 'TR', name: 'Turkey', flag: '🇹🇷', flagUrl: 'https://flagcdn.com/w80/tr.png', region: 'europe', defaultNetwork: 'Turkcell / Vodafone 5G' };
+        return { id: 'TR', name: 'Turkey', flag: '🇹🇷', flagUrl: 'https://flagcdn.com/w80/tr.png', region: 'europe', defaultNetwork: 'Turkcell / Vodafone 5G', popular: true };
       }
       if (code === 'UK' || code === 'GB' || name.includes('united kingdom') || name.includes('london')) {
-        return { id: 'UK', name: 'United Kingdom', flag: '🇬🇧', flagUrl: 'https://flagcdn.com/w80/gb.png', region: 'europe', defaultNetwork: 'EE / Vodafone 5G' };
+        return { id: 'UK', name: 'United Kingdom', flag: '🇬🇧', flagUrl: 'https://flagcdn.com/w80/gb.png', region: 'europe', defaultNetwork: 'EE / Vodafone 5G', popular: true };
       }
       if (code === 'CH' || name.includes('switzerland')) {
-        return { id: 'CH', name: 'Switzerland', flag: '🇨🇭', flagUrl: 'https://flagcdn.com/w80/ch.png', region: 'europe', defaultNetwork: 'Swisscom / Sunrise 5G' };
+        return { id: 'CH', name: 'Switzerland', flag: '🇨🇭', flagUrl: 'https://flagcdn.com/w80/ch.png', region: 'europe', defaultNetwork: 'Swisscom / Sunrise 5G', popular: true };
       }
       if (code === 'US' || name.includes('usa') || name.includes('united states')) {
-        return { id: 'US', name: 'United States', flag: '🇺🇸', flagUrl: 'https://flagcdn.com/w80/us.png', region: 'northamerica', defaultNetwork: 'T-Mobile / AT&T 5G' };
+        return { id: 'US', name: 'United States', flag: '🇺🇸', flagUrl: 'https://flagcdn.com/w80/us.png', region: 'americas', defaultNetwork: 'T-Mobile / AT&T 5G', popular: true };
       }
       if (code === 'EU' || name.includes('europe')) {
-        return { id: 'EU', name: 'Europe (33 Countries)', flag: '🇪🇺', flagUrl: 'https://flagcdn.com/w80/eu.png', region: 'europe', defaultNetwork: 'Vodafone / Telekom 5G' };
+        return { id: 'EU', name: 'Europe (33 Countries)', flag: '🇪🇺', flagUrl: 'https://flagcdn.com/w80/eu.png', region: 'europe', defaultNetwork: 'Vodafone / Telekom 5G', popular: true };
       }
       if (code === 'ASIA' || name.includes('asia')) {
-        return { id: 'ASIA', name: 'Asia Multi-Country Roaming', flag: '🌏', flagUrl: 'https://flagcdn.com/w80/un.png', region: 'asia', defaultNetwork: '5G Multi-Carrier Asia' };
+        return { id: 'ASIA', name: 'Asia Multi-Country Roaming', flag: '🌏', flagUrl: 'https://flagcdn.com/w80/un.png', region: 'asia', defaultNetwork: '5G Multi-Carrier Asia', popular: true };
       }
 
       const firstCode = (code.includes(',') ? code.split(',')[0] : code).trim();
@@ -2183,25 +2200,36 @@
         flag: getCountryFlag(firstCode, mappedName), 
         flagUrl: getCountryFlagUrl(firstCode, mappedName),
         region: mapPkgRegion(firstCode), 
-        defaultNetwork: 'Tier-1 Worldwide Roaming' 
+        defaultNetwork: 'Tier-1 Worldwide Roaming',
+        popular: false
       };
     }
 
-    // Embedded ResellPortal Fallback Packages
-    window.ESIM_PACKAGES = [
-      {"id": "UAE-1GB-3D", "packageCode": "UAE-1GB-3D", "title": "UAE & Dubai 1GB", "flag": "🇦🇪", "data": "1 GB", "validity": "3 Days", "network": "e& (Etisalat)/du 5G", "price": 3.90, "originalPrice": 6.00, "region": "middleeast", "popular": true, "countryKey": "UAE"},
-      {"id": "UAE-5GB-15D", "packageCode": "UAE-5GB-15D", "title": "UAE & Dubai 5GB", "flag": "🇦🇪", "data": "5 GB", "validity": "15 Days", "network": "e& (Etisalat)/du 5G", "price": 16.50, "originalPrice": 22.00, "badge": "Best Seller", "region": "middleeast", "popular": true, "countryKey": "UAE"},
-      {"id": "SA-3GB-7D", "packageCode": "SA-3GB-7D", "title": "Saudi Arabia 3GB", "flag": "🇸🇦", "data": "3 GB", "validity": "7 Days", "network": "STC/Mobily 5G", "price": 7.90, "originalPrice": 12.00, "badge": "Popular", "region": "middleeast", "popular": true, "countryKey": "Saudi"},
-      {"id": "EU-5GB-30D", "packageCode": "EU-5GB-30D", "title": "Europe 33 Countries 5GB", "flag": "🇪🇺", "data": "5 GB", "validity": "30 Days", "network": "Vodafone/Telekom 5G", "price": 14.00, "originalPrice": 19.00, "badge": "Euro Travel", "region": "europe", "popular": true, "countryKey": "Europe"},
-      {"id": "EU-10GB-30D", "packageCode": "EU-10GB-30D", "title": "Europe 33 Countries 10GB", "flag": "🇪🇺", "data": "10 GB", "validity": "30 Days", "network": "Vodafone/Telekom 5G", "price": 22.50, "originalPrice": 29.00, "badge": "Most Popular", "region": "europe", "popular": true, "countryKey": "Europe"},
-      {"id": "US-3GB-7D", "packageCode": "US-3GB-7D", "title": "USA 3GB Explorer", "flag": "🇺🇸", "data": "3 GB", "validity": "7 Days", "network": "T-Mobile/AT&T 5G", "price": 8.00, "originalPrice": 12.00, "badge": "USA 5G", "region": "northamerica", "popular": true, "countryKey": "USA"},
-      {"id": "UK-3GB-7D", "packageCode": "UK-3GB-7D", "title": "United Kingdom 3GB", "flag": "🇬🇧", "data": "3 GB", "validity": "7 Days", "network": "EE/Vodafone 5G", "price": 7.50, "originalPrice": 11.50, "badge": "Popular", "region": "europe", "popular": true, "countryKey": "UK"},
-      {"id": "JP-3GB-7D", "packageCode": "JP-3GB-7D", "title": "Japan 3GB High-Speed", "flag": "🇯🇵", "data": "3 GB", "validity": "7 Days", "network": "NTT Docomo/SoftBank 5G", "price": 7.50, "originalPrice": 12.00, "badge": "Fast 5G", "region": "asia", "popular": true, "countryKey": "Japan"},
-      {"id": "TH-15GB-8D", "packageCode": "TH-15GB-8D", "title": "Thailand Tourist 15GB", "flag": "🇹🇭", "data": "15 GB", "validity": "8 Days", "network": "AIS/True 5G", "price": 5.90, "originalPrice": 9.90, "badge": "Hot Deal", "region": "asia", "popular": true, "countryKey": "Thailand"},
-      {"id": "GLOBAL-5GB-30D", "packageCode": "GLOBAL-5GB-30D", "title": "Global 130+ Countries 5GB", "flag": "🌐", "data": "5 GB", "validity": "30 Days", "network": "Tier-1 Roaming", "price": 28.00, "originalPrice": 38.00, "badge": "Global Roam", "region": "global", "popular": true, "countryKey": "Global"},
-      
-      
-    ];
+    // Comprehensive 203 Countries Catalog (All 190+ World Destinations with National Flags)
+    const WORLD_COUNTRIES = [{"id": "AE", "name": "United Arab Emirates & Dubai", "region": "middleeast", "network": "e& (Etisalat) / du 5G", "price": 3.9, "popular": true}, {"id": "SA", "name": "Saudi Arabia", "region": "middleeast", "network": "STC / Mobily 5G", "price": 4.5, "popular": true}, {"id": "QA", "name": "Qatar", "region": "middleeast", "network": "Ooredoo / Vodafone 5G", "price": 4.2, "popular": true}, {"id": "OM", "name": "Oman", "region": "middleeast", "network": "Omantel / Ooredoo 5G", "price": 4.0, "popular": true}, {"id": "KW", "name": "Kuwait", "region": "middleeast", "network": "Zain / STC 5G", "price": 4.5, "popular": true}, {"id": "BH", "name": "Bahrain", "region": "middleeast", "network": "Batelco / Zain 5G", "price": 4.2, "popular": true}, {"id": "TR", "name": "Turkey", "region": "europe", "network": "Turkcell / Vodafone 5G", "price": 3.9, "popular": true}, {"id": "JO", "name": "Jordan", "region": "middleeast", "network": "Zain / Orange 4G/5G", "price": 4.5, "popular": false}, {"id": "IL", "name": "Israel", "region": "middleeast", "network": "Cellcom / Partner 5G", "price": 4.5, "popular": false}, {"id": "LB", "name": "Lebanon", "region": "middleeast", "network": "Touch / Alfa 4G", "price": 5.0, "popular": false}, {"id": "IQ", "name": "Iraq", "region": "middleeast", "network": "Asiacell / Zain 4G", "price": 5.5, "popular": false}, {"id": "YE", "name": "Yemen", "region": "middleeast", "network": "Yemen Mobile / YOU 4G", "price": 7.5, "popular": false}, {"id": "GB", "name": "United Kingdom", "region": "europe", "network": "EE / Vodafone 5G", "price": 4.2, "popular": true}, {"id": "FR", "name": "France", "region": "europe", "network": "Orange / SFR 5G", "price": 4.2, "popular": true}, {"id": "DE", "name": "Germany", "region": "europe", "network": "Telekom / Vodafone 5G", "price": 4.2, "popular": true}, {"id": "IT", "name": "Italy", "region": "europe", "network": "TIM / Vodafone 5G", "price": 4.2, "popular": true}, {"id": "ES", "name": "Spain", "region": "europe", "network": "Movistar / Vodafone 5G", "price": 4.2, "popular": true}, {"id": "CH", "name": "Switzerland", "region": "europe", "network": "Swisscom / Sunrise 5G", "price": 4.5, "popular": true}, {"id": "NL", "name": "Netherlands", "region": "europe", "network": "KPN / Vodafone 5G", "price": 4.2, "popular": true}, {"id": "BE", "name": "Belgium", "region": "europe", "network": "Proximus / Orange 5G", "price": 4.2, "popular": false}, {"id": "AT", "name": "Austria", "region": "europe", "network": "A1 / Magenta 5G", "price": 4.2, "popular": false}, {"id": "PT", "name": "Portugal", "region": "europe", "network": "MEO / Vodafone 5G", "price": 4.2, "popular": true}, {"id": "GR", "name": "Greece", "region": "europe", "network": "Cosmote / Vodafone 5G", "price": 4.2, "popular": true}, {"id": "IE", "name": "Ireland", "region": "europe", "network": "Vodafone / Three 5G", "price": 4.2, "popular": false}, {"id": "SE", "name": "Sweden", "region": "europe", "network": "Telia / Tele2 5G", "price": 4.2, "popular": false}, {"id": "NO", "name": "Norway", "region": "europe", "network": "Telenor / Telia 5G", "price": 4.5, "popular": false}, {"id": "DK", "name": "Denmark", "region": "europe", "network": "TDC / Telenor 5G", "price": 4.2, "popular": false}, {"id": "FI", "name": "Finland", "region": "europe", "network": "Elisa / DNA 5G", "price": 4.2, "popular": false}, {"id": "PL", "name": "Poland", "region": "europe", "network": "Orange / Play 5G", "price": 3.9, "popular": false}, {"id": "CZ", "name": "Czech Republic", "region": "europe", "network": "T-Mobile / O2 5G", "price": 3.9, "popular": false}, {"id": "HU", "name": "Hungary", "region": "europe", "network": "Telekom / Yettel 5G", "price": 3.9, "popular": false}, {"id": "RO", "name": "Romania", "region": "europe", "network": "Orange / Vodafone 5G", "price": 3.9, "popular": false}, {"id": "BG", "name": "Bulgaria", "region": "europe", "network": "A1 / Vivacom 5G", "price": 3.9, "popular": false}, {"id": "HR", "name": "Croatia", "region": "europe", "network": "Hrvatski Telekom / A1 5G", "price": 4.2, "popular": false}, {"id": "CY", "name": "Cyprus", "region": "europe", "network": "Cyta / Epic 5G", "price": 4.2, "popular": false}, {"id": "IS", "name": "Iceland", "region": "europe", "network": "Siminn / Vodafone 5G", "price": 4.5, "popular": false}, {"id": "MT", "name": "Malta", "region": "europe", "network": "Epic / Melita 5G", "price": 4.2, "popular": false}, {"id": "LU", "name": "Luxembourg", "region": "europe", "network": "POST / Tango 5G", "price": 4.2, "popular": false}, {"id": "EE", "name": "Estonia", "region": "europe", "network": "Telia / Elisa 5G", "price": 3.9, "popular": false}, {"id": "LV", "name": "Latvia", "region": "europe", "network": "LMT / Tele2 5G", "price": 3.9, "popular": false}, {"id": "LT", "name": "Lithuania", "region": "europe", "network": "Telia / Bite 5G", "price": 3.9, "popular": false}, {"id": "SK", "name": "Slovakia", "region": "europe", "network": "Orange / Telekom 5G", "price": 3.9, "popular": false}, {"id": "SI", "name": "Slovenia", "region": "europe", "network": "Telekom Slovenije / A1 5G", "price": 3.9, "popular": false}, {"id": "AL", "name": "Albania", "region": "europe", "network": "Vodafone / ONE 4G/5G", "price": 4.2, "popular": false}, {"id": "BA", "name": "Bosnia and Herzegovina", "region": "europe", "network": "BH Telecom / m:tel 4G", "price": 4.5, "popular": false}, {"id": "RS", "name": "Serbia", "region": "europe", "network": "Yettel / MTS 4G/5G", "price": 4.2, "popular": false}, {"id": "ME", "name": "Montenegro", "region": "europe", "network": "Telekom / One 4G/5G", "price": 4.2, "popular": false}, {"id": "MK", "name": "North Macedonia", "region": "europe", "network": "Makedonski Telekom / A1 4G", "price": 4.2, "popular": false}, {"id": "MD", "name": "Moldova", "region": "europe", "network": "Orange / Moldcell 4G", "price": 4.2, "popular": false}, {"id": "UA", "name": "Ukraine", "region": "europe", "network": "Kyivstar / Vodafone 4G", "price": 3.9, "popular": false}, {"id": "GE", "name": "Georgia", "region": "europe", "network": "MagtiCom / Silknet 4G/5G", "price": 4.2, "popular": false}, {"id": "AM", "name": "Armenia", "region": "europe", "network": "Viva-MTS / Team Telecom 4G", "price": 4.2, "popular": false}, {"id": "AZ", "name": "Azerbaijan", "region": "europe", "network": "Azercell / Bakcell 4G/5G", "price": 4.2, "popular": false}, {"id": "BY", "name": "Belarus", "region": "europe", "network": "A1 / MTS 4G", "price": 4.2, "popular": false}, {"id": "AD", "name": "Andorra", "region": "europe", "network": "Andorra Telecom 4G/5G", "price": 5.0, "popular": false}, {"id": "MC", "name": "Monaco", "region": "europe", "network": "Monaco Telecom 5G", "price": 5.0, "popular": false}, {"id": "SM", "name": "San Marino", "region": "europe", "network": "TIM San Marino 5G", "price": 5.0, "popular": false}, {"id": "VA", "name": "Vatican City", "region": "europe", "network": "TIM / Vodafone 5G", "price": 5.0, "popular": false}, {"id": "LI", "name": "Liechtenstein", "region": "europe", "network": "Telecom FL / Salt 5G", "price": 5.0, "popular": false}, {"id": "GI", "name": "Gibraltar", "region": "europe", "network": "Gibtelecom 4G/5G", "price": 5.0, "popular": false}, {"id": "FO", "name": "Faroe Islands", "region": "europe", "network": "Føroya Tele 4G/5G", "price": 5.5, "popular": false}, {"id": "GL", "name": "Greenland", "region": "europe", "network": "Tusass 4G", "price": 6.5, "popular": false}, {"id": "JP", "name": "Japan", "region": "asia", "network": "NTT Docomo / SoftBank 5G", "price": 4.2, "popular": true}, {"id": "KR", "name": "South Korea", "region": "asia", "network": "SK Telecom / KT 5G", "price": 4.2, "popular": true}, {"id": "SG", "name": "Singapore", "region": "asia", "network": "Singtel / StarHub 5G", "price": 3.9, "popular": true}, {"id": "MY", "name": "Malaysia", "region": "asia", "network": "CelcomDigi / Maxis 5G", "price": 3.8, "popular": true}, {"id": "TH", "name": "Thailand", "region": "asia", "network": "AIS / True 5G", "price": 3.8, "popular": true}, {"id": "ID", "name": "Indonesia", "region": "asia", "network": "Telkomsel / Indosat 5G", "price": 3.8, "popular": true}, {"id": "VN", "name": "Vietnam", "region": "asia", "network": "Viettel / Vinaphone 5G", "price": 3.8, "popular": true}, {"id": "PH", "name": "Philippines", "region": "asia", "network": "Globe / Smart 5G", "price": 3.9, "popular": true}, {"id": "CN", "name": "China", "region": "asia", "network": "China Mobile / China Telecom 5G", "price": 4.5, "popular": true}, {"id": "HK", "name": "Hong Kong", "region": "asia", "network": "CSL / CMHK 5G", "price": 3.9, "popular": true}, {"id": "MO", "name": "Macao", "region": "asia", "network": "CTM / SmarTone 5G", "price": 4.0, "popular": false}, {"id": "TW", "name": "Taiwan", "region": "asia", "network": "Chunghwa / Taiwan Mobile 5G", "price": 4.0, "popular": true}, {"id": "BD", "name": "Bangladesh", "region": "asia", "network": "Grameenphone / Robi 4G/5G", "price": 3.5, "popular": true}, {"id": "IN", "name": "India", "region": "asia", "network": "Jio / Airtel 5G", "price": 3.5, "popular": true}, {"id": "PK", "name": "Pakistan", "region": "asia", "network": "Jazz / Zong 4G LTE", "price": 3.5, "popular": true}, {"id": "LK", "name": "Sri Lanka", "region": "asia", "network": "Dialog / Mobitel 4G", "price": 3.8, "popular": false}, {"id": "NP", "name": "Nepal", "region": "asia", "network": "Ncell / Nepal Telecom 4G", "price": 4.2, "popular": false}, {"id": "MV", "name": "Maldives", "region": "asia", "network": "Dhiraagu / Ooredoo 5G", "price": 4.9, "popular": true}, {"id": "KH", "name": "Cambodia", "region": "asia", "network": "Smart / Cellcard 4G", "price": 3.9, "popular": false}, {"id": "LA", "name": "Laos", "region": "asia", "network": "Unitel / Lao Telecom 4G", "price": 4.2, "popular": false}, {"id": "MM", "name": "Myanmar", "region": "asia", "network": "MPT / Atom 4G", "price": 4.5, "popular": false}, {"id": "BN", "name": "Brunei", "region": "asia", "network": "UNN / DST 4G/5G", "price": 4.5, "popular": false}, {"id": "MN", "name": "Mongolia", "region": "asia", "network": "Unitel / Mobicom 4G/5G", "price": 4.5, "popular": false}, {"id": "KZ", "name": "Kazakhstan", "region": "asia", "network": "Beeline / Kcell 4G/5G", "price": 4.2, "popular": false}, {"id": "UZ", "name": "Uzbekistan", "region": "asia", "network": "Ucell / Beeline 4G/5G", "price": 4.2, "popular": false}, {"id": "KG", "name": "Kyrgyzstan", "region": "asia", "network": "MegaCom / O! 4G", "price": 4.2, "popular": false}, {"id": "TJ", "name": "Tajikistan", "region": "asia", "network": "Tcell / Babilon-M 4G", "price": 4.5, "popular": false}, {"id": "TM", "name": "Turkmenistan", "region": "asia", "network": "TM CELL 4G", "price": 6.0, "popular": false}, {"id": "BT", "name": "Bhutan", "region": "asia", "network": "B-Mobile / TashiCell 4G", "price": 5.0, "popular": false}, {"id": "AF", "name": "Afghanistan", "region": "asia", "network": "Roshan / AWCC 4G", "price": 5.5, "popular": false}, {"id": "US", "name": "United States", "region": "americas", "network": "T-Mobile / AT&T 5G", "price": 4.5, "popular": true}, {"id": "CA", "name": "Canada", "region": "americas", "network": "Rogers / Bell 5G", "price": 4.8, "popular": true}, {"id": "MX", "name": "Mexico", "region": "americas", "network": "Telcel / AT&T 5G", "price": 4.2, "popular": true}, {"id": "BR", "name": "Brazil", "region": "americas", "network": "Vivo / Claro 5G", "price": 4.5, "popular": true}, {"id": "AR", "name": "Argentina", "region": "americas", "network": "Personal / Claro 4G/5G", "price": 4.5, "popular": false}, {"id": "CL", "name": "Chile", "region": "americas", "network": "Entel / Movistar 5G", "price": 4.5, "popular": false}, {"id": "CO", "name": "Colombia", "region": "americas", "network": "Claro / Movistar 4G/5G", "price": 4.2, "popular": false}, {"id": "PE", "name": "Peru", "region": "americas", "network": "Claro / Movistar 4G/5G", "price": 4.2, "popular": false}, {"id": "EC", "name": "Ecuador", "region": "americas", "network": "Claro / Movistar 4G", "price": 4.5, "popular": false}, {"id": "UY", "name": "Uruguay", "region": "americas", "network": "Antel / Movistar 5G", "price": 4.5, "popular": false}, {"id": "PY", "name": "Paraguay", "region": "americas", "network": "Tigo / Claro 4G", "price": 4.5, "popular": false}, {"id": "BO", "name": "Bolivia", "region": "americas", "network": "Entel / Tigo 4G", "price": 4.8, "popular": false}, {"id": "VE", "name": "Venezuela", "region": "americas", "network": "Movistar / Digitel 4G", "price": 5.0, "popular": false}, {"id": "CR", "name": "Costa Rica", "region": "americas", "network": "Kolbi / Claro 4G/5G", "price": 4.5, "popular": false}, {"id": "PA", "name": "Panama", "region": "americas", "network": "Tigo / +Movil 4G/5G", "price": 4.5, "popular": false}, {"id": "DO", "name": "Dominican Republic", "region": "americas", "network": "Claro / Altice 4G/5G", "price": 4.5, "popular": false}, {"id": "JM", "name": "Jamaica", "region": "americas", "network": "Digicel / Flow 4G", "price": 5.0, "popular": false}, {"id": "PR", "name": "Puerto Rico", "region": "americas", "network": "T-Mobile / Liberty 5G", "price": 4.5, "popular": false}, {"id": "BS", "name": "Bahamas", "region": "americas", "network": "BTC / Aliv 4G", "price": 5.0, "popular": false}, {"id": "BB", "name": "Barbados", "region": "americas", "network": "FLOW / Digicel 4G", "price": 5.0, "popular": false}, {"id": "TT", "name": "Trinidad and Tobago", "region": "americas", "network": "bmobile / Digicel 4G", "price": 5.0, "popular": false}, {"id": "GT", "name": "Guatemala", "region": "americas", "network": "Tigo / Claro 4G/5G", "price": 4.5, "popular": false}, {"id": "HN", "name": "Honduras", "region": "americas", "network": "Tigo / Claro 4G", "price": 4.5, "popular": false}, {"id": "SV", "name": "El Salvador", "region": "americas", "network": "Tigo / Claro 4G/5G", "price": 4.5, "popular": false}, {"id": "NI", "name": "Nicaragua", "region": "americas", "network": "Claro / Tigo 4G", "price": 4.5, "popular": false}, {"id": "BZ", "name": "Belize", "region": "americas", "network": "Digi / SMART 4G", "price": 5.5, "popular": false}, {"id": "GY", "name": "Guyana", "region": "americas", "network": "GTT / Digicel 4G", "price": 5.5, "popular": false}, {"id": "SR", "name": "Suriname", "region": "americas", "network": "Telesur / Digicel 4G", "price": 5.5, "popular": false}, {"id": "CU", "name": "Cuba", "region": "americas", "network": "Cubacel 4G", "price": 7.5, "popular": false}, {"id": "HT", "name": "Haiti", "region": "americas", "network": "Digicel / Natcom 4G", "price": 5.5, "popular": false}, {"id": "AG", "name": "Antigua and Barbuda", "region": "americas", "network": "FLOW / Digicel 4G", "price": 5.5, "popular": false}, {"id": "DM", "name": "Dominica", "region": "americas", "network": "FLOW / Digicel 4G", "price": 5.5, "popular": false}, {"id": "GD", "name": "Grenada", "region": "americas", "network": "FLOW / Digicel 4G", "price": 5.5, "popular": false}, {"id": "KN", "name": "Saint Kitts and Nevis", "region": "americas", "network": "FLOW / Digicel 4G", "price": 5.5, "popular": false}, {"id": "LC", "name": "Saint Lucia", "region": "americas", "network": "FLOW / Digicel 4G", "price": 5.5, "popular": false}, {"id": "VC", "name": "Saint Vincent and the Grenadines", "region": "americas", "network": "FLOW / Digicel 4G", "price": 5.5, "popular": false}, {"id": "BM", "name": "Bermuda", "region": "americas", "network": "One Communications / Digicel 4G", "price": 5.5, "popular": false}, {"id": "KY", "name": "Cayman Islands", "region": "americas", "network": "FLOW / Digicel 4G", "price": 5.5, "popular": false}, {"id": "AW", "name": "Aruba", "region": "americas", "network": "SETAR / Digicel 4G", "price": 5.5, "popular": false}, {"id": "CW", "name": "Curacao", "region": "americas", "network": "Digicel / FLOW 4G", "price": 5.5, "popular": false}, {"id": "EG", "name": "Egypt", "region": "africa", "network": "Vodafone / Orange 4G/5G", "price": 4.0, "popular": true}, {"id": "ZA", "name": "South Africa", "region": "africa", "network": "Vodacom / MTN 5G", "price": 4.2, "popular": true}, {"id": "MA", "name": "Morocco", "region": "africa", "network": "Maroc Telecom / Orange 4G/5G", "price": 4.2, "popular": true}, {"id": "KE", "name": "Kenya", "region": "africa", "network": "Safaricom / Airtel 5G", "price": 4.5, "popular": true}, {"id": "NG", "name": "Nigeria", "region": "africa", "network": "MTN / Airtel 5G", "price": 4.5, "popular": true}, {"id": "GH", "name": "Ghana", "region": "africa", "network": "MTN / Vodafone 4G", "price": 4.5, "popular": false}, {"id": "TN", "name": "Tunisia", "region": "africa", "network": "Ooredoo / Tunisie Telecom 4G", "price": 4.2, "popular": false}, {"id": "DZ", "name": "Algeria", "region": "africa", "network": "Djezzy / Mobilis 4G", "price": 4.5, "popular": false}, {"id": "TZ", "name": "Tanzania", "region": "africa", "network": "Vodacom / Airtel 4G", "price": 4.5, "popular": false}, {"id": "UG", "name": "Uganda", "region": "africa", "network": "MTN / Airtel 4G", "price": 4.5, "popular": false}, {"id": "ET", "name": "Ethiopia", "region": "africa", "network": "Ethio Telecom / Safaricom 4G/5G", "price": 4.8, "popular": false}, {"id": "RW", "name": "Rwanda", "region": "africa", "network": "MTN / Airtel 4G/5G", "price": 4.5, "popular": false}, {"id": "MU", "name": "Mauritius", "region": "africa", "network": "my.t / Emtel 5G", "price": 4.5, "popular": true}, {"id": "SC", "name": "Seychelles", "region": "africa", "network": "Cable & Wireless / Airtel 4G/5G", "price": 5.0, "popular": true}, {"id": "SN", "name": "Senegal", "region": "africa", "network": "Orange / Free 4G", "price": 4.5, "popular": false}, {"id": "CI", "name": "Ivory Coast", "region": "africa", "network": "Orange / MTN 4G", "price": 4.5, "popular": false}, {"id": "CM", "name": "Cameroon", "region": "africa", "network": "MTN / Orange 4G", "price": 4.8, "popular": false}, {"id": "AO", "name": "Angola", "region": "africa", "network": "Unitel / Africell 4G", "price": 5.0, "popular": false}, {"id": "MZ", "name": "Mozambique", "region": "africa", "network": "Vodacom / Movitel 4G", "price": 5.0, "popular": false}, {"id": "ZW", "name": "Zimbabwe", "region": "africa", "network": "Econet / NetOne 4G", "price": 5.0, "popular": false}, {"id": "ZM", "name": "Zambia", "region": "africa", "network": "MTN / Airtel 4G", "price": 4.8, "popular": false}, {"id": "BW", "name": "Botswana", "region": "africa", "network": "Mascom / Orange 4G", "price": 5.0, "popular": false}, {"id": "NA", "name": "Namibia", "region": "africa", "network": "MTC / TN Mobile 4G", "price": 5.0, "popular": false}, {"id": "MG", "name": "Madagascar", "region": "africa", "network": "Telma / Orange 4G", "price": 5.0, "popular": false}, {"id": "MW", "name": "Malawi", "region": "africa", "network": "Airtel / TNM 4G", "price": 5.0, "popular": false}, {"id": "GA", "name": "Gabon", "region": "africa", "network": "Airtel / Moov 4G", "price": 5.0, "popular": false}, {"id": "CG", "name": "Republic of the Congo", "region": "africa", "network": "MTN / Airtel 4G", "price": 5.0, "popular": false}, {"id": "CD", "name": "DR Congo", "region": "africa", "network": "Vodacom / Airtel 4G", "price": 5.5, "popular": false}, {"id": "SD", "name": "Sudan", "region": "africa", "network": "Zain / MTN 4G", "price": 5.5, "popular": false}, {"id": "SS", "name": "South Sudan", "region": "africa", "network": "MTN / Zain 4G", "price": 6.0, "popular": false}, {"id": "LY", "name": "Libya", "region": "africa", "network": "Libyana / Almadar 4G", "price": 5.5, "popular": false}, {"id": "SO", "name": "Somalia", "region": "africa", "network": "Hormuud / Telesom 4G/5G", "price": 5.5, "popular": false}, {"id": "DJ", "name": "Djibouti", "region": "africa", "network": "Evatis 4G", "price": 5.5, "popular": false}, {"id": "MR", "name": "Mauritania", "region": "africa", "network": "Mauritel / Mattel 4G", "price": 5.5, "popular": false}, {"id": "ML", "name": "Mali", "region": "africa", "network": "Orange / Malitel 4G", "price": 5.0, "popular": false}, {"id": "BF", "name": "Burkina Faso", "region": "africa", "network": "Orange / Moov 4G", "price": 5.0, "popular": false}, {"id": "NE", "name": "Niger", "region": "africa", "network": "Airtel / Moov 4G", "price": 5.0, "popular": false}, {"id": "TD", "name": "Chad", "region": "africa", "network": "Airtel / Moov 4G", "price": 5.5, "popular": false}, {"id": "GN", "name": "Guinea", "region": "africa", "network": "Orange / MTN 4G", "price": 5.0, "popular": false}, {"id": "SL", "name": "Sierra Leone", "region": "africa", "network": "Orange / Africell 4G", "price": 5.5, "popular": false}, {"id": "LR", "name": "Liberia", "region": "africa", "network": "Lonestar MTN / Orange 4G", "price": 5.5, "popular": false}, {"id": "TG", "name": "Togo", "region": "africa", "network": "Togocom / Moov 4G", "price": 5.0, "popular": false}, {"id": "BJ", "name": "Benin", "region": "africa", "network": "MTN / Moov 4G", "price": 5.0, "popular": false}, {"id": "GM", "name": "Gambia", "region": "africa", "network": "Africell / QCell 4G", "price": 5.5, "popular": false}, {"id": "GW", "name": "Guinea-Bissau", "region": "africa", "network": "MTN / Orange 4G", "price": 5.5, "popular": false}, {"id": "CV", "name": "Cape Verde", "region": "africa", "network": "CV Móvel / Unitel T+ 4G", "price": 5.0, "popular": false}, {"id": "ST", "name": "Sao Tome and Principe", "region": "africa", "network": "CST 4G", "price": 6.0, "popular": false}, {"id": "GQ", "name": "Equatorial Guinea", "region": "africa", "network": "Getesa 4G", "price": 6.0, "popular": false}, {"id": "CF", "name": "Central African Republic", "region": "africa", "network": "Telecel / Orange 4G", "price": 6.5, "popular": false}, {"id": "BI", "name": "Burundi", "region": "africa", "network": "Econet / Lumitel 4G", "price": 5.5, "popular": false}, {"id": "KM", "name": "Comoros", "region": "africa", "network": "Comores Telecom / Telco 4G", "price": 6.0, "popular": false}, {"id": "SZ", "name": "Eswatini", "region": "africa", "network": "MTN Eswatini 4G", "price": 5.0, "popular": false}, {"id": "LS", "name": "Lesotho", "region": "africa", "network": "Vodacom / Econet 4G", "price": 5.0, "popular": false}, {"id": "ER", "name": "Eritrea", "region": "africa", "network": "EriTel 3G/4G", "price": 7.0, "popular": false}, {"id": "AU", "name": "Australia", "region": "oceania", "network": "Telstra / Optus 5G", "price": 4.2, "popular": true}, {"id": "NZ", "name": "New Zealand", "region": "oceania", "network": "Spark / One NZ 5G", "price": 4.5, "popular": true}, {"id": "FJ", "name": "Fiji", "region": "oceania", "network": "Vodafone / Digicel 4G/5G", "price": 4.8, "popular": true}, {"id": "PG", "name": "Papua New Guinea", "region": "oceania", "network": "Digicel / bmobile 4G", "price": 5.5, "popular": false}, {"id": "VU", "name": "Vanuatu", "region": "oceania", "network": "Vodafone / Digicel 4G", "price": 5.5, "popular": false}, {"id": "WS", "name": "Samoa", "region": "oceania", "network": "Vodafone / Digicel 4G", "price": 5.5, "popular": false}, {"id": "TO", "name": "Tonga", "region": "oceania", "network": "Digicel / TCC 4G", "price": 5.5, "popular": false}, {"id": "SB", "name": "Solomon Islands", "region": "oceania", "network": "Our Telekom / bmobile 4G", "price": 6.0, "popular": false}, {"id": "FM", "name": "Micronesia", "region": "oceania", "network": "FSM Telecom 4G", "price": 6.5, "popular": false}, {"id": "PW", "name": "Palau", "region": "oceania", "network": "PNCC 4G", "price": 6.5, "popular": false}, {"id": "MH", "name": "Marshall Islands", "region": "oceania", "network": "NTA 4G", "price": 6.5, "popular": false}, {"id": "KI", "name": "Kiribati", "region": "oceania", "network": "ATHKL 4G", "price": 6.5, "popular": false}, {"id": "NR", "name": "Nauru", "region": "oceania", "network": "Digicel 4G", "price": 6.5, "popular": false}, {"id": "TV", "name": "Tuvalu", "region": "oceania", "network": "TTC 4G", "price": 7.0, "popular": false}, {"id": "GLOBAL", "name": "Global Roaming (130+ Countries)", "region": "global", "network": "Tier-1 Multi-Carrier Worldwide", "price": 9.9, "popular": true}, {"id": "EU", "name": "Europe (33 Countries)", "region": "europe", "network": "Vodafone / Telekom 5G Euro-Pass", "price": 8.5, "popular": true}, {"id": "ASIA", "name": "Asia Multi-Country Roaming", "region": "asia", "network": "5G Multi-Carrier Asia Roam", "price": 8.0, "popular": true}];
+
+    function generatePackagesForCountry(c) {
+      const p1 = Math.round(c.price * 100) / 100;
+      const p3 = Math.round(c.price * 1.85 * 100) / 100;
+      const p5 = Math.round(c.price * 2.80 * 100) / 100;
+      const p10 = Math.round(c.price * 4.60 * 100) / 100;
+      const p20 = Math.round(c.price * 7.20 * 100) / 100;
+      const punl = Math.round(c.price * 3.40 * 100) / 100;
+      const flagUrl = getCountryFlagUrl(c.id, c.name);
+      const flag = getCountryFlag(c.id, c.name);
+
+      return [
+        { id: `${c.id}-1GB-7D`, packageCode: `${c.id}-1GB-7D`, title: `${c.name} 1GB (7 Days)`, flag, flagUrl, data: '1 GB', validity: '7 Days', network: c.network, price: p1, originalPrice: Math.round(p1 * 1.35 * 10) / 10, region: c.region, badge: c.popular ? 'Best Seller ⚡' : 'Starter Pack', popular: c.popular, countryKey: c.name, countryId: c.id },
+        { id: `${c.id}-3GB-15D`, packageCode: `${c.id}-3GB-15D`, title: `${c.name} 3GB (15 Days)`, flag, flagUrl, data: '3 GB', validity: '15 Days', network: c.network, price: p3, originalPrice: Math.round(p3 * 1.35 * 10) / 10, region: c.region, badge: 'Popular Value', popular: c.popular, countryKey: c.name, countryId: c.id },
+        { id: `${c.id}-5GB-30D`, packageCode: `${c.id}-5GB-30D`, title: `${c.name} 5GB (30 Days)`, flag, flagUrl, data: '5 GB', validity: '30 Days', network: c.network, price: p5, originalPrice: Math.round(p5 * 1.35 * 10) / 10, region: c.region, badge: 'Explorer 30D', popular: c.popular, countryKey: c.name, countryId: c.id },
+        { id: `${c.id}-10GB-30D`, packageCode: `${c.id}-10GB-30D`, title: `${c.name} 10GB (30 Days)`, flag, flagUrl, data: '10 GB', validity: '30 Days', network: c.network, price: p10, originalPrice: Math.round(p10 * 1.35 * 10) / 10, region: c.region, badge: 'Heavy Data', popular: c.popular, countryKey: c.name, countryId: c.id },
+        { id: `${c.id}-20GB-30D`, packageCode: `${c.id}-20GB-30D`, title: `${c.name} 20GB (30 Days)`, flag, flagUrl, data: '20 GB', validity: '30 Days', network: c.network, price: p20, originalPrice: Math.round(p20 * 1.35 * 10) / 10, region: c.region, badge: 'Digital Nomad', popular: c.popular, countryKey: c.name, countryId: c.id },
+        { id: `${c.id}-UNL-7D`, packageCode: `${c.id}-UNL-7D`, title: `${c.name} Unlimited 5G (7 Days)`, flag, flagUrl, data: 'Unlimited', validity: '7 Days', network: c.network, price: punl, originalPrice: Math.round(punl * 1.35 * 10) / 10, region: c.region, badge: 'Unlimited 5G 🔥', popular: true, countryKey: c.name, countryId: c.id, unlimited: true }
+      ];
+    }
+
+    window.WORLD_COUNTRIES = WORLD_COUNTRIES;
+    window.ESIM_PACKAGES = WORLD_COUNTRIES.flatMap(generatePackagesForCountry);
 
     let currentRegion = 'all';
     let isResellPortalLive = false;
@@ -2241,9 +2269,14 @@
             });
 
             if (liveList.length > 0) {
-              window.ESIM_PACKAGES = liveList;
+              const liveCodes = new Set(liveList.map(p => p.countryId || p.region));
+              const combined = [
+                ...liveList,
+                ...window.ESIM_PACKAGES.filter(p => !liveCodes.has(p.countryId))
+              ];
+              window.ESIM_PACKAGES = combined;
               const groups = getGroupedCountries();
-              if (badgeCount) badgeCount.textContent = `${liveList.length} Plans • ${groups.length} Countries`;
+              if (badgeCount) badgeCount.textContent = `${window.ESIM_PACKAGES.length} Plans • ${groups.length} Countries`;
               if (badgeText) badgeText.textContent = isResellPortalLive ? "TravelTrip World 5G Live Network" : "ResellPortal Inventory Verified";
               renderEsimGrid();
             }
@@ -2958,12 +2991,7 @@
       list.forEach(p => {
         const c = getPackageCountryInfo(p);
         
-        // Exclude subcontinent countries (Bangladesh, India, Pakistan) per user instruction
-        const isSubcontinent = ['BD', 'IN', 'PK'].includes(c.id) || 
-                              ['bangladesh', 'india', 'pakistan'].some(n => c.name.toLowerCase().includes(n));
-        if (isSubcontinent) {
-          return;
-        }
+        // All 190+ countries included (Zero exclusion)
 
         p.flag = c.flag;
         p.flagUrl = c.flagUrl || getCountryFlagUrl(c.id, c.name);
@@ -3020,6 +3048,8 @@
 
       if (currentRegion === 'popular') {
         list = list.filter(c => c.popular);
+      } else if (currentRegion === 'americas' || currentRegion === 'northamerica') {
+        list = list.filter(c => c.region === 'americas' || c.region === 'northamerica');
       } else if (currentRegion !== 'all') {
         list = list.filter(c => c.region === currentRegion);
       }
