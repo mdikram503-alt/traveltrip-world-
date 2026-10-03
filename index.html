@@ -288,31 +288,25 @@
         </div>
       </a>
 
-      <!-- Desktop Nav Menu -->
-      <nav class="hidden xl:flex items-center gap-1 text-sm font-semibold text-slate-300">
-        <a href="#search-hub" class="px-3.5 py-2 rounded-xl hover:text-white hover:bg-white/5 transition flex items-center gap-1.5">
-          <i class="fa-solid fa-plane text-tealAccent-light text-xs"></i> Flights
+      <!-- Desktop Nav Menu (Focused: Air Tickets & eSIM Only) -->
+      <nav class="hidden xl:flex items-center gap-2 text-sm font-semibold text-slate-300">
+        <a href="#search-hub" class="px-4 py-2 rounded-xl text-tealAccent-light bg-tealAccent/15 border border-tealAccent/30 hover:bg-tealAccent/25 transition flex items-center gap-2 font-bold shadow-sm">
+          <i class="fa-solid fa-plane text-tealAccent-light"></i> Air Tickets
         </a>
-        <a href="#search-hub" class="px-3.5 py-2 rounded-xl hover:text-white hover:bg-white/5 transition flex items-center gap-1.5">
-          <i class="fa-solid fa-hotel text-gold-light text-xs"></i> Hotels
+        <a href="#destinations" class="px-3.5 py-2 rounded-xl text-tealAccent-light bg-tealAccent/10 border border-tealAccent/25 hover:bg-tealAccent/20 transition flex items-center gap-1.5 font-bold shadow-sm">
+          <i class="fa-solid fa-earth-americas text-tealAccent-light"></i> 3D World Globe
         </a>
-        <a href="#ai-concierge" class="px-3.5 py-2 rounded-xl text-gold-light bg-gold/10 border border-gold/20 hover:bg-gold/20 transition flex items-center gap-1.5">
-          <i class="fa-solid fa-wand-magic-sparkles text-gold text-xs"></i> AI Concierge
+        <a href="#esim-store" class="px-4 py-2 rounded-xl text-emerald-300 bg-emerald-500/15 border border-emerald-500/30 hover:bg-emerald-500/25 transition flex items-center gap-2 font-bold shadow-sm">
+          <i class="fa-solid fa-sim-card text-emerald-400"></i> Global eSIM Store
         </a>
-        <a href="#destinations" class="px-3.5 py-2 rounded-xl hover:text-white hover:bg-white/5 transition flex items-center gap-1.5">
-          <i class="fa-solid fa-compass text-slate-400 text-xs"></i> Destinations
+        <a href="#destinations" onclick="toggleMobileMenu()" class="p-3 rounded-xl bg-tealAccent/10 border border-tealAccent/20 flex items-center gap-2 text-tealAccent-light font-bold">
+          <i class="fa-solid fa-earth-americas"></i> 3D World Globe
         </a>
-        <a href="#experiences" class="px-3.5 py-2 rounded-xl hover:text-white hover:bg-white/5 transition flex items-center gap-1.5">
-          <i class="fa-solid fa-gem text-amber-400 text-xs"></i> Luxury
+        <a href="#travel-wallet" class="px-3.5 py-2 rounded-xl hover:text-white hover:bg-white/5 transition flex items-center gap-1.5 text-slate-300 font-medium">
+          <i class="fa-solid fa-wallet text-gold text-xs"></i> eSIM Wallet
         </a>
-        <a href="#visa-center" class="px-3.5 py-2 rounded-xl hover:text-white hover:bg-white/5 transition flex items-center gap-1.5">
-          <i class="fa-solid fa-passport text-sky-400 text-xs"></i> Visa
-        </a>
-        <a href="#esim-store" class="px-3.5 py-2 rounded-xl hover:text-white hover:bg-white/5 transition flex items-center gap-1.5">
-          <i class="fa-solid fa-sim-card text-emerald-400 text-xs"></i> eSIM Store
-        </a>
-        <a href="#travel-wallet" class="px-3.5 py-2 rounded-xl hover:text-white hover:bg-white/5 transition flex items-center gap-1.5">
-          <i class="fa-solid fa-wallet text-gold text-xs"></i> Wallet
+        <a href="#ai-concierge" class="px-3.5 py-2 rounded-xl text-gold-light bg-gold/10 border border-gold/20 hover:bg-gold/20 transition flex items-center gap-1.5 font-medium">
+          <i class="fa-solid fa-wand-magic-sparkles text-gold text-xs"></i> Flight & eSIM Assistant
         </a>
       </nav>
 
@@ -348,29 +342,17 @@
     <!-- Mobile Dropdown Menu -->
     <div id="mobile-menu" class="hidden xl:hidden bg-midnight/95 backdrop-blur-2xl border-b border-white/10 px-4 py-5 space-y-3">
       <div class="grid grid-cols-2 gap-2 text-xs font-semibold">
-        <a href="#search-hub" onclick="toggleMobileMenu()" class="p-3 rounded-xl glass-card flex items-center gap-2 text-slate-200">
-          <i class="fa-solid fa-plane text-tealAccent-light"></i> Flights
+        <a href="#search-hub" onclick="toggleMobileMenu()" class="p-3 rounded-xl bg-tealAccent/15 border border-tealAccent/30 flex items-center gap-2 text-tealAccent-light font-bold">
+          <i class="fa-solid fa-plane"></i> Air Tickets
         </a>
-        <a href="#search-hub" onclick="toggleMobileMenu()" class="p-3 rounded-xl glass-card flex items-center gap-2 text-slate-200">
-          <i class="fa-solid fa-hotel text-gold-light"></i> Hotels
+        <a href="#esim-store" onclick="toggleMobileMenu()" class="p-3 rounded-xl bg-emerald-500/15 border border-emerald-500/30 flex items-center gap-2 text-emerald-300 font-bold">
+          <i class="fa-solid fa-sim-card"></i> eSIM Store
+        </a>
+        <a href="#travel-wallet" onclick="toggleMobileMenu()" class="p-3 rounded-xl glass-card flex items-center gap-2 text-slate-200">
+          <i class="fa-solid fa-wallet text-gold"></i> eSIM Wallet
         </a>
         <a href="#ai-concierge" onclick="toggleMobileMenu()" class="p-3 rounded-xl bg-gold/10 border border-gold/30 text-gold-light flex items-center gap-2">
-          <i class="fa-solid fa-wand-magic-sparkles text-gold"></i> AI Concierge
-        </a>
-        <a href="#destinations" onclick="toggleMobileMenu()" class="p-3 rounded-xl glass-card flex items-center gap-2 text-slate-200">
-          <i class="fa-solid fa-compass text-slate-400"></i> Destinations
-        </a>
-        <a href="#experiences" onclick="toggleMobileMenu()" class="p-3 rounded-xl glass-card flex items-center gap-2 text-slate-200">
-          <i class="fa-solid fa-gem text-amber-400"></i> Luxury
-        </a>
-        <a href="#visa-center" onclick="toggleMobileMenu()" class="p-3 rounded-xl glass-card flex items-center gap-2 text-slate-200">
-          <i class="fa-solid fa-passport text-sky-400"></i> Visa
-        </a>
-        <a href="#esim-store" onclick="toggleMobileMenu()" class="p-3 rounded-xl glass-card flex items-center gap-2 text-slate-200">
-          <i class="fa-solid fa-sim-card text-emerald-400"></i> eSIM Store
-        </a>
-        <a href="#elite" onclick="toggleMobileMenu()" class="p-3 rounded-xl glass-card flex items-center gap-2 text-gold-light">
-          <i class="fa-solid fa-crown text-gold"></i> Elite Club
+          <i class="fa-solid fa-wand-magic-sparkles text-gold"></i> AI Assistant
         </a>
       </div>
     </div>
@@ -458,68 +440,81 @@
     </h1>
 
     <!-- Subtitle -->
-    <p class="mt-6 text-base sm:text-lg md:text-xl text-slate-400 max-w-2xl mx-auto font-normal leading-relaxed">
-      Flights • Hotels • Visa • eSIM • Insurance — seamlessly planned, booked, and managed in one bespoke experience.
+    <p class="mt-6 text-base sm:text-lg md:text-xl text-slate-300 max-w-2xl mx-auto font-normal leading-relaxed">
+      Worldwide Air Tickets & Instant 5G eSIM — seamlessly booked and connected across 190+ countries.
     </p>
 
-    <!-- Global Universal Search Bar (Hero) -->
-    <div class="mt-10 max-w-4xl mx-auto p-3 rounded-2xl glass-card border border-white/10 shadow-2xl">
-      <div class="grid grid-cols-1 md:grid-cols-12 gap-3 items-center">
-        
-        <!-- Destination Input -->
-        <div class="md:col-span-5 flex items-center gap-3 px-4 py-3 rounded-xl bg-slate-900/80 border border-white/5 focus-within:border-gold/60 transition">
-          <i class="fa-solid fa-location-dot text-gold text-lg"></i>
-          <div class="text-left w-full">
-            <label class="block text-[10px] font-extrabold uppercase tracking-wider text-slate-400">Destination</label>
-            <input id="hero-destination-input" type="text" placeholder="Where to? (e.g. Tokyo, Paris, Dubai)" value="Tokyo, Japan" class="bg-transparent border-none outline-none text-white text-sm font-semibold w-full placeholder:text-slate-500">
-          </div>
-        </div>
+    <!-- Instant 5G eSIM Zero-Friction High-Converting USP Feature Card -->
+    <div class="mt-8 max-w-4xl mx-auto p-6 sm:p-8 rounded-3xl glass-card border-2 border-emerald-500/40 shadow-2xl relative overflow-hidden text-center bg-gradient-to-b from-slate-900/90 via-slate-900/80 to-emerald-950/30 backdrop-blur-xl">
+      <!-- Glow ambient backdrop -->
+      <div class="absolute -top-24 -left-24 w-72 h-72 bg-emerald-500/15 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute -bottom-24 -right-24 w-72 h-72 bg-gold/15 rounded-full blur-3xl pointer-events-none"></div>
 
-        <!-- Dates Input -->
-        <div class="md:col-span-4 flex items-center gap-3 px-4 py-3 rounded-xl bg-slate-900/80 border border-white/5">
-          <i class="fa-solid fa-calendar-days text-tealAccent-light text-lg"></i>
-          <div class="text-left w-full">
-            <label class="block text-[10px] font-extrabold uppercase tracking-wider text-slate-400">Duration & Dates</label>
-            <div class="text-sm font-semibold text-slate-200">Oct 15 - Oct 25 (10 Days)</div>
-          </div>
-        </div>
+      <!-- Badge -->
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/20 border border-emerald-400/50 text-xs sm:text-sm font-black text-emerald-300 mb-3 shadow-lg shadow-emerald-500/10">
+        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span>Instant GSMA Global Roaming ⚡ 190+ Countries</span>
+      </div>
 
-        <!-- Action Button -->
-        <div class="md:col-span-3">
-          <button onclick="triggerHeroSearch()" class="gold-btn w-full h-[52px] rounded-xl text-sm flex items-center justify-center gap-2">
-            <i class="fa-solid fa-wand-magic-sparkles"></i>
-            <span>Plan My Journey</span>
-          </button>
-        </div>
+      <!-- Main Headline requested by user -->
+      <h2 class="text-3xl sm:text-4xl md:text-5xl font-display font-black tracking-tight text-white leading-tight">
+        No Passport? No ID? No Problem! 🌍
+      </h2>
 
+      <!-- Subheadline -->
+      <p class="text-lg sm:text-2xl font-black text-emerald-400 mt-2 flex items-center justify-center gap-2">
+        <span>Get your TravelTrip eSIM in just 30 Seconds! ⚡️</span>
+      </p>
+
+      <!-- 5 Value Badges Checklist -->
+      <div class="mt-6 flex flex-wrap items-center justify-center gap-2.5 sm:gap-3 text-xs sm:text-sm font-extrabold">
+        <span class="px-3.5 py-1.5 rounded-xl bg-slate-800/90 border border-emerald-400/40 text-emerald-300 shadow-sm flex items-center gap-1.5">
+          <span>✅</span> <span>No Passport Needed</span>
+        </span>
+        <span class="px-3.5 py-1.5 rounded-xl bg-slate-800/90 border border-emerald-400/40 text-emerald-300 shadow-sm flex items-center gap-1.5">
+          <span>✅</span> <span>No ID Verification</span>
+        </span>
+        <span class="px-3.5 py-1.5 rounded-xl bg-slate-800/90 border border-emerald-400/40 text-emerald-300 shadow-sm flex items-center gap-1.5">
+          <span>✅</span> <span>No Age Limit</span>
+        </span>
+        <span class="px-3.5 py-1.5 rounded-xl bg-slate-800/90 border border-emerald-400/40 text-emerald-300 shadow-sm flex items-center gap-1.5">
+          <span>✅</span> <span>No Hidden Fees</span>
+        </span>
+        <span class="px-3.5 py-1.5 rounded-xl bg-slate-800/90 border border-gold/50 text-gold-light shadow-sm flex items-center gap-1.5">
+          <span>✅</span> <span>100% FREE to try?</span>
+        </span>
+      </div>
+
+      <!-- Frictionless Steps -->
+      <div class="mt-6 p-4 rounded-2xl bg-white/5 border border-white/10 max-w-2xl mx-auto">
+        <p class="text-sm sm:text-base font-bold text-slate-100">
+          Anyone, Anywhere can buy it. Just <span class="text-gold font-black">select country</span> &gt; <span class="text-tealAccent-light font-black">pay</span> &gt; <span class="text-emerald-400 font-black">scan QR</span>. Done!
+        </p>
+        <p class="text-xs sm:text-sm text-slate-300 mt-1.5 font-medium">
+          Stay connected in 190+ Countries — Asia, Europe, USA, Middle East & Worldwide!
+        </p>
+      </div>
+
+      <!-- Direct Call-to-Action Buttons -->
+      <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
+        <a href="#esim-store" class="gold-btn h-12 px-7 rounded-xl text-sm font-extrabold inline-flex items-center gap-2 shadow-xl shadow-gold/20">
+          <i class="fa-solid fa-sim-card"></i>
+          <span>Select Country & Get eSIM ⚡</span>
+        </a>
+        <button onclick="switchHubTab('flights')" class="teal-btn h-12 px-6 rounded-xl text-sm font-extrabold inline-flex items-center gap-2 shadow-xl shadow-tealAccent/20">
+          <i class="fa-solid fa-plane"></i>
+          <span>Search Air Tickets (Trip.com) ↗</span>
+        </button>
       </div>
     </div>
 
-    <!-- Quick Global Hub Switchers -->
-    <div id="search-hub" class="mt-12 flex flex-wrap items-center justify-center gap-2 sm:gap-3 max-w-5xl mx-auto">
-      <button onclick="switchHubTab('flights')" id="hub-tab-flights" class="hub-tab-btn active px-4 py-2.5 rounded-full text-xs font-extrabold border border-tealAccent/60 bg-tealAccent/10 text-tealAccent-light flex items-center gap-2 transition">
-        <i class="fa-solid fa-plane"></i> ✈ Flights (Trip.com)
+    <!-- Quick Global Hub Switchers (Air Tickets & Instant 5G eSIM Only) -->
+    <div id="search-hub" class="mt-12 flex flex-wrap items-center justify-center gap-3 sm:gap-4 max-w-2xl mx-auto">
+      <button onclick="switchHubTab('flights')" id="hub-tab-flights" class="hub-tab-btn active px-6 py-3 rounded-2xl text-sm font-extrabold border-2 border-tealAccent bg-tealAccent/20 text-tealAccent-light flex items-center gap-2.5 transition shadow-lg shadow-tealAccent/20 cursor-pointer">
+        <i class="fa-solid fa-plane text-base"></i> ✈ Air Tickets (Trip.com)
       </button>
-      <button onclick="switchHubTab('hotels')" id="hub-tab-hotels" class="hub-tab-btn px-4 py-2.5 rounded-full text-xs font-semibold border border-white/10 glass-card text-slate-300 hover:text-white flex items-center gap-2 transition">
-        <i class="fa-solid fa-hotel"></i> 🏨 Hotels (Trip.com)
-      </button>
-      <button onclick="switchHubTab('cruises')" id="hub-tab-cruises" class="hub-tab-btn px-4 py-2.5 rounded-full text-xs font-semibold border border-white/10 glass-card text-slate-300 hover:text-white flex items-center gap-2 transition">
-        <i class="fa-solid fa-ship"></i> 🚢 Cruises
-      </button>
-      <button onclick="switchHubTab('cars')" id="hub-tab-cars" class="hub-tab-btn px-4 py-2.5 rounded-full text-xs font-semibold border border-white/10 glass-card text-slate-300 hover:text-white flex items-center gap-2 transition">
-        <i class="fa-solid fa-car"></i> 🚗 Cars & Taxi
-      </button>
-      <button onclick="switchHubTab('activities')" id="hub-tab-activities" class="hub-tab-btn px-4 py-2.5 rounded-full text-xs font-semibold border border-white/10 glass-card text-slate-300 hover:text-white flex items-center gap-2 transition">
-        <i class="fa-solid fa-ticket"></i> 🎫 Activities
-      </button>
-      <button onclick="switchHubTab('visa')" id="hub-tab-visa" class="hub-tab-btn px-4 py-2.5 rounded-full text-xs font-semibold border border-white/10 glass-card text-slate-300 hover:text-white flex items-center gap-2 transition">
-        <i class="fa-solid fa-passport"></i> 🛂 Visa Center
-      </button>
-      <button onclick="switchHubTab('esim')" id="hub-tab-esim" class="hub-tab-btn px-4 py-2.5 rounded-full text-xs font-semibold border border-white/10 glass-card text-slate-300 hover:text-white flex items-center gap-2 transition">
-        <i class="fa-solid fa-sim-card"></i> 📶 Instant eSIM
-      </button>
-      <button onclick="switchHubTab('insurance')" id="hub-tab-insurance" class="hub-tab-btn px-4 py-2.5 rounded-full text-xs font-semibold border border-white/10 glass-card text-slate-300 hover:text-white flex items-center gap-2 transition">
-        <i class="fa-solid fa-shield-halved"></i> 🛡 Insurance
+      <button onclick="switchHubTab('esim')" id="hub-tab-esim" class="hub-tab-btn px-6 py-3 rounded-2xl text-sm font-extrabold border-2 border-emerald-500/40 bg-emerald-500/10 text-emerald-300 hover:text-white hover:border-emerald-400 flex items-center gap-2.5 transition shadow-lg shadow-emerald-500/10 cursor-pointer">
+        <i class="fa-solid fa-sim-card text-base"></i> 📶 Instant 5G eSIM (190+ Countries)
       </button>
     </div>
 
@@ -691,16 +686,17 @@
   </section>
 
   <!-- Interactive Destinations (Interactive Globe / World Showcase) -->
+    <!-- 3D Interactive World Globe (Flight Routes & 5G eSIM Network) -->
   <section id="destinations" class="relative py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
     <div class="text-center mb-12">
       <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-tealAccent/10 border border-tealAccent/30 text-xs font-extrabold uppercase tracking-widest text-tealAccent-light mb-3">
-        <i class="fa-solid fa-earth-americas"></i> Interactive Global Destinations
+        <i class="fa-solid fa-earth-americas"></i> 3D Interactive Global Flight & eSIM Network
       </div>
       <h2 class="text-3xl sm:text-5xl font-display font-black tracking-tight">
-        Curated Luxury <span class="teal-gradient-text">Destinations</span>
+        Explore 3D <span class="teal-gradient-text">World Flight Routes & 5G eSIM</span>
       </h2>
-      <p class="mt-3 text-slate-400 max-w-xl mx-auto text-sm sm:text-base">
-        Click any global destination to instantly view live flight routes, verified 5-star hotels, entry visa rules, weather, and instant 5G eSIM connectivity.
+      <p class="mt-3 text-slate-300 max-w-2xl mx-auto text-sm sm:text-base">
+        Spin the 3D Earth to track live international flight corridors and connect instant 5G eSIM across 190+ countries.
       </p>
     </div>
 
@@ -737,7 +733,7 @@
   </section>
 
   <!-- Luxury Experience Marketplace -->
-  <section id="experiences" class="relative py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+  <section id="experiences" style="display:none;" class="relative py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
     <div class="text-center mb-12">
       <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gold/10 border border-gold/30 text-xs font-extrabold uppercase tracking-widest text-gold-light mb-3">
         <i class="fa-solid fa-gem"></i> Ultra-Luxury Marketplace
@@ -943,7 +939,7 @@
   </section>
 
   <!-- Visa Center Section (Enhanced Phase 2 Intelligence Engine) -->
-  <section id="visa-center" class="relative py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+  <section id="visa-center" style="display:none;" class="relative py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
     <div class="p-8 sm:p-12 rounded-3xl glass-card border border-sky-500/20 relative overflow-hidden">
       <div class="max-w-4xl">
         <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-500/10 border border-sky-400/30 text-xs font-extrabold uppercase tracking-widest text-sky-400 mb-3">
@@ -1068,6 +1064,62 @@
       <!-- Generated by JS -->
     </div>
   </section>
+
+  <!-- Dedicated Country Plans Modal (All offers contained inside country section - Zero main page clutter) -->
+  <div id="country-plans-modal" onclick="closeCountryPlansModal()" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
+    <div onclick="event.stopPropagation()" class="glass-card rounded-3xl border border-emerald-500/40 w-full max-w-5xl my-auto p-5 sm:p-8 bg-slate-900/95 shadow-2xl relative max-h-[92vh] flex flex-col">
+      
+      <!-- Top Modal Header -->
+      <div class="flex items-start justify-between gap-4 pb-4 border-b border-white/10 shrink-0">
+        <div class="flex items-center gap-3 sm:gap-4">
+          <span id="country-modal-flag" class="text-4xl sm:text-5xl drop-shadow-md">🌐</span>
+          <div>
+            <div class="flex items-center gap-2 flex-wrap">
+              <h3 id="country-modal-title" class="text-xl sm:text-2xl font-display font-black text-white">Country eSIM Plans</h3>
+              <span id="country-modal-badge" class="px-2.5 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 font-extrabold text-[11px]">Instant 30s Delivery</span>
+            </div>
+            <p id="country-modal-network" class="text-xs sm:text-sm text-slate-300 mt-1 flex items-center gap-2">
+              <i class="fa-solid fa-tower-broadcast text-tealAccent-light"></i>
+              <span>High Speed 5G / 4G LTE Multi-Carrier Roaming</span>
+            </p>
+          </div>
+        </div>
+        
+        <button onclick="closeCountryPlansModal()" class="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-slate-300 hover:text-white flex items-center justify-center text-lg transition shrink-0 cursor-pointer">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- Quick Sub-filters (Validity & Data tier) -->
+      <div class="py-3 flex flex-wrap items-center justify-between gap-2 border-b border-white/5 shrink-0">
+        <div class="flex flex-wrap items-center gap-1.5 text-xs" id="country-plan-tier-tabs">
+          <button onclick="filterCountryPlans('all')" class="c-tier-btn active px-3 py-1.5 rounded-xl font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-400/40 cursor-pointer">All Plans (<span id="c-plan-total-count">0</span>)</button>
+          <button onclick="filterCountryPlans('short')" class="c-tier-btn px-3 py-1.5 rounded-xl font-bold bg-white/5 text-slate-300 hover:text-white cursor-pointer">Short Trips (3-7D)</button>
+          <button onclick="filterCountryPlans('monthly')" class="c-tier-btn px-3 py-1.5 rounded-xl font-bold bg-white/5 text-slate-300 hover:text-white cursor-pointer">15-30 Days</button>
+          <button onclick="filterCountryPlans('unlimited')" class="c-tier-btn px-3 py-1.5 rounded-xl font-bold bg-white/5 text-slate-300 hover:text-white cursor-pointer">Unlimited 5G 🔥</button>
+        </div>
+        <div class="text-[11px] text-slate-400 font-medium hidden sm:block">
+          ✅ No Passport Needed • No ID Verification • Instant QR Delivery
+        </div>
+      </div>
+
+      <!-- Scrollable Plans Container for this country -->
+      <div id="country-plans-container" class="mt-4 overflow-y-auto pr-1 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 flex-1">
+        <!-- Rendered by renderCountryOffers() -->
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="mt-4 pt-3 border-t border-white/10 flex items-center justify-between gap-3 shrink-0 text-xs text-slate-400">
+        <button onclick="closeCountryPlansModal()" class="px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-white font-bold flex items-center gap-2 cursor-pointer transition">
+          <i class="fa-solid fa-arrow-left"></i>
+          <span>Back to All Countries</span>
+        </button>
+        <span class="text-slate-400 hidden sm:inline">Official GSMA Wholesale Roaming Profile • Instant Activation</span>
+      </div>
+
+    </div>
+  </div>
+
 
   <!-- One Checkout USP Banner -->
   <section class="relative py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
@@ -1228,7 +1280,7 @@
   </section>
 
   <!-- TravelTrip Elite Membership -->
-  <section id="elite" class="relative py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+  <section id="elite" style="display:none;" class="relative py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
     <div class="text-center mb-14">
       <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gold/10 border border-gold/30 text-xs font-extrabold uppercase tracking-widest text-gold-light mb-3">
         <i class="fa-solid fa-crown"></i> Exclusive Privileges
@@ -1440,17 +1492,101 @@
         </ul>
       </div>
 
-      <!-- Contact & Trust -->
+            <!-- Contact & Official Social Channels -->
       <div class="md:col-span-4 space-y-4">
-        <div class="text-xs font-extrabold uppercase tracking-widest text-slate-300">24/7 Concierge Support</div>
-        <p class="text-xs text-slate-400">
-          Need assistance with high-value bookings or custom itineraries? Our global concierge desk operates 24/7 across all time zones.
+        <div class="text-xs font-extrabold uppercase tracking-widest text-gold-light">24/7 Global Concierge & Support</div>
+        <p class="text-xs text-slate-300 leading-relaxed">
+          Direct human VIP assistance for worldwide air tickets and instant 5G eSIM connectivity across 190+ countries.
         </p>
-        <div class="flex items-center gap-3 text-slate-400 text-lg">
-          <a href="#" class="w-9 h-9 rounded-xl glass-card grid place-items-center hover:text-gold transition"><i class="fa-brands fa-whatsapp"></i></a>
-          <a href="#" class="w-9 h-9 rounded-xl glass-card grid place-items-center hover:text-gold transition"><i class="fa-brands fa-telegram"></i></a>
-          <a href="#" class="w-9 h-9 rounded-xl glass-card grid place-items-center hover:text-gold transition"><i class="fa-brands fa-instagram"></i></a>
-          <a href="#" class="w-9 h-9 rounded-xl glass-card grid place-items-center hover:text-gold transition"><i class="fa-regular fa-envelope"></i></a>
+        
+        <!-- Direct Quick Contacts -->
+        <div class="space-y-2 text-xs text-slate-300">
+          <div class="flex items-center gap-2">
+            <i class="fa-brands fa-whatsapp text-emerald-400 text-sm"></i>
+            <span class="text-slate-400 font-semibold">WhatsApp Business:</span>
+            <a href="https://wa.me/971524413931?text=Hello%20TravelTrip%20World" target="_blank" rel="noopener" class="font-bold text-white hover:text-emerald-400 transition">+971 52 441 3931</a>
+          </div>
+          <div class="flex items-center gap-2">
+            <i class="fa-regular fa-envelope text-gold text-sm"></i>
+            <span class="text-slate-400 font-semibold">Official Email:</span>
+            <a href="mailto:Traveltripworld8@gmail.com" class="font-bold text-white hover:text-gold transition">Traveltripworld8@gmail.com</a>
+          </div>
+          <div class="flex items-center gap-2">
+            <i class="fa-solid fa-bullhorn text-tealAccent-light text-sm"></i>
+            <span class="text-slate-400 font-semibold">WhatsApp Channel:</span>
+            <a href="https://whatsapp.com/channel/0029VbDFOpd17EmwZMkdO50l" target="_blank" rel="noopener" class="font-bold text-tealAccent-light hover:underline">Join Updates Channel ↗</a>
+          </div>
+        </div>
+
+        <!-- Official Verified Social Links Grid -->
+        <div class="pt-2">
+          <div class="text-[11px] font-extrabold uppercase tracking-wider text-slate-400 mb-2">Connect Across Social Channels:</div>
+          <div class="flex flex-wrap items-center gap-2 text-slate-300">
+            <!-- WhatsApp Business -->
+            <a href="https://wa.me/971524413931?text=Hello%20TravelTrip%20World" target="_blank" rel="noopener" title="WhatsApp Business (+971524413931)" class="w-9 h-9 rounded-xl glass-card grid place-items-center hover:text-emerald-400 hover:border-emerald-400/50 hover:scale-110 transition shadow-sm">
+              <i class="fa-brands fa-whatsapp text-base"></i>
+            </a>
+
+            <!-- WhatsApp Channel -->
+            <a href="https://whatsapp.com/channel/0029VbDFOpd17EmwZMkdO50l" target="_blank" rel="noopener" title="Official WhatsApp Channel" class="w-9 h-9 rounded-xl glass-card grid place-items-center hover:text-tealAccent-light hover:border-tealAccent/50 hover:scale-110 transition shadow-sm">
+              <i class="fa-solid fa-tower-broadcast text-sm"></i>
+            </a>
+
+            <!-- Facebook Page 1 -->
+            <a href="https://www.facebook.com/share/19NeszaHUy/" target="_blank" rel="noopener" title="Facebook Page" class="w-9 h-9 rounded-xl glass-card grid place-items-center hover:text-sky-400 hover:border-sky-400/50 hover:scale-110 transition shadow-sm">
+              <i class="fa-brands fa-facebook-f text-base"></i>
+            </a>
+
+            <!-- Facebook Page 2 -->
+            <a href="https://www.facebook.com/share/1EGE852aeb/" target="_blank" rel="noopener" title="Facebook Official Page" class="w-9 h-9 rounded-xl glass-card grid place-items-center hover:text-sky-400 hover:border-sky-400/50 hover:scale-110 transition shadow-sm">
+              <i class="fa-brands fa-facebook text-base"></i>
+            </a>
+
+            <!-- Instagram 1 (@trave_ltripworld) -->
+            <a href="https://www.instagram.com/trave_ltripworld/" target="_blank" rel="noopener" title="Instagram @trave_ltripworld" class="w-9 h-9 rounded-xl glass-card grid place-items-center hover:text-rose-400 hover:border-rose-400/50 hover:scale-110 transition shadow-sm">
+              <i class="fa-brands fa-instagram text-base"></i>
+            </a>
+
+            <!-- Instagram 2 (@trave.ltripworld) -->
+            <a href="https://www.instagram.com/trave.ltripworld/" target="_blank" rel="noopener" title="Instagram @trave.ltripworld" class="w-9 h-9 rounded-xl glass-card grid place-items-center hover:text-pink-400 hover:border-pink-400/50 hover:scale-110 transition shadow-sm">
+              <i class="fa-brands fa-square-instagram text-base"></i>
+            </a>
+
+            <!-- Threads (@trave_ltripworld) -->
+            <a href="https://www.threads.net/@trave_ltripworld" target="_blank" rel="noopener" title="Threads @trave_ltripworld" class="w-9 h-9 rounded-xl glass-card grid place-items-center hover:text-white hover:border-white/50 hover:scale-110 transition shadow-sm">
+              <i class="fa-brands fa-threads text-base"></i>
+            </a>
+
+            <!-- TikTok (@traveltrip.world8) -->
+            <a href="https://www.tiktok.com/@traveltrip.world8" target="_blank" rel="noopener" title="TikTok @traveltrip.world8" class="w-9 h-9 rounded-xl glass-card grid place-items-center hover:text-teal-300 hover:border-teal-300/50 hover:scale-110 transition shadow-sm">
+              <i class="fa-brands fa-tiktok text-base"></i>
+            </a>
+
+            <!-- Pinterest -->
+            <a href="https://pin.it/A0wZ84guk" target="_blank" rel="noopener" title="Pinterest TravelTrip" class="w-9 h-9 rounded-xl glass-card grid place-items-center hover:text-red-500 hover:border-red-500/50 hover:scale-110 transition shadow-sm">
+              <i class="fa-brands fa-pinterest text-base"></i>
+            </a>
+
+            <!-- Snapchat (Traveltripworld) -->
+            <a href="https://www.snapchat.com/add/Traveltripworld" target="_blank" rel="noopener" title="Snapchat Traveltripworld" class="w-9 h-9 rounded-xl glass-card grid place-items-center hover:text-yellow-400 hover:border-yellow-400/50 hover:scale-110 transition shadow-sm">
+              <i class="fa-brands fa-snapchat text-base"></i>
+            </a>
+
+            <!-- X / Twitter (@traveltripakm) -->
+            <a href="https://x.com/traveltripakm" target="_blank" rel="noopener" title="X (Twitter) @traveltripakm" class="w-9 h-9 rounded-xl glass-card grid place-items-center hover:text-white hover:border-white/50 hover:scale-110 transition shadow-sm">
+              <i class="fa-brands fa-x-twitter text-base"></i>
+            </a>
+
+            <!-- LinkedIn (Traveltrip.world) -->
+            <a href="https://www.linkedin.com/search/results/all/?keywords=Traveltrip.world" target="_blank" rel="noopener" title="LinkedIn Traveltrip.world" class="w-9 h-9 rounded-xl glass-card grid place-items-center hover:text-blue-400 hover:border-blue-400/50 hover:scale-110 transition shadow-sm">
+              <i class="fa-brands fa-linkedin-in text-base"></i>
+            </a>
+
+            <!-- Official Email -->
+            <a href="mailto:Traveltripworld8@gmail.com" title="Email Traveltripworld8@gmail.com" class="w-9 h-9 rounded-xl glass-card grid place-items-center hover:text-gold hover:border-gold/50 hover:scale-110 transition shadow-sm">
+              <i class="fa-regular fa-envelope text-base"></i>
+            </a>
+          </div>
         </div>
       </div>
 
@@ -1459,12 +1595,20 @@
     <div class="max-w-7xl mx-auto mt-12 pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-4">
       <div>© 2026 TravelTrip.world. All Rights Reserved. English • USD Only.</div>
       <div class="flex gap-6">
-        <a href="#" class="hover:underline">Privacy Policy</a>
-        <a href="#" class="hover:underline">Terms of Service</a>
-        <a href="#" class="hover:underline">Security</a>
+        <a href="/privacy" class="hover:underline">Privacy Policy</a>
+        <a href="/terms" class="hover:underline">Terms of Service</a>
+        <a href="/refund-policy" class="hover:underline">Refund Guarantee</a>
+        <a href="/social" class="hover:underline text-gold">Social Hub</a>
       </div>
     </div>
   </footer>
+
+  <!-- Floating 24/7 WhatsApp VIP Support Button -->
+  <a href="https://wa.me/971524413931?text=Hello%20TravelTrip%20World%20Support" target="_blank" rel="noopener" class="fixed bottom-6 right-6 z-40 px-4 py-3 rounded-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs shadow-2xl shadow-emerald-500/40 border border-emerald-300 flex items-center gap-2.5 transition transform hover:scale-105 group cursor-pointer" title="Chat on WhatsApp (+971524413931)">
+    <span class="w-2.5 h-2.5 rounded-full bg-slate-950 animate-ping"></span>
+    <i class="fa-brands fa-whatsapp text-xl text-slate-950"></i>
+    <span class="hidden sm:inline font-extrabold tracking-wide">WhatsApp Support (+971 52 441 3931)</span>
+  </a>
 
 
   <!-- In-Page eSIM Instant Purchase Modal (Phase 2 Conversion Engine) -->
@@ -1664,22 +1808,21 @@
 
     </div>
 
-    <!-- 24/7 Concierge Hotline -->
+        <!-- 24/7 Concierge Hotline -->
     <div class="pt-6 border-t border-white/10 space-y-3">
       <div class="text-xs text-slate-300 font-bold flex items-center gap-2">
         <i class="fa-solid fa-headset text-gold"></i> 24/7 Dedicated Human Travel Concierge
       </div>
       <div class="grid grid-cols-2 gap-2 text-xs">
-        <button onclick="window.open('https://wa.me/?text=Hello%20TravelTrip%20Concierge', '_blank')" class="h-11 rounded-xl bg-emerald-600 hover:bg-emerald-500 font-bold text-white flex items-center justify-center gap-2 transition">
-          <i class="fa-brands fa-whatsapp text-base"></i> WhatsApp
+        <button onclick="window.open('https://wa.me/971524413931?text=Hello%20TravelTrip%20World%20Concierge', '_blank')" class="h-11 rounded-xl bg-emerald-600 hover:bg-emerald-500 font-bold text-white flex items-center justify-center gap-2 transition cursor-pointer">
+          <i class="fa-brands fa-whatsapp text-base"></i> WhatsApp (+971 52 441 3931)
         </button>
-        <button onclick="window.open('https://t.me/', '_blank')" class="h-11 rounded-xl bg-sky-600 hover:bg-sky-500 font-bold text-white flex items-center justify-center gap-2 transition">
-          <i class="fa-brands fa-telegram text-base"></i> Telegram
+        <button onclick="window.open('mailto:Traveltripworld8@gmail.com', '_blank')" class="h-11 rounded-xl bg-gold/90 hover:bg-gold font-bold text-slate-950 flex items-center justify-center gap-2 transition cursor-pointer">
+          <i class="fa-regular fa-envelope text-base"></i> Email Support
         </button>
       </div>
     </div>
   </div>
-
 
   <!-- Wallet Top-Up Modal (Phase 3) -->
   <div id="topup-modal-overlay" onclick="closeTopupModal()" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden transition-opacity"></div>
@@ -1828,17 +1971,198 @@
 
   <!-- JavaScript Application Logic -->
   <script>
+        // Comprehensive National Country Flags Dictionary
+    const COUNTRY_FLAGS = {
+      'bd': '🇧🇩', 'bangladesh': '🇧🇩',
+      'in': '🇮🇳', 'india': '🇮🇳',
+      'pk': '🇵🇰', 'pakistan': '🇵🇰',
+      'uae': '🇦🇪', 'ae': '🇦🇪', 'dubai': '🇦🇪', 'united arab emirates': '🇦🇪',
+      'sa': '🇸🇦', 'saudi': '🇸🇦', 'saudi arabia': '🇸🇦', 'ksa': '🇸🇦',
+      'qa': '🇶🇦', 'qatar': '🇶🇦', 'doha': '🇶🇦',
+      'om': '🇴🇲', 'oman': '🇴🇲', 'muscat': '🇴🇲',
+      'kw': '🇰🇼', 'kuwait': '🇰🇼',
+      'bh': '🇧🇭', 'bahrain': '🇧🇭',
+      'sg': '🇸🇬', 'singapore': '🇸🇬',
+      'my': '🇲🇾', 'malaysia': '🇲🇾',
+      'th': '🇹🇭', 'thailand': '🇹🇭', 'bangkok': '🇹🇭',
+      'id': '🇮🇩', 'indonesia': '🇮🇩', 'bali': '🇮🇩',
+      'jp': '🇯🇵', 'japan': '🇯🇵', 'tokyo': '🇯🇵',
+      'kr': '🇰🇷', 'korea': '🇰🇷', 'south korea': '🇰🇷', 'seoul': '🇰🇷',
+      'vn': '🇻🇳', 'vietnam': '🇻🇳',
+      'ph': '🇵🇭', 'philippines': '🇵🇭',
+      'tr': '🇹🇷', 'turkey': '🇹🇷', 'türkiye': '🇹🇷', 'istanbul': '🇹🇷',
+      'cn': '🇨🇳', 'china': '🇨🇳',
+      'hk': '🇭🇰', 'hong kong': '🇭🇰',
+      'tw': '🇹🇼', 'taiwan': '🇹🇼',
+      'lk': '🇱🇰', 'sri lanka': '🇱🇰',
+      'mv': '🇲🇻', 'maldives': '🇲🇻',
+      'np': '🇳🇵', 'nepal': '🇳🇵',
+      'au': '🇦🇺', 'australia': '🇦🇺',
+      'nz': '🇳🇿', 'new zealand': '🇳🇿',
+      'eu': '🇪🇺', 'europe': '🇪🇺',
+      'uk': '🇬🇧', 'gb': '🇬🇧', 'united kingdom': '🇬🇧', 'london': '🇬🇧', 'england': '🇬🇧',
+      'fr': '🇫🇷', 'france': '🇫🇷', 'paris': '🇫🇷',
+      'de': '🇩🇪', 'germany': '🇩🇪', 'berlin': '🇩🇪',
+      'it': '🇮🇹', 'italy': '🇮🇹', 'rome': '🇮🇹',
+      'es': '🇪🇸', 'spain': '🇪🇸', 'madrid': '🇪🇸',
+      'ch': '🇨🇭', 'switzerland': '🇨🇭', 'zurich': '🇨🇭', 'geneva': '🇨🇭',
+      'nl': '🇳🇱', 'netherlands': '🇳🇱',
+      'gr': '🇬🇷', 'greece': '🇬🇷',
+      'pt': '🇵🇹', 'portugal': '🇵🇹',
+      'at': '🇦🇹', 'austria': '🇦🇹',
+      'be': '🇧🇪', 'belgium': '🇧🇪',
+      'se': '🇸🇪', 'sweden': '🇸🇪',
+      'no': '🇳🇴', 'norway': '🇳🇴',
+      'dk': '🇩🇰', 'denmark': '🇩🇰',
+      'fi': '🇫🇮', 'finland': '🇫🇮',
+      'ie': '🇮🇪', 'ireland': '🇮🇪',
+      'pl': '🇵🇱', 'poland': '🇵🇱',
+      'cz': '🇨🇿', 'czech': '🇨🇿',
+      'hu': '🇭🇺', 'hungary': '🇭🇺',
+      'us': '🇺🇸', 'usa': '🇺🇸', 'united states': '🇺🇸', 'america': '🇺🇸',
+      'ca': '🇨🇦', 'canada': '🇨🇦',
+      'mx': '🇲🇽', 'mexico': '🇲🇽',
+      'br': '🇧🇷', 'brazil': '🇧🇷',
+      'eg': '🇪🇬', 'egypt': '🇪🇬',
+      'za': '🇿🇦', 'south africa': '🇿🇦',
+      'ma': '🇲🇦', 'morocco': '🇲🇦',
+      'asia': '🌏', 'asia+': '🌏',
+      'global': '🌐', 'worldwide': '🌐'
+    };
+
+    
+    // FlagCDN High-Definition Graphical Flags (Cross-device, Windows/Mac/iOS/Android compatible)
+    function getCountryFlagUrl(id, name) {
+      const code = (id || '').toLowerCase().trim();
+      const n = (name || '').toLowerCase().trim();
+      const cMap = {
+        'ae': 'ae', 'uae': 'ae', 'dubai': 'ae', 'abu dhabi': 'ae',
+        'sa': 'sa', 'saudi': 'sa', 'saudi arabia': 'sa', 'mecca': 'sa',
+        'eu': 'eu', 'europe': 'eu',
+        'us': 'us', 'usa': 'us', 'united states': 'us', 'america': 'us',
+        'uk': 'gb', 'gb': 'gb', 'united kingdom': 'gb', 'britain': 'gb', 'london': 'gb',
+        'jp': 'jp', 'japan': 'jp', 'tokyo': 'jp',
+        'th': 'th', 'thailand': 'th', 'bangkok': 'th',
+        'sg': 'sg', 'singapore': 'sg',
+        'my': 'my', 'malaysia': 'my', 'kuala lumpur': 'my',
+        'qa': 'qa', 'qatar': 'qa', 'doha': 'qa',
+        'om': 'om', 'oman': 'om', 'muscat': 'om',
+        'tr': 'tr', 'turkey': 'tr', 'türkiye': 'tr', 'istanbul': 'tr',
+        'ch': 'ch', 'switzerland': 'ch', 'swiss': 'ch',
+        'fr': 'fr', 'france': 'fr', 'paris': 'fr',
+        'de': 'de', 'germany': 'de', 'berlin': 'de',
+        'it': 'it', 'italy': 'it', 'rome': 'it',
+        'es': 'es', 'spain': 'es', 'madrid': 'es',
+        'bd': 'bd', 'bangladesh': 'bd', 'dhaka': 'bd',
+        'in': 'in', 'india': 'in', 'delhi': 'in',
+        'pk': 'pk', 'pakistan': 'pk',
+        'asia': 'un', 'global': 'un', 'worldwide': 'un', 'world': 'un'
+      };
+      if (cMap[code]) return 'https://flagcdn.com/w80/' + cMap[code] + '.png';
+      for (const [k, val] of Object.entries(cMap)) {
+        if (n.includes(k) || code.includes(k)) return 'https://flagcdn.com/w80/' + val + '.png';
+      }
+      if (code.length === 2) return 'https://flagcdn.com/w80/' + code + '.png';
+      return 'https://flagcdn.com/w80/un.png';
+    }
+
+    function getCountryFlagImg(id, name, extraClass = 'w-7 h-5') {
+      const url = getCountryFlagUrl(id, name);
+      const alt = name || id || 'Flag';
+      return '<img src="' + url + '" alt="' + alt + '" class="inline-block ' + extraClass + ' object-cover rounded shadow-sm align-middle border border-white/20">';
+    }
+
+    function getCountryFlag(countryCode, name) {
+      const c1 = (countryCode || '').toLowerCase().trim();
+      if (c1 && COUNTRY_FLAGS[c1]) return COUNTRY_FLAGS[c1];
+      const c2 = (name || '').toLowerCase().trim();
+      if (c2 && COUNTRY_FLAGS[c2]) return COUNTRY_FLAGS[c2];
+      for (const [k, flag] of Object.entries(COUNTRY_FLAGS)) {
+        if (c2.includes(k) || c1.includes(k)) return flag;
+      }
+      return '🌐';
+    }
+
+    // Resolves standard Country Entity for grouping
+    function getPackageCountryInfo(p) {
+      const code = (p.region || '').toUpperCase();
+      const name = (p.title || p.name || '').toLowerCase();
+      
+      if (code === 'BD' || name.includes('bangladesh')) {
+        return { id: 'BD', name: 'Bangladesh', flag: '🇧🇩', flagUrl: 'https://flagcdn.com/w80/bd.png', region: 'asia', defaultNetwork: 'Grameenphone / Robi 4G/5G' };
+      }
+      if (code === 'UAE' || code === 'AE' || name.includes('uae') || name.includes('dubai')) {
+        return { id: 'UAE', name: 'United Arab Emirates & Dubai', flag: '🇦🇪', flagUrl: 'https://flagcdn.com/w80/ae.png', region: 'middleeast', defaultNetwork: 'e& (Etisalat) / du 5G' };
+      }
+      if (code === 'SA' || name.includes('saudi')) {
+        return { id: 'SA', name: 'Saudi Arabia', flag: '🇸🇦', flagUrl: 'https://flagcdn.com/w80/sa.png', region: 'middleeast', defaultNetwork: 'STC / Mobily 5G' };
+      }
+      if (code === 'QA' || name.includes('qatar')) {
+        return { id: 'QA', name: 'Qatar', flag: '🇶🇦', flagUrl: 'https://flagcdn.com/w80/qa.png', region: 'middleeast', defaultNetwork: 'Ooredoo / Vodafone 5G' };
+      }
+      if (code === 'OM' || name.includes('oman')) {
+        return { id: 'OM', name: 'Oman', flag: '🇴🇲', flagUrl: 'https://flagcdn.com/w80/om.png', region: 'middleeast', defaultNetwork: 'Omantel / Ooredoo 5G' };
+      }
+      if (code === 'IN' || name.includes('india')) {
+        return { id: 'IN', name: 'India', flag: '🇮🇳', flagUrl: 'https://flagcdn.com/w80/in.png', region: 'asia', defaultNetwork: 'Jio / Airtel 5G' };
+      }
+      if (code === 'PK' || name.includes('pakistan')) {
+        return { id: 'PK', name: 'Pakistan', flag: '🇵🇰', flagUrl: 'https://flagcdn.com/w80/pk.png', region: 'asia', defaultNetwork: 'Jazz / Zong 4G LTE' };
+      }
+      if (code === 'TH' || name.includes('thailand')) {
+        return { id: 'TH', name: 'Thailand', flag: '🇹🇭', flagUrl: 'https://flagcdn.com/w80/th.png', region: 'asia', defaultNetwork: 'AIS / True 5G' };
+      }
+      if (code === 'MY' || name.includes('malaysia')) {
+        return { id: 'MY', name: 'Malaysia', flag: '🇲🇾', flagUrl: 'https://flagcdn.com/w80/my.png', region: 'asia', defaultNetwork: 'Celcom / Digi 5G' };
+      }
+      if (code === 'SG' || name.includes('singapore')) {
+        return { id: 'SG', name: 'Singapore', flag: '🇸🇬', flagUrl: 'https://flagcdn.com/w80/sg.png', region: 'asia', defaultNetwork: 'Singtel / StarHub 5G' };
+      }
+      if (code === 'JP' || name.includes('japan')) {
+        return { id: 'JP', name: 'Japan', flag: '🇯🇵', flagUrl: 'https://flagcdn.com/w80/jp.png', region: 'asia', defaultNetwork: 'NTT Docomo / SoftBank 5G' };
+      }
+      if (code === 'TR' || name.includes('turkey') || name.includes('türkiye')) {
+        return { id: 'TR', name: 'Turkey', flag: '🇹🇷', flagUrl: 'https://flagcdn.com/w80/tr.png', region: 'europe', defaultNetwork: 'Turkcell / Vodafone 5G' };
+      }
+      if (code === 'UK' || code === 'GB' || name.includes('united kingdom') || name.includes('london')) {
+        return { id: 'UK', name: 'United Kingdom', flag: '🇬🇧', flagUrl: 'https://flagcdn.com/w80/gb.png', region: 'europe', defaultNetwork: 'EE / Vodafone 5G' };
+      }
+      if (code === 'CH' || name.includes('switzerland')) {
+        return { id: 'CH', name: 'Switzerland', flag: '🇨🇭', flagUrl: 'https://flagcdn.com/w80/ch.png', region: 'europe', defaultNetwork: 'Swisscom / Sunrise 5G' };
+      }
+      if (code === 'US' || name.includes('usa') || name.includes('united states')) {
+        return { id: 'US', name: 'United States', flag: '🇺🇸', flagUrl: 'https://flagcdn.com/w80/us.png', region: 'northamerica', defaultNetwork: 'T-Mobile / AT&T 5G' };
+      }
+      if (code === 'EU' || name.includes('europe')) {
+        return { id: 'EU', name: 'Europe (33 Countries)', flag: '🇪🇺', flagUrl: 'https://flagcdn.com/w80/eu.png', region: 'europe', defaultNetwork: 'Vodafone / Telekom 5G' };
+      }
+      if (code === 'ASIA' || name.includes('asia')) {
+        return { id: 'ASIA', name: 'Asia Multi-Country Roaming', flag: '🌏', flagUrl: 'https://flagcdn.com/w80/un.png', region: 'asia', defaultNetwork: '5G Multi-Carrier Asia' };
+      }
+      return { 
+        id: code || 'GLOBAL', 
+        name: (p.title || p.name || 'Global Roaming').split('(')[0].trim(), 
+        flag: getCountryFlag(code, p.title || p.name), 
+        flagUrl: getCountryFlagUrl(code, p.title || p.name),
+        region: mapPkgRegion(code), 
+        defaultNetwork: 'Tier-1 Worldwide Roaming' 
+      };
+    }
+
     // Embedded ResellPortal Fallback Packages
     window.ESIM_PACKAGES = [
       {"id": "UAE-1GB-3D", "packageCode": "UAE-1GB-3D", "title": "UAE & Dubai 1GB", "flag": "🇦🇪", "data": "1 GB", "validity": "3 Days", "network": "e& (Etisalat)/du 5G", "price": 3.90, "originalPrice": 6.00, "region": "middleeast", "popular": true, "countryKey": "UAE"},
       {"id": "UAE-5GB-15D", "packageCode": "UAE-5GB-15D", "title": "UAE & Dubai 5GB", "flag": "🇦🇪", "data": "5 GB", "validity": "15 Days", "network": "e& (Etisalat)/du 5G", "price": 16.50, "originalPrice": 22.00, "badge": "Best Seller", "region": "middleeast", "popular": true, "countryKey": "UAE"},
-      {"id": "BD-1GB-7D", "packageCode": "BD-1GB-7D", "title": "Bangladesh 1GB", "flag": "🇧🇩", "data": "1 GB", "validity": "7 Days", "network": "Grameenphone/Robi 4G/5G", "price": 4.50, "originalPrice": 7.00, "badge": "Best Value", "region": "asia", "popular": true, "countryKey": "Bangladesh"},
-      {"id": "IN-3GB-7D", "packageCode": "IN-3GB-7D", "title": "India 3GB", "flag": "🇮🇳", "data": "3 GB", "validity": "7 Days", "network": "Jio/Airtel 5G", "price": 7.50, "originalPrice": 11.00, "badge": "Popular", "region": "asia", "popular": true, "countryKey": "India"},
+      {"id": "SA-3GB-7D", "packageCode": "SA-3GB-7D", "title": "Saudi Arabia 3GB", "flag": "🇸🇦", "data": "3 GB", "validity": "7 Days", "network": "STC/Mobily 5G", "price": 7.90, "originalPrice": 12.00, "badge": "Popular", "region": "middleeast", "popular": true, "countryKey": "Saudi"},
       {"id": "EU-5GB-30D", "packageCode": "EU-5GB-30D", "title": "Europe 33 Countries 5GB", "flag": "🇪🇺", "data": "5 GB", "validity": "30 Days", "network": "Vodafone/Telekom 5G", "price": 14.00, "originalPrice": 19.00, "badge": "Euro Travel", "region": "europe", "popular": true, "countryKey": "Europe"},
       {"id": "EU-10GB-30D", "packageCode": "EU-10GB-30D", "title": "Europe 33 Countries 10GB", "flag": "🇪🇺", "data": "10 GB", "validity": "30 Days", "network": "Vodafone/Telekom 5G", "price": 22.50, "originalPrice": 29.00, "badge": "Most Popular", "region": "europe", "popular": true, "countryKey": "Europe"},
       {"id": "US-3GB-7D", "packageCode": "US-3GB-7D", "title": "USA 3GB Explorer", "flag": "🇺🇸", "data": "3 GB", "validity": "7 Days", "network": "T-Mobile/AT&T 5G", "price": 8.00, "originalPrice": 12.00, "badge": "USA 5G", "region": "northamerica", "popular": true, "countryKey": "USA"},
-      {"id": "US-10GB-30D", "packageCode": "US-10GB-30D", "title": "USA 10GB Unlimited", "flag": "🇺🇸", "data": "10 GB", "validity": "30 Days", "network": "T-Mobile/AT&T 5G", "price": 24.00, "originalPrice": 34.00, "badge": "Pro", "region": "northamerica", "popular": true, "countryKey": "USA"},
-      {"id": "GLOBAL-5GB-30D", "packageCode": "GLOBAL-5GB-30D", "title": "Global 130+ Countries 5GB", "flag": "🌐", "data": "5 GB", "validity": "30 Days", "network": "Tier-1 Roaming", "price": 28.00, "originalPrice": 38.00, "badge": "Global Roam", "region": "global", "popular": true, "countryKey": "Global"}
+      {"id": "UK-3GB-7D", "packageCode": "UK-3GB-7D", "title": "United Kingdom 3GB", "flag": "🇬🇧", "data": "3 GB", "validity": "7 Days", "network": "EE/Vodafone 5G", "price": 7.50, "originalPrice": 11.50, "badge": "Popular", "region": "europe", "popular": true, "countryKey": "UK"},
+      {"id": "JP-3GB-7D", "packageCode": "JP-3GB-7D", "title": "Japan 3GB High-Speed", "flag": "🇯🇵", "data": "3 GB", "validity": "7 Days", "network": "NTT Docomo/SoftBank 5G", "price": 7.50, "originalPrice": 12.00, "badge": "Fast 5G", "region": "asia", "popular": true, "countryKey": "Japan"},
+      {"id": "TH-15GB-8D", "packageCode": "TH-15GB-8D", "title": "Thailand Tourist 15GB", "flag": "🇹🇭", "data": "15 GB", "validity": "8 Days", "network": "AIS/True 5G", "price": 5.90, "originalPrice": 9.90, "badge": "Hot Deal", "region": "asia", "popular": true, "countryKey": "Thailand"},
+      {"id": "GLOBAL-5GB-30D", "packageCode": "GLOBAL-5GB-30D", "title": "Global 130+ Countries 5GB", "flag": "🌐", "data": "5 GB", "validity": "30 Days", "network": "Tier-1 Roaming", "price": 28.00, "originalPrice": 38.00, "badge": "Global Roam", "region": "global", "popular": true, "countryKey": "Global"},
+      
+      
     ];
 
     let currentRegion = 'all';
@@ -1855,36 +2179,33 @@
           const json = await res.json();
           if (json && json.packages && json.packages.length > 0) {
             isResellPortalLive = json.supplier_live || true;
-            const FLAG_MAP = {
-              'BD': '🇧🇩', 'IN': '🇮🇳', 'PK': '🇵🇰', 'UAE': '🇦🇪', 'AE': '🇦🇪',
-              'OM': '🇴🇲', 'QA': '🇶🇦', 'EU': '🇪🇺', 'ASIA': '🌏', 'GLOBAL': '🌐',
-              'TH': '🇹🇭', 'US': '🇺🇸', 'JP': '🇯🇵', 'SG': '🇸🇬', 'MY': '🇲🇾', 'KR': '🇰🇷'
-            };
 
             const liveList = json.packages.map(p => {
-              const r = (p.region || 'GLOBAL').toUpperCase();
-              const flag = FLAG_MAP[r] || (p.name.includes('Bangladesh') ? '🇧🇩' : (p.name.includes('India') ? '🇮🇳' : (p.name.includes('Dubai') || p.name.includes('UAE') ? '🇦🇪' : (p.name.includes('Europe') ? '🇪🇺' : (p.name.includes('USA') ? '🇺🇸' : '📱')))));
+              const c = getPackageCountryInfo(p);
               const price = parseFloat(p.priceUsd) || 4.0;
               return {
                 id: p.packageCode,
                 packageCode: p.packageCode,
                 title: p.name,
-                flag: flag,
+                flag: c.flag,
+                flagUrl: c.flagUrl || getCountryFlagUrl(c.id, c.name),
                 data: p.data,
                 validity: p.validity,
-                network: p.network || "Tier-1 Carrier 5G",
+                network: p.network || c.defaultNetwork,
                 price: price,
                 originalPrice: Math.round(price * 1.35 * 10) / 10,
-                region: mapPkgRegion(r),
+                region: c.region,
                 badge: p.unlimited ? "Unlimited 5G" : (price < 5 ? "Wholesale ⚡" : "Wholesale Tier"),
-                popular: p.unlimited || price < 7 || p.packageCode.includes('1GB') || p.packageCode.includes('5GB'),
-                countryKey: p.name
+                popular: p.unlimited || price < 7 || p.packageCode.includes('1GB') || p.packageCode.includes('5GB') || ['BD','UAE','SA','US','UK'].includes(c.id),
+                countryKey: c.name,
+                countryId: c.id
               };
             });
 
             if (liveList.length > 0) {
               window.ESIM_PACKAGES = liveList;
-              if (badgeCount) badgeCount.textContent = `${liveList.length} Live Wholesale Plans`;
+              const groups = getGroupedCountries();
+              if (badgeCount) badgeCount.textContent = `${liveList.length} Plans • ${groups.length} Countries`;
               if (badgeText) badgeText.textContent = isResellPortalLive ? "ResellPortal Wholesale Live Sync" : "ResellPortal Inventory Verified";
               renderEsimGrid();
             }
@@ -2030,14 +2351,22 @@
         `;
       } else if (tab === 'esim') {
         content.innerHTML = `
-          <div class="space-y-3">
-            <div class="text-sm font-bold text-emerald-400 flex items-center gap-2">
-              <i class="fa-solid fa-sim-card"></i> 190+ Countries Instant 5G eSIM
+          <div class="space-y-4">
+            <div class="flex items-center justify-between">
+              <div class="text-sm font-bold text-emerald-400 flex items-center gap-2">
+                <i class="fa-solid fa-sim-card"></i> 190+ Countries Instant 5G eSIM (Wholesale Packages)
+              </div>
+              <span class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300">Instant QR Activation</span>
             </div>
-            <p class="text-xs text-slate-400">No passport or ID needed. Buy and activate in 30 seconds with instant email QR code.</p>
-            <a href="#esim-store" class="inline-flex items-center gap-2 text-xs font-bold text-emerald-400 hover:underline">
-              Browse 190+ eSIM Packages ➔
-            </a>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <input id="quick-esim-search" type="text" placeholder="Country (e.g. Bangladesh, UAE, USA)" value="Bangladesh" class="h-11 px-4 rounded-xl bg-slate-900 border border-white/10 text-xs text-white outline-none">
+              <button onclick="document.getElementById('esim-store').scrollIntoView({behavior: 'smooth'})" class="teal-btn h-11 rounded-xl text-xs flex items-center justify-center gap-2 font-bold cursor-pointer">
+                <i class="fa-solid fa-bolt"></i> View 5G eSIM Deals ➔
+              </button>
+              <button onclick="document.getElementById('esim-store').scrollIntoView({behavior: 'smooth'})" class="glass-card hover:border-emerald-400 h-11 rounded-xl text-xs font-bold text-emerald-300 transition flex items-center justify-center gap-2 cursor-pointer">
+                <i class="fa-solid fa-earth-americas"></i> Browse 190+ Countries
+              </button>
+            </div>
           </div>
         `;
       } else if (tab === 'insurance') {
@@ -2234,165 +2563,267 @@
       }, 700);
     }
 
-    // World Destinations Database
+    // World Destinations Database (Foreign Travel Destinations First)
     const DESTINATIONS = [
       {
-        id: "japan",
-        name: "Japan",
-        cities: "Tokyo & Kyoto",
-        flag: "🇯🇵",
-        img: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=1000&q=80",
-        flightsFrom: "$620",
-        hotelsFrom: "$140",
-        visa: "Visa-Free for 68 nationalities (or eVisa)",
-        weather: "21°C • Mild & Crisp Autumn",
-        esimPack: "Japan 10GB 5G ($18)",
-        highlight: "Private Tea Ceremony in Kyoto & Michelin Dining"
+            "id": "uae",
+            "name": "United Arab Emirates",
+            "cities": "Dubai & Abu Dhabi",
+            "flag": "🇦🇪",
+            "lat": 25.2,
+            "lon": 55.27,
+            "img": "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1000&q=80",
+            "flightsFrom": "$320",
+            "esimPack": "UAE 10GB 5G High-Speed ($14)",
+            "network": "du / Etisalat 5G",
+            "visa": "30/90-Day Visa on Arrival or E-Visa",
+            "highlight": "Lightning 5G across Downtown Dubai, Marina & Abu Dhabi."
       },
       {
-        id: "switzerland",
-        name: "Switzerland",
-        cities: "Zermatt & Zurich",
-        flag: "🇨🇭",
-        img: "https://images.unsplash.com/photo-1530122037265-a5f1f91d3b99?auto=format&fit=crop&w=1000&q=80",
-        flightsFrom: "$580",
-        hotelsFrom: "$220",
-        visa: "Schengen Visa or 90-day Visa-Free",
-        weather: "16°C • Alpine Sunshine",
-        esimPack: "Europe 33 Countries 10GB ($24)",
-        highlight: "Glacier Express Scenic Rail & Alpine Helicopter"
+            "id": "saudi",
+            "name": "Saudi Arabia",
+            "cities": "Riyadh, Jeddah & Mecca",
+            "flag": "🇸🇦",
+            "lat": 24.71,
+            "lon": 46.67,
+            "img": "https://images.unsplash.com/photo-1586724237569-f3d0c1dee8c6?auto=format&fit=crop&w=1000&q=80",
+            "flightsFrom": "$350",
+            "esimPack": "Hajj & Umrah Special 10GB 5G ($18)",
+            "network": "STC / Mobily 5G",
+            "visa": "Tourist eVisa / Umrah Visa",
+            "highlight": "Perfect for Umrah & Hajj pilgrims and business travelers."
       },
       {
-        id: "maldives",
-        name: "Maldives",
-        cities: "Baa Atoll & Male",
-        flag: "🇲🇻",
-        img: "https://images.unsplash.com/photo-1514282401047-d79a71a590e8?auto=format&fit=crop&w=1000&q=80",
-        flightsFrom: "$490",
-        hotelsFrom: "$350",
-        visa: "Free 30-Day Visa on Arrival for All",
-        weather: "29°C • Tropical Sun",
-        esimPack: "Asia 18 Countries 5GB ($13.50)",
-        highlight: "Overwater Villa & Private Bioluminescent Cruise"
+            "id": "uk",
+            "name": "United Kingdom",
+            "cities": "London & Edinburgh",
+            "flag": "🇬🇧",
+            "lat": 51.5,
+            "lon": -0.12,
+            "img": "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=1000&q=80",
+            "flightsFrom": "$520",
+            "esimPack": "UK & Europe 33 Countries 10GB ($15)",
+            "network": "EE / Vodafone 5G",
+            "visa": "Standard Visitor Visa / ETA",
+            "highlight": "Works throughout UK and 33 European countries with zero roaming fees."
       },
       {
-        id: "uae",
-        name: "United Arab Emirates",
-        cities: "Dubai & Abu Dhabi",
-        flag: "🇦🇪",
-        img: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1000&q=80",
-        flightsFrom: "$380",
-        hotelsFrom: "$120",
-        visa: "Free 30/90-Day Visa on Arrival or E-Visa",
-        weather: "31°C • Warm & Sunny",
-        esimPack: "Middle East 10GB 5G ($26)",
-        highlight: "Royal Bedouin Desert Oasis & Yacht Charter"
+            "id": "usa",
+            "name": "United States",
+            "cities": "New York & Los Angeles",
+            "flag": "🇺🇸",
+            "lat": 40.71,
+            "lon": -74.0,
+            "img": "https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?auto=format&fit=crop&w=1000&q=80",
+            "flightsFrom": "$650",
+            "esimPack": "USA 10GB Unlimited 5G ($19)",
+            "network": "T-Mobile / AT&T 5G",
+            "visa": "B1/B2 Visa / ESTA",
+            "highlight": "Nationwide 5G Ultra Capacity across all 50 states."
       },
       {
-        id: "france",
-        name: "France",
-        cities: "Paris & Nice",
-        flag: "🇫🇷",
-        img: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=1000&q=80",
-        flightsFrom: "$540",
-        hotelsFrom: "$160",
-        visa: "Schengen Visa or 90-day Visa-Free",
-        weather: "19°C • Pleasant Spring/Autumn",
-        esimPack: "Europe 33 Countries 5GB ($12)",
-        highlight: "Private Louvre Tour & French Riviera Cruise"
+            "id": "japan",
+            "name": "Japan",
+            "cities": "Tokyo & Kyoto",
+            "flag": "🇯🇵",
+            "lat": 35.67,
+            "lon": 139.65,
+            "img": "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=1000&q=80",
+            "flightsFrom": "$590",
+            "esimPack": "Japan 10GB 5G High-Speed ($16)",
+            "network": "NTT Docomo / SoftBank 5G",
+            "visa": "eVisa / Visa-Free for 68 countries",
+            "highlight": "Blazing 5G speeds on bullet trains and Tokyo metropolises."
       },
       {
-        id: "indonesia",
-        name: "Indonesia",
-        cities: "Bali & Ubud",
-        flag: "🇮🇩",
-        img: "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=1000&q=80",
-        flightsFrom: "$440",
-        hotelsFrom: "$80",
-        visa: "30-Day Electronic Visa on Arrival (e-VOA)",
-        weather: "28°C • Tropical Breeze",
-        esimPack: "Asia 18 Countries 10GB ($22)",
-        highlight: "Private Clifftop Villa & Sacred Waterfall Safari"
+            "id": "thailand",
+            "name": "Thailand",
+            "cities": "Bangkok & Phuket",
+            "flag": "🇹🇭",
+            "lat": 13.75,
+            "lon": 100.5,
+            "img": "https://images.unsplash.com/photo-1508009603885-50cf7c579365?auto=format&fit=crop&w=1000&q=80",
+            "flightsFrom": "$190",
+            "esimPack": "Thailand 15GB 5G Tourist ($8.50)",
+            "network": "AIS / TrueMove 5G",
+            "visa": "Visa-Free for 60 Days",
+            "highlight": "Reliable 5G on all islands, beaches and cities."
+      },
+      {
+            "id": "singapore",
+            "name": "Singapore",
+            "cities": "Marina Bay & Sentosa",
+            "flag": "🇸🇬",
+            "lat": 1.35,
+            "lon": 103.81,
+            "img": "https://images.unsplash.com/photo-1525625293386-3f8f99389edd?auto=format&fit=crop&w=1000&q=80",
+            "flightsFrom": "$240",
+            "esimPack": "Singapore 10GB 5G ($12)",
+            "network": "Singtel / StarHub 5G",
+            "visa": "SG Arrival Card Visa-Free",
+            "highlight": "World-class 5G speeds at Changi Airport & Marina Bay."
+      },
+      {
+            "id": "malaysia",
+            "name": "Malaysia",
+            "cities": "Kuala Lumpur & Penang",
+            "flag": "🇲🇾",
+            "lat": 3.13,
+            "lon": 101.68,
+            "img": "https://images.unsplash.com/photo-1596422846543-75c6fc197f07?auto=format&fit=crop&w=1000&q=80",
+            "flightsFrom": "$210",
+            "esimPack": "Malaysia Unlimited 5G ($11)",
+            "network": "CelcomDigi / Maxis 5G",
+            "visa": "Visa-Free for 30 Days (MDAC required)",
+            "highlight": "Seamless connectivity across KLCC, Langkawi & Borneo."
+      },
+      {
+            "id": "qatar",
+            "name": "Qatar",
+            "cities": "Doha & Lusail",
+            "flag": "🇶🇦",
+            "lat": 25.28,
+            "lon": 51.53,
+            "img": "https://images.unsplash.com/photo-1568084680786-a84f91d1153c?auto=format&fit=crop&w=1000&q=80",
+            "flightsFrom": "$340",
+            "esimPack": "Qatar 5GB 5G ($9.99)",
+            "network": "Ooredoo / Vodafone 5G",
+            "visa": "Free 30-Day Visa on Arrival",
+            "highlight": "Ultra-fast connection throughout Doha Corniche & Pearl Island."
+      },
+      {
+            "id": "turkey",
+            "name": "Turkey",
+            "cities": "Istanbul & Cappadocia",
+            "flag": "🇹🇷",
+            "lat": 41.0,
+            "lon": 28.97,
+            "img": "https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?auto=format&fit=crop&w=1000&q=80",
+            "flightsFrom": "$420",
+            "esimPack": "Turkey 10GB 5G ($12.50)",
+            "network": "Turkcell / Vodafone 5G",
+            "visa": "Instant Online eVisa",
+            "highlight": "Instant activation across Bosphorus & Cappadocia hot air balloons."
+      },
+      {
+            "id": "switzerland",
+            "name": "Switzerland",
+            "cities": "Zurich & Geneva",
+            "flag": "🇨🇭",
+            "lat": 47.37,
+            "lon": 8.54,
+            "img": "https://images.unsplash.com/photo-1530122037265-a5f1f91d3b99?auto=format&fit=crop&w=1000&q=80",
+            "flightsFrom": "$580",
+            "esimPack": "Europe 33 Countries 10GB ($18)",
+            "network": "Swisscom / Sunrise 5G",
+            "visa": "Schengen Visa / Visa-Free",
+            "highlight": "Crystal clear 5G even high in the Swiss Alps."
       }
     ];
 
-    let currentDestId = "japan";
+    let currentDestId = "uae";
+
+        function selectCountryForEsim(countryName) {
+      const esimSection = document.getElementById('esim-store');
+      if (esimSection) {
+        esimSection.scrollIntoView({ behavior: 'smooth' });
+        setTimeout(() => {
+          const allCountries = getGroupedCountries();
+          const match = allCountries.find(c => 
+            c.name.toLowerCase().includes(countryName.toLowerCase()) || 
+            countryName.toLowerCase().includes(c.name.toLowerCase()) ||
+            c.id.toLowerCase() === countryName.toLowerCase()
+          );
+          if (match) {
+            openCountrySection(match.id);
+          } else {
+            const input = document.getElementById('esim-search-input');
+            if (input) {
+              input.value = countryName;
+              filterEsimBySearch();
+            }
+          }
+        }, 450);
+      }
+    }
 
     function renderDestinations() {
       const tabs = document.getElementById('dest-tabs');
       tabs.innerHTML = DESTINATIONS.map(d => `
-        <button onclick="selectDestination('${d.id}')" class="px-4 py-2 rounded-full text-xs font-bold transition flex items-center gap-1.5 ${d.id === currentDestId ? 'bg-gold text-midnight shadow-lg shadow-gold/30' : 'glass-card border border-white/10 text-slate-300 hover:text-white'}">
-          <span>${d.flag}</span>
+        <button onclick="selectDestination('${d.id}')" class="px-3.5 py-2 rounded-xl text-xs font-extrabold transition flex items-center gap-2 cursor-pointer ${d.id === currentDestId ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 shadow-lg shadow-emerald-500/25 border-2 border-emerald-400' : 'glass-card border border-white/10 text-slate-300 hover:text-white hover:border-emerald-500/50'}">
+          <img src="${d.flagUrl || getCountryFlagUrl(d.id, d.name)}" alt="${d.name}" class="w-5 h-3.5 object-cover rounded shadow-xs border border-white/20 inline-block">
           <span>${d.name}</span>
+          <span class="w-1.5 h-1.5 rounded-full ${d.id === currentDestId ? 'bg-slate-950' : 'bg-emerald-400 animate-pulse'}"></span>
         </button>
       `).join('');
 
       const d = DESTINATIONS.find(item => item.id === currentDestId) || DESTINATIONS[0];
       const container = document.getElementById('dest-card-container');
+      const dFlagUrl = d.flagUrl || getCountryFlagUrl(d.id, d.name);
       container.innerHTML = `
-        <div class="glass-card rounded-3xl border border-white/15 overflow-hidden shadow-2xl">
+        <div class="glass-card rounded-3xl border border-emerald-500/30 overflow-hidden shadow-2xl">
           <div class="grid grid-cols-1 lg:grid-cols-12 items-stretch">
             
             <!-- Image Panel -->
-            <div class="lg:col-span-6 relative min-h-[300px] lg:min-h-full">
+            <div class="lg:col-span-5 relative min-h-[260px] lg:min-h-full">
               <img src="${d.img}" alt="${d.name}" class="w-full h-full object-cover">
               <div class="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-cardBg via-cardBg/40 to-transparent"></div>
-              <div class="absolute bottom-6 left-6 right-6">
-                <span class="px-3 py-1 rounded-full bg-gold/90 text-midnight text-[11px] font-black uppercase tracking-wider">
-                  ${d.flag} ${d.cities}
+              <div class="absolute bottom-5 left-5 right-5">
+                <span class="px-3 py-1 rounded-full bg-emerald-500 text-slate-950 text-[11px] font-black uppercase tracking-wider shadow-lg flex items-center gap-1.5 w-fit">
+                  <img src="${dFlagUrl}" alt="${d.name}" class="w-4 h-3 object-cover rounded-xs border border-black/20">
+                  5G eSIM ACTIVE
                 </span>
-                <h3 class="text-3xl font-display font-black text-white mt-2">${d.name}</h3>
-                <p class="text-xs text-slate-300 mt-1">${d.highlight}</p>
+                <h3 class="text-2xl sm:text-3xl font-display font-black text-white mt-2 flex items-center gap-2.5">
+                  <img src="${dFlagUrl}" alt="${d.name}" class="w-8 h-5.5 object-cover rounded shadow-md border border-white/25">
+                  <span>${d.name}</span>
+                </h3>
+                <p class="text-xs text-tealAccent-light font-bold mt-0.5">${d.cities}</p>
               </div>
             </div>
 
             <!-- Details Panel -->
-            <div class="lg:col-span-6 p-6 sm:p-8 flex flex-col justify-between space-y-6">
+            <div class="lg:col-span-7 p-6 sm:p-7 flex flex-col justify-between space-y-4">
               
-              <div class="grid grid-cols-2 gap-4 text-xs">
-                <div class="p-3 rounded-2xl bg-slate-900 border border-white/5">
+              <!-- Quick Stats Grid -->
+              <div class="grid grid-cols-2 gap-3 text-xs">
+                <div class="p-3 rounded-2xl bg-slate-900 border border-white/10">
                   <div class="text-slate-400 font-bold uppercase text-[10px]">Flights (Trip.com)</div>
-                  <div class="text-lg font-black text-white mt-0.5">from ${d.flightsFrom}</div>
-                  <a href="${TRIP_URLS.flights}" target="_blank" class="text-tealAccent-light font-bold hover:underline text-[11px]">Book Flight ↗</a>
+                  <div class="text-lg font-black text-tealAccent-light mt-0.5">from ${d.flightsFrom}</div>
+                  <a href="${TRIP_URLS.flights}" target="_blank" class="text-tealAccent-light font-bold hover:underline text-[11px] inline-flex items-center gap-1 mt-1">
+                    Book Flight ↗
+                  </a>
                 </div>
-                <div class="p-3 rounded-2xl bg-slate-900 border border-white/5">
-                  <div class="text-slate-400 font-bold uppercase text-[10px]">5-Star Hotels</div>
-                  <div class="text-lg font-black text-white mt-0.5">from ${d.hotelsFrom}/night</div>
-                  <a href="${TRIP_URLS.hotels}" target="_blank" class="text-gold font-bold hover:underline text-[11px]">Book Hotels ↗</a>
-                </div>
-                <div class="p-3 rounded-2xl bg-slate-900 border border-white/5">
-                  <div class="text-slate-400 font-bold uppercase text-[10px]">Visa Requirements</div>
-                  <div class="text-xs font-bold text-sky-400 mt-0.5">${d.visa}</div>
-                </div>
-                <div class="p-3 rounded-2xl bg-slate-900 border border-white/5">
-                  <div class="text-slate-400 font-bold uppercase text-[10px]">Climate & Best Time</div>
-                  <div class="text-xs font-bold text-amber-300 mt-0.5">${d.weather}</div>
+                <div class="p-3 rounded-2xl bg-slate-900 border border-emerald-500/30 bg-emerald-950/20">
+                  <div class="text-emerald-400 font-bold uppercase text-[10px]">Local 5G Network</div>
+                  <div class="text-sm font-black text-white mt-0.5">${d.network}</div>
+                  <span class="text-[10px] text-emerald-300 font-bold">Instant Email QR Code</span>
                 </div>
               </div>
 
-              <!-- Included eSIM -->
-              <div class="p-4 rounded-2xl bg-emerald-950/30 border border-emerald-500/30 flex items-center justify-between">
+              <!-- eSIM Highlight Box -->
+              <div class="p-4 rounded-2xl bg-gradient-to-r from-emerald-950/60 to-slate-900/90 border border-emerald-500/40 flex items-center justify-between gap-3 shadow-xl">
                 <div>
-                  <div class="text-[10px] font-extrabold uppercase tracking-wider text-emerald-400">Recommended eSIM Pack</div>
-                  <div class="text-sm font-bold text-white">${d.esimPack}</div>
+                  <div class="text-[10px] font-extrabold uppercase tracking-wider text-emerald-400">Recommended 5G eSIM Package</div>
+                  <div class="text-base font-black text-white mt-0.5">${d.esimPack}</div>
+                  <div class="text-[11px] text-slate-300 mt-0.5">${d.highlight}</div>
                 </div>
-                <a href="https://traveltripworld.appserviceportal.com/" target="_blank" class="px-4 py-2 rounded-xl bg-emerald-600 text-white font-bold text-xs hover:bg-emerald-500 transition">
-                  Buy eSIM ↗
+                <button onclick="selectCountryForEsim('${d.name}')" class="px-4 py-2.5 rounded-xl bg-gradient-to-r from-emerald-400 to-teal-400 text-slate-950 font-black text-xs hover:opacity-90 transition shadow-lg shrink-0 cursor-pointer">
+                  Buy eSIM ➔
+                </button>
+              </div>
+
+              <!-- Direct Actions -->
+              <div class="flex items-center gap-3 pt-1">
+                <button onclick="selectCountryForEsim('${d.name}')" class="gold-btn flex-1 h-11 rounded-xl text-xs font-bold flex items-center justify-center gap-2 cursor-pointer">
+                  <img src="${dFlagUrl}" alt="${d.name}" class="w-5 h-3.5 object-cover rounded shadow-xs border border-white/20">
+                  <span>View ${d.name} eSIM Deals</span>
+                </button>
+                <a href="${TRIP_URLS.flights}" target="_blank" class="glass-card hover:border-tealAccent/50 h-11 px-5 rounded-xl text-xs font-bold text-white transition flex items-center gap-2">
+                  <i class="fa-solid fa-plane text-tealAccent-light"></i> Flight Routes ↗
                 </a>
               </div>
 
-              <!-- Actions -->
-              <div class="flex items-center gap-3 pt-2">
-                <button onclick="loadPreset('${d.id}')" class="gold-btn flex-1 h-12 rounded-xl text-xs font-bold flex items-center justify-center gap-2">
-                  <i class="fa-solid fa-wand-magic-sparkles"></i> Plan Journey with AI
-                </button>
-                <button onclick="window.open('${TRIP_URLS.activities}', '_blank')" class="glass-card hover:border-gold/50 h-12 px-5 rounded-xl text-xs font-bold text-white transition">
-                  Things To Do ↗
-                </button>
-              </div>
-
             </div>
-
           </div>
         </div>
       `;
@@ -2425,6 +2856,11 @@
       if (sel) sel.value = code;
       renderDestinations();
       renderEsimGrid();
+      if (activeCountryId && !document.getElementById('country-plans-modal').classList.contains('hidden')) {
+        const allCountries = getGroupedCountries();
+        const country = allCountries.find(c => c.id === activeCountryId);
+        if (country) renderCountryOffers(country);
+      }
       recalculateCheckout();
       updateWalletUI();
       updateRewardsCalculator(document.getElementById('rewards-budget-slider')?.value || 4000);
@@ -2453,13 +2889,80 @@
       openEsimModal(title, price, flag, network, packageCode);
     }
 
+    // Priority Index for Premier Foreign Destinations First
+    const FOREIGN_COUNTRY_PRIORITY = {
+      'UAE': 1,      // United Arab Emirates & Dubai
+      'SA': 2,       // Saudi Arabia
+      'EU': 3,       // Europe 33 Countries
+      'US': 4,       // United States
+      'UK': 5,       // United Kingdom
+      'JP': 6,       // Japan
+      'TH': 7,       // Thailand
+      'SG': 8,       // Singapore
+      'MY': 9,       // Malaysia
+      'QA': 10,      // Qatar
+      'OM': 11,      // Oman
+      'TR': 12,      // Turkey
+      'CH': 13,      // Switzerland
+      'GLOBAL': 14,  // Global 130+ Countries Roaming
+      'ASIA': 15,    // Asia Multi-Country Roaming
+      // Subcontinent countries moved to bottom
+      'IN': 80,      // India
+      'PK': 85,      // Pakistan
+      'BD': 90       // Bangladesh
+    };
+
+    // Country Grouping Engine (Reduces 117+ cards down to compact country cards, foreign destinations first)
+    function getGroupedCountries() {
+      const list = window.ESIM_PACKAGES || [];
+      const groups = {};
+
+      list.forEach(p => {
+        const c = getPackageCountryInfo(p);
+        
+        // Exclude subcontinent countries (Bangladesh, India, Pakistan) per user instruction
+        const isSubcontinent = ['BD', 'IN', 'PK'].includes(c.id) || 
+                              ['bangladesh', 'india', 'pakistan'].some(n => c.name.toLowerCase().includes(n));
+        if (isSubcontinent) {
+          return;
+        }
+
+        p.flag = c.flag;
+        p.flagUrl = c.flagUrl || getCountryFlagUrl(c.id, c.name);
+
+        if (!groups[c.id]) {
+          groups[c.id] = {
+            id: c.id,
+            name: c.name,
+            flag: c.flag,
+            flagUrl: p.flagUrl,
+            region: c.region,
+            network: p.network || c.defaultNetwork,
+            packages: [],
+            minPrice: 999,
+            popular: ['UAE', 'SA', 'EU', 'US', 'UK', 'JP', 'TH', 'GLOBAL'].includes(c.id)
+          };
+        }
+        groups[c.id].packages.push(p);
+        if (p.price < groups[c.id].minPrice) {
+          groups[c.id].minPrice = p.price;
+        }
+      });
+
+      return Object.values(groups).sort((a, b) => {
+        const rankA = FOREIGN_COUNTRY_PRIORITY[a.id] !== undefined ? FOREIGN_COUNTRY_PRIORITY[a.id] : 50;
+        const rankB = FOREIGN_COUNTRY_PRIORITY[b.id] !== undefined ? FOREIGN_COUNTRY_PRIORITY[b.id] : 50;
+        return rankA - rankB;
+      });
+    }
+
     function filterEsimRegion(region) {
       currentRegion = region;
       document.querySelectorAll('.esim-filter-btn').forEach(btn => {
-        btn.className = 'esim-filter-btn px-4 py-2 rounded-full text-xs font-semibold border border-white/10 glass-card text-slate-300 hover:text-white';
+        btn.className = 'esim-filter-btn px-4 py-2 rounded-full text-xs font-semibold border border-white/10 glass-card text-slate-300 hover:text-white cursor-pointer';
       });
       if (window.event && window.event.target) {
-        window.event.target.closest('button').className = 'esim-filter-btn active px-4 py-2 rounded-full text-xs font-extrabold border border-emerald-400/60 bg-emerald-500/10 text-emerald-300';
+        window.event.target.closest('button').className = 'esim-filter-btn active px-4 py-2 rounded-full text-xs font-extrabold border border-emerald-400/60 bg-emerald-500/10 text-emerald-300 cursor-pointer';
       }
       renderEsimGrid();
     }
@@ -2468,62 +2971,215 @@
       renderEsimGrid();
     }
 
+    // Main View: Compact Country Directory Cards (All offers kept inside country sections)
     function renderEsimGrid() {
       const grid = document.getElementById('esim-grid');
+      if (!grid) return;
       const search = (document.getElementById('esim-search-input')?.value || '').trim().toLowerCase();
       
-      let list = window.ESIM_PACKAGES || [];
+      const allCountries = getGroupedCountries();
+      let list = allCountries;
+
       if (currentRegion === 'popular') {
-        list = list.filter(p => p.popular || (p.badge && p.badge.toLowerCase().includes('popular')));
+        list = list.filter(c => c.popular);
       } else if (currentRegion !== 'all') {
-        list = list.filter(p => p.region === currentRegion);
+        list = list.filter(c => c.region === currentRegion);
       }
 
       if (search) {
-        list = list.filter(p => (p.title || '').toLowerCase().includes(search) || (p.countryKey || '').toLowerCase().includes(search) || (p.packageCode || '').toLowerCase().includes(search));
+        list = list.filter(c => 
+          c.name.toLowerCase().includes(search) || 
+          c.id.toLowerCase().includes(search) ||
+          c.network.toLowerCase().includes(search)
+        );
       }
+
+      const countEl = document.getElementById('esim-count');
+      if (countEl) countEl.textContent = `${list.length} Countries / Regions Available`;
 
       if (list.length === 0) {
         grid.innerHTML = `
           <div class="col-span-full py-12 text-center text-slate-400 text-sm">
-            No eSIM packages match your filter. Showing all available packages...
+            No countries found matching "${search}". Showing all available destinations...
+            <div class="mt-3">
+              <button onclick="document.getElementById('esim-search-input').value=''; filterEsimRegion('all');" class="teal-btn px-4 py-2 rounded-xl text-xs font-bold">Clear Filters</button>
+            </div>
           </div>
         `;
         return;
       }
 
-      grid.innerHTML = list.map(p => `
-        <div class="glass-card glass-card-hover rounded-2xl p-5 border border-white/10 flex flex-col justify-between">
+      grid.innerHTML = list.map(c => {
+        const cFlagUrl = c.flagUrl || getCountryFlagUrl(c.id, c.name);
+        return `
+        <div onclick="openCountrySection('${c.id}')" class="glass-card glass-card-hover rounded-2xl p-5 border border-white/10 flex flex-col justify-between cursor-pointer group transition hover:border-emerald-500/50 hover:shadow-xl hover:shadow-emerald-500/10">
           <div>
             <div class="flex items-center justify-between gap-2">
-              <span class="text-2xl">${p.flag || "📱"}</span>
+              <div class="w-12 h-8 rounded-lg overflow-hidden shadow-md border border-white/20 transform group-hover:scale-110 transition duration-300 flex-shrink-0 bg-slate-800">
+                <img src="${cFlagUrl}" alt="${c.name}" class="w-full h-full object-cover">
+              </div>
+              <span class="px-2.5 py-1 rounded-full bg-emerald-500/15 border border-emerald-400/30 text-emerald-300 font-extrabold text-[11px]">
+                ${c.packages.length} Plans Available
+              </span>
+            </div>
+            <h4 class="font-display font-black text-lg text-white mt-3 group-hover:text-emerald-300 transition flex items-center gap-2.5">
+              <img src="${cFlagUrl}" alt="${c.name}" class="w-6 h-4 object-cover rounded shadow-sm border border-white/20 inline-block shrink-0">
+              <span>${c.name}</span>
+            </h4>
+            <div class="flex items-center gap-2 mt-1.5 text-xs text-slate-300">
+              <i class="fa-solid fa-bolt text-tealAccent-light text-[11px]"></i>
+              <span class="truncate">${c.network}</span>
+            </div>
+            <div class="mt-2 text-[11px] text-slate-400 flex items-center gap-1.5">
+              <i class="fa-solid fa-qrcode text-emerald-400"></i>
+              <span>Instant 30s QR • No ID Needed</span>
+            </div>
+          </div>
+
+          <div class="mt-5 pt-3 border-t border-white/10 flex items-center justify-between">
+            <div>
+              <div class="text-[10px] uppercase font-bold text-slate-400">Plans starting from</div>
+              <div class="text-base font-black text-white">
+                ${formatMoney(c.minPrice)} <span class="text-[10px] text-slate-400 font-bold">${currentCurrency}</span>
+              </div>
+            </div>
+            <button onclick="event.stopPropagation(); openCountrySection('${c.id}')" class="gold-btn h-9 px-3.5 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-md cursor-pointer">
+              <span>View Plans</span>
+              <i class="fa-solid fa-arrow-right text-[10px]"></i>
+            </button>
+          </div>
+        </div>
+      `;
+      }).join('');
+    }
+
+    // Dedicated Country Plans Modal Logic (Zero Page Clutter)
+    let activeCountryId = null;
+    let currentCountryTier = 'all';
+
+    function openCountrySection(countryId) {
+      const allCountries = getGroupedCountries();
+      const country = allCountries.find(c => c.id.toUpperCase() === countryId.toUpperCase()) || allCountries[0];
+      if (!country) return;
+
+      activeCountryId = country.id;
+      currentCountryTier = 'all';
+
+      const modal = document.getElementById('country-plans-modal');
+      const flagEl = document.getElementById('country-modal-flag');
+      const titleEl = document.getElementById('country-modal-title');
+      const networkEl = document.getElementById('country-modal-network');
+      const countEl = document.getElementById('c-plan-total-count');
+
+      const flagUrl = country.flagUrl || getCountryFlagUrl(country.id, country.name);
+      if (flagEl) {
+        flagEl.innerHTML = `<img src="${flagUrl}" alt="${country.name}" class="w-12 h-9 sm:w-14 sm:h-10 object-cover rounded-xl shadow-lg border border-white/25">`;
+      }
+      if (titleEl) {
+        titleEl.innerHTML = `<span class="inline-flex items-center gap-2.5 flex-wrap"><img src="${flagUrl}" alt="${country.name}" class="w-7 h-5 object-cover rounded shadow-sm border border-white/20 inline-block"><span>${country.name} — 5G eSIM Offers</span></span>`;
+      }
+      if (networkEl) networkEl.innerHTML = `<i class="fa-solid fa-tower-broadcast text-tealAccent-light"></i> <span>Connected to ${country.network} • Instant GSMA QR Code</span>`;
+      if (countEl) countEl.textContent = country.packages.length;
+
+      document.querySelectorAll('.c-tier-btn').forEach(btn => {
+        btn.className = 'c-tier-btn px-3 py-1.5 rounded-xl font-bold bg-white/5 text-slate-300 hover:text-white cursor-pointer';
+      });
+      const firstTier = document.querySelector('.c-tier-btn');
+      if (firstTier) firstTier.className = 'c-tier-btn active px-3 py-1.5 rounded-xl font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-400/40 cursor-pointer';
+
+      renderCountryOffers(country);
+
+      if (modal) {
+        modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+      }
+    }
+
+    function closeCountryPlansModal() {
+      const modal = document.getElementById('country-plans-modal');
+      if (modal) modal.classList.add('hidden');
+      document.body.style.overflow = '';
+    }
+
+    function filterCountryPlans(tier) {
+      currentCountryTier = tier;
+      document.querySelectorAll('.c-tier-btn').forEach(btn => {
+        btn.className = 'c-tier-btn px-3 py-1.5 rounded-xl font-bold bg-white/5 text-slate-300 hover:text-white cursor-pointer';
+      });
+      if (window.event && window.event.target) {
+        window.event.target.closest('button').className = 'c-tier-btn active px-3 py-1.5 rounded-xl font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-400/40 cursor-pointer';
+      }
+      const allCountries = getGroupedCountries();
+      const country = allCountries.find(c => c.id === activeCountryId);
+      if (country) renderCountryOffers(country);
+    }
+
+    function renderCountryOffers(country) {
+      const container = document.getElementById('country-plans-container') || document.getElementById('country-offers-grid');
+      if (!container) return;
+
+      let pkgs = country.packages;
+
+      if (currentCountryTier === 'short') {
+        pkgs = pkgs.filter(p => p.validity.includes('3') || p.validity.includes('7'));
+      } else if (currentCountryTier === 'monthly') {
+        pkgs = pkgs.filter(p => p.validity.includes('15') || p.validity.includes('30'));
+      } else if (currentCountryTier === 'unlimited') {
+        pkgs = pkgs.filter(p => (p.data && p.data.toLowerCase().includes('unlimited')) || (p.badge && p.badge.includes('Unlimited')));
+      }
+
+      if (pkgs.length === 0) {
+        container.innerHTML = `
+          <div class="col-span-full py-10 text-center text-slate-400 text-xs">
+            No plans found in this duration tier for ${country.name}. Showing all ${country.packages.length} plans.
+          </div>
+        `;
+        pkgs = country.packages;
+      }
+
+      container.innerHTML = pkgs.map(p => {
+        const pFlagUrl = p.flagUrl || country.flagUrl || getCountryFlagUrl(country.id, p.title || p.name);
+        return `
+        <div class="glass-card rounded-2xl p-4 sm:p-5 border border-white/10 flex flex-col justify-between hover:border-emerald-400/40 transition">
+          <div>
+            <div class="flex items-center justify-between gap-2">
+              <img src="${pFlagUrl}" alt="${country.name}" class="w-9 h-6 object-cover rounded-md shadow-sm border border-white/20">
               <div class="flex items-center gap-1.5 flex-wrap justify-end">
                 ${p.packageCode ? `<span class="font-mono text-[9px] px-1.5 py-0.5 rounded bg-white/5 text-slate-400 border border-white/5">${p.packageCode}</span>` : ''}
                 ${p.badge ? `<span class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-extrabold text-[10px]">${p.badge}</span>` : `<span class="text-[10px] text-slate-400 font-bold">${p.validity}</span>`}
               </div>
             </div>
-            <h4 class="font-display font-black text-base text-white mt-3">${p.title}</h4>
+
+            <h4 class="font-display font-black text-base text-white mt-2.5 flex items-center gap-2">
+              <img src="${pFlagUrl}" alt="${country.name}" class="w-5 h-3.5 object-cover rounded shadow-xs border border-white/20 inline-block">
+              <span>${p.title || p.name}</span>
+            </h4>
+            
             <div class="flex items-center gap-2 mt-2">
-              <span class="px-2 py-1 rounded-lg bg-white/5 text-emerald-400 font-black text-sm">${p.data}</span>
-              <span class="text-xs text-slate-400 font-medium truncate max-w-[150px]">${p.network || "High Speed 5G"}</span>
+              <span class="px-2.5 py-1 rounded-lg bg-emerald-500/15 border border-emerald-400/30 text-emerald-400 font-black text-sm">${p.data}</span>
+              <span class="text-xs text-slate-400 font-medium truncate">${p.validity}</span>
+            </div>
+            
+            <div class="mt-2 text-[11px] text-slate-400 flex items-center gap-1">
+              <i class="fa-solid fa-tower-broadcast text-tealAccent-light text-[10px]"></i>
+              <span class="truncate">${p.network || country.network}</span>
             </div>
           </div>
 
-          <div class="mt-5 pt-3 border-t border-white/5 flex items-center justify-between">
+          <div class="mt-4 pt-3 border-t border-white/10 flex items-center justify-between">
             <div>
               <div class="text-lg font-black text-white">${formatMoney(p.price)} <span class="text-[10px] text-slate-400">${currentCurrency}</span></div>
               ${p.originalPrice ? `<div class="text-[10px] text-slate-500 line-through">${formatMoney(p.originalPrice)}</div>` : ''}
             </div>
-            <button onclick="buyEsimPack('${encodeURIComponent(p.title)}', ${p.price}, '${p.flag}', '${encodeURIComponent(p.network || '')}', '${p.packageCode || ''}')" class="teal-btn h-9 px-3.5 rounded-xl text-xs flex items-center gap-1.5">
+            <button onclick="buyEsimPack('${encodeURIComponent(p.title || p.name)}', ${p.price}, '${p.flag || country.flag}', '${encodeURIComponent(p.network || country.network || '')}', '${p.packageCode || ''}')" class="teal-btn h-9 px-4 rounded-xl text-xs font-bold flex items-center gap-1.5 cursor-pointer shadow-lg shadow-tealAccent/15">
               <span>Buy eSIM</span>
-              <i class="fa-solid fa-arrow-right text-[10px]"></i>
+              <i class="fa-solid fa-bolt text-[10px]"></i>
             </button>
           </div>
         </div>
-      `).join('');
+      `;
+      }).join('');
     }
-
-    
 
     function bookHotelDeep() {
       const city = encodeURIComponent(document.getElementById('hotel-city')?.value || 'Paris, France');
@@ -2650,8 +3306,13 @@
       const flagEl = document.getElementById('modal-esim-flag');
       const netEl = document.getElementById('modal-esim-network');
 
-      if (titleEl) titleEl.textContent = title;
-      if (flagEl) flagEl.textContent = flag || "📱";
+      const flagUrl = getCountryFlagUrl('', title);
+      if (titleEl) {
+        titleEl.innerHTML = `<span class="inline-flex items-center gap-2"><img src="${flagUrl}" alt="Flag" class="w-6 h-4 object-cover rounded shadow-sm border border-white/20 inline-block"><span>${title}</span></span>`;
+      }
+      if (flagEl) {
+        flagEl.innerHTML = `<img src="${flagUrl}" alt="Flag" class="w-8 h-6 object-cover rounded shadow-sm border border-white/20">`;
+      }
       if (netEl) netEl.textContent = `${network || "High Speed 5G"} ${packageCode ? '• SKU: ' + packageCode : ''}`;
 
       updateModalPrice();
@@ -3051,12 +3712,18 @@
     let targetRotationX = 0.25;
 
     const GLOBE_CITY_COORDS = {
-      japan: { lat: 35.67, lon: 139.65, name: 'Tokyo' },
-      switzerland: { lat: 47.37, lon: 8.54, name: 'Zurich' },
-      maldives: { lat: 4.17, lon: 73.50, name: 'Male' },
-      uae: { lat: 25.20, lon: 55.27, name: 'Dubai' },
-      france: { lat: 48.85, lon: 2.35, name: 'Paris' },
-      indonesia: { lat: -8.34, lon: 115.09, name: 'Bali' }
+      bangladesh: { lat: 23.81, lon: 90.41, name: "Bangladesh", flag: "🇧🇩", esim: "Bangladesh 5GB 5G ($7.50)" },
+      uae: { lat: 25.2, lon: 55.27, name: "United Arab Emirates", flag: "🇦🇪", esim: "UAE 10GB 5G High-Speed ($14)" },
+      saudi: { lat: 24.71, lon: 46.67, name: "Saudi Arabia", flag: "🇸🇦", esim: "Hajj & Umrah Special 10GB 5G ($18)" },
+      qatar: { lat: 25.28, lon: 51.53, name: "Qatar", flag: "🇶🇦", esim: "Qatar 5GB 5G ($9.99)" },
+      malaysia: { lat: 3.13, lon: 101.68, name: "Malaysia", flag: "🇲🇾", esim: "Malaysia Unlimited 5G ($11)" },
+      singapore: { lat: 1.35, lon: 103.81, name: "Singapore", flag: "🇸🇬", esim: "Singapore 10GB 5G ($12)" },
+      thailand: { lat: 13.75, lon: 100.5, name: "Thailand", flag: "🇹🇭", esim: "Thailand 15GB 5G Tourist ($8.50)" },
+      turkey: { lat: 41.0, lon: 28.97, name: "Turkey", flag: "🇹🇷", esim: "Turkey 10GB 5G ($12.50)" },
+      uk: { lat: 51.5, lon: -0.12, name: "United Kingdom", flag: "🇬🇧", esim: "UK & Europe 33 Countries 10GB ($15)" },
+      usa: { lat: 40.71, lon: -74.0, name: "United States", flag: "🇺🇸", esim: "USA 10GB Unlimited 5G ($19)" },
+      japan: { lat: 35.67, lon: 139.65, name: "Japan", flag: "🇯🇵", esim: "Japan 10GB 5G High-Speed ($16)" },
+      switzerland: { lat: 47.37, lon: 8.54, name: "Switzerland", flag: "🇨🇭", esim: "Europe 33 Countries 10GB ($18)" },
     };
 
     function isGlobeLand(lat, lon) {
@@ -3214,13 +3881,19 @@
         globeGroup.add(ring);
       });
 
-      // 6. Arcs Between Cities
+      // 6. Flight Arcs Between Key Global Hubs
       const routes = [
-        [GLOBE_CITY_COORDS.france, GLOBE_CITY_COORDS.japan],
-        [GLOBE_CITY_COORDS.switzerland, GLOBE_CITY_COORDS.uae],
-        [GLOBE_CITY_COORDS.uae, GLOBE_CITY_COORDS.maldives],
-        [GLOBE_CITY_COORDS.japan, GLOBE_CITY_COORDS.indonesia]
-      ];
+        [GLOBE_CITY_COORDS.bangladesh, GLOBE_CITY_COORDS.uae],
+        [GLOBE_CITY_COORDS.uae, GLOBE_CITY_COORDS.saudi],
+        [GLOBE_CITY_COORDS.uae, GLOBE_CITY_COORDS.uk],
+        [GLOBE_CITY_COORDS.uk, GLOBE_CITY_COORDS.usa],
+        [GLOBE_CITY_COORDS.bangladesh, GLOBE_CITY_COORDS.malaysia],
+        [GLOBE_CITY_COORDS.malaysia, GLOBE_CITY_COORDS.singapore],
+        [GLOBE_CITY_COORDS.singapore, GLOBE_CITY_COORDS.thailand],
+        [GLOBE_CITY_COORDS.thailand, GLOBE_CITY_COORDS.japan],
+        [GLOBE_CITY_COORDS.qatar, GLOBE_CITY_COORDS.turkey],
+        [GLOBE_CITY_COORDS.turkey, GLOBE_CITY_COORDS.switzerland]
+      ].filter(([src, dst]) => src && dst);
 
       routes.forEach(([src, dst]) => {
         const p1 = globeLatLonToVec3(src.lat, src.lon, 2.0);
