@@ -12,6 +12,8 @@ import json
 import time
 import secrets
 import hashlib
+import logging
+logger = logging.getLogger("traveltrip")
 from flask import Flask, request, jsonify, send_from_directory, redirect, session, make_response
 from database import (
     init_db, create_user, authenticate_user, get_user_by_id, get_user_by_email,
@@ -640,6 +642,7 @@ def ai_chat():
         if not user_message:
             return jsonify({"status": "error", "message": "No message provided"}), 400
 
+        gemini_api_key = (os.environ.get("GEMINI_API_KEY") or "").strip()
         groq_api_key = (os.environ.get("GROQ_API_KEY") or "").strip()
         system_prompt = (
             "You are TravelTrip AI, the official intelligent travel concierge for TravelTrip World (https://traveltrip.world).\n"
@@ -661,7 +664,47 @@ def ai_chat():
         reply_text = None
         engine_used = "Smart Travel Knowledge Engine"
 
-        if groq_api_key:
+        # 1. Primary: Google Gemini Flash Engine
+        if gemini_api_key:
+            try:
+                import urllib.request
+                gemini_url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent"
+                gemini_contents = []
+                for h in history[-6:]:
+                    if isinstance(h, dict) and "role" in h and "content" in h:
+                        role_str = "user" if h["role"] == "user" else "model"
+                        gemini_contents.append({"role": role_str, "parts": [{"text": str(h["content"])}]})
+                gemini_contents.append({"role": "user", "parts": [{"text": user_message}]})
+
+                gemini_payload = {
+                    "contents": gemini_contents,
+                    "systemInstruction": {
+                        "parts": [{"text": system_prompt}]
+                    },
+                    "generationConfig": {
+                        "temperature": 0.6,
+                        "maxOutputTokens": 600
+                    }
+                }
+
+                req = urllib.request.Request(
+                    gemini_url,
+                    data=json.dumps(gemini_payload).encode("utf-8"),
+                    headers={
+                        "Content-Type": "application/json",
+                        "X-goog-api-key": gemini_api_key
+                    }
+                )
+                with urllib.request.urlopen(req, timeout=12) as resp:
+                    if resp.status == 200:
+                        gemini_res = json.loads(resp.read().decode("utf-8"))
+                        reply_text = gemini_res["candidates"][0]["content"]["parts"][0]["text"].strip()
+                        engine_used = "Google Gemini Flash (Official AI)"
+            except Exception as e:
+                logger.warning(f"Gemini API call notice: {e}")
+
+        # 2. Secondary: Meta LLaMA 3.3 via Groq LPU
+        if not reply_text and groq_api_key:
             try:
                 import urllib.request
                 groq_messages = [{"role": "system", "content": system_prompt}]
