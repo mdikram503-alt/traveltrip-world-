@@ -54,22 +54,16 @@
       "permanent": true
     },
     {
-      "source": "/checkout",
-      "destination": "/checkout.html",
-      "permanent": false
-    },
-    {
-      "source": "/checkout/(.*)",
-      "destination": "/checkout.html",
-      "permanent": false
-    },
-    {
       "source": "/store",
-      "destination": "/destinations.html",
+      "destination": "/#esim-store",
       "permanent": false
     }
   ],
   "rewrites": [
+    {
+      "source": "/checkout",
+      "destination": "/checkout.html"
+    },
     {
       "source": "/orders",
       "destination": "/account.html"
