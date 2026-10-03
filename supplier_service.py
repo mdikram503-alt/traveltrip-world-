@@ -256,18 +256,30 @@ class SupplierService:
         """
         logger.info(f"Provisioning eSIM for order {order_id}, package: {package_code}, buyer: {buyer_email}, live_paid: {is_live_paid}")
         
-        # 1. Attempt live wholesale supplier order ONLY IF customer actually paid real money
-        if is_live_paid and SUPPLIER_API_KEY and SUPPLIER_API_SECRET and os.environ.get("RESELLPORTAL_TEST_MODE") != "1":
-            try:
-                result = SupplierService._call_live_supplier_api(package_code, buyer_email, order_id, buyer_name=buyer_name, location_code=location_code)
-                if result and result.get("success"):
-                    return result
-            except Exception as e:
-                logger.warning(f"Live supplier provisioning failed, switching to instant GSMA profile delivery: {e}")
+        # Only place a real wholesale order after real payment has been verified.
+        if not is_live_paid:
+            return {"success": False, "error": "Payment not verified. eSIM was not ordered."}
+        if not SUPPLIER_API_KEY or not SUPPLIER_API_SECRET:
+            return {"success": False, "error": "Supplier credentials are not configured."}
+        if os.environ.get("RESELLPORTAL_TEST_MODE") == "1":
+            return {"success": False, "error": "Supplier is in test mode; real eSIM not ordered."}
 
-        # 2. Instant GSMA eSIM profile delivery (safeguards balance during tests & mock payments)
-        logger.info(f"Delivering instant GSMA eSIM activation profile for order {order_id}")
-        return SupplierService._generate_provisioned_profile(package_code, order_id)
+        try:
+            result = SupplierService._call_live_supplier_api(package_code, buyer_email, order_id, buyer_name=buyer_name, location_code=location_code)
+            if result and result.get("success"):
+                return result
+            return {"success": False, "error": "Supplier did not return eSIM activation data."}
+        except urllib.error.HTTPError as e:
+            body = ""
+            try:
+                body = e.read().decode("utf-8", errors="ignore")[:300]
+            except Exception:
+                pass
+            logger.error(f"Live supplier provisioning HTTP {e.code} for order {order_id}: {body}")
+            return {"success": False, "error": f"Supplier HTTP {e.code}: {body}"}
+        except Exception as e:
+            logger.error(f"Live supplier provisioning failed for order {order_id}: {e}")
+            return {"success": False, "error": f"Supplier error: {e}"}
 
     @staticmethod
     def _call_live_supplier_api(package_code: str, buyer_email: str, order_id: str, buyer_name: str = "Traveler Customer", location_code: str = "GLOBAL"):
