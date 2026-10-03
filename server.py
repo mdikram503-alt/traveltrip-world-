@@ -624,6 +624,159 @@ def get_currency_rates():
             "BDT": {"code": "BDT", "symbol": "৳", "rate": 121.5, "flag": "🇧🇩"}
         }
     })
+# ==============================================================================
+# AI ASSISTANT API (Powered by Meta LLaMA 3.3 / Groq Cloud / Smart Fallback)
+# ==============================================================================
+
+@app.route("/api/ai/chat", methods=["POST", "OPTIONS"])
+def ai_chat():
+    if request.method == "OPTIONS":
+        return "", 200
+    try:
+        data = request.get_json(silent=True) or {}
+        user_message = (data.get("message") or "").strip()
+        history = data.get("history") or []
+
+        if not user_message:
+            return jsonify({"status": "error", "message": "No message provided"}), 400
+
+        groq_api_key = (os.environ.get("GROQ_API_KEY") or "").strip()
+        system_prompt = (
+            "You are TravelTrip AI, the official intelligent travel concierge for TravelTrip World (https://traveltrip.world).\n"
+            "You help global travelers choose, buy, and install high-speed 5G/4G prepaid travel eSIMs across 190+ countries.\n"
+            "Key company facts:\n"
+            "- Covers 190+ countries (USA, UK, UAE/Dubai, Saudi Arabia, Europe 33 countries, Japan, Thailand, Bangladesh, India, etc.).\n"
+            "- Delivery: Instant GSMA QR Code sent via email in under 30 seconds.\n"
+            "- Payments: 100% genuine live Stripe (Credit/Debit cards, Apple Pay, Google Pay) and PayPal.\n"
+            "- Setup: iPhone: Settings > Cellular > Add eSIM > Scan QR. Android: Settings > Network > SIMs > Add eSIM > Scan QR.\n"
+            "- APN: roaming / global (automatic in 99% of cases).\n"
+            "- Support: 24/7 Human support on WhatsApp (+971524413931) and Telegram (@travel_trip_world_bot).\n"
+            "Instructions:\n"
+            "1. Answer concisely, warmly, and helpfully.\n"
+            "2. If user writes in Bengali, reply in Bengali. If in English, reply in English.\n"
+            "3. Recommend specific countries or plans when asked about a destination, quoting typical starting rates from $3.50 - $4.50.\n"
+            "4. Never hallucinate fake credentials or mock payments. Emphasize instant secure delivery.\n"
+        )
+
+        reply_text = None
+        engine_used = "Smart Travel Knowledge Engine"
+
+        if groq_api_key:
+            try:
+                import urllib.request
+                groq_messages = [{"role": "system", "content": system_prompt}]
+                for h in history[-6:]:
+                    if isinstance(h, dict) and "role" in h and "content" in h:
+                        groq_messages.append({"role": h["role"], "content": str(h["content"])})
+                groq_messages.append({"role": "user", "content": user_message})
+
+                req_body = json.dumps({
+                    "model": "llama-3.3-70b-versatile",
+                    "messages": groq_messages,
+                    "temperature": 0.6,
+                    "max_tokens": 512
+                }).encode("utf-8")
+
+                req = urllib.request.Request(
+                    "https://api.groq.com/openai/v1/chat/completions",
+                    data=req_body,
+                    headers={
+                        "Authorization": f"Bearer {groq_api_key}",
+                        "Content-Type": "application/json",
+                        "User-Agent": "TravelTrip-AI/1.0"
+                    }
+                )
+                with urllib.request.urlopen(req, timeout=10) as resp:
+                    if resp.status == 200:
+                        groq_res = json.loads(resp.read().decode("utf-8"))
+                        reply_text = groq_res["choices"][0]["message"]["content"]
+                        engine_used = "Meta LLaMA 3.3 70B (Groq LPU)"
+            except Exception as e:
+                logger.warning(f"Groq API call notice: {e}")
+
+        if not reply_text:
+            msg_lower = user_message.lower()
+            if any(w in msg_lower for w in ["dubai", "uae", "abu dhabi", "দুবাই", "ইউএই"]):
+                reply_text = (
+                    "🇦🇪 **UAE & Dubai 5G eSIM**\n\n"
+                    "For travel in Dubai and UAE, we offer direct Tier-1 connection on **e& (Etisalat) and du 5G**:\n"
+                    "• **1 GB (7 Days)** — From $3.90\n"
+                    "• **3 GB (15 Days)** — $7.50\n"
+                    "• **5 GB (30 Days)** — $16.50\n"
+                    "• **Unlimited 5G (7 Days)** — $13.26\n\n"
+                    "You receive the official GSMA QR code instantly via email. Would you like to view our UAE packages?"
+                )
+            elif any(w in msg_lower for w in ["saudi", "makkah", "madinah", "umrah", "সৌদি", "উমরাহ"]):
+                reply_text = (
+                    "🇸🇦 **Saudi Arabia 5G eSIM (Perfect for Umrah & Hajj)**\n\n"
+                    "Connected to **STC & Mobily 5G** across Makkah, Madinah, Jeddah & Riyadh:\n"
+                    "• **1 GB (7 Days)** — From $4.50\n"
+                    "• **3 GB (15 Days)** — $8.33\n"
+                    "• **5 GB (30 Days)** — $12.60\n"
+                    "• **Unlimited 5G (7 Days)** — $15.30\n\n"
+                    "No passport queue or local ID needed. Instant QR code delivery right to your inbox!"
+                )
+            elif any(w in msg_lower for w in ["europe", "ইউরোপ", "uk", "france", "germany", "paris"]):
+                reply_text = (
+                    "🇪🇺 **Europe 33 Countries All-in-One eSIM**\n\n"
+                    "Roam seamlessly across France, Germany, Italy, Spain, Switzerland, UK, etc. without changing SIMs!\n"
+                    "• **1 GB (7 Days)** — From $4.20\n"
+                    "• **5 GB (30 Days)** — $14.00\n"
+                    "• **10 GB (30 Days)** — $22.50\n"
+                    "• **Unlimited 5G (7 Days)** — $14.28\n\n"
+                    "Multi-carrier roaming on Vodafone, Orange, & Deutsche Telekom."
+                )
+            elif any(w in msg_lower for w in ["install", "setup", "scan", "কিভাবে", "ইন্সটল", "iphone", "android"]):
+                reply_text = (
+                    "📱 **How to Install Your TravelTrip eSIM:**\n\n"
+                    "**On iPhone (iOS):**\n"
+                    "1. Go to **Settings > Cellular (or Mobile Data)**.\n"
+                    "2. Tap **Add eSIM** or **Add Cellular Plan**.\n"
+                    "3. Select **Use QR Code** and scan the QR code from your order email.\n"
+                    "4. Turn on **Data Roaming** when you arrive at your destination.\n\n"
+                    "**On Android (Samsung / Pixel):**\n"
+                    "1. Go to **Settings > Connections > SIM Manager**.\n"
+                    "2. Tap **Add eSIM** > **Scan QR code from service provider**.\n"
+                    "3. Scan and confirm.\n\n"
+                    "Need live assistance? Click WhatsApp below to chat directly with Ekram Bhai!"
+                )
+            elif any(w in msg_lower for w in ["bangladesh", "বাংলাদেশ", "dhaka"]):
+                reply_text = (
+                    "🇧🇩 **Bangladesh 4G/5G eSIM**\n\n"
+                    "TravelTrip World offers high-speed travel roaming in Bangladesh on **Grameenphone & Robi 4G/5G** starting from only $3.50!\n"
+                    "You can purchase securely via Visa/Mastercard, Apple Pay, Google Pay, or PayPal."
+                )
+            elif any(w in msg_lower for w in ["payment", "pay", "bkash", "card", "পেমেন্ট", "টাকা"]):
+                reply_text = (
+                    "💳 **Payment Options on TravelTrip World:**\n\n"
+                    "We accept 100% secure, verified international payments via:\n"
+                    "• **Credit & Debit Cards** (Visa, MasterCard, American Express)\n"
+                    "• **Apple Pay & Google Pay**\n"
+                    "• **PayPal**\n\n"
+                    "All payments are protected with 256-bit bank-grade encryption and GSMA instant fulfillment."
+                )
+            else:
+                reply_text = (
+                    "Hello! I am your **TravelTrip World AI Assistant** (Powered by LLaMA).\n\n"
+                    "I can help you with:\n"
+                    "• 🌍 Finding the best eSIM plan for **190+ countries**\n"
+                    "• ⚡ Instant setup & QR installation instructions\n"
+                    "• 📱 Checking device compatibility\n"
+                    "• 💬 Connecting with 24/7 human support\n\n"
+                    "Which country are you traveling to next?"
+                )
+
+        return jsonify({
+            "status": "success",
+            "reply": reply_text,
+            "engine": engine_used
+        })
+    except Exception as e:
+        logger.error(f"AI chat error: {e}", exc_info=True)
+        return jsonify({
+            "status": "error",
+            "message": "AI Assistant temporarily busy. Please contact human support."
+        }), 500
 
 # ==============================================================================
 # 2. CUSTOMER AUTHENTICATION APIS (Register, Login, Session, Logout)

@@ -1609,12 +1609,207 @@
     </div>
   </footer>
 
-  <!-- Floating 24/7 WhatsApp VIP Support Button -->
-  <a href="https://wa.me/971524413931?text=Hello%20TravelTrip%20World%20Support" target="_blank" rel="noopener" class="fixed bottom-6 right-6 z-40 px-4 py-3 rounded-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs shadow-2xl shadow-emerald-500/40 border border-emerald-300 flex items-center gap-2.5 transition transform hover:scale-105 group cursor-pointer" title="Chat on WhatsApp (+971524413931)">
-    <span class="w-2.5 h-2.5 rounded-full bg-slate-950 animate-ping"></span>
-    <i class="fa-brands fa-whatsapp text-xl text-slate-950"></i>
-    <span class="hidden sm:inline font-extrabold tracking-wide">WhatsApp Support (+971 52 441 3931)</span>
-  </a>
+
+  <!-- ==============================================================================
+       TRAVELTRIP AI CONCIERGE (Powered by Meta LLaMA 3.3 & Groq LPU)
+       ============================================================================== -->
+  <div id="tt-ai-widget-container" class="fixed bottom-6 right-6 z-40 flex flex-col items-end gap-3 pointer-events-auto">
+    
+    <!-- AI Chat Window -->
+    <div id="tt-ai-chat-window" class="hidden w-[92vw] sm:w-[380px] h-[520px] max-h-[85vh] glass-card bg-slate-900/95 border border-emerald-500/40 rounded-3xl shadow-2xl shadow-emerald-950/80 flex flex-col overflow-hidden backdrop-blur-xl transition-all duration-300">
+      <!-- Header -->
+      <div class="p-4 bg-gradient-to-r from-emerald-950/90 via-slate-900 to-slate-900 border-b border-white/10 flex items-center justify-between shrink-0">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-400 grid place-items-center text-slate-950 text-base font-black shadow-md shadow-emerald-500/30">
+            <i class="fa-solid fa-robot"></i>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h3 class="font-display font-black text-sm text-white">TravelTrip AI</h3>
+              <span class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-extrabold border border-emerald-400/30">LLaMA 3.3</span>
+            </div>
+            <div class="flex items-center gap-1.5 text-[11px] text-slate-400">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span>190+ Countries Live Concierge</span>
+            </div>
+          </div>
+        </div>
+        <button onclick="toggleAiChatWindow()" class="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white flex items-center justify-center transition cursor-pointer">
+          <i class="fa-solid fa-xmark text-sm"></i>
+        </button>
+      </div>
+
+      <!-- Messages Body -->
+      <div id="tt-ai-messages" class="flex-1 p-4 overflow-y-auto space-y-3.5 text-xs text-slate-200">
+        <!-- Welcome Message -->
+        <div class="flex items-start gap-2.5">
+          <div class="w-6 h-6 rounded-lg bg-emerald-500/20 text-emerald-300 grid place-items-center text-[11px] shrink-0 mt-0.5">
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+          </div>
+          <div class="p-3 rounded-2xl rounded-tl-sm bg-white/5 border border-white/10 text-slate-200 leading-relaxed shadow-sm">
+            Assalamu Alaikum! I am your <b>TravelTrip AI Concierge</b>.<br><br>
+            I can instantly recommend the best 5G eSIM plan for <b>190+ countries</b>, guide your iPhone/Android QR installation, or connect you with human support.
+          </div>
+        </div>
+
+        <!-- Quick Question Chips -->
+        <div class="pt-1 space-y-1.5" id="tt-ai-chips">
+          <div class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Suggested Queries:</div>
+          <div class="flex flex-wrap gap-1.5">
+            <button onclick="askAiPreset('Best eSIM plan for Dubai & UAE?')" class="px-2.5 py-1 rounded-full bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 text-[11px] transition cursor-pointer">
+              🇦🇪 Dubai 5G Plans
+            </button>
+            <button onclick="askAiPreset('How to install eSIM QR code on iPhone?')" class="px-2.5 py-1 rounded-full bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 text-[11px] transition cursor-pointer">
+              📱 iPhone Setup Guide
+            </button>
+            <button onclick="askAiPreset('Best plan for Saudi Arabia & Umrah?')" class="px-2.5 py-1 rounded-full bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 text-[11px] transition cursor-pointer">
+              🇸🇦 Saudi / Umrah eSIM
+            </button>
+            <button onclick="askAiPreset('Europe 33 countries package price?')" class="px-2.5 py-1 rounded-full bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 text-[11px] transition cursor-pointer">
+              🇪🇺 Europe 33 Countries
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Typing Indicator -->
+      <div id="tt-ai-typing" class="hidden px-4 py-2 text-[11px] text-emerald-400 flex items-center gap-2 bg-slate-950/40 border-t border-white/5 shrink-0">
+        <span class="flex gap-1">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-bounce"></span>
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-bounce [animation-delay:0.2s]"></span>
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-bounce [animation-delay:0.4s]"></span>
+        </span>
+        <span class="font-medium">TravelTrip AI is typing...</span>
+      </div>
+
+      <!-- Input Footer -->
+      <div class="p-3 bg-slate-950/80 border-t border-white/10 flex items-center gap-2 shrink-0">
+        <input id="tt-ai-input" onkeydown="if(event.key==='Enter') sendAiMessage()" type="text" placeholder="Ask about any country, prices, or setup..." class="flex-1 bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs text-white placeholder:text-slate-500 outline-none focus:border-emerald-400 transition">
+        <button onclick="sendAiMessage()" class="w-9 h-9 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 text-slate-950 flex items-center justify-center text-sm font-black shadow-md shadow-emerald-500/20 hover:opacity-90 transition cursor-pointer shrink-0">
+          <i class="fa-solid fa-paper-plane text-xs"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Trigger Button Stack -->
+    <div class="flex items-center gap-2">
+      <!-- WhatsApp Direct Link -->
+      <a href="https://wa.me/971524413931?text=Hello%20TravelTrip%20World%20Support" target="_blank" rel="noopener" class="w-11 h-11 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white grid place-items-center shadow-xl shadow-emerald-600/30 transition transform hover:scale-105 cursor-pointer" title="Chat on WhatsApp">
+        <i class="fa-brands fa-whatsapp text-lg"></i>
+      </a>
+
+      <!-- AI Chat Toggle Button -->
+      <button onclick="toggleAiChatWindow()" class="px-4 py-2.5 rounded-full bg-gradient-to-r from-emerald-500 via-teal-400 to-emerald-400 hover:from-emerald-400 hover:to-teal-300 text-slate-950 font-black text-xs shadow-2xl shadow-emerald-500/50 border border-emerald-200 flex items-center gap-2 transition transform hover:scale-105 cursor-pointer">
+        <i class="fa-solid fa-wand-magic-sparkles text-sm"></i>
+        <span>AI Assistant</span>
+      </button>
+    </div>
+  </div>
+
+  <script>
+    let aiChatHistory = [];
+    function toggleAiChatWindow() {
+      const win = document.getElementById('tt-ai-chat-window');
+      if (!win) return;
+      const isHidden = win.classList.contains('hidden');
+      if (isHidden) {
+        win.classList.remove('hidden');
+        setTimeout(() => document.getElementById('tt-ai-input')?.focus(), 150);
+      } else {
+        win.classList.add('hidden');
+      }
+    }
+
+    function askAiPreset(question) {
+      const input = document.getElementById('tt-ai-input');
+      if (input) {
+        input.value = question;
+        sendAiMessage();
+      }
+    }
+
+    async function sendAiMessage() {
+      const input = document.getElementById('tt-ai-input');
+      const msg = (input?.value || '').trim();
+      if (!msg) return;
+
+      input.value = '';
+      const container = document.getElementById('tt-ai-messages');
+      const typing = document.getElementById('tt-ai-typing');
+
+      // Hide chips after first interaction
+      const chips = document.getElementById('tt-ai-chips');
+      if (chips) chips.classList.add('hidden');
+
+      // Append User Message
+      const userDiv = document.createElement('div');
+      userDiv.className = 'flex items-start justify-end gap-2';
+      userDiv.innerHTML = `
+        <div class="p-3 rounded-2xl rounded-tr-sm bg-emerald-500/20 text-emerald-200 border border-emerald-400/30 max-w-[85%] leading-relaxed shadow-sm">
+          ${escapeHtml(msg)}
+        </div>
+      `;
+      container.appendChild(userDiv);
+      container.scrollTop = container.scrollHeight;
+
+      if (typing) typing.classList.remove('hidden');
+
+      try {
+        const res = await fetch('/api/ai/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: msg, history: aiChatHistory })
+        });
+        const data = await res.json();
+        if (typing) typing.classList.add('hidden');
+
+        const botReply = (data && data.reply) ? data.reply : "I am here to help! Please check our 190+ destinations or chat on WhatsApp.";
+        
+        aiChatHistory.push({ role: 'user', content: msg });
+        aiChatHistory.push({ role: 'assistant', content: botReply });
+        if (aiChatHistory.length > 8) aiChatHistory = aiChatHistory.slice(-8);
+
+        const botDiv = document.createElement('div');
+        botDiv.className = 'flex items-start gap-2.5';
+        botDiv.innerHTML = `
+          <div class="w-6 h-6 rounded-lg bg-emerald-500/20 text-emerald-300 grid place-items-center text-[11px] shrink-0 mt-0.5">
+            <i class="fa-solid fa-robot"></i>
+          </div>
+          <div class="p-3 rounded-2xl rounded-tl-sm bg-white/5 border border-white/10 text-slate-200 leading-relaxed shadow-sm max-w-[85%]">
+            ${formatAiReply(botReply)}
+          </div>
+        `;
+        container.appendChild(botDiv);
+        container.scrollTop = container.scrollHeight;
+      } catch (err) {
+        if (typing) typing.classList.add('hidden');
+        const errDiv = document.createElement('div');
+        errDiv.className = 'flex items-start gap-2.5';
+        errDiv.innerHTML = `
+          <div class="p-3 rounded-2xl bg-red-500/10 border border-red-500/20 text-red-300 text-xs">
+            Connection error. Please try again or chat with human support on WhatsApp (+971 52 441 3931).
+          </div>
+        `;
+        container.appendChild(errDiv);
+        container.scrollTop = container.scrollHeight;
+      }
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    function formatAiReply(text) {
+      let html = escapeHtml(text);
+      html = html.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
+      html = html.replace(/^[•\*]\s+(.*)$/gm, '<li class="ml-3 list-disc">$1</li>');
+      html = html.replace(/\n/g, '<br>');
+      return html;
+    }
+  </script>
+
 
 
   <!-- In-Page eSIM Instant Purchase Modal (Phase 2 Conversion Engine) -->
