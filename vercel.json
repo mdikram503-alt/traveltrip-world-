@@ -4,6 +4,16 @@
   "trailingSlash": false,
   "redirects": [
     {
+      "source": "/destinations",
+      "destination": "/#esim-store",
+      "permanent": false
+    },
+    {
+      "source": "/destinations.html",
+      "destination": "/#esim-store",
+      "permanent": false
+    },
+    {
       "source": "/social.html",
       "destination": "/social",
       "permanent": true
@@ -45,17 +55,17 @@
     },
     {
       "source": "/checkout",
-      "destination": "https://traveltripworld.appserviceportal.com/",
+      "destination": "/checkout.html",
       "permanent": false
     },
     {
       "source": "/checkout/(.*)",
-      "destination": "https://traveltripworld.appserviceportal.com/",
+      "destination": "/checkout.html",
       "permanent": false
     },
     {
       "source": "/store",
-      "destination": "https://traveltripworld.appserviceportal.com/",
+      "destination": "/destinations.html",
       "permanent": false
     }
   ],

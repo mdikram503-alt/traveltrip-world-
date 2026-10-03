@@ -6,10 +6,6 @@
   <title>Secure Checkout · TravelTrip World eSIM</title>
   <meta name="description" content="Secure, instant 256-bit encrypted checkout for TravelTrip World travel eSIM. Pay with Apple Pay, Google Pay, Samsung Pay, or Credit Card.">
   <link rel="icon" type="image/png" href="/images/logo-transparent.png">
-  <script>
-    // Instant redirect to TravelTrip World live portal store
-    window.location.replace("https://traveltripworld.appserviceportal.com/");
-  </script>
   
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -487,10 +483,10 @@ div[id*="vercel"] {
 
       <div class="tt-nav-actions">
         <div id="i18n-language-selector"></div>
-        <a href="mailto:support@traveltrip.world" class="tt-pill" style="color: var(--tt-primary, #3D38D0); border-color: rgba(61, 56, 208, 0.25); text-decoration: none; font-size: 13px;">
-          ✉️ support@traveltrip.world
+        <a href="mailto:Traveltripworld8@gmail.com" class="tt-pill" style="color: var(--tt-primary, #3D38D0); border-color: rgba(61, 56, 208, 0.25); text-decoration: none; font-size: 13px;">
+          ✉️ Traveltripworld8@gmail.com
         </a>
-        <a href="mailto:support@traveltrip.world" target="_blank" class="tt-pill" style="color: #25D366; border-color: rgba(37, 211, 102, 0.3); text-decoration: none; font-size: 13px;">
+        <a href="mailto:Traveltripworld8@gmail.com" target="_blank" class="tt-pill" style="color: #25D366; border-color: rgba(37, 211, 102, 0.3); text-decoration: none; font-size: 13px;">
           💬 WhatsApp 24/7
         </a>
       </div>
@@ -682,8 +678,8 @@ div[id*="vercel"] {
     
       <div style="margin-top: 24px; padding: 16px; background: #F8FAFC; border-radius: 12px; border: 1px solid #E2E8F0; font-size: 13.5px; color: #475569;">
         💬 <strong>Need assistance with your eSIM?</strong> Our team is available 24/7 at 
-        <a href="mailto:support@traveltrip.world" style="color: var(--tt-primary, #3D38D0); font-weight: 700; text-decoration: none;">support@traveltrip.world</a> 
-        or via WhatsApp at <a href="mailto:support@traveltrip.world" target="_blank" style="color: #16A34A; font-weight: 700; text-decoration: none;">support@traveltrip.world</a>.
+        <a href="mailto:Traveltripworld8@gmail.com" style="color: var(--tt-primary, #3D38D0); font-weight: 700; text-decoration: none;">Traveltripworld8@gmail.com</a> 
+        or via WhatsApp at <a href="mailto:Traveltripworld8@gmail.com" target="_blank" style="color: #16A34A; font-weight: 700; text-decoration: none;">Traveltripworld8@gmail.com</a>.
       </div>
     
     </div>
@@ -704,16 +700,16 @@ div[id*="vercel"] {
 
       <!-- Trust & Official Contact Box -->
       <div style="display: flex; align-items: center; justify-content: center; gap: 20px; flex-wrap: wrap; margin-bottom: 16px; font-size: 13.5px;">
-        <a href="mailto:support@traveltrip.world" style="color: #1E293B; text-decoration: none; font-weight: 700; display: inline-flex; align-items: center; gap: 6px;">
-          🌐 Official: <span style="color: var(--tt-primary, #3D38D0);">support@traveltrip.world</span>
+        <a href="mailto:Traveltripworld8@gmail.com" style="color: #1E293B; text-decoration: none; font-weight: 700; display: inline-flex; align-items: center; gap: 6px;">
+          🌐 Official: <span style="color: var(--tt-primary, #3D38D0);">Traveltripworld8@gmail.com</span>
         </a>
         <span style="color: #CBD5E1;">•</span>
-        <a href="mailto:support@traveltrip.world" style="color: #1E293B; text-decoration: none; font-weight: 700; display: inline-flex; align-items: center; gap: 6px;">
-          💬 Support: <span style="color: var(--tt-primary, #3D38D0);">support@traveltrip.world</span>
+        <a href="mailto:Traveltripworld8@gmail.com" style="color: #1E293B; text-decoration: none; font-weight: 700; display: inline-flex; align-items: center; gap: 6px;">
+          💬 Support: <span style="color: var(--tt-primary, #3D38D0);">Traveltripworld8@gmail.com</span>
         </a>
         <span style="color: #CBD5E1;">•</span>
-        <a href="mailto:support@traveltrip.world" target="_blank" style="color: #16A34A; text-decoration: none; font-weight: 700; display: inline-flex; align-items: center; gap: 6px;">
-          📱 24/7 Email Support: support@traveltrip.world</a>
+        <a href="mailto:Traveltripworld8@gmail.com" target="_blank" style="color: #16A34A; text-decoration: none; font-weight: 700; display: inline-flex; align-items: center; gap: 6px;">
+          📱 24/7 Email Support: Traveltripworld8@gmail.com</a>
       </div>
 
       <p style="font-size: 12.5px; color: #64748B; margin: 0; line-height: 1.6;">
@@ -725,17 +721,26 @@ div[id*="vercel"] {
 
 <script>
   const params = new URLSearchParams(location.search);
-  // FIX #2: Support all parameter names: code, package, pkg
-  const rawCode = params.get("code") || params.get("package") || params.get("pkg");
+  const rawCode = params.get("code") || params.get("package") || params.get("pkg") || params.get("sku") || params.get("id");
+  const rawItem = params.get("item") || "";
+  const rawEmail = params.get("email") || "";
 
-  // Redirect to catalog if no package code provided
-  if (!rawCode) {
+  // If email passed in URL, prefill email input
+  if (rawEmail) {
+    document.addEventListener("DOMContentLoaded", () => {
+      const emailEl = document.getElementById("email");
+      if (emailEl) emailEl.value = rawEmail;
+    });
+  }
+
+  // Redirect to destinations only if neither code nor item provided
+  if (!rawCode && !rawItem) {
     window.location.replace("/destinations.html?country=GLOBAL");
   }
 
   // These will be populated from server catalog lookup
-  let packageCode = rawCode;
-  let planName = "Loading...";
+  let packageCode = rawCode || "GLOBAL-1GB-7D";
+  let planName = rawItem || "Loading...";
   let shownPrice = "0.00";
   let checkoutReady = false;
   let locationCode = params.get("location") || params.get("cc") || "GLOBAL";
