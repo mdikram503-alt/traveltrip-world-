@@ -952,8 +952,8 @@ def logout():
 # ==============================================================================
 # STRIPE LIVE CREDIT/DEBIT CARD & APPLE PAY GATEWAY
 # ==============================================================================
-STRIPE_PUBLISHABLE_KEY = os.environ.get("STRIPE_PUBLISHABLE_KEY", "")
-STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY") or os.environ.get("STRIPE_API_KEY") or ""
+STRIPE_PUBLISHABLE_KEY = os.environ.get("STRIPE_PUBLISHABLE_KEY", "").strip()
+STRIPE_SECRET_KEY = (os.environ.get("STRIPE_SECRET_KEY") or os.environ.get("STRIPE_API_KEY") or "").strip()
 
 @app.route("/api/checkout/stripe/config", methods=["GET"])
 @app.route("/checkout/stripe/config", methods=["GET"])
@@ -1219,8 +1219,8 @@ def instant_buy_order():
 @app.route("/api/checkout/paypal/config", methods=["GET"])
 def paypal_config():
     # Public Client ID for PayPal SDK on frontend
-    client_id = os.environ.get("PAYPAL_CLIENT_ID", "")
-    paypal_mode = os.environ.get("PAYPAL_MODE", "live").lower()
+    client_id = os.environ.get("PAYPAL_CLIENT_ID", "").strip()
+    paypal_mode = os.environ.get("PAYPAL_MODE", "live").strip().lower()
     if not client_id or (client_id == "sb" and paypal_mode != "sandbox"):
         return jsonify({
             "enabled": False,
