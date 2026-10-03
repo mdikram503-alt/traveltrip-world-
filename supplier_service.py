@@ -249,15 +249,15 @@ class SupplierService:
         return clean
 
     @staticmethod
-    def provision_esim(package_code: str, buyer_email: str, order_id: str, location_code: str = "GLOBAL", buyer_name: str = "Traveler Customer"):
+    def provision_esim(package_code: str, buyer_email: str, order_id: str, location_code: str = "GLOBAL", buyer_name: str = "Traveler Customer", is_live_paid: bool = False):
         """
         Orders an eSIM package from wholesale supplier (ResellPortal).
         Returns dict with iccid, lpa_string, qr_code_url, smdp_address, activation_code, supplier_order_id.
         """
-        logger.info(f"Provisioning eSIM for order {order_id}, package: {package_code}, buyer: {buyer_email}")
+        logger.info(f"Provisioning eSIM for order {order_id}, package: {package_code}, buyer: {buyer_email}, live_paid: {is_live_paid}")
         
-        # 1. Attempt live wholesale supplier order if credentials configured
-        if SUPPLIER_API_KEY and SUPPLIER_API_SECRET and os.environ.get("RESELLPORTAL_TEST_MODE") != "1":
+        # 1. Attempt live wholesale supplier order ONLY IF customer actually paid real money
+        if is_live_paid and SUPPLIER_API_KEY and SUPPLIER_API_SECRET and os.environ.get("RESELLPORTAL_TEST_MODE") != "1":
             try:
                 result = SupplierService._call_live_supplier_api(package_code, buyer_email, order_id, buyer_name=buyer_name, location_code=location_code)
                 if result and result.get("success"):
@@ -265,7 +265,7 @@ class SupplierService:
             except Exception as e:
                 logger.warning(f"Live supplier provisioning failed, switching to instant GSMA profile delivery: {e}")
 
-        # 2. Instant GSMA eSIM profile delivery
+        # 2. Instant GSMA eSIM profile delivery (safeguards balance during tests & mock payments)
         logger.info(f"Delivering instant GSMA eSIM activation profile for order {order_id}")
         return SupplierService._generate_provisioned_profile(package_code, order_id)
 

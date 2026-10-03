@@ -1099,6 +1099,7 @@ def stripe_confirm_payment():
     if not order:
         return jsonify({"error": "Order not found"}), 404
 
+    is_live_paid = False
     if not STRIPE_SECRET_KEY:
         # Development / Sandbox mode fallback when live keys are pending
         update_order_payment(order_id, "paid", payment_intent_id or f"pi_dev_{secrets.token_hex(8)}", details={"gateway": "stripe_sandbox", "captured_at": time.time()})
@@ -1112,7 +1113,9 @@ def stripe_confirm_payment():
         try:
             with urllib.request.urlopen(req, timeout=12) as response:
                 pi_data = json.loads(response.read().decode("utf-8"))
-                if pi_data.get("status") not in ("succeeded", "processing"):
+                if pi_data.get("status") in ("succeeded", "processing"):
+                    is_live_paid = True
+                else:
                     return jsonify({"error": f"Payment is not confirmed. Current status: {pi_data.get('status')}"}), 400
         except Exception as ex:
             pass
@@ -1123,7 +1126,9 @@ def stripe_confirm_payment():
         package_code=order["package_code"],
         buyer_email=order["buyer_email"],
         order_id=order_id,
-        location_code=order.get("location_code", "GLOBAL")
+        location_code=order.get("location_code", "GLOBAL"),
+        buyer_name=order.get("buyer_name", "Traveler Customer"),
+        is_live_paid=is_live_paid
     )
 
     if not provision_result or not provision_result.get("success"):
